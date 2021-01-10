@@ -226,6 +226,11 @@ CONFIG_CLK_TWL6040=m
 CONFIG_CLK_RASPBERRYPI=y
 
 ##
+## file: drivers/clk/mmp/Kconfig
+##
+CONFIG_COMMON_CLK_MMP2_AUDIO=m
+
+##
 ## file: drivers/clk/sunxi-ng/Kconfig
 ##
 CONFIG_SUNXI_CCU=y
