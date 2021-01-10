@@ -82,6 +82,7 @@ CONFIG_ARCH_MESON=y
 ##
 CONFIG_ARCH_MMP=y
 CONFIG_MACH_MMP2_DT=y
+CONFIG_MACH_MMP3_DT=y
 
 ##
 ## file: arch/arm/mach-mvebu/Kconfig
