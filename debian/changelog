@@ -44,6 +44,10 @@ linux (5.14.12-2~exp1) UNRELEASED; urgency=medium
   * [arm64] drivers/net/phy: enable MICROSEMI_PHY as module
   * [arm64] drivers/net/usb: enable USB_NET_SMSC95XX as module
 
+  [ Ryutaroh Matsumoto ]
+  * Enable TOUCHSCREEN_RASPBERRYPI_FW and
+    REGULATOR_RASPBERRYPI_TOUCHSCREEN_ATTINY (Closes: #977575)
+
  -- Nathan Schulte <nmschulte@gmail.com>  Sun, 19 Sep 2021 12:02:00 -0500
 
 linux (5.14.12-1) unstable; urgency=medium
