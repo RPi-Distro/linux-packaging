@@ -5,6 +5,9 @@ linux (5.14.6-3~exp1) UNRELEASED; urgency=medium
     (Closes: #992184)
   * [arm64] sound/soc/codecs: Enable SND_SOC_SPDIF as module
   * [armel/rpi] Enable RPi's clock framework and CPU Freq scaling
+  * [armel/rpi] Change default governor to 'ondemand' for RPi 0/0w/1
+    (Closes: #991921)
+  * [armel/rpi] Make 'conservative' governor build in
 
   [ Nathan Schulte ]
   * [arm64] drivers/staging/media/hantro: Enable VIDEO_HANTRO as module
