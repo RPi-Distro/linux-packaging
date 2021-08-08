@@ -4,6 +4,7 @@ linux (5.14.6-3~exp1) UNRELEASED; urgency=medium
   * [arm*] drivers/led/trigger: Make LEDS_TRIGGER_HEARTBEAT builtin
     (Closes: #992184)
   * [arm64] sound/soc/codecs: Enable SND_SOC_SPDIF as module
+  * [armel/rpi] Enable RPi's clock framework and CPU Freq scaling
 
   [ Nathan Schulte ]
   * [arm64] drivers/staging/media/hantro: Enable VIDEO_HANTRO as module
