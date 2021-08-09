@@ -7,6 +7,7 @@ linux (5.14.12-2~exp1) UNRELEASED; urgency=medium
   * [armel/rpi] Enable RPi's clock framework and CPU Freq scaling
   * [armel/rpi] Change default governor to 'ondemand' for RPi 0/0w/1
     (Closes: #991921)
+  * Make explicit that -rpi kernel variant is for RPi 0/0w/1, not the others
 
   [ Nathan Schulte ]
   * [arm64] drivers/staging/media/hantro: Enable VIDEO_HANTRO as module
