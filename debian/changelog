@@ -1,3 +1,9 @@
+linux (5.13.9-1~exp3) UNRELEASED; urgency=medium
+
+  * net: Enable MPTCP (Closes: #987815)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 11 Aug 2021 13:11:46 +0200
+
 linux (5.13.9-1~exp2) experimental; urgency=medium
 
   * Fix linux-cpupower installation.

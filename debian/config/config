@@ -7213,6 +7213,11 @@ CONFIG_MPLS_ROUTING=m
 CONFIG_MPLS_IPTUNNEL=m
 
 ##
+## file: net/mptcp/Kconfig
+##
+CONFIG_MPTCP=y
+
+##
 ## file: net/ncsi/Kconfig
 ##
 # CONFIG_NET_NCSI is not set
