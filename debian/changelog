@@ -5,6 +5,7 @@ linux (5.13.9-1~exp3) UNRELEASED; urgency=medium
 
   [ Bastian Blank ]
   * [mips*] Increase RELOCATION_TABLE_SIZE to 0x1c0000.
+  * Enable SECURITY_LANDLOCK, SECURITY_PATH.
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 11 Aug 2021 13:11:46 +0200
 
