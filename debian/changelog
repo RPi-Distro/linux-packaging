@@ -6,6 +6,7 @@ linux (5.13.9-1~exp3) UNRELEASED; urgency=medium
   [ Bastian Blank ]
   * [mips*] Increase RELOCATION_TABLE_SIZE to 0x1c0000.
   * Enable SECURITY_LANDLOCK, SECURITY_PATH.
+  * Fix external modules build. (closes: #992219)
 
   [ Uwe Kleine-König ]
   * [x86] Enable X86_PLATFORM_DRIVERS_DELL which is needed to keep some Dell
