@@ -5,6 +5,10 @@ linux (5.14.6-3) UNRELEASED; urgency=medium
   * [arm64] drivers/staging/media/rkvdec: Enable VIDEO_ROCKCHIP_VDEC as module
     (Closes: #993902)
 
+  [ Diederik de Haas ]
+  * [arm*] drivers/led/trigger: Make LEDS_TRIGGER_HEARTBEAT builtin
+    (Closes: #992184)
+
   [ Vincent Blut ]
   * [arm] arch/arm/crypto: Enable CRYPTO_BLAKE2S_ARM, CRYPTO_SHA256_ARM and
     CRYPTO_SHA512_ARM as modules
