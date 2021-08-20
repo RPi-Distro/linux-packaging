@@ -127,7 +127,4 @@ bugfix/all/tools-perf-pmu-events-fix-reproducibility.patch
 bugfix/all/bpftool-fix-version-string-in-recursive-builds.patch
 bugfix/all/tools-include-uapi-fix-errno.h.patch
 
-# overlay: allow mounting in user namespaces
-debian/overlayfs-permit-mounts-in-userns.patch
-
 # ABI maintenance

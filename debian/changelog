@@ -14,6 +14,7 @@ linux (5.13.12-1~exp1) UNRELEASED; urgency=medium
   * Fix external modules build. (closes: #992219)
   * Force more compressions modules into main installer package.
     (closes: #992221)
+  * Drop redundant patch for overlay in user namespace.
 
   [ Uwe Kleine-König ]
   * [x86] Enable X86_PLATFORM_DRIVERS_DELL which is needed to keep some Dell
