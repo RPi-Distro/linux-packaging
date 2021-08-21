@@ -2,6 +2,9 @@ linux (5.13.12-1~exp2) UNRELEASED; urgency=medium
 
   [ Aurelien Jarno ]
   * [riscv64] Enable KEXEC.
+  * [riscv64] Add initial Microchip Polarfire support: enable
+    SOC_MICROCHIP_POLARFIRE, MMC_SDHCI_PLTFM, MMC_SDHCI_CADENCE and
+    PCIE_MICROCHIP_HOST.
 
  -- Aurelien Jarno <aurel32@debian.org>  Sat, 21 Aug 2021 19:49:31 +0200
 
