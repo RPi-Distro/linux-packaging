@@ -63,6 +63,12 @@ CONFIG_PCIE_XILINX=y
 CONFIG_PCIE_MICROCHIP_HOST=y
 
 ##
+## file: drivers/pci/controller/dwc/Kconfig
+##
+CONFIG_PCIE_DW_PLAT_HOST=y
+CONFIG_PCIE_FU740=y
+
+##
 ## file: drivers/power/reset/Kconfig
 ##
 CONFIG_POWER_RESET=y

@@ -5,6 +5,8 @@ linux (5.13.12-1~exp2) UNRELEASED; urgency=medium
   * [riscv64] Add initial Microchip Polarfire support: enable
     SOC_MICROCHIP_POLARFIRE, MMC_SDHCI_PLTFM, MMC_SDHCI_CADENCE and
     PCIE_MICROCHIP_HOST.
+  * [riscv64] Improve HiFive Unmatched support: enable PCIE_DW_PLAT_HOST and
+    PCIE_FU740.
 
   [ Vincent Blut ]
   * [armhf] drivers/leds: Enable LEDS_PCA963X as module (Closes: #908196)
