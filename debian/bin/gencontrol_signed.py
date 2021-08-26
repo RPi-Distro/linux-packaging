@@ -274,7 +274,7 @@ class Gencontrol(Base):
         with codecs.open(self.template_debian_dir + '/changelog', 'w',
                          'utf-8') as f:
             f.write(self.substitute('''\
-linux-signed-@arch@ (@signedsourceversion@) @distribution@; urgency=@urgency@
+linux-signed@source_suffix@-@arch@ (@signedsourceversion@) @distribution@; urgency=@urgency@
 
   * Sign kernel from @source@ @imagebinaryversion@
 
