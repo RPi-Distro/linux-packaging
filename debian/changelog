@@ -14,6 +14,9 @@ linux (5.13.13-1~exp1) UNRELEASED; urgency=medium
   [ Vincent Blut ]
   * [armhf] drivers/leds: Enable LEDS_PCA963X as module (Closes: #908196)
 
+  [ Salvatore Bonaccorso ]
+  * net/batman-adv: Enable BATMAN_ADV_BATMAN_V
+
  -- Aurelien Jarno <aurel32@debian.org>  Sat, 21 Aug 2021 19:49:31 +0200
 
 linux (5.13.12-1~exp1) experimental; urgency=medium
