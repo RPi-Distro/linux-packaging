@@ -16,6 +16,9 @@ linux (5.14-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * net/batman-adv: Enable BATMAN_ADV_BATMAN_V
 
+  [ Bastian Blank ]
+  * [powerpc*] Disable support for debugging VDSO.
+
  -- Aurelien Jarno <aurel32@debian.org>  Sat, 21 Aug 2021 19:49:31 +0200
 
 linux (5.13.12-1~exp1) experimental; urgency=medium
