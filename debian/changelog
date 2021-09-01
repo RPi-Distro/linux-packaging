@@ -1,6 +1,6 @@
 linux (5.14-1~exp1) experimental; urgency=medium
 
-  * New upstream release: https://kernelnewbies.org/Linux_5.13
+  * New upstream release: https://kernelnewbies.org/Linux_5.14
 
   [ Aurelien Jarno ]
   * [riscv64] Enable KEXEC.
