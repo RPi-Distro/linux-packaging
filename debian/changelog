@@ -1,4 +1,4 @@
-linux (5.14-1~exp1) UNRELEASED; urgency=medium
+linux (5.14-1~exp1) experimental; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_5.13
 
@@ -19,7 +19,7 @@ linux (5.14-1~exp1) UNRELEASED; urgency=medium
   [ Bastian Blank ]
   * [powerpc*] Disable support for debugging VDSO.
 
- -- Aurelien Jarno <aurel32@debian.org>  Sat, 21 Aug 2021 19:49:31 +0200
+ -- Bastian Blank <waldi@debian.org>  Wed, 01 Sep 2021 21:49:53 +0200
 
 linux (5.13.12-1~exp1) experimental; urgency=medium
 
