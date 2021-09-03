@@ -35,7 +35,6 @@ CONFIG_ALPHA_GENERIC=y
 # CONFIG_ALPHA_TITAN is not set
 # CONFIG_ALPHA_WILDFIRE is not set
 ## end choice
-# CONFIG_ARCH_DISCONTIGMEM_ENABLE is not set
 # CONFIG_VERBOSE_MCHECK is not set
 CONFIG_SRM_ENV=m
 
@@ -148,8 +147,6 @@ CONFIG_PRINTER=m
 CONFIG_PPDEV=m
 CONFIG_DTLK=m
 CONFIG_APPLICOM=m
-CONFIG_RAW_DRIVER=m
-CONFIG_MAX_RAW_DEVS=256
 
 ##
 ## file: drivers/char/agp/Kconfig
@@ -840,11 +837,6 @@ CONFIG_WDT=m
 CONFIG_PCIPCWATCHDOG=m
 CONFIG_WDTPCI=m
 CONFIG_USBPCWATCHDOG=m
-
-##
-## file: fs/Kconfig.binfmt
-##
-# CONFIG_BINFMT_EM86 is not set
 
 ##
 ## file: init/Kconfig

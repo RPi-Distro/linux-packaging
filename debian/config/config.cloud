@@ -122,7 +122,6 @@ CONFIG_XEN_BLKDEV_FRONTEND=m
 ##
 ## file: drivers/char/Kconfig
 ##
-# CONFIG_R3964 is not set
 # CONFIG_APPLICOM is not set
 # CONFIG_MWAVE is not set
 # CONFIG_DEVPORT is not set
@@ -316,11 +315,6 @@ CONFIG_INFINIBAND_ADDR_TRANS=y
 ## file: drivers/infiniband/hw/hfi1/Kconfig
 ##
 # CONFIG_INFINIBAND_HFI1 is not set
-
-##
-## file: drivers/infiniband/hw/i40iw/Kconfig
-##
-# CONFIG_INFINIBAND_I40IW is not set
 
 ##
 ## file: drivers/infiniband/hw/mlx4/Kconfig

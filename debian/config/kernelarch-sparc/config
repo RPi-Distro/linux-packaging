@@ -60,7 +60,6 @@ CONFIG_PRINTER=m
 # CONFIG_LP_CONSOLE is not set
 # CONFIG_PPDEV is not set
 # CONFIG_DTLK is not set
-# CONFIG_R3964 is not set
 # CONFIG_APPLICOM is not set
 
 ##
@@ -523,7 +522,6 @@ CONFIG_XZ_DEC_SPARC=y
 ##
 ## choice: Memory model
 # CONFIG_FLATMEM_MANUAL is not set
-# CONFIG_DISCONTIGMEM_MANUAL is not set
 CONFIG_SPARSEMEM_MANUAL=y
 ## end choice
 

@@ -200,7 +200,6 @@ CONFIG_MOXA_INTELLIO=m
 ## file: drivers/vfio/mdev/Kconfig
 ##
 CONFIG_VFIO_MDEV=m
-CONFIG_VFIO_MDEV_DEVICE=m
 
 ##
 ## file: drivers/video/fbdev/Kconfig

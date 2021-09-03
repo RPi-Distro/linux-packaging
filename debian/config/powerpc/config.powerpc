@@ -106,7 +106,6 @@ CONFIG_SYSFS_SYSCALL=y
 ##
 ## choice: Memory model
 CONFIG_FLATMEM_MANUAL=y
-# CONFIG_DISCONTIGMEM_MANUAL is not set
 # CONFIG_SPARSEMEM_MANUAL is not set
 ## end choice
 
