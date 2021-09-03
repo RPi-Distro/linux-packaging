@@ -7710,6 +7710,9 @@ CONFIG_EVM=y
 ## file: security/integrity/ima/Kconfig
 ##
 CONFIG_IMA=y
+## choice: Default template
+CONFIG_IMA_SIG_TEMPLATE=y
+## end choice
 ## choice: Default integrity hash algorithm
 # CONFIG_IMA_DEFAULT_HASH_SHA1 is not set
 CONFIG_IMA_DEFAULT_HASH_SHA256=y
