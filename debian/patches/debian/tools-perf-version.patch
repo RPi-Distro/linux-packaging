@@ -50,10 +50,12 @@ Index: linux/tools/perf/Makefile.perf
  		$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(bindir_SQ)'; \
 -		$(INSTALL) $(OUTPUT)perf '$(DESTDIR_SQ)$(bindir_SQ)'; \
 -		$(LN) '$(DESTDIR_SQ)$(bindir_SQ)/perf' '$(DESTDIR_SQ)$(bindir_SQ)/trace'; \
+-		$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(includedir_SQ)/perf'; \
+-		$(INSTALL) util/perf_dlfilter.h -t '$(DESTDIR_SQ)$(includedir_SQ)/perf'
 +		$(INSTALL) $(OUTPUT)perf '$(DESTDIR_SQ)$(bindir_SQ)/perf_$(VERSION)'; \
 +		$(LN) '$(DESTDIR_SQ)$(bindir_SQ)/perf' '$(DESTDIR_SQ)$(bindir_SQ)/trace_$(VERSION)'; \
- 		$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(includedir_SQ)/perf'; \
- 		$(INSTALL) util/perf_dlfilter.h -t '$(DESTDIR_SQ)$(includedir_SQ)/perf'
++		$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(perf_include_instdir_SQ)'; \
++		$(INSTALL) util/perf_dlfilter.h -t '$(DESTDIR_SQ)$(perf_include_instdir_SQ)'
 +	$(call QUIET_INSTALL, libexec) \
 +		$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(perfexec_instdir_SQ)'
  ifndef NO_PERF_READ_VDSO32
