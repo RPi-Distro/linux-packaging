@@ -7704,7 +7704,7 @@ CONFIG_INTEGRITY_AUDIT=y
 ##
 ## file: security/integrity/evm/Kconfig
 ##
-# CONFIG_EVM is not set
+CONFIG_EVM=y
 
 ##
 ## file: security/integrity/ima/Kconfig
@@ -7727,7 +7727,7 @@ CONFIG_KEYS=y
 CONFIG_PERSISTENT_KEYRINGS=y
 # CONFIG_BIG_KEYS is not set
 # CONFIG_TRUSTED_KEYS is not set
-# CONFIG_ENCRYPTED_KEYS is not set
+CONFIG_ENCRYPTED_KEYS=y
 CONFIG_KEY_DH_OPERATIONS=y
 
 ##
