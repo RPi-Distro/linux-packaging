@@ -114,6 +114,11 @@ CONFIG_DRM_I915_GVT=y
 CONFIG_DRM_I915_GVT_KVMGT=m
 
 ##
+## file: drivers/hid/amd-sfh-hid/Kconfig
+##
+CONFIG_AMD_SFH_HID=m
+
+##
 ## file: drivers/i2c/Kconfig
 ##
 CONFIG_I2C_STUB=m
@@ -180,6 +185,11 @@ CONFIG_PCI_HYPERV=y
 ## file: drivers/pinctrl/Kconfig
 ##
 CONFIG_PINCTRL_AMD=y
+
+##
+## file: drivers/platform/x86/Kconfig
+##
+CONFIG_AMD_PMC=m
 
 ##
 ## file: drivers/scsi/Kconfig
