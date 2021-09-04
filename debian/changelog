@@ -6,6 +6,12 @@ linux (5.14-1~exp2) UNRELEASED; urgency=medium
   * Enable AMD_SFH_HID, AMD_PMC. (closes: #992832)
   * Enable TMPFS_INODE64. (closes: #993641)
 
+  [ Diederik de Haas ]
+  * [arm64] sound/soc/codecs: Enable SND_SOC_RK3328 as module
+  * [arm64,armhf] drivers/input/misc: Enable INPUT_RK805_PWRKEY as module
+  * [arm64,armhf] drivers/pinctrl: Enable PINCTRL_RK805 (Closes: #990536)
+  * [arm64] drivers/mfd: Make MFD_RK808 builtin
+
  -- Bastian Blank <waldi@debian.org>  Fri, 03 Sep 2021 16:22:29 +0200
 
 linux (5.14-1~exp1) experimental; urgency=medium
