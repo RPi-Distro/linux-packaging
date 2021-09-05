@@ -5,6 +5,7 @@ linux (5.14-1~exp2) UNRELEASED; urgency=medium
   * Enable IMA_SIG_TEMPLATE.
   * Enable AMD_SFH_HID, AMD_PMC. (closes: #992832)
   * Enable TMPFS_INODE64. (closes: #993641)
+  * Move more into nic-shared-modules.
 
   [ Diederik de Haas ]
   * [arm64] sound/soc/codecs: Enable SND_SOC_RK3328 as module

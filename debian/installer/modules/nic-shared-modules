@@ -6,3 +6,4 @@ mii ?
 of_mdio ?
 pps_core ?
 ptp ?
+selftests ?
