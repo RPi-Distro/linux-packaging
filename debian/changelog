@@ -1,3 +1,21 @@
+linux (5.14.1-1~exp1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.1
+    - vt_kdsetmode: extend console locking (CVE-2021-3753)
+    - Bluetooth: btusb: check conditions before enabling USB ALT 3 for WBS
+    - btrfs: fix NULL pointer dereference when deleting device by invalid id
+      (CVE-2021-3739)
+    - Revert "floppy: reintroduce O_NDELAY fix"
+    - fscrypt: add fscrypt_symlink_getattr() for computing st_size
+    - ext4: report correct st_size for encrypted symlinks
+    - f2fs: report correct st_size for encrypted symlinks
+    - ubifs: report correct st_size for encrypted symlinks
+    - net: don't unconditionally copy_from_user a struct ifreq for socket ioctls
+    - audit: move put_tree() to avoid trim_trees refcount underflow and UAF
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 06 Sep 2021 11:23:15 +0200
+
 linux (5.14-1~exp2) experimental; urgency=medium
 
   [ Bastian Blank ]
