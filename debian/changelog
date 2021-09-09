@@ -1,4 +1,4 @@
-linux (5.14.2-1~exp1) UNRELEASED; urgency=medium
+linux (5.14.2-1~exp1) experimental; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.2
@@ -34,7 +34,7 @@ linux (5.14.2-1~exp1) UNRELEASED; urgency=medium
   * HID: apple: Add missing scan code event for keys handled by hid-apple
     (Closes: #757356)
 
- -- Vincent Blut <vincent.debian@free.fr>  Thu, 09 Sep 2021 14:39:19 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 10 Sep 2021 00:20:28 +0200
 
 linux (5.14.1-1~exp1) experimental; urgency=medium
 
