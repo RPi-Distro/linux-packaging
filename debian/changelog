@@ -30,6 +30,10 @@ linux (5.14.2-1~exp1) UNRELEASED; urgency=medium
   * drivers/net/wireless/mediatek/mt76/mt7615: Enable MT7615E, MT7663U as
     modules
 
+  [ Salvatore Bonaccorso ]
+  * HID: apple: Add missing scan code event for keys handled by hid-apple
+    (Closes: #757356)
+
  -- Vincent Blut <vincent.debian@free.fr>  Thu, 09 Sep 2021 14:39:19 +0200
 
 linux (5.14.1-1~exp1) experimental; urgency=medium
