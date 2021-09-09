@@ -24,6 +24,11 @@ linux (5.14.2-1~exp1) UNRELEASED; urgency=medium
     CROS_EC_PROTO explicitly
   * [arm64] sound/soc/generic: Enable SND_AUDIO_GRAPH_CARD as module
     (Closes: #987576)
+  * drivers/net/wireless/mediatek/mt76/mt7915: Enable MT7915E as module
+    (Closes: #993865)
+  * drivers/net/wireless/mediatek/mt76/mt7921: Enable MT7921E as module
+  * drivers/net/wireless/mediatek/mt76/mt7615: Enable MT7615E, MT7663U as
+    modules
 
  -- Vincent Blut <vincent.debian@free.fr>  Thu, 09 Sep 2021 14:39:19 +0200
 
