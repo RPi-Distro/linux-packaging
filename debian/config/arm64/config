@@ -1547,6 +1547,7 @@ CONFIG_SND_SOC_FSL_SAI=m
 ## file: sound/soc/generic/Kconfig
 ##
 CONFIG_SND_SIMPLE_CARD=m
+CONFIG_SND_AUDIO_GRAPH_CARD=m
 
 ##
 ## file: sound/soc/hisilicon/Kconfig
