@@ -4158,6 +4158,12 @@ CONFIG_LIBERTAS_THINFIRM_USB=m
 CONFIG_WLAN_VENDOR_MEDIATEK=y
 
 ##
+## file: drivers/net/wireless/mediatek/mt76/mt7615/Kconfig
+##
+CONFIG_MT7615E=m
+CONFIG_MT7663U=m
+
+##
 ## file: drivers/net/wireless/mediatek/mt76/mt76x0/Kconfig
 ##
 CONFIG_MT76x0U=m
