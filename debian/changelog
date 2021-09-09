@@ -2,6 +2,7 @@ linux (5.14.1-1~exp2) UNRELEASED; urgency=medium
 
   [ Vincent Blut ]
   * drivers/media/cec: Enable MEDIA_CEC_RC (Closes: #872650)
+  * drivers/hid: Enable various HID drivers as modules (Closes: #988277)
 
  -- Vincent Blut <vincent.debian@free.fr>  Thu, 09 Sep 2021 14:39:19 +0200
 
