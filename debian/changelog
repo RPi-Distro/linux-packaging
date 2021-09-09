@@ -22,6 +22,8 @@ linux (5.14.2-1~exp1) UNRELEASED; urgency=medium
   * drivers/hid: Enable various HID drivers as modules (Closes: #988277)
   * [x86] drivers/platform/chrome: Enable CROS_EC as module and set
     CROS_EC_PROTO explicitly
+  * [arm64] sound/soc/generic: Enable SND_AUDIO_GRAPH_CARD as module
+    (Closes: #987576)
 
  -- Vincent Blut <vincent.debian@free.fr>  Thu, 09 Sep 2021 14:39:19 +0200
 
