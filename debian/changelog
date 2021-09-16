@@ -240,6 +240,7 @@ linux (5.14.5-1~exp1) UNRELEASED; urgency=medium
   * [arm64] drivers/vfio/fsl-mc: Enable VFIO_FSL_MC as module (Closes: #993000)
   * [arm64] drivers/firmware: Enable ARM_SCPI_PROTOCOL as module
     (Closes: #929528)
+  * [arm64] drivers/hwmon: Enable SENSORS_ARM_SCPI as module
 
   [ Heiko Thiery ]
   * [arm64] drivers/regulator: Enable REGULATOR_PCA9450 as module
