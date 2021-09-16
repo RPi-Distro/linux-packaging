@@ -1,3 +1,12 @@
+linux (5.14.6-3) UNRELEASED; urgency=medium
+
+  [ Nathan Schulte ]
+  * [arm64] drivers/staging/media/hantro: Enable VIDEO_HANTRO as module
+  * [arm64] drivers/staging/media/rkvdec: Enable VIDEO_ROCKCHIP_VDEC as module
+    (Closes: #993902)
+
+ -- Nathan Schulte <nmschulte@gmail.com> Sun, 19 Sep 2021 12:02:00 -0500
+
 linux (5.14.6-2) unstable; urgency=medium
 
   * io_uring: ensure symmetry in handling iter types in loop_rw_iter()
