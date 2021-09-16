@@ -1,4 +1,4 @@
-linux (5.14.4-1~exp1) UNRELEASED; urgency=medium
+linux (5.14.5-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.4
@@ -231,6 +231,9 @@ linux (5.14.4-1~exp1) UNRELEASED; urgency=medium
     - [armel] clk: kirkwood: Fix a clocking boot regression
     - devlink: Break parameter notification sequence to be before/after
       unload/load driver
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.5
+    - Revert "posix-cpu-timers: Force next expiration recalc after itimer reset"
+    - Revert "time: Handle negative seconds correctly in timespec64_to_ns()"
 
   [ Vincent Blut ]
   * [arm64] drivers/bus/fsl-mc: Enable FSL_MC_UAPI_SUPPORT (Closes: #992988)
