@@ -238,6 +238,8 @@ linux (5.14.5-1~exp1) UNRELEASED; urgency=medium
   [ Vincent Blut ]
   * [arm64] drivers/bus/fsl-mc: Enable FSL_MC_UAPI_SUPPORT (Closes: #992988)
   * [arm64] drivers/vfio/fsl-mc: Enable VFIO_FSL_MC as module (Closes: #993000)
+  * [arm64] drivers/firmware: Enable ARM_SCPI_PROTOCOL as module
+    (Closes: #929528)
 
   [ Heiko Thiery ]
   * [arm64] drivers/regulator: Enable REGULATOR_PCA9450 as module
