@@ -577,6 +577,7 @@ linux (5.14.6-1) UNRELEASED; urgency=medium
   * Refresh "kbuild: Make the toolchain variables easily overwritable"
   * Drop "Partially revert "net: socket: implement 64-bit timestamps""
   * Set ABI to 1
+  * [mipsel] bpf, mips: Validate conditional branch offsets (CVE-2021-38300)
 
  -- Vincent Blut <vincent.debian@free.fr>  Mon, 13 Sep 2021 22:45:43 +0200
 
