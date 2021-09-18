@@ -242,6 +242,8 @@ linux (5.14.5-1~exp1) UNRELEASED; urgency=medium
     (Closes: #929528)
   * [arm64] drivers/hwmon: Enable SENSORS_ARM_SCPI as module
   * [arm64] drivers/mailbox: Enable ARM_MHU, PLATFORM_MHU as modules
+  * [armhf] drivers/input/misc: Enable INPUT_TPS65218_PWRBUTTON as module
+    (Closes: #944518)
 
   [ Heiko Thiery ]
   * [arm64] drivers/regulator: Enable REGULATOR_PCA9450 as module
