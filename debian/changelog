@@ -248,6 +248,9 @@ linux (5.14.5-1~exp1) UNRELEASED; urgency=medium
   * [arm64] drivers/regulator: Enable REGULATOR_PFUZE100 as module
   * [arm64] drivers/pci/controller: Enable PCI_IMX6
 
+  [ Salvatore Bonaccorso ]
+  * dccp: don't duplicate ccid when cloning dccp sock (CVE-2020-16119)
+
  -- Vincent Blut <vincent.debian@free.fr>  Mon, 13 Sep 2021 22:45:43 +0200
 
 linux (5.14.3-1~exp1) experimental; urgency=medium
