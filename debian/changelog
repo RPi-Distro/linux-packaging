@@ -1,4 +1,4 @@
-linux (5.14.6-1~exp1) UNRELEASED; urgency=medium
+linux (5.14.6-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.4
@@ -576,6 +576,7 @@ linux (5.14.6-1~exp1) UNRELEASED; urgency=medium
   * bnx2x: Fix enabling network interfaces without VFs (Closes: #993948)
   * Refresh "kbuild: Make the toolchain variables easily overwritable"
   * Drop "Partially revert "net: socket: implement 64-bit timestamps""
+  * Set ABI to 1
 
  -- Vincent Blut <vincent.debian@free.fr>  Mon, 13 Sep 2021 22:45:43 +0200
 
