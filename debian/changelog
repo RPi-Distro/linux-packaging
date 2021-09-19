@@ -5,6 +5,7 @@ linux (5.14.6-3) UNRELEASED; urgency=medium
     CRYPTO_SHA512_ARM as modules
   * [armhf] arch/arm/crypto: Enable most NEON based implementation of
     cryptographic algorithms as modules
+  * [arm] Move CRYPTO_NHPOLY1305_NEON in armhf config file
 
  -- Vincent Blut <vincent.debian@free.fr>  Sun, 19 Sep 2021 19:04:34 +0200
 
