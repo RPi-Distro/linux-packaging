@@ -390,6 +390,7 @@ CONFIG_DRM_TI_TPD12S015=m
 ## file: drivers/gpu/drm/bridge/synopsys/Kconfig
 ##
 CONFIG_DRM_DW_HDMI_AHB_AUDIO=m
+CONFIG_DRM_DW_HDMI_I2S_AUDIO=m
 CONFIG_DRM_DW_HDMI_CEC=m
 
 ##

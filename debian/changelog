@@ -19,6 +19,8 @@ linux (5.14.12-2~exp1) UNRELEASED; urgency=medium
   * [arm64] drivers/gpu/drm/vmwgfx: Enable DRM_VMWGFX as module
     (Closes: #995276)
   * [armhf] sound/soc/sunxi: Enable SND_SUN4I_I2S as module (Closes: #971892)
+  * [armhf] drivers/gpu/drm/bridge/synopsys: Enable DRM_DW_HDMI_I2S_AUDIO as
+    module
 
   [ YunQiang Su ]
   * [mipsel,mips64el/loongson-3] linux-image: Recommend pmon-update
