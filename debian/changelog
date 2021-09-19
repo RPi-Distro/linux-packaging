@@ -1,3 +1,10 @@
+linux (5.14.6-2) unstable; urgency=medium
+
+  * io_uring: ensure symmetry in handling iter types in loop_rw_iter()
+    (CVE-2021-41073)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 19 Sep 2021 10:49:04 +0200
+
 linux (5.14.6-1) unstable; urgency=medium
 
   * New upstream stable update:
