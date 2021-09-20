@@ -2,6 +2,7 @@ linux (5.14.6-3) UNRELEASED; urgency=medium
 
   [ John Paul Adrian Glaubitz ]
   * [ia64] Set CONFIG_CRYPTO_ZSTD=y to force CONFIG_ZSTD_COMPRESS=y
+  * [ia64] Drop udebs for legacy IDE support, removed upstream
 
   [ Salvatore Bonaccorso ]
   * ethtool: Fix rxnfc copy to user buffer overflow
