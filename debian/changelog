@@ -1,3 +1,9 @@
+linux (5.14.6-3) UNRELEASED; urgency=medium
+
+  * ethtool: Fix rxnfc copy to user buffer overflow
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 20 Sep 2021 20:55:59 +0200
+
 linux (5.14.6-2) unstable; urgency=medium
 
   * io_uring: ensure symmetry in handling iter types in loop_rw_iter()
