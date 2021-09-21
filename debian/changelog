@@ -5,6 +5,13 @@ linux (5.14.6-3) UNRELEASED; urgency=medium
   * [arm64] drivers/staging/media/rkvdec: Enable VIDEO_ROCKCHIP_VDEC as module
     (Closes: #993902)
 
+  [ Vincent Blut ]
+  * [arm] arch/arm/crypto: Enable CRYPTO_BLAKE2S_ARM, CRYPTO_SHA256_ARM and
+    CRYPTO_SHA512_ARM as modules
+  * [armhf] arch/arm/crypto: Enable most NEON based implementation of
+    cryptographic algorithms as modules
+  * [arm] Move CRYPTO_NHPOLY1305_NEON in armhf config file
+
  -- Nathan Schulte <nmschulte@gmail.com> Sun, 19 Sep 2021 12:02:00 -0500
 
 linux (5.14.6-2) unstable; urgency=medium
