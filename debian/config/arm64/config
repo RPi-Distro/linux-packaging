@@ -578,6 +578,11 @@ CONFIG_LEDS_GPIO=m
 CONFIG_LEDS_PWM=m
 
 ##
+## file: drivers/leds/trigger/Kconfig
+##
+CONFIG_LEDS_TRIGGER_HEARTBEAT=y
+
+##
 ## file: drivers/mailbox/Kconfig
 ##
 CONFIG_MAILBOX=y

@@ -1,5 +1,9 @@
 linux (5.14.6-3~exp1) UNRELEASED; urgency=medium
 
+  [ Diederik de Haas ]
+  * [arm*] drivers/led/trigger: Make LEDS_TRIGGER_HEARTBEAT builtin
+    (Closes: #992184)
+
   [ Nathan Schulte ]
   * [arm64] drivers/staging/media/hantro: Enable VIDEO_HANTRO as module
   * [arm64] drivers/staging/media/rkvdec: Enable VIDEO_ROCKCHIP_VDEC as module
