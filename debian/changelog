@@ -4,6 +4,7 @@ linux (5.14.6-3) UNRELEASED; urgency=medium
   * [ia64] Set CONFIG_CRYPTO_ZSTD=y to force CONFIG_ZSTD_COMPRESS=y
   * [ia64] Drop udebs for legacy IDE support, removed upstream
   * [m68k] Drop udebs for legacy IDE support, removed upstream
+  * [sh4] Set CONFIG_CC_OPTIMIZE_FOR_SIZE=y to reduce image size
 
   [ Salvatore Bonaccorso ]
   * ethtool: Fix rxnfc copy to user buffer overflow
