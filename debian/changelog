@@ -1,6 +1,8 @@
 linux (5.14.6-3) UNRELEASED; urgency=medium
 
   * ethtool: Fix rxnfc copy to user buffer overflow
+  * debian/bin/gencontrol.py: Fix under-indented line triggering pycodestyle
+    problem.
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 20 Sep 2021 20:55:59 +0200
 
