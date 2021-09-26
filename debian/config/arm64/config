@@ -947,6 +947,11 @@ CONFIG_WLCORE_SPI=m
 CONFIG_WLCORE_SDIO=m
 
 ##
+## file: drivers/net/usb/Kconfig
+##
+CONFIG_USB_NET_SMSC95XX=m
+
+##
 ## file: drivers/nvmem/Kconfig
 ##
 CONFIG_NVMEM_IMX_OCOTP=m
