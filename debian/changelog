@@ -19,6 +19,7 @@ linux (5.14.6-3~exp1) UNRELEASED; urgency=medium
   [ Heiko Thiery ]
   * [arm64] drivers/mtd/spi-nor: enable MTD_SPI_NOR as module
   * [arm64] drivers/net/can/spi: enable CAN_MCP251X as module
+  * [arm64] drivers/net/phy: enable MICROSEMI_PHY as module
 
  -- Nathan Schulte <nmschulte@gmail.com>  Sun, 19 Sep 2021 12:02:00 -0500
 
