@@ -1181,6 +1181,7 @@ CONFIG_QCOM_Q6V5_MSS=m
 ## file: drivers/reset/Kconfig
 ##
 CONFIG_RESET_CONTROLLER=y
+CONFIG_RESET_IMX7=m
 
 ##
 ## file: drivers/rpmsg/Kconfig

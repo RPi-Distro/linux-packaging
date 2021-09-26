@@ -21,6 +21,7 @@ linux (5.14.6-3~exp1) UNRELEASED; urgency=medium
   * [arm64] drivers/net/can/spi: enable CAN_MCP251X as module
   * [arm64] drivers/net/phy: enable MICROSEMI_PHY as module
   * [arm64] drivers/net/usb: enable USB_NET_SMSC95XX as module
+  * [arm64] drivers/reset: enable RESET_IMX7 as module
 
  -- Nathan Schulte <nmschulte@gmail.com>  Sun, 19 Sep 2021 12:02:00 -0500
 
