@@ -1,4 +1,4 @@
-linux (5.14.6-3) UNRELEASED; urgency=medium
+linux (5.14.6-3) unstable; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * ethtool: Fix rxnfc copy to user buffer overflow (Closes: #995109)
@@ -12,7 +12,7 @@ linux (5.14.6-3) UNRELEASED; urgency=medium
   * [m68k] Drop udebs for legacy IDE support, removed upstream
   * [sh4] Set CONFIG_CC_OPTIMIZE_FOR_SIZE=y to reduce image size
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 20 Sep 2021 20:55:59 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 28 Sep 2021 06:29:40 +0200
 
 linux (5.14.6-2) unstable; urgency=medium
 
