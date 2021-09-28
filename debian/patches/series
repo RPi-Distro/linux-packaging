@@ -77,6 +77,7 @@ bugfix/powerpc/powerpc-boot-fix-missing-crc32poly.h-when-building-with-kernel_xz
 bugfix/arm64/arm64-acpi-Add-fixup-for-HPE-m400-quirks.patch
 bugfix/x86/x86-32-disable-3dnow-in-generic-config.patch
 bugfix/mipsel/bpf-mips-Validate-conditional-branch-offsets.patch
+bugfix/arm/ARM-dts-sun7i-A20-olinuxino-lime2-Fix-ethernet-phy-m.patch
 
 # Arch features
 features/arm64/arm64-dts-rockchip-Add-support-for-two-PWM-fans-on-h.patch
@@ -91,6 +92,7 @@ bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
 bugfix/all/partially-revert-usb-kconfig-using-select-for-usb_co.patch
 bugfix/all/HID-apple-Add-missing-scan-code-event-for-keys-handl.patch
 bugfix/all/bnx2x-Fix-enabling-network-interfaces-without-VFs.patch
+bugfix/all/ethtool-Fix-rxnfc-copy-to-user-buffer-overflow.patch
 
 # Miscellaneous features
 

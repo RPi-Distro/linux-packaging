@@ -1,4 +1,4 @@
-linux (5.14.6-3~exp1) UNRELEASED; urgency=medium
+linux (5.14.6-4~exp1) UNRELEASED; urgency=medium
 
   [ Diederik de Haas ]
   * [arm*] drivers/led/trigger: Make LEDS_TRIGGER_HEARTBEAT builtin
@@ -18,6 +18,22 @@ linux (5.14.6-3~exp1) UNRELEASED; urgency=medium
   * [arm] Move CRYPTO_NHPOLY1305_NEON in armhf config file
 
  -- Nathan Schulte <nmschulte@gmail.com>  Sun, 19 Sep 2021 12:02:00 -0500
+
+linux (5.14.6-3) unstable; urgency=medium
+
+  [ Salvatore Bonaccorso ]
+  * ethtool: Fix rxnfc copy to user buffer overflow (Closes: #995109)
+  * debian/bin/gencontrol.py: Fix under-indented line triggering pycodestyle
+    problem.
+  * [armhf] dts: sun7i: A20-olinuxino-lime2: Fix ethernet phy-mode
+
+  [ John Paul Adrian Glaubitz ]
+  * [ia64] Set CONFIG_CRYPTO_ZSTD=y to force CONFIG_ZSTD_COMPRESS=y
+  * [ia64] Drop udebs for legacy IDE support, removed upstream
+  * [m68k] Drop udebs for legacy IDE support, removed upstream
+  * [sh4] Set CONFIG_CC_OPTIMIZE_FOR_SIZE=y to reduce image size
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 28 Sep 2021 06:29:40 +0200
 
 linux (5.14.6-2) unstable; urgency=medium
 
