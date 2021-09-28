@@ -4,6 +4,7 @@ linux (5.14.6-3) UNRELEASED; urgency=medium
   * ethtool: Fix rxnfc copy to user buffer overflow (Closes: #995109)
   * debian/bin/gencontrol.py: Fix under-indented line triggering pycodestyle
     problem.
+  * [armhf] dts: sun7i: A20-olinuxino-lime2: Fix ethernet phy-mode
 
   [ John Paul Adrian Glaubitz ]
   * [ia64] Set CONFIG_CRYPTO_ZSTD=y to force CONFIG_ZSTD_COMPRESS=y
