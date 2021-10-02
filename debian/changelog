@@ -142,6 +142,9 @@ linux (5.14.7-1) UNRELEASED; urgency=medium
     - [s390x] bpf: Fix 64-bit subtraction of the -0x80000000 constant
     - [s390x] bpf: Fix branch shortening during codegen pass
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 2
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 02 Oct 2021 09:52:43 +0200
 
 linux (5.14.6-3) unstable; urgency=medium
