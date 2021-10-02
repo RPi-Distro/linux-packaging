@@ -93,6 +93,7 @@ bugfix/all/partially-revert-usb-kconfig-using-select-for-usb_co.patch
 bugfix/all/HID-apple-Add-missing-scan-code-event-for-keys-handl.patch
 bugfix/all/bnx2x-Fix-enabling-network-interfaces-without-VFs.patch
 bugfix/all/ethtool-Fix-rxnfc-copy-to-user-buffer-overflow.patch
+bugfix/all/net-qrtr-revert-check-in-qrtr_endpoint_post.patch
 
 # Miscellaneous features
 

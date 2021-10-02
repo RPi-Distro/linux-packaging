@@ -1,3 +1,9 @@
+linux (5.14.6-4) UNRELEASED; urgency=medium
+
+  * net: qrtr: revert check in qrtr_endpoint_post() (Closes: #995491)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 02 Oct 2021 09:52:43 +0200
+
 linux (5.14.6-3) unstable; urgency=medium
 
   [ Salvatore Bonaccorso ]
