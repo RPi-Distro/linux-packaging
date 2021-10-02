@@ -1,6 +1,146 @@
-linux (5.14.6-4) UNRELEASED; urgency=medium
+linux (5.14.7-1) UNRELEASED; urgency=medium
 
-  * net: qrtr: revert check in qrtr_endpoint_post() (Closes: #995491)
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.7
+    - [amd64] net: stmmac: fix MAC not working when system resume back with WoL
+      active
+    - [amd64,arm64] swiotlb-xen: avoid double free
+    - swiotlb-xen: fix late init retry
+    - [amd64] xen: reset legacy rtc flag for PV domU
+    - [amd64] xen: fix usage of pmd_populate in mremap for pv guests
+    - [arm64] sve: Use correct size when reinitialising SVE state
+    - PCI: Add AMD GPU multi-function power dependencies
+    - drm/amd/display: dsc mst 2 4K displays go dark with 2 lane HBR3
+    - drm/amd/display: Fix white screen page fault for gpuvm
+    - drm/amd/amdgpu: Increase HWIP_MAX_INSTANCE to 10
+    - drm/amdgpu: use IS_ERR for debugfs APIs
+    - drm/amdgpu: fix use after free during BO move
+    - drm/amdgpu: add amdgpu_amdkfd_resume_iommu
+    - drm/amdgpu: move iommu_resume before ip init/resume
+    - drm/radeon: pass drm dev radeon_agp_head_init directly
+    - io_uring: allow retry for O_NONBLOCK if async is supported
+    - [x86] drm/i915/dp: Use max params for panels < eDP 1.4
+    - [armhf] drm/etnaviv: return context from etnaviv_iommu_context_get
+    - [armhf] drm/etnaviv: put submit prev MMU context when it exists
+    - [armhf] drm/etnaviv: stop abusing mmu_context as FE running marker
+    - [armhf] drm/etnaviv: keep MMU context across runtime suspend/resume
+    - [armhf] drm/etnaviv: exec and MMU state is lost when resetting the GPU
+    - [armhf] drm/etnaviv: fix MMU context leak on GPU reset
+    - [armhf] drm/etnaviv: reference MMU context when setting up hardware state
+    - [armhf] drm/etnaviv: add missing MMU context put when reaping MMU mapping
+    - [s390x] sclp: fix Secure-IPL facility detection
+    - net: qrtr: revert check in qrtr_endpoint_post() (Closes: #995491)
+    - [x86] pat: Pass valid address to sanitize_phys()
+    - [x86] mm: Fix kern_addr_valid() to cope with existing but not present
+      entries
+    - x86/mce: Avoid infinite loop for copy from user recovery
+    - tipc: fix an use-after-free issue in tipc_recvmsg
+    - net: remove the unnecessary check in cipso_v4_doi_free
+    - net/{mlx5|nfp|bnxt}: Remove unnecessary RTNL lock assert
+    - net/l2tp: Fix reference count leak in l2tp_udp_recv_core
+    - r6040: Restore MDIO clock frequency after MAC reset
+    - tipc: increase timeout in tipc_sk_enqueue()
+    - [arm64] drm/rockchip: cdn-dp-core: Make cdn_dp_core_resume __maybe_unused
+    - rtc: cmos: Disable irq around direct invocation of cmos_interrupt()
+    - [x86] drm/i915/dp: return proper DPRX link training result
+    - net/mlx5: FWTrace, cancel work on alloc pd error flow
+    - net/mlx5: Fix potential sleeping in atomic context
+    - net: stmmac: fix system hang caused by eee_ctrl_timer during
+      suspend/resume
+    - igc: fix tunnel offloading
+    - nvme-tcp: fix io_work priority inversion
+    - [powerpc*] 64s: system call scv tabort fix for corrupt irq soft-mask state
+    - events: Reuse value read using READ_ONCE instead of re-reading it
+    - vhost_net: fix OoB on sendmsg() failure.
+    - net/af_unix: fix a data-race in unix_dgram_poll
+    - [arm64,armhf] net: dsa: destroy the phylink instance on any error in
+      dsa_slave_phy_setup
+    - tcp: fix tp->undo_retrans accounting in tcp_sacktag_one()
+    - qed: Handle management FW error
+    - udp_tunnel: Fix udp_tunnel_nic work-queue type
+    - dt-bindings: arm: Fix Toradex compatible typo
+    - [powerpc*] KVM: PPC: Book3S HV: Tolerate treclaim. in fake-suspend mode
+      changing registers
+    - [powerpc*] 64s: system call rfscv workaround for TM bugs
+    - [powerpc*] mce: Fix access error in mce handler
+    - [s390x] pci_mmio: fully validate the VMA before calling follow_pte()
+    - bnxt_en: make bnxt_free_skbs() safe to call after bnxt_free_mem()
+    - [arm64] net: hns3: pad the short tunnel frame before sending to hardware
+    - [arm64] net: hns3: change affinity_mask to numa node range
+    - [arm64] net: hns3: disable mac in flr process
+    - [arm64] net: hns3: fix the timing issue of VF clearing interrupt sources
+    - net: stmmac: platform: fix build warning when with !CONFIG_PM_SLEEP
+    - [x86] Drivers: hv: vmbus: Fix kernel crash upon unbinding a device from
+      uio_hv_generic driver
+    - net/mlx5e: Fix mutual exclusion between CQE compression and HW TS
+    - ice: Correctly deal with PFs that do not support RDMA
+    - [arm64] net: hns3: fix the exception when query imp info
+    - nvme: avoid race in shutdown namespace removal
+    - blkcg: fix memory leak in blk_iolatency_init
+    - [arm64,armhf] net: dsa: flush switchdev workqueue before tearing down
+      CPU/DSA ports
+    - dt-bindings: mtd: gpmc: Fix the ECC bytes vs. OOB bytes equation
+    - PCI: Add ACS quirks for NXP LX2xx0 and LX2xx2 platforms
+    - fuse: fix use after free in fuse_read_interrupt()
+    - [arm64,armhf] PCI: tegra: Fix OF node reference leak
+    - [armhf] mfd: Don't use irq_create_mapping() to resolve a mapping
+    - [riscv64] fix the global name pfn_base confliction error
+    - [arm64] KVM: Make hyp_panic() more robust when protected mode is enabled
+    - tracing/probes: Reject events which have the same name of existing one
+    - PCI: Add ACS quirks for Cavium multi-function devices
+    - watchdog: Start watchdog in watchdog_set_last_hw_keepalive only if
+      appropriate
+    - Set fc_nlinfo in nh_create_ipv4, nh_create_ipv6
+    - flow: fix object-size-mismatch warning in flowi{4,6}_to_flowi_common()
+    - net: usb: cdc_mbim: avoid altsetting toggling for Telit LN920
+    - block, bfq: honor already-setup queue merges
+    - [i386] PCI: ibmphp: Fix double unmap of io_mem
+    - loop: reduce the loop_ctl_mutex scope
+    - ethtool: Fix an error code in cxgb2.c
+    - net: phylink: add suspend/resume support
+    - mfd: axp20x: Update AXP288 volatile ranges
+    - PCI: of: Don't fail devm_pci_alloc_host_bridge() on missing 'ranges'
+    - netfilter: nft_ct: protect nft_ct_pcpu_template_refcnt with mutex
+    - [arm64] KVM: Restrict IPA size to maximum 48 bits on 4K and 16K page size
+    - PCI: Fix pci_dev_str_match_path() alloc while atomic bug
+    - mtd: mtdconcat: Judge callback existence based on the master
+    - mtd: mtdconcat: Check _read, _write callbacks existence before assignment
+    - [arm64] KVM: Fix read-side race on updates to vcpu reset state
+    - [arm64] KVM: Handle PSCI resets before userspace touches vCPU state
+    - PCI/PTM: Remove error message at boot
+    - watchdog: Fix NULL pointer dereference when releasing cdev
+    - mtd: rawnand: cafe: Fix a resource leak in the error handling path of
+      'cafe_nand_probe()'
+    - [arm64] gpio: mpc8xxx: Fix a resources leak in the error handling path of
+      'mpc8xxx_probe()'
+    - [arm64] gpio: mpc8xxx: Fix a potential double iounmap call in
+      'mpc8xxx_probe()'
+    - [arm64] gpio: mpc8xxx: Use 'devm_gpiochip_add_data()' to simplify the code
+      and avoid a leak
+    - io_uring: retry in case of short read on block device
+    - mptcp: fix possible divide by zero
+    - net: hso: add failure handler for add_net_device
+    - [armhf] net: dsa: b53: Fix calculating number of switch ports
+    - [armhf] net: dsa: b53: Set correct number of ports in the DSA struct
+    - mptcp: Only send extra TCP acks in eligible socket states
+    - netfilter: socket: icmp6: fix use-after-scope
+    - fq_codel: reject silly quantum parameters
+    - qlcnic: Remove redundant unlock in qlcnic_pinit_from_rom
+    - iwlwifi: move get pnvm file name to a separate function
+    - iwlwifi: pnvm: Fix a memory leak in 'iwl_pnvm_get_from_fs()'
+    - ip_gre: validate csum_start only on pull
+    - [armhf] net: dsa: b53: Fix IMP port setup on BCM5301x
+    - bnxt_en: fix stored FW_PSID version masks
+    - bnxt_en: Fix asic.rev in devlink dev info command
+    - bnxt_en: Fix possible unintended driver initiated error recovery
+    - ip6_gre: Revert "ip6_gre: add validation for csum_start"
+    - mfd: lpc_sch: Rename GPIOBASE to prevent build error
+    - cxgb3: fix oops on module removal
+    - bnxt_en: Fix error recovery regression
+    - [armhf] net: dsa: bcm_sf2: Fix array overrun in bcm_sf2_num_active_ports()
+    - [s390x] bpf: Fix optimizing out zero-extensions
+    - [s390x] bpf: Fix 64-bit subtraction of the -0x80000000 constant
+    - [s390x] bpf: Fix branch shortening during codegen pass
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 02 Oct 2021 09:52:43 +0200
 
