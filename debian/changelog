@@ -13,6 +13,9 @@ linux (5.14.9-3) UNRELEASED; urgency=medium
   * debian/rules.real: Stop invoking obsolete headers_check target
   * libcpupower: Update symbols file for changes in 5.13.9-1~exp1
 
+  [ John Paul Adrian Glaubitz ]
+  * [alpha] Re-enable CONFIG_EISA which was disabled upstream by accident
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 04 Oct 2021 22:05:09 +0200
 
 linux (5.14.9-2) unstable; urgency=medium
