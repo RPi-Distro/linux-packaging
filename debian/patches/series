@@ -91,8 +91,7 @@ bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
 bugfix/all/partially-revert-usb-kconfig-using-select-for-usb_co.patch
 bugfix/all/HID-apple-Add-missing-scan-code-event-for-keys-handl.patch
-bugfix/all/bnx2x-Fix-enabling-network-interfaces-without-VFs.patch
-bugfix/all/ethtool-Fix-rxnfc-copy-to-user-buffer-overflow.patch
+bugfix/all/ext4-limit-the-number-of-blocks-in-one-ADD_RANGE-TLV.patch
 
 # Miscellaneous features
 
@@ -113,8 +112,6 @@ features/all/db-mok-keyring/KEYS-Make-use-of-platform-keyring-for-module-signatu
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
-bugfix/all/dccp-don-t-duplicate-ccid-when-cloning-dccp-sock.patch
-bugfix/all/io_uring-ensure-symmetry-in-handling-iter-types-in-l.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
