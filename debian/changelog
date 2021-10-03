@@ -337,6 +337,7 @@ linux (5.14.9-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 2
+  * ext4: limit the number of blocks in one ADD_RANGE TLV (Closes: #995425)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 02 Oct 2021 09:52:43 +0200
 
