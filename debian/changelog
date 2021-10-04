@@ -1,3 +1,9 @@
+linux (5.14.9-3) UNRELEASED; urgency=medium
+
+  * HID: u2fzero: ignore incomplete packets without data (Closes: #994535)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 04 Oct 2021 22:05:09 +0200
+
 linux (5.14.9-2) unstable; urgency=medium
 
   * [amd64] Unset AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT.

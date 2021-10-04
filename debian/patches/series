@@ -92,6 +92,7 @@ bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
 bugfix/all/partially-revert-usb-kconfig-using-select-for-usb_co.patch
 bugfix/all/HID-apple-Add-missing-scan-code-event-for-keys-handl.patch
 bugfix/all/ext4-limit-the-number-of-blocks-in-one-ADD_RANGE-TLV.patch
+bugfix/all/HID-u2fzero-ignore-incomplete-packets-without-data.patch
 
 # Miscellaneous features
 
