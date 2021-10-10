@@ -8,6 +8,7 @@ linux (5.14.9-3) UNRELEASED; urgency=medium
   * integrity: Drop "MODSIGN: load blacklist from MOKx" as redundant after 5.13
   * tools/perf: Fix warning introduced by "tools/perf: pmu-events: Fix
     reproducibility"
+  * debian/rules.real: Stop invoking obsolete headers_check target
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 04 Oct 2021 22:05:09 +0200
 
