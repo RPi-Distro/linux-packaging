@@ -1,6 +1,10 @@
 linux (5.14.9-3) UNRELEASED; urgency=medium
 
+  [ Salvatore Bonaccorso ]
   * HID: u2fzero: ignore incomplete packets without data (Closes: #994535)
+
+  [ Ben Hutchings ]
+  * debian/.gitignore: Ignore debian/tests/control again
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 04 Oct 2021 22:05:09 +0200
 
