@@ -2,6 +2,8 @@ linux (5.14.9-3) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * HID: u2fzero: ignore incomplete packets without data (Closes: #994535)
+  * [x86] crypto: ccp - fix resource leaks in ccp_run_aes_gcm_cmd()
+    (CVE-2021-3744, CVE-2021-3764)
 
   [ Ben Hutchings ]
   * debian/.gitignore: Ignore debian/tests/control again
