@@ -1,9 +1,155 @@
-linux (5.14.9-3) UNRELEASED; urgency=medium
+linux (5.14.10-1) UNRELEASED; urgency=medium
 
-  [ Salvatore Bonaccorso ]
-  * HID: u2fzero: ignore incomplete packets without data (Closes: #994535)
-  * [x86] crypto: ccp - fix resource leaks in ccp_run_aes_gcm_cmd()
-    (CVE-2021-3744, CVE-2021-3764)
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.10
+    - [arm64,armhf] media: cedrus: Fix SUNXI tile size calculation
+    - [arm64] ASoC: fsl_sai: register platform component before registering cpu
+      dai
+    - [armhf] ASoC: fsl_spdif: register platform component before registering
+      cpu dai
+    - [x86] ASoC: SOF: Fix DSP oops stack dump output contents
+    - [arm64] pinctrl: qcom: spmi-gpio: correct parent irqspec translation
+    - net/mlx4_en: Resolve bad operstate value
+    - [s390x] qeth: Fix deadlock in remove_discipline
+    - [s390x] qeth: fix deadlock during failing recovery
+    - [x86] crypto: ccp - fix resource leaks in ccp_run_aes_gcm_cmd()
+      (CVE-2021-3744, CVE-2021-3764)
+    - [m68k] Update ->thread.esp0 before calling syscall_trace() in
+      ret_from_signal
+    - [amd64] HID: amd_sfh: Fix potential NULL pointer dereference
+    - tty: Fix out-of-bound vmalloc access in imageblit
+    - cpufreq: schedutil: Use kobject release() method to free sugov_tunables
+    - scsi: qla2xxx: Changes to support kdump kernel for NVMe BFS
+    - drm/amdgpu: adjust fence driver enable sequence
+    - drm/amdgpu: avoid over-handle of fence driver fini in s3 test (v2)
+    - drm/amdgpu: stop scheduler when calling hw_fini (v2)
+    - cpufreq: schedutil: Destroy mutex before kobject_put() frees the memory
+    - scsi: ufs: ufs-pci: Fix Intel LKF link stability
+    - ALSA: rawmidi: introduce SNDRV_RAWMIDI_IOCTL_USER_PVERSION
+    - ALSA: firewire-motu: fix truncated bytes in message tracepoints
+    - ALSA: hda/realtek: Quirks to enable speaker output for Lenovo Legion 7i
+      15IMHG05, Yoga 7i 14ITL5/15ITL5, and 13s Gen2 laptops.
+    - [amd64,arm64] ACPI: NFIT: Use fallback node id when numa info in NFIT
+      table is incorrect
+    - fs-verity: fix signed integer overflow with i_size near S64_MAX
+    - hwmon: (tmp421) handle I2C errors
+    - hwmon: (w83793) Fix NULL pointer dereference by removing unnecessary
+      structure field
+    - hwmon: (w83792d) Fix NULL pointer dereference by removing unnecessary
+      structure field
+    - hwmon: (w83791d) Fix NULL pointer dereference by removing unnecessary
+      structure field
+    - [arm64,armhf] gpio: pca953x: do not ignore i2c errors
+    - scsi: ufs: Fix illegal offset in UPIU event trace
+    - mac80211: fix use-after-free in CCMP/GCMP RX
+    - [x86] platform/x86/intel: hid: Add DMI switches allow list
+    - [x86] kvmclock: Move this_cpu_pvti into kvmclock.h
+    - [x86] ptp: Fix ptp_kvm_getcrosststamp issue for x86 ptp_kvm
+    - [x86] KVM: x86: Fix stack-out-of-bounds memory access from
+      ioapic_write_indirect()
+    - [x86] KVM: x86: nSVM: don't copy virt_ext from vmcb12
+    - [x86] KVM: x86: Clear KVM's cached guest CR3 at RESET/INIT
+    - [x86] KVM: x86: Swap order of CPUID entry "index" vs. "significant flag"
+      checks
+    - [x86] KVM: nVMX: Filter out all unsupported controls when eVMCS was
+      activated
+    - [x86] KVM: SEV: Update svm_vm_copy_asid_from for SEV-ES
+    - [x86] KVM: SEV: Pin guest memory for write for RECEIVE_UPDATE_DATA
+    - [x86] KVM: SEV: Acquire vcpu mutex when updating VMSA
+    - [x86] KVM: SEV: Allow some commands for mirror VM
+    - [x86] KVM: SVM: fix missing sev_decommission in sev_receive_start
+    - [x86] KVM: nVMX: Fix nested bus lock VM exit
+    - [x86] KVM: VMX: Fix a TSX_CTRL_CPUID_CLEAR field mask issue
+    - RDMA/cma: Do not change route.addr.src_addr.ss_family
+    - RDMA/cma: Ensure rdma_addr_cancel() happens before issuing more requests
+    - nbd: use shifts rather than multiplies
+    - drm/amd/display: initialize backlight_ramping_override to false
+    - drm/amd/display: Pass PCI deviceid into DC
+    - drm/amd/display: Fix Display Flicker on embedded panels
+    - drm/amdgpu: force exit gfxoff on sdma resume for rmb s0ix
+    - drm/amdgpu: check tiling flags when creating FB on GFX8-
+    - drm/amdgpu: correct initial cp_hqd_quantum for gfx9
+    - [amd64] drm/i915/gvt: fix the usage of ww lock in gvt scheduler.
+    - ipvs: check that ip_vs_conn_tab_bits is between 8 and 20
+    - bpf: Handle return value of BPF_PROG_TYPE_STRUCT_OPS prog
+    - IB/cma: Do not send IGMP leaves for sendonly Multicast groups
+    - RDMA/cma: Fix listener leak in rdma_cma_listen_on_all() failure
+    - netfilter: nf_tables: unlink table before deleting it
+    - netfilter: log: work around missing softdep backend module
+    - Revert "mac80211: do not use low data rates for data frames with no ack
+      flag"
+    - mac80211: Fix ieee80211_amsdu_aggregate frag_tail bug
+    - mac80211: limit injected vht mcs/nss in ieee80211_parse_tx_radiotap
+    - mac80211: mesh: fix potentially unaligned access
+    - mac80211-hwsim: fix late beacon hrtimer handling
+    - driver core: fw_devlink: Add support for
+      FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD
+    - net: mdiobus: Set FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD for mdiobus parents
+    - sctp: break out if skb_header_pointer returns NULL in sctp_rcv_ootb
+    - mptcp: don't return sockets in foreign netns
+    - mptcp: allow changing the 'backup' bit when no sockets are open
+    - [arm64] RDMA/hns: Work around broken constant propagation in gcc 8
+    - hwmon: (tmp421) report /PVLD condition as fault
+    - hwmon: (tmp421) fix rounding for negative values
+    - [arm64] net: enetc: fix the incorrect clearing of IF_MODE bits
+    - net: ipv4: Fix rtnexthop len when RTA_FLOW is present
+    - smsc95xx: fix stalled rx after link change
+    - [x86] drm/i915/request: fix early tracepoints
+    - [x86] drm/i915: Remove warning from the rps worker
+    - [arm64,armhf] dsa: mv88e6xxx: 6161: Use chip wide MAX MTU
+    - [arm64,armhf] dsa: mv88e6xxx: Fix MTU definition
+    - [arm64,armhf] dsa: mv88e6xxx: Include tagger overhead when setting MTU for
+      DSA and CPU ports
+    - e100: fix length calculation in e100_get_regs_len
+    - e100: fix buffer overrun in e100_get_regs
+    - [amd64] RDMA/hfi1: Fix kernel pointer leak
+    - [arm64] RDMA/hns: Fix the size setting error when copying CQE in
+      clean_cq()
+    - [arm64] RDMA/hns: Add the check of the CQE size of the user space
+    - bpf: Exempt CAP_BPF from checks against bpf_jit_limit
+    - [amd64] bpf, x86: Fix bpf mapping of atomic fetch implementation
+    - Revert "block, bfq: honor already-setup queue merges"
+    - scsi: csiostor: Add module softdep on cxgb4
+    - ixgbe: Fix NULL pointer dereference in ixgbe_xdp_setup
+    - [arm64] net: hns3: do not allow call hns3_nic_net_open repeatedly
+    - [arm64] net: hns3: remove tc enable checking
+    - [arm64] net: hns3: don't rollback when destroy mqprio fail
+    - [arm64] net: hns3: fix mixed flag HCLGE_FLAG_MQPRIO_ENABLE and
+      HCLGE_FLAG_DCB_ENABLE
+    - [arm64] net: hns3: fix show wrong state when add existing uc mac address
+    - [arm64] net: hns3: reconstruct function hns3_self_test
+    - [arm64] net: hns3: fix always enable rx vlan filter problem after selftest
+    - [arm64] net: hns3: disable firmware compatible features when uninstall PF
+    - [arm64,armhf] net: phy: bcm7xxx: Fixed indirect MMD operations
+    - net: sched: flower: protect fl_walk() with rcu
+    - net: stmmac: fix EEE init issue when paired with EEE capable PHYs
+    - af_unix: fix races in sk_peer_pid and sk_peer_cred accesses
+    - [x86] perf/x86/intel: Update event constraints for ICX
+    - sched/fair: Add ancestors of unthrottled undecayed cfs_rq
+    - sched/fair: Null terminate buffer when updating tunable_scaling
+    - [armhf] hwmon: (occ) Fix P10 VRM temp sensors
+    - [x86] kvm: fix objtool relocation warning
+    - nvme: add command id quirk for apple controllers
+    - elf: don't use MAP_FIXED_NOREPLACE for elf interpreter mappings
+    - driver core: fw_devlink: Improve handling of cyclic dependencies
+    - debugfs: debugfs_create_file_size(): use IS_ERR to check for error
+    - ext4: fix loff_t overflow in ext4_max_bitmap_size()
+    - ext4: fix reserved space counter leakage
+    - ext4: add error checking to ext4_ext_replay_set_iblocks()
+    - ext4: fix potential infinite loop in ext4_dx_readdir()
+    - ext4: flush s_error_work before journal destroy in ext4_fill_super
+    - HID: u2fzero: ignore incomplete packets without data (Closes: #994535)
+    - net: udp: annotate data race around udp_sk(sk)->corkflag
+    - usb: hso: remove the bailout parameter
+    - HID: betop: fix slab-out-of-bounds Write in betop_probe
+    - netfilter: ipset: Fix oversized kvmalloc() calls
+    - mm: don't allow oversized kvmalloc() calls
+    - HID: usbhid: free raw_report buffers in usbhid_stop
+    - [x86] crypto: aesni - xts_crypt() return if walk.nbytes is 0
+    - [x86] KVM: x86: Handle SRCU initialization failure during page track init
+    - netfilter: conntrack: serialize hash resizes and cleanups
+    - netfilter: nf_tables: Fix oversized kvmalloc() calls
+    - [amd64] HID: amd_sfh: Fix potential NULL pointer dereference - take 2
 
   [ Ben Hutchings ]
   * debian/.gitignore: Ignore debian/tests/control again

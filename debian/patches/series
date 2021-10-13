@@ -76,7 +76,6 @@ bugfix/arm/arm-mm-export-__sync_icache_dcache-for-xen-privcmd.patch
 bugfix/powerpc/powerpc-boot-fix-missing-crc32poly.h-when-building-with-kernel_xz.patch
 bugfix/arm64/arm64-acpi-Add-fixup-for-HPE-m400-quirks.patch
 bugfix/x86/x86-32-disable-3dnow-in-generic-config.patch
-bugfix/mipsel/bpf-mips-Validate-conditional-branch-offsets.patch
 bugfix/arm/ARM-dts-sun7i-A20-olinuxino-lime2-Fix-ethernet-phy-m.patch
 
 # Arch features
@@ -91,8 +90,6 @@ bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
 bugfix/all/partially-revert-usb-kconfig-using-select-for-usb_co.patch
 bugfix/all/HID-apple-Add-missing-scan-code-event-for-keys-handl.patch
-bugfix/all/ext4-limit-the-number-of-blocks-in-one-ADD_RANGE-TLV.patch
-bugfix/all/HID-u2fzero-ignore-incomplete-packets-without-data.patch
 
 # Miscellaneous features
 
@@ -112,7 +109,6 @@ features/all/db-mok-keyring/KEYS-Make-use-of-platform-keyring-for-module-signatu
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
-bugfix/x86/crypto-ccp-fix-resource-leaks-in-ccp_run_aes_gcm_cmd.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
