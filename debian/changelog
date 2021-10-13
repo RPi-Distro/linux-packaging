@@ -19,6 +19,9 @@ linux (5.14.9-3~exp1) UNRELEASED; urgency=medium
   * [arm64] drivers/gpu/drm/vmwgfx: Enable DRM_VMWGFX as module
     (Closes: #995276)
 
+  [ YunQiang Su ]
+  * [mipsel,mips64el/loongson-3] linux-image: Recommend pmon-update
+
  -- Nathan Schulte <nmschulte@gmail.com>  Sun, 19 Sep 2021 12:02:00 -0500
 
 linux (5.14.9-2) unstable; urgency=medium
