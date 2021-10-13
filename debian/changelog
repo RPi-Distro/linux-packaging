@@ -7,6 +7,7 @@ linux (5.14.9-3) UNRELEASED; urgency=medium
 
   [ Ben Hutchings ]
   * debian/.gitignore: Ignore debian/tests/control again
+  * integrity: Drop "MODSIGN: load blacklist from MOKx" as redundant after 5.13
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 04 Oct 2021 22:05:09 +0200
 
