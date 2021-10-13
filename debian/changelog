@@ -162,6 +162,9 @@ linux (5.14.10-1) UNRELEASED; urgency=medium
   [ John Paul Adrian Glaubitz ]
   * [alpha] Re-enable CONFIG_EISA which was disabled upstream by accident
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 3
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 04 Oct 2021 22:05:09 +0200
 
 linux (5.14.9-2) unstable; urgency=medium
