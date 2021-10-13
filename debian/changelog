@@ -1,4 +1,4 @@
-linux (5.14.10-1) UNRELEASED; urgency=medium
+linux (5.14.11-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.10
@@ -150,6 +150,40 @@ linux (5.14.10-1) UNRELEASED; urgency=medium
     - netfilter: conntrack: serialize hash resizes and cleanups
     - netfilter: nf_tables: Fix oversized kvmalloc() calls
     - [amd64] HID: amd_sfh: Fix potential NULL pointer dereference - take 2
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.11
+    - [arm64,armhf] spi: rockchip: handle zero length transfers without timing
+      out
+    - afs: Add missing vnode validation checks
+    - nfsd: back channel stuck in SEQ4_STATUS_CB_PATH_DOWN
+    - btrfs: replace BUG_ON() in btrfs_csum_one_bio() with proper error handling
+    - btrfs: fix mount failure due to past and transient device flush error
+    - net: mdio: introduce a shutdown method to mdio device drivers
+    - xen-netback: correct success/error reporting for the SKB-with-fraglist
+      case
+    - [sparc64] fix pci_iounmap() when CONFIG_PCI is not set
+    - scsi: sd: Free scsi_disk device via put_device()
+    - [arm*] usb: dwc2: check return value after calling platform_get_resource()
+    - Xen/gntdev: don't ignore kernel unmapping error
+    - swiotlb-xen: ensure to issue well-formed XENMEM_exchange requests
+    - nvme-fc: update hardware queues before using them
+    - nvme-fc: avoid race between time out and tear down
+    - [arm64] thermal/drivers/tsens: Fix wrong check for tzd in irq handlers
+    - scsi: ses: Retry failed Send/Receive Diagnostic commands
+    - [arm64,armhf] irqchip/gic: Work around broken Renesas integration
+    - smb3: correct smb3 ACL security descriptor
+    - [x86] insn, tools/x86: Fix undefined behavior due to potential unaligned
+      accesses
+    - io_uring: allow conditional reschedule for intensive iterators
+    - block: don't call rq_qos_ops->done_bio if the bio isn't tracked
+    - KVM: do not shrink halt_poll_ns below grow_start
+    - [x86] KVM: x86: reset pdptrs_from_userspace when exiting smm
+    - [x86] kvm: x86: Add AMD PMU MSRs to msrs_to_save_all[]
+    - [x86] KVM: x86: nSVM: restore int_vector in svm_clear_vintr
+    - [x86] perf/x86: Reset destroy callback on event init failure
+    - libata: Add ATA_HORKAGE_NO_NCQ_ON_ATI for Samsung 860 and 870 SSD.
+    - Revert "brcmfmac: use ISO3166 country code and 0 rev as fallback"
+    - [armhf] Revert "ARM: imx6q: drop of_platform_default_populate() from
+      init_machine"
 
   [ Ben Hutchings ]
   * debian/.gitignore: Ignore debian/tests/control again
