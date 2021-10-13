@@ -313,6 +313,8 @@ linux (5.14.12-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 3
+  * mm/secretmem: Fix NULL page->mapping dereference in page_is_secretmem()
+    (Closes: #996175)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 04 Oct 2021 22:05:09 +0200
 
