@@ -24,6 +24,7 @@
 /files
 /linux-*
 /rules.gen
+/tests/control
 
 # Ignore compiled Python files
 __pycache__/

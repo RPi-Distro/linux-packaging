@@ -76,7 +76,6 @@ bugfix/arm/arm-mm-export-__sync_icache_dcache-for-xen-privcmd.patch
 bugfix/powerpc/powerpc-boot-fix-missing-crc32poly.h-when-building-with-kernel_xz.patch
 bugfix/arm64/arm64-acpi-Add-fixup-for-HPE-m400-quirks.patch
 bugfix/x86/x86-32-disable-3dnow-in-generic-config.patch
-bugfix/mipsel/bpf-mips-Validate-conditional-branch-offsets.patch
 bugfix/arm/ARM-dts-sun7i-A20-olinuxino-lime2-Fix-ethernet-phy-m.patch
 
 # Arch features
@@ -89,9 +88,8 @@ features/x86/x86-make-x32-syscall-support-conditional.patch
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
-bugfix/all/partially-revert-usb-kconfig-using-select-for-usb_co.patch
 bugfix/all/HID-apple-Add-missing-scan-code-event-for-keys-handl.patch
-bugfix/all/ext4-limit-the-number-of-blocks-in-one-ADD_RANGE-TLV.patch
+bugfix/all/mm-secretmem-Fix-NULL-page-mapping-dereference-in-pa.patch
 
 # Miscellaneous features
 
@@ -103,7 +101,6 @@ features/all/lockdown/arm64-add-kernel-config-option-to-lock-down-when.patch
 
 # Improve integrity platform keyring for kernel modules verification
 features/all/db-mok-keyring/0001-MODSIGN-do-not-load-mok-when-secure-boot-disabled.patch
-features/all/db-mok-keyring/0002-MODSIGN-load-blacklist-from-MOKx.patch
 features/all/db-mok-keyring/0003-MODSIGN-checking-the-blacklisted-hash-before-loading-a-kernel-module.patch
 features/all/db-mok-keyring/0004-MODSIGN-check-the-attributes-of-db-and-mok.patch
 features/all/db-mok-keyring/modsign-make-shash-allocation-failure-fatal.patch
