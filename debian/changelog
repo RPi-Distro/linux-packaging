@@ -1,4 +1,4 @@
-linux (5.14.12-1) UNRELEASED; urgency=medium
+linux (5.14.12-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.10
@@ -319,7 +319,7 @@ linux (5.14.12-1) UNRELEASED; urgency=medium
   [ Aurelien Jarno ]
   * [riscv64] Improve HiFive Unmatched support: enable SENSORS_LM90.
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 04 Oct 2021 22:05:09 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 14 Oct 2021 08:39:01 +0200
 
 linux (5.14.9-2) unstable; urgency=medium
 
