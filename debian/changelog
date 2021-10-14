@@ -22,6 +22,9 @@ linux (5.14.12-2~exp1) UNRELEASED; urgency=medium
   [ YunQiang Su ]
   * [mipsel,mips64el/loongson-3] linux-image: Recommend pmon-update
 
+  [ Salvatore Bonaccorso ]
+  * Compile with gcc-11 on all architectures
+
  -- Nathan Schulte <nmschulte@gmail.com>  Sun, 19 Sep 2021 12:02:00 -0500
 
 linux (5.14.12-1) unstable; urgency=medium
