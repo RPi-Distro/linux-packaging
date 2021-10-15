@@ -17,6 +17,10 @@ linux (5.14.9-3~exp1) UNRELEASED; urgency=medium
     cryptographic algorithms as modules
   * [arm] Move CRYPTO_NHPOLY1305_NEON in armhf config file
 
+  [ Uwe Kleine-König ]
+  * [arm64] Enable various symbols for the librem5 devkit (Patches by Guido
+    Günther)
+
  -- Nathan Schulte <nmschulte@gmail.com>  Sun, 19 Sep 2021 12:02:00 -0500
 
 linux (5.14.9-2) unstable; urgency=medium
