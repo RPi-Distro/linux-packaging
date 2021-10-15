@@ -25,6 +25,11 @@ linux (5.14.12-2~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Compile with gcc-11 on all architectures
 
+  [ Uwe Kleine-König ]
+  * [arm64] Enable various symbols for the librem5 devkit (Patches by Guido
+    Günther)
+  * [armhf,arm64] Cherrypick fix for snvs_pwrkey to prevent a machine hang.
+
  -- Nathan Schulte <nmschulte@gmail.com>  Sun, 19 Sep 2021 12:02:00 -0500
 
 linux (5.14.12-1) unstable; urgency=medium
