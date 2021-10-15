@@ -65,14 +65,14 @@ CONFIG_MOUSE_APPLETOUCH=m
 # CONFIG_TOUCHSCREEN_EETI is not set
 
 ##
-## file: drivers/mtd/maps/Kconfig
-##
-CONFIG_MTD_PHYSMAP=y
-
-##
 ## file: drivers/leds/trigger/Kconfig
 ##
 CONFIG_LEDS_TRIGGER_HEARTBEAT=y
+
+##
+## file: drivers/mtd/maps/Kconfig
+##
+CONFIG_MTD_PHYSMAP=y
 
 ##
 ## file: drivers/net/wireless/intel/ipw2x00/Kconfig
