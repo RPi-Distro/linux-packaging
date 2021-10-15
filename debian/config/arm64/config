@@ -689,6 +689,11 @@ CONFIG_MMC_BCM2835=m
 CONFIG_MMC_SDHCI_XENON=m
 
 ##
+## file: drivers/mtd/spi-nor/Kconfig
+##
+CONFIG_MTD_SPI_NOR=m
+
+##
 ## file: drivers/mtd/spi-nor/controllers/Kconfig
 ##
 CONFIG_SPI_HISI_SFC=m
@@ -697,6 +702,11 @@ CONFIG_SPI_HISI_SFC=m
 ## file: drivers/net/can/Kconfig
 ##
 CONFIG_CAN_FLEXCAN=m
+
+##
+## file: drivers/net/can/spi/Kconfig
+##
+CONFIG_CAN_MCP251X=m
 
 ##
 ## file: drivers/net/dsa/Kconfig
@@ -912,7 +922,13 @@ CONFIG_MESON_GXL_PHY=m
 CONFIG_BCM54140_PHY=m
 CONFIG_MARVELL_PHY=m
 CONFIG_MARVELL_10G_PHY=m
+CONFIG_MICROSEMI_PHY=m
 CONFIG_AT803X_PHY=m
+
+##
+## file: drivers/net/usb/Kconfig
+##
+CONFIG_USB_NET_SMSC95XX=m
 
 ##
 ## file: drivers/net/wireless/ath/wcn36xx/Kconfig
