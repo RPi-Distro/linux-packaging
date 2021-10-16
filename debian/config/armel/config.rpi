@@ -17,6 +17,24 @@ CONFIG_ARCH_BCM2835=y
 CONFIG_BT_HCIUART=m
 
 ##
+## file: drivers/clk/bcm/Kconfig
+##
+CONFIG_CLK_RASPBERRYPI=y
+
+##
+## file: drivers/cpufreq/Kconfig
+##
+# CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE is not set
+CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+CONFIG_CPU_FREQ_GOV_ONDEMAND=y
+CONFIG_CPUFREQ_DT=m
+
+##
+## file: drivers/cpufreq/Kconfig.arm
+##
+CONFIG_ARM_RASPBERRYPI_CPUFREQ=m
+
+##
 ## file: drivers/dma/Kconfig
 ##
 CONFIG_DMADEVICES=y
