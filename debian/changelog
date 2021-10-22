@@ -1,3 +1,35 @@
+linux (5.14.13-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.13
+    - ext4: check and update i_disksize properly
+    - ext4: correct the error path of ext4_write_inline_data_end()
+    - [x86] ASoC: Intel: sof_sdw: tag SoundWire BEs as non-atomic
+    - ALSA: oxfw: fix transmission method for Loud models based on OXFW971
+    - ALSA: usb-audio: Unify mixer resume and reset_resume procedure
+    - HID: apple: Fix logical maximum and usage maximum of Magic Keyboard JIS
+    - netfilter: ip6_tables: zero-initialize fragment offset
+    - HID: wacom: Add new Intuos BT (CTL-4100WL/CTL-6100WL) device IDs
+    - [x86] ASoC: SOF: loader: release_firmware() on load failure to avoid
+      batching
+    - netfilter: nf_nat_masquerade: make async masq_inet6_event handling generic
+    - netfilter: nf_nat_masquerade: defer conntrack walk to work queue
+    - mac80211: Drop frames from invalid MAC address in ad-hoc mode
+    - [m68k] Handle arrivals of multiple signals correctly
+    - net: prevent user from passing illegal stab size
+    - mac80211: check return value of rhashtable_init
+    - [x86] vboxfs: fix broken legacy mount signature checking
+    - drm/amdgpu: fix gart.bo pin_count leak
+    - scsi: ses: Fix unsigned comparison with less than zero
+    - scsi: virtio_scsi: Fix spelling mistake "Unsupport" -> "Unsupported"
+    - scsi: qla2xxx: Fix excessive messages during device logout
+    - perf/core: fix userpage->time_enabled of inactive events
+    - sched: Always inline is_percpu_thread()
+    - io_uring: kill fasync
+    - [armhf] hwmon: (pmbus/ibm-cffps) max_power_out swap changes
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 22 Oct 2021 08:51:00 +0200
+
 linux (5.14.12-1) unstable; urgency=medium
 
   * New upstream stable update:
