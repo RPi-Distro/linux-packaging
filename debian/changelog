@@ -147,6 +147,9 @@ linux (5.14.14-1) UNRELEASED; urgency=medium
       FIFO with the skb PTP header
     - [arm64] net: dsa: felix: break at first CPU port during init and teardown
 
+  [ Salvatore Bonaccorso ]
+  * Revert "[amd64] Unset AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT"
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 22 Oct 2021 08:51:00 +0200
 
 linux (5.14.12-1) unstable; urgency=medium
