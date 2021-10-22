@@ -97,6 +97,7 @@ CONFIG_ARCH_MESON=y
 ##
 CONFIG_ARCH_MMP=y
 CONFIG_MACH_MMP2_DT=y
+CONFIG_MACH_MMP3_DT=y
 
 ##
 ## file: arch/arm/mach-mvebu/Kconfig
@@ -243,6 +244,11 @@ CONFIG_CLK_TWL6040=m
 ## file: drivers/clk/bcm/Kconfig
 ##
 CONFIG_CLK_RASPBERRYPI=y
+
+##
+## file: drivers/clk/mmp/Kconfig
+##
+CONFIG_COMMON_CLK_MMP2_AUDIO=m
 
 ##
 ## file: drivers/clk/sunxi-ng/Kconfig
@@ -645,6 +651,7 @@ CONFIG_TEGRA_IOMMU_SMMU=y
 ## file: drivers/leds/Kconfig
 ##
 CONFIG_LEDS_CLASS=y
+CONFIG_LEDS_ARIEL=m
 CONFIG_LEDS_LP5523=m
 CONFIG_LEDS_PCA963X=m
 CONFIG_LEDS_DA9052=m
@@ -738,6 +745,7 @@ CONFIG_MFD_AXP20X_RSB=y
 # CONFIG_MFD_CROS_EC_DEV is not set
 CONFIG_MFD_DA9052_SPI=y
 CONFIG_MFD_DA9052_I2C=y
+CONFIG_MFD_ENE_KB3930=m
 CONFIG_MFD_MC13XXX_SPI=m
 CONFIG_MFD_MC13XXX_I2C=m
 CONFIG_MFD_MAX77686=y
@@ -1059,6 +1067,7 @@ CONFIG_PHY_SUN9I_USB=m
 ##
 CONFIG_PHY_MVEBU_A38X_COMPHY=m
 CONFIG_PHY_PXA_USB=m
+CONFIG_PHY_MMP3_USB=m
 
 ##
 ## file: drivers/phy/rockchip/Kconfig
@@ -1612,6 +1621,11 @@ CONFIG_SND_AUDIO_GRAPH_CARD=m
 ## file: sound/soc/kirkwood/Kconfig
 ##
 CONFIG_SND_KIRKWOOD_SOC=m
+
+##
+## file: sound/soc/pxa/Kconfig
+##
+CONFIG_SND_MMP_SOC_SSPA=m
 
 ##
 ## file: sound/soc/rockchip/Kconfig
