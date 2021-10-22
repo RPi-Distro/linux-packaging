@@ -8,6 +8,7 @@ linux (5.14.12-2~exp1) UNRELEASED; urgency=medium
   * [armel/rpi] Change default governor to 'ondemand' for RPi 0/0w/1
     (Closes: #991921)
   * [arm64] sound/soc/rockchip: Enable SND_SOC_ROCKCHIP_PDM as module
+  * [armel] Make explicit that -rpi kernel variant is for RPi 0/0w/1, not the others
 
   [ Nathan Schulte ]
   * [arm64] drivers/staging/media/hantro: Enable VIDEO_HANTRO as module
