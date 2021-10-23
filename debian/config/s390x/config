@@ -221,4 +221,3 @@ CONFIG_AFIUCV=m
 ## file: net/llc/Kconfig
 ##
 # CONFIG_LLC2 is not set
-
