@@ -43,3 +43,4 @@
 ## file: drivers/watchdog/Kconfig
 ##
 # CONFIG_PCIPCWATCHDOG is not set
+

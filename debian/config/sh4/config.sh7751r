@@ -169,3 +169,4 @@ CONFIG_FB_SM501=y
 ## choice: Memory model
 CONFIG_FLATMEM_MANUAL=y
 ## end choice
+

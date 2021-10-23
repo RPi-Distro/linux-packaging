@@ -7,3 +7,4 @@ CONFIG_CPU_MIPS64_R2=y
 ## choice: Kernel code model
 CONFIG_64BIT=y
 ## end choice
+
