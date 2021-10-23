@@ -34,6 +34,7 @@ linux (5.14.12-2~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Compile with gcc-11 on all architectures
+  * [arm64] drivers/net: Enable VMXNET3 as module
 
   [ Uwe Kleine-König ]
   * [arm64] Enable various symbols for the librem5 devkit and iMX8MN Variscite

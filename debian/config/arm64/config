@@ -700,6 +700,11 @@ CONFIG_MTD_SPI_NOR=m
 CONFIG_SPI_HISI_SFC=m
 
 ##
+## file: drivers/net/Kconfig
+##
+CONFIG_VMXNET3=m
+
+##
 ## file: drivers/net/can/Kconfig
 ##
 CONFIG_CAN_FLEXCAN=m
