@@ -232,7 +232,7 @@ linux (5.14.15-1) UNRELEASED; urgency=medium
     - [powerpc*] KVM: PPC: Book3S HV: Fix stack handling in
       idle_kvm_start_guest()
     - [powerpc*] KVM: PPC: Book3S HV: Make idle_kvm_start_guest() return 0 if it
-      went to guest
+      went to guest (CVE-2021-43056)
     - [powerpc*] idle: Don't corrupt back chain when going idle
     - mm, slub: fix mismatch between reconstructed freelist depth and cnt
     - mm, slub: fix potential memoryleak in kmem_cache_open()
