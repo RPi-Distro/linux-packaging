@@ -28,6 +28,10 @@ linux (5.14.12-2~exp1) UNRELEASED; urgency=medium
   * [armhf] drivers/gpu/drm/bridge/synopsys: Enable DRM_DW_HDMI_I2S_AUDIO as
     module
   * drivers/usb/serial: Enable USB_SERIAL_XR as module (Closes: #996962)
+  * drivers/bus/mhi: Enable MHI_BUS, MHI_BUS_PCI_GENERIC as modules
+    (Closes: #995407)
+  * drivers/net: Enable MHI_NET as module
+  * drivers/net/wwan: Enable WWAN, MHI_WWAN_CTRL as modules
 
   [ YunQiang Su ]
   * [mipsel,mips64el/loongson-3] linux-image: Recommend pmon-update

@@ -436,6 +436,12 @@ CONFIG_BT_MTKUART=m
 # CONFIG_OMAP_OCP2SCP is not set
 
 ##
+## file: drivers/bus/mhi/Kconfig
+##
+CONFIG_MHI_BUS=m
+CONFIG_MHI_BUS_PCI_GENERIC=m
+
+##
 ## file: drivers/char/Kconfig
 ##
 CONFIG_TTY_PRINTK=m
@@ -3107,6 +3113,7 @@ CONFIG_VIRTIO_NET=m
 CONFIG_NLMON=m
 CONFIG_NET_VRF=m
 CONFIG_VSOCKMON=m
+CONFIG_MHI_NET=m
 CONFIG_XEN_NETDEV_FRONTEND=m
 CONFIG_XEN_NETDEV_BACKEND=m
 # CONFIG_VMXNET3 is not set
@@ -4299,6 +4306,12 @@ CONFIG_WLAN_VENDOR_ZYDAS=y
 ##
 CONFIG_ZD1211RW=m
 # CONFIG_ZD1211RW_DEBUG is not set
+
+##
+## file: drivers/net/wwan/Kconfig
+##
+CONFIG_WWAN=m
+CONFIG_MHI_WWAN_CTRL=m
 
 ##
 ## file: drivers/nfc/Kconfig
