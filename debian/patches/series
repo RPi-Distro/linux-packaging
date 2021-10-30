@@ -89,6 +89,7 @@ features/x86/x86-make-x32-syscall-support-conditional.patch
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
 bugfix/all/HID-apple-Add-missing-scan-code-event-for-keys-handl.patch
+bugfix/all/media-ir-kbd-i2c-improve-responsiveness-of-hauppauge.patch
 
 # Miscellaneous features
 

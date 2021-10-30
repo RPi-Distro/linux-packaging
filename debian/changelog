@@ -290,6 +290,8 @@ linux (5.14.15-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Revert "[amd64] Unset AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT"
   * Bump ABI to 4
+  * media: ir-kbd-i2c: improve responsiveness of hauppauge zilog receivers
+    (Closes: #994050)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 22 Oct 2021 08:51:00 +0200
 
