@@ -292,6 +292,8 @@ linux (5.14.15-1) UNRELEASED; urgency=medium
   * Bump ABI to 4
   * media: ir-kbd-i2c: improve responsiveness of hauppauge zilog receivers
     (Closes: #994050)
+  * [x86] media: ite-cir: IR receiver stop working after receive overflow
+    (Closes: #996672)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 22 Oct 2021 08:51:00 +0200
 
