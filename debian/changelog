@@ -8,6 +8,7 @@ linux (5.15.2-1~exp1) UNRELEASED; urgency=medium
   * Refresh "Export symbols needed by Android drivers"
   * [rt] Update to 5.15.2-rt19
   * Input: elantench - fix misreporting trackpoint coordinates (Closes: #989285)
+  * kernel/time: Enable NO_HZ_FULL (Closes: #804857)
 
   [ Vincent Blut ]
   * [x86] drivers/ptp: Enable PTP_1588_CLOCK_VMW as module
