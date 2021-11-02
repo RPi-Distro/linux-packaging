@@ -1,4 +1,4 @@
-linux (5.14.12-2~exp1) UNRELEASED; urgency=medium
+linux (5.15~rc7-1~exp1) UNRELEASED; urgency=medium
 
   [ Diederik de Haas ]
   * [arm*] drivers/led/trigger: Make LEDS_TRIGGER_HEARTBEAT builtin
