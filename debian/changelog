@@ -69,6 +69,9 @@ linux (5.14.12-2~exp1) UNRELEASED; urgency=medium
   [ Dan Stefura ]
   * [arm64] enable i6300esb watchdog kernel module
 
+  [ Thore Sommer ]
+  * drivers/md: Enable DM_VERITY_FEC
+
  -- Nathan Schulte <nmschulte@gmail.com>  Sun, 19 Sep 2021 12:02:00 -0500
 
 linux (5.14.12-1) unstable; urgency=medium
