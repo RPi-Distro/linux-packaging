@@ -1,4 +1,4 @@
-linux (5.14.15-1) UNRELEASED; urgency=medium
+linux (5.14.16-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.13
@@ -286,6 +286,113 @@ linux (5.14.15-1) UNRELEASED; urgency=medium
     - net: mdiobus: Fix memory leak in __mdiobus_register
     - e1000e: Separate TGP board type from SPT
     - [armhf] pinctrl: stm32: use valid pin identifier in stm32_pinctrl_resume()
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.16
+    - [armel,armhf] 9134/1: remove duplicate memcpy() definition
+    - [armel,armhf] 9139/1: kprobes: fix arch_init_kprobes() prototype
+    - [armel,armhf] 9148/1: handle CONFIG_CPU_ENDIAN_BE32 in
+      arch/arm/kernel/head.S
+    - usbnet: sanity check for maxpacket
+    - usbnet: fix error return code in usbnet_probe()
+    - pinctrl: amd: disable and mask interrupts on probe
+    - ata: sata_mv: Fix the error handling of mv_chip_id()
+    - tipc: fix size validations for the MSG_CRYPTO type
+    - nfc: port100: fix using -ERRNO as command type mask
+    - Revert "net: mdiobus: Fix memory leak in __mdiobus_register"
+    - mmc: vub300: fix control-message timeouts
+    - mmc: cqhci: clear HALT state after CQE enable
+    - [armhf] mmc: dw_mmc: exynos: fix the finding clock sample value
+    - mmc: sdhci: Map more voltage level to SDHCI_POWER_330
+    - mmc: sdhci-pci: Read card detect from ACPI for Intel Merrifield
+    - [arm64,armhf] mmc: sdhci-esdhc-imx: clear the buffer_read_ready to reset
+      standard tuning circuit
+    - block: Fix partition check for host-aware zoned block devices
+    - ocfs2: fix race between searching chunks and release journal_head from
+      buffer_head
+    - nvme-tcp: fix H2CData PDU send accounting (again)
+    - cfg80211: scan: fix RCU in cfg80211_add_nontrans_list()
+    - cfg80211: fix management registrations locking
+    - net: lan78xx: fix division by zero in send path
+    - mm: hwpoison: remove the unnecessary THP check
+    - mm: filemap: check if THP has hwpoisoned subpage for PMD page fault
+    - mm, thp: bail out early in collapse_file for writeback page
+    - mm: khugepaged: skip huge page collapse for special files
+    - [arm64] dts: imx8mm-kontron: Fix polarity of reg_rst_eth2
+    - [arm64] dts: imx8mm-kontron: Fix CAN SPI clock frequency
+    - [arm64] dts: imx8mm-kontron: Fix connection type for VSC8531 RGMII PHY
+    - [arm64] dts: imx8mm-kontron: Set lower limit of VDD_SNVS to 800 mV
+    - [arm64] dts: imx8mm-kontron: Make sure SOC and DRAM supply voltages are
+      correct
+    - mac80211: mesh: fix HE operation element length check
+    - drm/ttm: fix memleak in ttm_transfered_destroy
+    - [x86] drm/i915: Convert unconditional clflush to drm_clflush_virt_range()
+    - [x86] drm/i915: Catch yet another unconditioal clflush
+    - [x86] drm/i915/dp: Skip the HW readout of DPCD on disabled encoders
+    - drm/amdgpu: Fix even more out of bound writes from debugfs
+    - drm/amdgpu: fix out of bounds write (CVE-2021-42327)
+    - drm/amdgpu: support B0&B1 external revision id for yellow carp
+    - drm/amd/display: Limit display scaling to up to true 4k for DCN 3.1
+    - drm/amd/display: Fix prefetch bandwidth calculation for DCN3.1
+    - drm/amd/display: increase Z9 latency to workaround underflow in Z9
+    - drm/amd/display: Increase watermark latencies for DCN3.1
+    - drm/amd/display: Moved dccg init to after bios golden init
+    - drm/amd/display: Fallback to clocks which meet requested voltage on DCN31
+    - drm/amd/display: Fix deadlock when falling back to v2 from v3
+    - Revert "watchdog: iTCO_wdt: Account for rebooting on second timeout"
+    - cgroup: Fix memory leak caused by missing cgroup_bpf_offline
+    - [riscv64] riscv, bpf: Fix potential NULL dereference
+    - tcp_bpf: Fix one concurrency problem in the tcp_bpf_send_verdict function
+    - bpf: Fix potential race in tail call compatibility check
+    - bpf: Fix error usage of map_fd and fdget() in generic_map_update_batch()
+    - [amd64] IB/qib: Protect from buffer overflow in struct qib_user_sdma_pkt
+      fields
+    - [amd64] IB/hfi1: Fix abba locking issue with sc_disable()
+    - nvmet-tcp: fix data digest pointer calculation
+    - nvme-tcp: fix data digest pointer calculation
+    - nvme-tcp: fix possible req->offset corruption
+    - ice: Respond to a NETDEV_UNREGISTER event for LAG
+    - RDMA/mlx5: Set user priority for DCT
+    - ice: check whether PTP is initialized in ice_ptp_release()
+    - [arm64] dts: allwinner: h5: NanoPI Neo 2: Fix ethernet node
+    - regmap: Fix possible double-free in regcache_rbtree_exit()
+    - net: batman-adv: fix error handling
+    - net-sysfs: initialize uid and gid before calling net_ns_get_ownership
+    - cfg80211: correct bridge/4addr mode check
+    - net: Prevent infinite while loop in skb_tx_hash()
+    - RDMA/mlx5: Initialize the ODP xarray when creating an ODP MR
+    - RDMA/sa_query: Use strscpy_pad instead of memcpy to copy a string
+    - net: ethernet: microchip: lan743x: Fix driver crash when lan743x_pm_resume
+      fails
+    - net: ethernet: microchip: lan743x: Fix dma allocation failure by using
+      dma_set_mask_and_coherent
+    - [arm64] net: hns3: fix pause config problem after autoneg disabled
+    - [arm64] net: hns3: fix data endian problem of some functions of debugfs
+    - net: ethernet: microchip: lan743x: Fix skb allocation failure
+    - phy: phy_ethtool_ksettings_get: Lock the phy for consistency
+    - phy: phy_ethtool_ksettings_set: Move after phy_start_aneg
+    - phy: phy_start_aneg: Add an unlocked version
+    - phy: phy_ethtool_ksettings_set: Lock the PHY while changing settings
+    - sctp: use init_tag from inithdr for ABORT chunk (CVE-2021-3772)
+    - sctp: fix the processing for INIT chunk (CVE-2021-3772)
+    - sctp: fix the processing for INIT_ACK chunk (CVE-2021-3772)
+    - sctp: fix the processing for COOKIE_ECHO chunk (CVE-2021-3772)
+    - sctp: add vtag check in sctp_sf_violation (CVE-2021-3772)
+    - sctp: add vtag check in sctp_sf_do_8_5_1_E_sa (CVE-2021-3772)
+    - sctp: add vtag check in sctp_sf_ootb (CVE-2021-3772)
+    - bpf: Use kvmalloc for map values in syscall
+    - [arm64] watchdog: sbsa: only use 32-bit accessors
+    - bpf: Move BPF_MAP_TYPE for INODE_STORAGE and TASK_STORAGE outside of
+      CONFIG_NET
+    - [arm64] net: hns3: add more string spaces for dumping packets number of
+      queue info in debugfs
+    - [arm64] net: hns3: expand buffer len for some debugfs command
+    - virtio-ring: fix DMA metadata flags
+    - [s390x] KVM: s390: clear kicked_mask before sleeping again
+    - [s390x] KVM: s390: preserve deliverable_mask in __airqs_kick_single_vcpu
+    - [powerpc*] scsi: ibmvfc: Fix up duplicate response detection
+    - [riscv64] fix misalgned trap vector base address
+    - [x86] KVM: switch pvclock_gtod_sync_lock to a raw spinlock
+    - [x86] KVM: SEV-ES: fix another issue with string I/O VMGEXITs
+    - [x86] KVM: Take srcu lock in post_kvm_run_save()
 
   [ Salvatore Bonaccorso ]
   * Revert "[amd64] Unset AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT"
