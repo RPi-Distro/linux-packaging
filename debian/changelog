@@ -1,4 +1,4 @@
-linux (5.14.16-1) UNRELEASED; urgency=medium
+linux (5.14.16-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.14.13
@@ -407,7 +407,7 @@ linux (5.14.16-1) UNRELEASED; urgency=medium
   * media: firewire: firedtv-avc: fix a buffer overflow in avc_ca_pmt()
     (CVE-2021-42739)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 22 Oct 2021 08:51:00 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 03 Nov 2021 15:35:31 +0100
 
 linux (5.14.12-1) unstable; urgency=medium
 
