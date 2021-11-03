@@ -404,6 +404,8 @@ linux (5.14.16-1) UNRELEASED; urgency=medium
   * scsi: core: Put LLD module refcnt after SCSI device is released
   * sfc: Fix reading non-legacy supported link modes
   * vrf: Revert "Reset skb conntrack connection..."
+  * media: firewire: firedtv-avc: fix a buffer overflow in avc_ca_pmt()
+    (CVE-2021-42739)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 22 Oct 2021 08:51:00 +0200
 
