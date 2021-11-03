@@ -1,5 +1,7 @@
 linux (5.15~rc7-1~exp1) UNRELEASED; urgency=medium
 
+  * New upstream release candidate
+
   [ Diederik de Haas ]
   * [arm*] drivers/led/trigger: Make LEDS_TRIGGER_HEARTBEAT builtin
     (Closes: #992184)
