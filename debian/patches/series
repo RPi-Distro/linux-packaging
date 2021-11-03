@@ -92,6 +92,7 @@ bugfix/all/HID-apple-Add-missing-scan-code-event-for-keys-handl.patch
 bugfix/all/media-ir-kbd-i2c-improve-responsiveness-of-hauppauge.patch
 bugfix/all/media-ite-cir-IR-receiver-stop-working-after-receive.patch
 bugfix/all/scsi-core-Put-LLD-module-refcnt-after-SCSI-device-is.patch
+bugfix/all/sfc-Fix-reading-non-legacy-supported-link-modes.patch
 
 # Miscellaneous features
 
