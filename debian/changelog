@@ -295,7 +295,7 @@ linux (5.14.16-1) UNRELEASED; urgency=medium
     - usbnet: fix error return code in usbnet_probe()
     - pinctrl: amd: disable and mask interrupts on probe
     - ata: sata_mv: Fix the error handling of mv_chip_id()
-    - tipc: fix size validations for the MSG_CRYPTO type
+    - tipc: fix size validations for the MSG_CRYPTO type (CVE-2021-43267)
     - nfc: port100: fix using -ERRNO as command type mask
     - Revert "net: mdiobus: Fix memory leak in __mdiobus_register"
     - mmc: vub300: fix control-message timeouts
