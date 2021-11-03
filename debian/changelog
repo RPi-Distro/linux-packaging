@@ -403,6 +403,7 @@ linux (5.14.16-1) UNRELEASED; urgency=medium
     (Closes: #996672)
   * scsi: core: Put LLD module refcnt after SCSI device is released
   * sfc: Fix reading non-legacy supported link modes
+  * vrf: Revert "Reset skb conntrack connection..."
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 22 Oct 2021 08:51:00 +0200
 
