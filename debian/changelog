@@ -1,4 +1,4 @@
-linux (5.15-1~exp1) unstable; urgency=medium
+linux (5.15-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
 
