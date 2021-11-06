@@ -1,3 +1,10 @@
+linux (5.15.1-1~exp1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.1
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 06 Nov 2021 17:07:11 +0100
+
 linux (5.15-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
