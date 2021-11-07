@@ -8,6 +8,7 @@ linux (5.15.1-1~exp1) UNRELEASED; urgency=medium
 
   [ Diederik de Haas ]
   * [x86] drivers/hwmon: Enable SENSORS_CORSAIR_PSU as module
+  * [arm64] drivers/hwmon: Enable SENSORS_GPIO_FAN as module
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 06 Nov 2021 17:07:11 +0100
 
