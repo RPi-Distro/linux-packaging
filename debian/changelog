@@ -6,6 +6,8 @@ linux (5.15.1-1~exp2) UNRELEASED; urgency=medium
   * [x86] drivers/ptp: Enable PTP_1588_CLOCK_VMW as module
   * drivers/ptp: Enable PTP_1588_CLOCK_DTE, PTP_1588_CLOCK_IDT82P33,
     PTP_1588_CLOCK_IDTCM, PTP_1588_CLOCK_OCP as modules
+  * drivers/ptp, net: Enable DP83640_PHY, PTP_1588_CLOCK_INES,
+    NET_PTP_CLASSIFY, NETWORK_PHY_TIMESTAMPING
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 11 Nov 2021 22:21:52 +0100
 
