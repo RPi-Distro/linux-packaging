@@ -7627,7 +7627,7 @@ CONFIG_TIPC_DIAG=m
 ##
 ## file: net/tls/Kconfig
 ##
-# CONFIG_TLS is not set
+CONFIG_TLS=m
 
 ##
 ## file: net/unix/Kconfig

@@ -5,6 +5,7 @@ linux (5.15.1-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [arm*] drop cc-option fallbacks for architecture selection
+  * net/tls: Enable TLS as module (Closes: #919807)
 
   [ Diederik de Haas ]
   * [x86] drivers/hwmon: Enable SENSORS_CORSAIR_PSU as module
