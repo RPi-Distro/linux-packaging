@@ -1,4 +1,4 @@
-linux (5.15.1-1~exp1) UNRELEASED; urgency=medium
+linux (5.15.1-1~exp1) experimental; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.1
@@ -11,7 +11,7 @@ linux (5.15.1-1~exp1) UNRELEASED; urgency=medium
   * [x86] drivers/hwmon: Enable SENSORS_CORSAIR_PSU as module
   * [arm64] drivers/hwmon: Enable SENSORS_GPIO_FAN as module
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 06 Nov 2021 17:07:11 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 07 Nov 2021 11:22:47 +0100
 
 linux (5.15-1~exp1) experimental; urgency=medium
 
