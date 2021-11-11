@@ -125,5 +125,6 @@ bugfix/all/cpupower-fix-checks-for-cpu-existence.patch
 bugfix/all/tools-perf-pmu-events-fix-reproducibility.patch
 bugfix/all/bpftool-fix-version-string-in-recursive-builds.patch
 bugfix/all/tools-include-uapi-fix-errno.h.patch
+bugfix/all/perf-srcline-Use-long-running-addr2line-per-DSO.patch
 
 # ABI maintenance
