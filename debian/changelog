@@ -5,6 +5,7 @@ linux (5.15.2-1~exp1) UNRELEASED; urgency=medium
 
   * [rt] Update to 5.15-rt17 and reenable (Closes: #995466)
   * perf srcline: Use long-running addr2line per DSO (Closes: #911815)
+  * Refresh "Export symbols needed by Android drivers"
 
   [ Vincent Blut ]
   * [x86] drivers/ptp: Enable PTP_1588_CLOCK_VMW as module
