@@ -90,6 +90,7 @@ bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
 bugfix/all/media-ir-kbd-i2c-improve-responsiveness-of-hauppauge.patch
 bugfix/all/media-ite-cir-IR-receiver-stop-working-after-receive.patch
+bugfix/all/Input-elantench-fix-misreporting-trackpoint-coordina.patch
 
 # Miscellaneous features
 
