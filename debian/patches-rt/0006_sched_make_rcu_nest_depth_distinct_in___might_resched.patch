@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Subject: sched: Make RCU nest depth distinct in __might_resched()
 Date: Thu, 23 Sep 2021 18:54:43 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 For !RT kernels RCU nest depth in __might_resched() is always expected to
 be 0, but on RT kernels it can be non zero while the preempt count is

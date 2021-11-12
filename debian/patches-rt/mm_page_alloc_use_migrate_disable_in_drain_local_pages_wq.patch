@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: mm: page_alloc: Use migrate_disable() in drain_local_pages_wq()
 Date: Fri, 15 Oct 2021 23:09:33 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 drain_local_pages_wq() disables preemption to avoid CPU migration during
 CPU hotplug and can't use cpus_read_lock().

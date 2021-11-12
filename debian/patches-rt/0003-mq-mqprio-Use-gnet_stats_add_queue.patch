@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Sat, 16 Oct 2021 10:49:04 +0200
 Subject: [PATCH 3/9] mq, mqprio: Use gnet_stats_add_queue().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 gnet_stats_add_basic() and gnet_stats_add_queue() add up the statistics
 so they can be used directly for both the per-CPU and global case.

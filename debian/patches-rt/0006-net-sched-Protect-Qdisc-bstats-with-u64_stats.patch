@@ -1,7 +1,7 @@
 From: "Ahmed S. Darwish" <a.darwish@linutronix.de>
 Date: Sat, 16 Oct 2021 10:49:07 +0200
 Subject: [PATCH 6/9] net: sched: Protect Qdisc::bstats with u64_stats
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 The not-per-CPU variant of qdisc tc (traffic control) statistics,
 Qdisc::gnet_stats_basic_packed bstats, is protected with Qdisc::running

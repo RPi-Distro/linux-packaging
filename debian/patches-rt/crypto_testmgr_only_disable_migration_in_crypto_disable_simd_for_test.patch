@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: crypto: testmgr - Only disable migration in crypto_disable_simd_for_test()
 Date: Tue, 28 Sep 2021 13:54:01 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 crypto_disable_simd_for_test() disables preemption in order to receive a
 stable per-CPU variable which it needs to modify in order to alter

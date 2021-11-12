@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: sched/rt: Annotate the RT balancing logic irqwork as IRQ_WORK_HARD_IRQ
 Date: Wed, 06 Oct 2021 13:18:49 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 The push-IPI logic for RT tasks expects to be invoked from hardirq
 context. One reason is that a RT task on the remote CPU would block the

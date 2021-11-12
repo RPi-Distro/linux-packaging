@@ -1,7 +1,7 @@
 Subject: printk: rename printk cpulock API and always disable interrupts
 From: John Ogness <john.ogness@linutronix.de>
 Date: Thu Jul 15 09:34:45 2021 +0206
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 From: John Ogness <john.ogness@linutronix.de>
 

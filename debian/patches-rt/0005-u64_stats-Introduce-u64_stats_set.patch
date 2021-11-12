@@ -1,7 +1,7 @@
 From: "Ahmed S. Darwish" <a.darwish@linutronix.de>
 Date: Sat, 16 Oct 2021 10:49:06 +0200
 Subject: [PATCH 5/9] u64_stats: Introduce u64_stats_set()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 Allow to directly set a u64_stats_t value which is used to provide an init
 function which sets it directly to zero intead of memset() the value.

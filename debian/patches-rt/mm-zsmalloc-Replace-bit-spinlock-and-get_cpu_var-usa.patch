@@ -1,7 +1,7 @@
 From: Mike Galbraith <umgwanakikbuti@gmail.com>
 Date: Tue, 28 Sep 2021 09:38:47 +0200
 Subject: [PATCH] mm/zsmalloc: Replace bit spinlock and get_cpu_var() usage.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 For efficiency reasons, zsmalloc is using a slim `handle'. The value is
 the address of a memory allocation of 4 or 8 bytes depending on the size

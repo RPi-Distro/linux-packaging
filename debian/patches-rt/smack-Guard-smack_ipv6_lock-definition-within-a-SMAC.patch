@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 9 Sep 2021 12:18:29 +0200
 Subject: [PATCH] smack: Guard smack_ipv6_lock definition within a
  SMACK_IPV6_PORT_LABELING block
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 The mutex smack_ipv6_lock is only used with the SMACK_IPV6_PORT_LABELING
 block but its definition is outside of the block. This leads to a

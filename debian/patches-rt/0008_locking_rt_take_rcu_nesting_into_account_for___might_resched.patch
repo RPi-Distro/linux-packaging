@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Subject: locking/rt: Take RCU nesting into account for __might_resched()
 Date: Thu, 23 Sep 2021 18:54:46 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 The general rule that rcu_read_lock() held sections cannot voluntary sleep
 does apply even on RT kernels. Though the substitution of spin/rw locks on

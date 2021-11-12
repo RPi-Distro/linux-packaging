@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 12 Aug 2021 16:02:29 +0200
 Subject: [PATCH 08/10] lockdep/selftests: Skip the softirq related tests on
  PREEMPT_RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 The softirq context on PREEMPT_RT is different compared to !PREEMPT_RT.
 As such lockdep_softirq_enter() is a nop and the all the "softirq safe"

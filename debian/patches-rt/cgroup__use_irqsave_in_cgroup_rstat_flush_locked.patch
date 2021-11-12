@@ -1,7 +1,7 @@
 Subject: cgroup: use irqsave in cgroup_rstat_flush_locked()
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue Jul  3 18:19:48 2018 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 

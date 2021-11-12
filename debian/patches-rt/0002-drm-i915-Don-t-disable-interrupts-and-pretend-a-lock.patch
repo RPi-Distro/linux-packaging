@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue, 7 Jul 2020 12:25:11 +0200
 Subject: [PATCH 02/10] drm/i915: Don't disable interrupts and pretend a lock
  as been acquired in __timeline_mark_lock().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 This is a revert of commits
    d67739268cf0e ("drm/i915/gt: Mark up the nested engine-pm timeline lock as irqsafe")

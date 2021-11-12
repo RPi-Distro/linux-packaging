@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Subject: sched: Move mmdrop to RCU on RT
 Date: Tue, 28 Sep 2021 14:24:32 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 mmdrop() is invoked from finish_task_switch() by the incoming task to drop
 the mm which was handed over by the previous task. mmdrop() can be quite

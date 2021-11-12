@@ -2,7 +2,7 @@ From: "Ahmed S. Darwish" <a.darwish@linutronix.de>
 Date: Sat, 16 Oct 2021 10:49:08 +0200
 Subject: [PATCH 7/9] net: sched: Use _bstats_update/set() instead of raw
  writes
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 The Qdisc::running sequence counter, used to protect Qdisc::bstats reads
 from parallel writes, is in the process of being removed. Qdisc::bstats

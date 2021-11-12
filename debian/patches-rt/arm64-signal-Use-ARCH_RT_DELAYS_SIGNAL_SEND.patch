@@ -1,7 +1,7 @@
 From: He Zhe <zhe.he@windriver.com>
 Date: Tue, 12 Oct 2021 16:44:21 +0800
 Subject: [PATCH] arm64: signal: Use ARCH_RT_DELAYS_SIGNAL_SEND.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 The software breakpoint is handled via do_debug_exception() which
 disables preemption. On PREEMPT_RT spinlock_t become sleeping locks and

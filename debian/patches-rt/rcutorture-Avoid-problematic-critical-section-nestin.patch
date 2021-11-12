@@ -2,7 +2,7 @@ From: "From: Scott Wood" <swood@redhat.com>
 Date: Thu, 19 Aug 2021 21:24:24 +0200
 Subject: [PATCH] rcutorture: Avoid problematic critical section nesting on
  PREEMPT_RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 rcutorture is generating some nesting scenarios that are not compatible on PREEMPT_RT.
 For example:

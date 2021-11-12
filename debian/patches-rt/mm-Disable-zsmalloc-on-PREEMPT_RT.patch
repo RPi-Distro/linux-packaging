@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 23 Sep 2021 15:51:48 +0200
 Subject: [PATCH] mm: Disable zsmalloc on PREEMPT_RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 For efficiency reasons, zsmalloc is using a slim `handle'. The value is
 the address of a memory allocation of 4 or 8 bytes depending on the size

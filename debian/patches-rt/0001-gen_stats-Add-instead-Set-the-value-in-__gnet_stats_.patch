@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Sat, 16 Oct 2021 10:49:02 +0200
 Subject: [PATCH 1/9] gen_stats: Add instead Set the value in
  __gnet_stats_copy_basic().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 __gnet_stats_copy_basic() always assigns the value to the bstats
 argument overwriting the previous value. The later added per-CPU version

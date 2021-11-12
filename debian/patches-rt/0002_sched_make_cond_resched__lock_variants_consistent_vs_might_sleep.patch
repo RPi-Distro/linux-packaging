@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Subject: sched: Make cond_resched_*lock() variants consistent vs. might_sleep()
 Date: Thu, 23 Sep 2021 18:54:37 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
 
 Commit 3427445afd26 ("sched: Exclude cond_resched() from nested sleep
 test") removed the task state check of __might_sleep() for
