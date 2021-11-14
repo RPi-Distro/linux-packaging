@@ -3,6 +3,7 @@ linux (5.15.2-1~exp1) UNRELEASED; urgency=medium
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.2
 
+  [ Salvatore Bonaccorso ]
   * [rt] Update to 5.15-rt17 and reenable (Closes: #995466)
   * perf srcline: Use long-running addr2line per DSO (Closes: #911815)
   * Refresh "Export symbols needed by Android drivers"
