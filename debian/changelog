@@ -9,6 +9,7 @@ linux (5.15.2-1~exp1) UNRELEASED; urgency=medium
   * [rt] Update to 5.15.2-rt19
   * Input: elantench - fix misreporting trackpoint coordinates (Closes: #989285)
   * kernel/time: Enable NO_HZ_FULL (Closes: #804857)
+  * io-wq: serialize hash clear with wakeup (Closes: #996951)
 
   [ Vincent Blut ]
   * [x86] drivers/ptp: Enable PTP_1588_CLOCK_VMW as module
