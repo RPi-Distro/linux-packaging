@@ -1,4 +1,4 @@
-linux (5.15.2-1~exp1) UNRELEASED; urgency=medium
+linux (5.15.2-1~exp1) experimental; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.2
@@ -19,7 +19,7 @@ linux (5.15.2-1~exp1) UNRELEASED; urgency=medium
   * drivers/ptp, net: Enable DP83640_PHY, PTP_1588_CLOCK_INES,
     NET_PTP_CLASSIFY, NETWORK_PHY_TIMESTAMPING
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 11 Nov 2021 22:21:52 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 14 Nov 2021 14:27:40 +0100
 
 linux (5.15.1-1~exp1) experimental; urgency=medium
 
