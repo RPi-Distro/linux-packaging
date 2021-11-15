@@ -133,6 +133,9 @@ linux (5.16~rc1-1~exp1) experimental; urgency=medium
   [ Aurelien Jarno ]
   * [riscv64] Enable VIRTUALIZATION and KVM.
 
+  [ YunQiang Su ]
+  * [mips*/generic] Change zload address for QEMU compatibility.
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 19 Nov 2021 22:45:28 +0100
 
 linux (5.15.5-2) unstable; urgency=medium
