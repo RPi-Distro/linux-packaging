@@ -1,3 +1,11 @@
+linux (5.15.2-1~exp2) experimental; urgency=medium
+
+  [ Vincent Blut ]
+  * [arm64] sound/soc/meson: Enable SND_MESON_AXG_SOUND_CARD as module
+    (Closes: #999638)
+
+ -- Vincent Blut <vincent.debian@free.fr>  Tue, 16 Nov 2021 12:52:31 +0100
+
 linux (5.15.2-1~exp1) experimental; urgency=medium
 
   * New upstream stable update:
