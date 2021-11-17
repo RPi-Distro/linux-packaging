@@ -1619,6 +1619,11 @@ CONFIG_SND_AUDIO_GRAPH_CARD=m
 CONFIG_SND_KIRKWOOD_SOC=m
 
 ##
+## file: sound/soc/meson/Kconfig
+##
+CONFIG_SND_MESON_GX_SOUND_CARD=m
+
+##
 ## file: sound/soc/pxa/Kconfig
 ##
 CONFIG_SND_MMP_SOC_SSPA=m

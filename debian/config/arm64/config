@@ -1655,6 +1655,12 @@ CONFIG_SND_AUDIO_GRAPH_CARD=m
 CONFIG_SND_I2S_HI6210_I2S=m
 
 ##
+## file: sound/soc/meson/Kconfig
+##
+CONFIG_SND_MESON_AXG_SOUND_CARD=m
+CONFIG_SND_MESON_GX_SOUND_CARD=m
+
+##
 ## file: sound/soc/qcom/Kconfig
 ##
 CONFIG_SND_SOC_QCOM=m
