@@ -92,6 +92,7 @@ bugfix/all/media-ir-kbd-i2c-improve-responsiveness-of-hauppauge.patch
 bugfix/all/media-ite-cir-IR-receiver-stop-working-after-receive.patch
 bugfix/all/Input-elantench-fix-misreporting-trackpoint-coordina.patch
 bugfix/all/io-wq-serialize-hash-clear-with-wakeup.patch
+bugfix/all/mac80211-fix-radiotap-header-generation.patch
 
 # Miscellaneous features
 
