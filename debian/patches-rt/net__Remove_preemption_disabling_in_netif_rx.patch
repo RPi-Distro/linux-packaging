@@ -1,7 +1,7 @@
 Subject: net: Remove preemption disabling in netif_rx()
 From: Priyanka Jain <Priyanka.Jain@freescale.com>
 Date: Thu May 17 09:35:11 2012 +0530
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
 
 From: Priyanka Jain <Priyanka.Jain@freescale.com>
 

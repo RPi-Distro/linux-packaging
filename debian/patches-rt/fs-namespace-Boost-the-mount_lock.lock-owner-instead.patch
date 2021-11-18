@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Mon, 25 Oct 2021 16:49:35 +0200
 Subject: [PATCH] fs/namespace: Boost the mount_lock.lock owner instead of
  spinning on PREEMPT_RT.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
 
 The MNT_WRITE_HOLD flag is used to hold back any new writers while the
 mount point is about to be made read-only. __mnt_want_write() then loops

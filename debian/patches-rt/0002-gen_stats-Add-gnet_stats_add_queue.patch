@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Sat, 16 Oct 2021 10:49:03 +0200
 Subject: [PATCH 2/9] gen_stats: Add gnet_stats_add_queue().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
 
 This function will replace __gnet_stats_copy_queue(). It reads all
 arguments and adds them into the passed gnet_stats_queue argument.

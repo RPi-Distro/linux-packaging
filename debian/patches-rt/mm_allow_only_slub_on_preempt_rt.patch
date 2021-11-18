@@ -1,7 +1,7 @@
 From: Ingo Molnar <mingo@kernel.org>
 Subject: mm: Allow only SLUB on PREEMPT_RT
 Date: Fri, 3 Jul 2009 08:44:03 -0500
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
 
 Memory allocators may disable interrupts or preemption as part of the
 allocation and freeing process. For PREEMPT_RT it is important that

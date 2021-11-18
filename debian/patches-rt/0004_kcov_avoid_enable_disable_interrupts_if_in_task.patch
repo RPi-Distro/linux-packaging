@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: kcov: Avoid enable+disable interrupts if !in_task().
 Date: Mon, 30 Aug 2021 19:26:26 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
 
 kcov_remote_start() may need to allocate memory in the in_task() case
 (otherwise per-CPU memory has been pre-allocated) and therefore requires

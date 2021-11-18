@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue, 10 Nov 2020 12:38:47 +0100
 Subject: [PATCH] kthread: Move prio/affinite change into the newly created
  thread
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
 
 With enabled threaded interrupts the nouveau driver reported the
 following:

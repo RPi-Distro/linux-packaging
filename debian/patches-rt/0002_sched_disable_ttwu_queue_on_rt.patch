@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Subject: sched: Disable TTWU_QUEUE on RT
 Date: Tue, 28 Sep 2021 14:24:27 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
 
 The queued remote wakeup mechanism has turned out to be suboptimal for RT
 enabled kernels. The maximum latencies go up by a factor of > 5x in certain

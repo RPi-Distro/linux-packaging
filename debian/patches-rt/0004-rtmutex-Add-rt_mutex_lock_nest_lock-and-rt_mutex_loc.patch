@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 13 Aug 2021 13:49:49 +0200
 Subject: [PATCH 04/10] rtmutex: Add rt_mutex_lock_nest_lock() and
  rt_mutex_lock_killable().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
 
 The locking selftest for ww-mutex expects to operate directly on the
 base-mutex which becomes a rtmutex on PREEMPT_RT.

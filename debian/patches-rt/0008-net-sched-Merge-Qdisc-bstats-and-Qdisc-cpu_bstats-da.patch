@@ -2,7 +2,7 @@ From: "Ahmed S. Darwish" <a.darwish@linutronix.de>
 Date: Sat, 16 Oct 2021 10:49:09 +0200
 Subject: [PATCH 8/9] net: sched: Merge Qdisc::bstats and Qdisc::cpu_bstats
  data types
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
 
 The only factor differentiating per-CPU bstats data type (struct
 gnet_stats_basic_cpu) from the packed non-per-CPU one (struct

@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 23 Jan 2014 14:45:59 +0100
 Subject: [PATCH] leds: trigger: Disable CPU trigger on PREEMPT_RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
 
 The CPU trigger is invoked on ARM from CPU-idle. That trigger later
 invokes led_trigger_event() which may invoke the callback of the actual driver.

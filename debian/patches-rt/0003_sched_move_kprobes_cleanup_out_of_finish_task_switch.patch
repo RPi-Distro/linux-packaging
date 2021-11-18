@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Subject: sched: Move kprobes cleanup out of finish_task_switch()
 Date: Tue, 28 Sep 2021 14:24:28 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
 
 Doing cleanups in the tail of schedule() is a latency punishment for the
 incoming task. The point of invoking kprobes_task_flush() for a dead task

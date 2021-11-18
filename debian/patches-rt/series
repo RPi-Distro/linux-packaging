@@ -68,6 +68,7 @@ net-sched-Allow-statistics-reads-from-softirq.patch
 net-sched-fix-logic-error-in-qdisc_run_begin.patch
 net-sched-remove-one-pair-of-atomic-operations.patch
 net-stats-Read-the-statistics-in-___gnet_stats_copy_.patch
+net-sched-gred-dynamically-allocate-tc_gred_qopt_off.patch
 
 # tip, irqwork
 0001_sched_rt_annotate_the_rt_balancing_logic_irqwork_as_irq_work_hard_irq.patch

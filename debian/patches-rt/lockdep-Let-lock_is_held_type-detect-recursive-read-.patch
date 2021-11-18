@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 3 Sep 2021 10:40:01 +0200
 Subject: [PATCH] lockdep: Let lock_is_held_type() detect recursive read as
  read
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
 
 lock_is_held_type(, 1) detects acquired read locks. It only recognized
 locks acquired with lock_acquire_shared(). Read locks acquired with
