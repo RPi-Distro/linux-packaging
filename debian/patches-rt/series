@@ -32,7 +32,6 @@ sched-Switch-wait_task_inactive-to-HRTIMER_MODE_REL_.patch
 kthread-Move-prio-affinite-change-into-the-newly-cre.patch
 genirq-Move-prio-assignment-into-the-newly-created-t.patch
 genirq-Disable-irqfixup-poll-on-PREEMPT_RT.patch
-lockdep-Let-lock_is_held_type-detect-recursive-read-.patch
 efi-Disable-runtime-services-on-RT.patch
 efi-Allow-efi-runtime.patch
 mm-Disable-zsmalloc-on-PREEMPT_RT.patch

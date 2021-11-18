@@ -18,6 +18,7 @@ linux (5.15.3-1~exp1) UNRELEASED; urgency=medium
   * [rt] Refresh "printk: move console printing to kthreads"
   * [rt] Drop "rcutorture: Avoid problematic critical section nesting on
     PREEMPT_RT"
+  * [rt] Drop "lockdep: Let lock_is_held_type() detect recursive read as read"
 
  -- Vincent Blut <vincent.debian@free.fr>  Tue, 16 Nov 2021 12:52:31 +0100
 
