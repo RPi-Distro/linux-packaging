@@ -14,6 +14,7 @@ linux (5.15.3-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * mac80211: fix radiotap header generation
   * [rt] Update to 5.15.2-rt20
+  * [rt] Refresh "printk: introduce kernel sync mode"
 
  -- Vincent Blut <vincent.debian@free.fr>  Tue, 16 Nov 2021 12:52:31 +0100
 
