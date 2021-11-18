@@ -1,4 +1,4 @@
-linux (5.15.3-1~exp1) UNRELEASED; urgency=medium
+linux (5.15.3-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.3
@@ -21,6 +21,7 @@ linux (5.15.3-1~exp1) UNRELEASED; urgency=medium
   * [rt] Drop "lockdep: Let lock_is_held_type() detect recursive read as read"
   * [rt] Refresh "x86/softirq: Disable softirq stacks on PREEMPT_RT"
   * [rt] Refresh "POWERPC: Allow to enable RT"
+  * Set ABI to 1
 
  -- Vincent Blut <vincent.debian@free.fr>  Tue, 16 Nov 2021 12:52:31 +0100
 
