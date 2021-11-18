@@ -76,7 +76,6 @@ bugfix/arm/arm-mm-export-__sync_icache_dcache-for-xen-privcmd.patch
 bugfix/powerpc/powerpc-boot-fix-missing-crc32poly.h-when-building-with-kernel_xz.patch
 bugfix/arm64/arm64-acpi-Add-fixup-for-HPE-m400-quirks.patch
 bugfix/x86/x86-32-disable-3dnow-in-generic-config.patch
-bugfix/arm/ARM-drop-cc-option-fallbacks-for-architecture-select.patch
 
 # Arch features
 features/arm64/arm64-dts-rockchip-Add-support-for-two-PWM-fans-on-h.patch
@@ -88,10 +87,6 @@ features/x86/x86-make-x32-syscall-support-conditional.patch
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
-bugfix/all/media-ir-kbd-i2c-improve-responsiveness-of-hauppauge.patch
-bugfix/all/media-ite-cir-IR-receiver-stop-working-after-receive.patch
-bugfix/all/Input-elantench-fix-misreporting-trackpoint-coordina.patch
-bugfix/all/io-wq-serialize-hash-clear-with-wakeup.patch
 bugfix/all/mac80211-fix-radiotap-header-generation.patch
 
 # Miscellaneous features
