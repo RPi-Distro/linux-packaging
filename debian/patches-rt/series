@@ -29,7 +29,6 @@ printk__Enhance_the_condition_check_of_msleep_in_pr_flush.patch
 # Posted and applied
 ###########################################################################
 sched-Switch-wait_task_inactive-to-HRTIMER_MODE_REL_.patch
-rcutorture-Avoid-problematic-critical-section-nestin.patch
 kthread-Move-prio-affinite-change-into-the-newly-cre.patch
 genirq-Move-prio-assignment-into-the-newly-created-t.patch
 genirq-Disable-irqfixup-poll-on-PREEMPT_RT.patch
