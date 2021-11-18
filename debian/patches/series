@@ -76,7 +76,6 @@ bugfix/arm/arm-mm-export-__sync_icache_dcache-for-xen-privcmd.patch
 bugfix/powerpc/powerpc-boot-fix-missing-crc32poly.h-when-building-with-kernel_xz.patch
 bugfix/arm64/arm64-acpi-Add-fixup-for-HPE-m400-quirks.patch
 bugfix/x86/x86-32-disable-3dnow-in-generic-config.patch
-bugfix/arm/ARM-dts-sun7i-A20-olinuxino-lime2-Fix-ethernet-phy-m.patch
 
 # Arch features
 features/arm64/arm64-dts-rockchip-Add-support-for-two-PWM-fans-on-h.patch
@@ -88,12 +87,7 @@ features/x86/x86-make-x32-syscall-support-conditional.patch
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
-bugfix/all/HID-apple-Add-missing-scan-code-event-for-keys-handl.patch
-bugfix/all/media-ir-kbd-i2c-improve-responsiveness-of-hauppauge.patch
-bugfix/all/media-ite-cir-IR-receiver-stop-working-after-receive.patch
-bugfix/all/scsi-core-Put-LLD-module-refcnt-after-SCSI-device-is.patch
-bugfix/all/sfc-Fix-reading-non-legacy-supported-link-modes.patch
-bugfix/all/vrf-Revert-Reset-skb-conntrack-connection.patch
+bugfix/all/mac80211-fix-radiotap-header-generation.patch
 
 # Miscellaneous features
 
@@ -113,7 +107,6 @@ features/all/db-mok-keyring/KEYS-Make-use-of-platform-keyring-for-module-signatu
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
-bugfix/all/media-firewire-firedtv-avc-fix-a-buffer-overflow-in-.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
@@ -130,5 +123,6 @@ bugfix/all/cpupower-fix-checks-for-cpu-existence.patch
 bugfix/all/tools-perf-pmu-events-fix-reproducibility.patch
 bugfix/all/bpftool-fix-version-string-in-recursive-builds.patch
 bugfix/all/tools-include-uapi-fix-errno.h.patch
+bugfix/all/perf-srcline-Use-long-running-addr2line-per-DSO.patch
 
 # ABI maintenance

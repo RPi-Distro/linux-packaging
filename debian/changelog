@@ -1,3 +1,148 @@
+linux (5.15.3-1~exp1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.3
+    - Bluetooth: sco: Fix lock_sock() blockage by memcpy_from_msg()
+      (CVE-2021-3640)
+
+  [ Vincent Blut ]
+  * [arm64] sound/soc/meson: Enable SND_MESON_AXG_SOUND_CARD as module
+    (Closes: #999638)
+  * [arm64,armhf] sound/soc/meson: Enable SND_MESON_GX_SOUND_CARD as module
+  * drivers/bluetooth: Enable BT_HCIBTUSB_MTK (Closes: #999748)
+
+  [ Salvatore Bonaccorso ]
+  * mac80211: fix radiotap header generation
+  * [rt] Update to 5.15.2-rt20
+  * [rt] Refresh "printk: introduce kernel sync mode"
+  * [rt] Refresh "printk: move console printing to kthreads"
+  * [rt] Drop "rcutorture: Avoid problematic critical section nesting on
+    PREEMPT_RT"
+  * [rt] Drop "lockdep: Let lock_is_held_type() detect recursive read as read"
+  * [rt] Refresh "x86/softirq: Disable softirq stacks on PREEMPT_RT"
+  * [rt] Refresh "POWERPC: Allow to enable RT"
+
+ -- Vincent Blut <vincent.debian@free.fr>  Tue, 16 Nov 2021 12:52:31 +0100
+
+linux (5.15.2-1~exp1) experimental; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.2
+
+  [ Salvatore Bonaccorso ]
+  * [rt] Update to 5.15-rt17 and reenable (Closes: #995466)
+  * perf srcline: Use long-running addr2line per DSO (Closes: #911815)
+  * Refresh "Export symbols needed by Android drivers"
+  * [rt] Update to 5.15.2-rt19
+  * Input: elantench - fix misreporting trackpoint coordinates (Closes: #989285)
+  * kernel/time: Enable NO_HZ_FULL (Closes: #804857)
+  * io-wq: serialize hash clear with wakeup (Closes: #996951)
+
+  [ Vincent Blut ]
+  * [x86] drivers/ptp: Enable PTP_1588_CLOCK_VMW as module
+  * drivers/ptp: Enable PTP_1588_CLOCK_DTE, PTP_1588_CLOCK_IDT82P33,
+    PTP_1588_CLOCK_IDTCM, PTP_1588_CLOCK_OCP as modules
+  * drivers/ptp, net: Enable DP83640_PHY, PTP_1588_CLOCK_INES,
+    NET_PTP_CLASSIFY, NETWORK_PHY_TIMESTAMPING
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 14 Nov 2021 14:27:40 +0100
+
+linux (5.15.1-1~exp1) experimental; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.1
+
+  [ Salvatore Bonaccorso ]
+  * [arm*] drop cc-option fallbacks for architecture selection
+  * net/tls: Enable TLS as module (Closes: #919807)
+
+  [ Diederik de Haas ]
+  * [x86] drivers/hwmon: Enable SENSORS_CORSAIR_PSU as module
+  * [arm64] drivers/hwmon: Enable SENSORS_GPIO_FAN as module
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 07 Nov 2021 11:22:47 +0100
+
+linux (5.15-1~exp1) experimental; urgency=medium
+
+  * New upstream release candidate
+
+  [ Diederik de Haas ]
+  * [arm*] drivers/led/trigger: Make LEDS_TRIGGER_HEARTBEAT builtin
+    (Closes: #992184)
+  * [arm64] sound/soc/codecs: Enable SND_SOC_SPDIF as module
+  * [armel/rpi] Enable RPi's clock framework and CPU Freq scaling
+  * [armel/rpi] Change default governor to 'ondemand' for RPi 0/0w/1
+    (Closes: #991921)
+  * [arm64] sound/soc/rockchip: Enable SND_SOC_ROCKCHIP_PDM as module
+  * [armel] Make explicit that -rpi kernel variant is for RPi 0/0w/1, not the
+    others
+
+  [ Nathan Schulte ]
+  * [arm64] drivers/staging/media/hantro: Enable VIDEO_HANTRO as module
+  * [arm64] drivers/staging/media/rkvdec: Enable VIDEO_ROCKCHIP_VDEC as module
+    (Closes: #993902)
+
+  [ Vincent Blut ]
+  * [arm] arch/arm/crypto: Enable CRYPTO_BLAKE2S_ARM, CRYPTO_SHA256_ARM and
+    CRYPTO_SHA512_ARM as modules
+  * [armhf] arch/arm/crypto: Enable most NEON based implementation of
+    cryptographic algorithms as modules
+  * [arm] Move CRYPTO_NHPOLY1305_NEON in armhf config file
+  * [arm64] drivers/gpu/drm/vmwgfx: Enable DRM_VMWGFX as module
+    (Closes: #995276)
+  * [armhf] sound/soc/sunxi: Enable SND_SUN4I_I2S as module (Closes: #971892)
+  * [armhf] drivers/gpu/drm/bridge/synopsys: Enable DRM_DW_HDMI_I2S_AUDIO as
+    module
+  * drivers/usb/serial: Enable USB_SERIAL_XR as module (Closes: #996962)
+  * drivers/bus/mhi: Enable MHI_BUS, MHI_BUS_PCI_GENERIC as modules
+    (Closes: #995407)
+  * drivers/net: Enable MHI_NET as module
+  * drivers/net/wwan: Enable WWAN, MHI_WWAN_CTRL as modules
+
+  [ YunQiang Su ]
+  * [mipsel,mips64el/loongson-3] linux-image: Recommend pmon-update
+
+  [ Salvatore Bonaccorso ]
+  * Compile with gcc-11 on all architectures
+  * [arm64] drivers/net: Enable VMXNET3 as module
+
+  [ Uwe Kleine-König ]
+  * [arm64] Enable various symbols for the librem5 devkit and iMX8MN Variscite
+    Symphony (Patches by Guido Günther and Ariel D'Alessandro)
+  * [armhf,arm64] Cherrypick fix for snvs_pwrkey to prevent a machine hang.
+
+  [ Heiko Thiery ]
+  * [arm64] drivers/mtd/spi-nor: enable MTD_SPI_NOR as module
+  * [arm64] drivers/net/can/spi: enable CAN_MCP251X as module
+  * [arm64] drivers/net/phy: enable MICROSEMI_PHY as module
+  * [arm64] drivers/net/usb: enable USB_NET_SMSC95XX as module
+
+  [ Ryutaroh Matsumoto ]
+  * [arm64] Enable TOUCHSCREEN_RASPBERRYPI_FW and
+    REGULATOR_RASPBERRYPI_TOUCHSCREEN_ATTINY (Closes: #977575)
+
+  [ Ariel D'Alessandro ]
+  * [arm64] drivers/regulator: Enable REGULATOR_BD718XX as module
+
+  [ Lubomir Rintel ]
+  * [armhf] Add support for Marvell MMP3
+  * [armhf] Enable SND_MMP_SOC_SSPA, COMMON_CLK_MMP2_AUDIO, PHY_MMP3_USB,
+    MFD_ENE_KB3930 and LEDS_ARIEL as modules.
+
+  [ Sean McAvoy ]
+  * [armel] marvell: Enable CONFIG_SENSORS_LM63 as a module.
+
+  [ Dan Stefura ]
+  * [arm64] enable i6300esb watchdog kernel module
+
+  [ Thore Sommer ]
+  * drivers/md: Enable DM_VERITY_FEC
+
+  [ Aurelien Jarno ]
+  * [riscv64] Enable NUMA (Closes: #993453)
+
+ -- Bastian Blank <bastian.blank@credativ.de>  Thu, 04 Nov 2021 09:01:01 +0100
+
 linux (5.14.16-1) unstable; urgency=medium
 
   * New upstream stable update:
