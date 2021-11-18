@@ -20,6 +20,7 @@ linux (5.15.3-1~exp1) UNRELEASED; urgency=medium
     PREEMPT_RT"
   * [rt] Drop "lockdep: Let lock_is_held_type() detect recursive read as read"
   * [rt] Refresh "x86/softirq: Disable softirq stacks on PREEMPT_RT"
+  * [rt] Refresh "POWERPC: Allow to enable RT"
 
  -- Vincent Blut <vincent.debian@free.fr>  Tue, 16 Nov 2021 12:52:31 +0100
 
