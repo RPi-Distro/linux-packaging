@@ -6037,6 +6037,11 @@ CONFIG_JFS_SECURITY=y
 # CONFIG_JFS_STATISTICS is not set
 
 ##
+## file: fs/ksmbd/Kconfig
+##
+CONFIG_SMB_SERVER=m
+
+##
 ## file: fs/minix/Kconfig
 ##
 CONFIG_MINIX_FS=m

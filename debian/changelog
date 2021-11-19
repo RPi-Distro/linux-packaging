@@ -4,6 +4,7 @@ linux (5.16~rc1-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 5.16-rc1-rt2
+  * fs/ksmbd: Enable SMB_SERVER as module (Closes: #998835)
 
   [ Aurelien Jarno ]
   * [riscv64] Enable VIRTUALIZATION and KVM.
