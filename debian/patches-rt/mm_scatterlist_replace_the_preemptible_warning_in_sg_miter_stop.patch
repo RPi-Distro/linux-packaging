@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Subject: mm/scatterlist: Replace the !preemptible warning in sg_miter_stop()
 Date: Fri, 15 Oct 2021 23:14:09 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.3-rt21.tar.xz
 
 sg_miter_stop() checks for disabled preemption before unmapping a page
 via kunmap_atomic(). The kernel doc mentions under context that

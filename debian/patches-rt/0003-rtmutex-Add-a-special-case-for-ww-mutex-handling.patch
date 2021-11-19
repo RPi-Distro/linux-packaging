@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 13 Aug 2021 12:40:49 +0200
 Subject: [PATCH 03/10] rtmutex: Add a special case for ww-mutex handling.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.3-rt21.tar.xz
 
 The lockdep selftest for ww-mutex assumes in a few cases the
 ww_ctx->contending_lock assignment via __ww_mutex_check_kill() which

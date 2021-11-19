@@ -1,7 +1,7 @@
 From: Davide Caratti <dcaratti@redhat.com>
 Date: Thu, 7 Oct 2021 15:05:02 +0200
 Subject: [PATCH] net/sched: sch_ets: properly init all active DRR list handles
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.3-rt21.tar.xz
 
 leaf classes of ETS qdiscs are served in strict priority or deficit round
 robin (DRR), depending on the value of 'nstrict'. Since this value can be

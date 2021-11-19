@@ -4,7 +4,7 @@ Subject: [PATCH] net: sched: remove one pair of atomic operations
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.3-rt21.tar.xz
 
 __QDISC_STATE_RUNNING is only set/cleared from contexts owning qdisc lock.
 

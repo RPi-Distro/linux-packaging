@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Subject: sched: Cleanup might_sleep() printks
 Date: Thu, 23 Sep 2021 18:54:40 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.3-rt21.tar.xz
 
 Convert them to pr_*(). No functional change.
 

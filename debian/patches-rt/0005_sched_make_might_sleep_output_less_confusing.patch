@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Subject: sched: Make might_sleep() output less confusing
 Date: Thu, 23 Sep 2021 18:54:41 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.3-rt21.tar.xz
 
 might_sleep() output is pretty informative, but can be confusing at times
 especially with PREEMPT_RCU when the check triggers due to a voluntary

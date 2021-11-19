@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: irq_work: Handle some irq_work in a per-CPU thread on PREEMPT_RT
 Date: Wed, 06 Oct 2021 13:18:51 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.3-rt21.tar.xz
 
 The irq_work callback is invoked in hard IRQ context. By default all
 callbacks are scheduled for invocation right away (given supported by

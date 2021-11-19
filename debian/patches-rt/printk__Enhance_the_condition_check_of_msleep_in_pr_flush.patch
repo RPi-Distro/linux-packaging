@@ -1,7 +1,7 @@
 Subject: printk: Enhance the condition check of msleep in pr_flush()
 From: Chao Qin <chao.qin@intel.com>
 Date: Mon Jul 19 10:26:50 2021 +0800
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.3-rt21.tar.xz
 
 From: Chao Qin <chao.qin@intel.com>
 
