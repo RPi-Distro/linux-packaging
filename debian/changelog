@@ -1,4 +1,4 @@
-linux (5.16~rc1-1~exp1) UNRELEASED; urgency=medium
+linux (5.16~rc1-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
 
@@ -9,7 +9,7 @@ linux (5.16~rc1-1~exp1) UNRELEASED; urgency=medium
   [ Aurelien Jarno ]
   * [riscv64] Enable VIRTUALIZATION and KVM.
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 19 Nov 2021 15:20:32 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 19 Nov 2021 22:45:28 +0100
 
 linux (5.15.3-1) unstable; urgency=medium
 
