@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 23 Sep 2021 15:51:48 +0200
 Subject: [PATCH] mm: Disable zsmalloc on PREEMPT_RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 For efficiency reasons, zsmalloc is using a slim `handle'. The value is
 the address of a memory allocation of 4 or 8 bytes depending on the size
@@ -28,7 +28,7 @@ Link: https://lkml.kernel.org/r/20210923170121.1860133-1-bigeasy@linutronix.de
 
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -640,6 +640,7 @@ config ZSWAP_ZPOOL_DEFAULT_Z3FOLD
+@@ -643,6 +643,7 @@ config ZSWAP_ZPOOL_DEFAULT_Z3FOLD
  
  config ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
  	bool "zsmalloc"
@@ -36,7 +36,7 @@ Link: https://lkml.kernel.org/r/20210923170121.1860133-1-bigeasy@linutronix.de
  	select ZSMALLOC
  	help
  	  Use the zsmalloc allocator as the default allocator.
-@@ -690,7 +691,7 @@ config Z3FOLD
+@@ -693,7 +694,7 @@ config Z3FOLD
  
  config ZSMALLOC
  	tristate "Memory allocator for compressed pages"

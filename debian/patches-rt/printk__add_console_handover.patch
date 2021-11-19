@@ -1,7 +1,7 @@
 Subject: printk: add console handover
 From: John Ogness <john.ogness@linutronix.de>
 Date: Mon Nov 30 01:42:09 2020 +0106
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 From: John Ogness <john.ogness@linutronix.de>
 
@@ -67,7 +67,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		if (console_trylock()) {
  			con->write(con, text, text_len);
  			console_unlock();
-@@ -2891,8 +2900,10 @@ void register_console(struct console *ne
+@@ -2892,8 +2901,10 @@ void register_console(struct console *ne
  	 * the real console are the same physical device, it's annoying to
  	 * see the beginning boot messages twice
  	 */

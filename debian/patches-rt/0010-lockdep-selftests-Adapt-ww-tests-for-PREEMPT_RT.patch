@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 12 Aug 2021 18:13:39 +0200
 Subject: [PATCH 10/10] lockdep/selftests: Adapt ww-tests for PREEMPT_RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 The ww-mutex selftest operates directly on ww_mutex::base and assumes
 its type is struct mutex. This isn't true on PREEMPT_RT which turns the
@@ -15,23 +15,25 @@ assignment is required in order to pass the tests.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- lib/locking-selftest.c |   74 +++++++++++++++++++++++++++++--------------------
- 1 file changed, 44 insertions(+), 30 deletions(-)
+ lib/locking-selftest.c |   76 +++++++++++++++++++++++++++++--------------------
+ 1 file changed, 46 insertions(+), 30 deletions(-)
 
 --- a/lib/locking-selftest.c
 +++ b/lib/locking-selftest.c
-@@ -1700,6 +1700,20 @@ static void ww_test_fail_acquire(void)
+@@ -1700,6 +1700,22 @@ static void ww_test_fail_acquire(void)
  #endif
  }
  
 +#ifdef CONFIG_PREEMPT_RT
 +#define ww_mutex_base_lock(b)			rt_mutex_lock(b)
++#define ww_mutex_base_trylock(b)		rt_mutex_trylock(b)
 +#define ww_mutex_base_lock_nest_lock(b, b2)	rt_mutex_lock_nest_lock(b, b2)
 +#define ww_mutex_base_lock_interruptible(b)	rt_mutex_lock_interruptible(b)
 +#define ww_mutex_base_lock_killable(b)		rt_mutex_lock_killable(b)
 +#define ww_mutex_base_unlock(b)			rt_mutex_unlock(b)
 +#else
 +#define ww_mutex_base_lock(b)			mutex_lock(b)
++#define ww_mutex_base_trylock(b)		mutex_trylock(b)
 +#define ww_mutex_base_lock_nest_lock(b, b2)	mutex_lock_nest_lock(b, b2)
 +#define ww_mutex_base_lock_interruptible(b)	mutex_lock_interruptible(b)
 +#define ww_mutex_base_lock_killable(b)		mutex_lock_killable(b)
@@ -41,7 +43,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  static void ww_test_normal(void)
  {
  	int ret;
-@@ -1714,50 +1728,50 @@ static void ww_test_normal(void)
+@@ -1714,50 +1730,50 @@ static void ww_test_normal(void)
  
  	/* mutex_lock (and indirectly, mutex_lock_nested) */
  	o.ctx = (void *)~0UL;
@@ -105,7 +107,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	WARN_ON(o.ctx != (void *)~0UL);
  }
  
-@@ -1770,7 +1784,7 @@ static void ww_test_two_contexts(void)
+@@ -1770,7 +1786,7 @@ static void ww_test_two_contexts(void)
  static void ww_test_diff_class(void)
  {
  	WWAI(&t);
@@ -114,7 +116,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	t.ww_class = NULL;
  #endif
  	WWL(&o, &t);
-@@ -1834,7 +1848,7 @@ static void ww_test_edeadlk_normal(void)
+@@ -1834,7 +1850,7 @@ static void ww_test_edeadlk_normal(void)
  {
  	int ret;
  
@@ -123,7 +125,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	o2.ctx = &t2;
  	mutex_release(&o2.base.dep_map, _THIS_IP_);
  
-@@ -1850,7 +1864,7 @@ static void ww_test_edeadlk_normal(void)
+@@ -1850,7 +1866,7 @@ static void ww_test_edeadlk_normal(void)
  
  	o2.ctx = NULL;
  	mutex_acquire(&o2.base.dep_map, 0, 1, _THIS_IP_);
@@ -132,7 +134,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	WWU(&o);
  
  	WWL(&o2, &t);
-@@ -1860,7 +1874,7 @@ static void ww_test_edeadlk_normal_slow(
+@@ -1860,7 +1876,7 @@ static void ww_test_edeadlk_normal_slow(
  {
  	int ret;
  
@@ -141,7 +143,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	mutex_release(&o2.base.dep_map, _THIS_IP_);
  	o2.ctx = &t2;
  
-@@ -1876,7 +1890,7 @@ static void ww_test_edeadlk_normal_slow(
+@@ -1876,7 +1892,7 @@ static void ww_test_edeadlk_normal_slow(
  
  	o2.ctx = NULL;
  	mutex_acquire(&o2.base.dep_map, 0, 1, _THIS_IP_);
@@ -150,7 +152,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	WWU(&o);
  
  	ww_mutex_lock_slow(&o2, &t);
-@@ -1886,7 +1900,7 @@ static void ww_test_edeadlk_no_unlock(vo
+@@ -1886,7 +1902,7 @@ static void ww_test_edeadlk_no_unlock(vo
  {
  	int ret;
  
@@ -159,7 +161,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	o2.ctx = &t2;
  	mutex_release(&o2.base.dep_map, _THIS_IP_);
  
-@@ -1902,7 +1916,7 @@ static void ww_test_edeadlk_no_unlock(vo
+@@ -1902,7 +1918,7 @@ static void ww_test_edeadlk_no_unlock(vo
  
  	o2.ctx = NULL;
  	mutex_acquire(&o2.base.dep_map, 0, 1, _THIS_IP_);
@@ -168,7 +170,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	WWL(&o2, &t);
  }
-@@ -1911,7 +1925,7 @@ static void ww_test_edeadlk_no_unlock_sl
+@@ -1911,7 +1927,7 @@ static void ww_test_edeadlk_no_unlock_sl
  {
  	int ret;
  
@@ -177,7 +179,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	mutex_release(&o2.base.dep_map, _THIS_IP_);
  	o2.ctx = &t2;
  
-@@ -1927,7 +1941,7 @@ static void ww_test_edeadlk_no_unlock_sl
+@@ -1927,7 +1943,7 @@ static void ww_test_edeadlk_no_unlock_sl
  
  	o2.ctx = NULL;
  	mutex_acquire(&o2.base.dep_map, 0, 1, _THIS_IP_);
@@ -186,7 +188,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	ww_mutex_lock_slow(&o2, &t);
  }
-@@ -1936,7 +1950,7 @@ static void ww_test_edeadlk_acquire_more
+@@ -1936,7 +1952,7 @@ static void ww_test_edeadlk_acquire_more
  {
  	int ret;
  
@@ -195,7 +197,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	mutex_release(&o2.base.dep_map, _THIS_IP_);
  	o2.ctx = &t2;
  
-@@ -1957,7 +1971,7 @@ static void ww_test_edeadlk_acquire_more
+@@ -1957,7 +1973,7 @@ static void ww_test_edeadlk_acquire_more
  {
  	int ret;
  
@@ -204,7 +206,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	mutex_release(&o2.base.dep_map, _THIS_IP_);
  	o2.ctx = &t2;
  
-@@ -1978,11 +1992,11 @@ static void ww_test_edeadlk_acquire_more
+@@ -1978,11 +1994,11 @@ static void ww_test_edeadlk_acquire_more
  {
  	int ret;
  
@@ -218,7 +220,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	mutex_release(&o3.base.dep_map, _THIS_IP_);
  	o3.ctx = &t2;
  
-@@ -2004,11 +2018,11 @@ static void ww_test_edeadlk_acquire_more
+@@ -2004,11 +2020,11 @@ static void ww_test_edeadlk_acquire_more
  {
  	int ret;
  
@@ -232,7 +234,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	mutex_release(&o3.base.dep_map, _THIS_IP_);
  	o3.ctx = &t2;
  
-@@ -2029,7 +2043,7 @@ static void ww_test_edeadlk_acquire_wron
+@@ -2029,7 +2045,7 @@ static void ww_test_edeadlk_acquire_wron
  {
  	int ret;
  
@@ -241,7 +243,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	mutex_release(&o2.base.dep_map, _THIS_IP_);
  	o2.ctx = &t2;
  
-@@ -2054,7 +2068,7 @@ static void ww_test_edeadlk_acquire_wron
+@@ -2054,7 +2070,7 @@ static void ww_test_edeadlk_acquire_wron
  {
  	int ret;
  

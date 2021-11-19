@@ -1,7 +1,7 @@
 Subject: u64_stats: Disable preemption on 32bit-UP/SMP with RT during updates
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Mon Aug 17 12:28:10 2020 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 

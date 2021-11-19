@@ -1,7 +1,7 @@
 Subject: ARM: Allow to enable RT
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri Oct 11 13:14:29 2019 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
@@ -17,7 +17,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -32,6 +32,7 @@ config ARM
+@@ -33,6 +33,7 @@ config ARM
  	select ARCH_OPTIONAL_KERNEL_RWX_DEFAULT if CPU_V7
  	select ARCH_SUPPORTS_ATOMIC_RMW
  	select ARCH_SUPPORTS_HUGETLBFS if ARM_LPAE
@@ -32,4 +32,4 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	select HAVE_POSIX_CPU_TIMERS_TASK_WORK if !KVM
  	select RTC_LIB
  	select SYS_SUPPORTS_APM_EMULATION
- 	select TRACE_IRQFLAGS_SUPPORT if !CPU_V7M
+ 	select THREAD_INFO_IN_TASK if CURRENT_POINTER_IN_TPIDRURO

@@ -1,7 +1,7 @@
 Subject: net: Use skbufhead with raw lock
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue Jul 12 15:38:34 2011 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
@@ -27,7 +27,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  };
  
  struct sk_buff;
-@@ -1916,6 +1917,12 @@ static inline void skb_queue_head_init(s
+@@ -1953,6 +1954,12 @@ static inline void skb_queue_head_init(s
  	__skb_queue_head_init(list);
  }
  
@@ -59,7 +59,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #endif
  }
  
-@@ -11626,7 +11626,7 @@ static int __init net_dev_init(void)
+@@ -11660,7 +11660,7 @@ static int __init net_dev_init(void)
  
  		INIT_WORK(flush, flush_backlog);
  

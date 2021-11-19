@@ -1,7 +1,7 @@
 Subject: x86: Support for lazy preemption
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu Nov  1 11:03:47 2012 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
@@ -20,7 +20,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -231,6 +231,7 @@ config X86
+@@ -235,6 +235,7 @@ config X86
  	select HAVE_PCI
  	select HAVE_PERF_REGS
  	select HAVE_PERF_USER_STACK_DUMP
@@ -82,14 +82,16 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #ifdef CONFIG_PREEMPTION
 --- a/arch/x86/include/asm/thread_info.h
 +++ b/arch/x86/include/asm/thread_info.h
-@@ -57,11 +57,14 @@ struct thread_info {
+@@ -57,6 +57,8 @@ struct thread_info {
  	unsigned long		flags;		/* low level flags */
  	unsigned long		syscall_work;	/* SYSCALL_WORK_ flags */
  	u32			status;		/* thread synchronous flags */
 +	int			preempt_lazy_count;	/* 0 => lazy preemptable
-+							   <0 => BUG */
- };
- 
++							  <0 => BUG */
+ #ifdef CONFIG_SMP
+ 	u32			cpu;		/* current CPU */
+ #endif
+@@ -65,6 +67,7 @@ struct thread_info {
  #define INIT_THREAD_INFO(tsk)			\
  {						\
  	.flags		= 0,			\
@@ -97,7 +99,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  #else /* !__ASSEMBLY__ */
-@@ -90,6 +93,7 @@ struct thread_info {
+@@ -93,6 +96,7 @@ struct thread_info {
  #define TIF_NOTSC		16	/* TSC is not accessible in userland */
  #define TIF_NOTIFY_SIGNAL	17	/* signal notifications exist */
  #define TIF_SLD			18	/* Restore split lock detection on context switch */
@@ -105,7 +107,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define TIF_MEMDIE		20	/* is terminating due to OOM killer */
  #define TIF_POLLING_NRFLAG	21	/* idle is polling for TIF_NEED_RESCHED */
  #define TIF_IO_BITMAP		22	/* uses I/O bitmap */
-@@ -114,6 +118,7 @@ struct thread_info {
+@@ -117,6 +121,7 @@ struct thread_info {
  #define _TIF_NOTSC		(1 << TIF_NOTSC)
  #define _TIF_NOTIFY_SIGNAL	(1 << TIF_NOTIFY_SIGNAL)
  #define _TIF_SLD		(1 << TIF_SLD)
@@ -113,7 +115,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define _TIF_POLLING_NRFLAG	(1 << TIF_POLLING_NRFLAG)
  #define _TIF_IO_BITMAP		(1 << TIF_IO_BITMAP)
  #define _TIF_SPEC_FORCE_UPDATE	(1 << TIF_SPEC_FORCE_UPDATE)
-@@ -145,6 +150,8 @@ struct thread_info {
+@@ -148,6 +153,8 @@ struct thread_info {
  
  #define _TIF_WORK_CTXSW_NEXT	(_TIF_WORK_CTXSW)
  

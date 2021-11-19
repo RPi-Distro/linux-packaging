@@ -1,7 +1,7 @@
 Subject: mm/vmalloc: Another preempt disable region which sucks
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue Jul 12 11:39:36 2011 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
@@ -15,7 +15,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
 --- a/mm/vmalloc.c
 +++ b/mm/vmalloc.c
-@@ -1918,11 +1918,12 @@ static void *new_vmap_block(unsigned int
+@@ -1922,11 +1922,12 @@ static void *new_vmap_block(unsigned int
  		return ERR_PTR(err);
  	}
  
@@ -30,7 +30,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  	return vaddr;
  }
-@@ -2001,7 +2002,8 @@ static void *vb_alloc(unsigned long size
+@@ -2005,7 +2006,8 @@ static void *vb_alloc(unsigned long size
  	order = get_order(size);
  
  	rcu_read_lock();
@@ -40,7 +40,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	list_for_each_entry_rcu(vb, &vbq->free, free_list) {
  		unsigned long pages_off;
  
-@@ -2024,7 +2026,7 @@ static void *vb_alloc(unsigned long size
+@@ -2028,7 +2030,7 @@ static void *vb_alloc(unsigned long size
  		break;
  	}
  

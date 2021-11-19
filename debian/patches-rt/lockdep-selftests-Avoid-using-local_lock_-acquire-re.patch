@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 13 Aug 2021 18:26:10 +0200
 Subject: [PATCH] lockdep/selftests: Avoid using
  local_lock_{acquire|release}().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 The functions local_lock related functions
   local_lock_acquire()

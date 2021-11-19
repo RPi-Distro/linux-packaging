@@ -1,7 +1,7 @@
 Subject: printk: remove deferred printing
 From: John Ogness <john.ogness@linutronix.de>
 Date: Mon Nov 30 01:42:08 2020 +0106
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 From: John Ogness <john.ogness@linutronix.de>
 
@@ -31,22 +31,22 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  kernel/printk/printk_safe.c     |   52 ----------------------------
  kernel/sched/core.c             |    9 ++--
  kernel/sched/deadline.c         |    2 -
- kernel/sched/fair.c             |    5 --
  kernel/sched/psi.c              |   14 +++----
  kernel/sched/rt.c               |    2 -
+ kernel/sched/stats.h            |    2 -
  kernel/time/clockevents.c       |    9 +---
  kernel/time/ntp.c               |   14 ++-----
  kernel/time/timekeeping.c       |   30 ++++++++--------
  kernel/time/timekeeping_debug.c |    2 -
  kernel/workqueue.c              |    4 --
  lib/ratelimit.c                 |    4 --
- 26 files changed, 83 insertions(+), 265 deletions(-)
+ 26 files changed, 83 insertions(+), 262 deletions(-)
  delete mode 100644 kernel/printk/internal.h
  delete mode 100644 kernel/printk/printk_safe.c
 ---
 --- a/arch/arm/kernel/smp.c
 +++ b/arch/arm/kernel/smp.c
-@@ -667,9 +667,7 @@ static void do_handle_IPI(int ipinr)
+@@ -676,9 +676,7 @@ static void do_handle_IPI(int ipinr)
  		break;
  
  	case IPI_CPU_BACKTRACE:
@@ -81,7 +81,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		*visit_mask |= 1UL << info->type;
 --- a/arch/x86/kernel/dumpstack_64.c
 +++ b/arch/x86/kernel/dumpstack_64.c
-@@ -201,7 +201,8 @@ int get_stack_info(unsigned long *stack,
+@@ -207,7 +207,8 @@ int get_stack_info(unsigned long *stack,
  	if (visit_mask) {
  		if (*visit_mask & (1UL << info->type)) {
  			if (task == current)
@@ -134,7 +134,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		}
  	}
  }
-@@ -342,13 +340,13 @@ bool unwind_next_frame(struct unwind_sta
+@@ -341,13 +339,13 @@ bool unwind_next_frame(struct unwind_sta
  		goto the_end;
  
  	if (state->regs) {
@@ -416,7 +416,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  {
  	return __printk_percpu_data_ready;
  }
-@@ -2023,9 +2008,9 @@ static u16 printk_sprint(char *text, u16
+@@ -2024,9 +2009,9 @@ static u16 printk_sprint(char *text, u16
  }
  
  __printf(4, 0)
@@ -429,7 +429,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  {
  	const u32 caller_id = printk_caller_id();
  	struct prb_reserved_entry e;
-@@ -2171,11 +2156,28 @@ asmlinkage int vprintk_emit(int facility
+@@ -2172,11 +2157,28 @@ asmlinkage int vprintk_emit(int facility
  }
  EXPORT_SYMBOL(vprintk_emit);
  
@@ -460,7 +460,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  asmlinkage __visible int _printk(const char *fmt, ...)
  {
-@@ -3136,32 +3138,6 @@ void wake_up_klogd(void)
+@@ -3137,32 +3139,6 @@ void wake_up_klogd(void)
  	preempt_enable();
  }
  
@@ -550,7 +550,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -EXPORT_SYMBOL(vprintk);
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -2944,9 +2944,8 @@ void force_compatible_cpus_allowed_ptr(s
+@@ -2967,9 +2967,8 @@ void force_compatible_cpus_allowed_ptr(s
  
  out_set_mask:
  	if (printk_ratelimit()) {
@@ -562,7 +562,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	}
  
  	WARN_ON(set_cpus_allowed_ptr(p, override_mask));
-@@ -3376,8 +3375,8 @@ static int select_fallback_rq(int cpu, s
+@@ -3399,8 +3398,8 @@ static int select_fallback_rq(int cpu, s
  		 * leave kernel.
  		 */
  		if (p->mm && printk_ratelimit()) {
@@ -584,20 +584,6 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		dl_se->deadline = rq_clock(rq) + pi_of(dl_se)->dl_deadline;
  		dl_se->runtime = pi_of(dl_se)->dl_runtime;
  	}
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4237,10 +4237,7 @@ static inline void check_schedstat_requi
- 			trace_sched_stat_iowait_enabled()  ||
- 			trace_sched_stat_blocked_enabled() ||
- 			trace_sched_stat_runtime_enabled())  {
--		printk_deferred_once("Scheduler tracepoints stat_sleep, stat_iowait, "
--			     "stat_blocked and stat_runtime require the "
--			     "kernel parameter schedstats=enable or "
--			     "kernel.sched_schedstats=1\n");
-+		printk_once("Scheduler tracepoints stat_sleep, stat_iowait, stat_blocked and stat_runtime require the kernel parameter schedstats=enable or kernel.sched_schedstats=1\n");
- 	}
- #endif
- }
 --- a/kernel/sched/psi.c
 +++ b/kernel/sched/psi.c
 @@ -710,10 +710,10 @@ static void psi_group_change(struct psi_
@@ -630,7 +616,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 --- a/kernel/sched/rt.c
 +++ b/kernel/sched/rt.c
-@@ -971,7 +971,7 @@ static int sched_rt_runtime_exceeded(str
+@@ -977,7 +977,7 @@ static int sched_rt_runtime_exceeded(str
  		 */
  		if (likely(rt_b->rt_runtime)) {
  			rt_rq->rt_throttled = 1;
@@ -639,6 +625,17 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		} else {
  			/*
  			 * In case we did anyway, make it go away,
+--- a/kernel/sched/stats.h
++++ b/kernel/sched/stats.h
+@@ -62,7 +62,7 @@ check_schedstat_required(void)
+ 	    trace_sched_stat_iowait_enabled()  ||
+ 	    trace_sched_stat_blocked_enabled() ||
+ 	    trace_sched_stat_runtime_enabled())
+-		printk_deferred_once("Scheduler tracepoints stat_sleep, stat_iowait, stat_blocked and stat_runtime require the kernel parameter schedstats=enable or kernel.sched_schedstats=1\n");
++		printk_once("Scheduler tracepoints stat_sleep, stat_iowait, stat_blocked and stat_runtime require the kernel parameter schedstats=enable or kernel.sched_schedstats=1\n");
+ }
+ 
+ #else /* !CONFIG_SCHEDSTATS: */
 --- a/kernel/time/clockevents.c
 +++ b/kernel/time/clockevents.c
 @@ -203,8 +203,7 @@ static int clockevents_increase_min_delt
@@ -781,32 +778,32 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 --- a/kernel/workqueue.c
 +++ b/kernel/workqueue.c
-@@ -4836,9 +4836,7 @@ void show_workqueue_state(void)
- 				 * drivers that queue work while holding locks
- 				 * also taken in their write paths.
- 				 */
--				printk_deferred_enter();
- 				show_pwq(pwq);
--				printk_deferred_exit();
- 			}
- 			raw_spin_unlock_irqrestore(&pwq->pool->lock, flags);
- 			/*
-@@ -4862,7 +4860,6 @@ void show_workqueue_state(void)
- 		 * queue work while holding locks also taken in their write
- 		 * paths.
- 		 */
--		printk_deferred_enter();
- 		pr_info("pool %d:", pool->id);
- 		pr_cont_pool_info(pool);
- 		pr_cont(" hung=%us workers=%d",
-@@ -4877,7 +4874,6 @@ void show_workqueue_state(void)
- 			first = false;
+@@ -4826,9 +4826,7 @@ void show_one_workqueue(struct workqueue
+ 			 * drivers that queue work while holding locks
+ 			 * also taken in their write paths.
+ 			 */
+-			printk_deferred_enter();
+ 			show_pwq(pwq);
+-			printk_deferred_exit();
  		}
- 		pr_cont("\n");
--		printk_deferred_exit();
- 	next_pool:
- 		raw_spin_unlock_irqrestore(&pool->lock, flags);
+ 		raw_spin_unlock_irqrestore(&pwq->pool->lock, flags);
  		/*
+@@ -4859,7 +4857,6 @@ static void show_one_worker_pool(struct
+ 	 * queue work while holding locks also taken in their write
+ 	 * paths.
+ 	 */
+-	printk_deferred_enter();
+ 	pr_info("pool %d:", pool->id);
+ 	pr_cont_pool_info(pool);
+ 	pr_cont(" hung=%us workers=%d",
+@@ -4874,7 +4871,6 @@ static void show_one_worker_pool(struct
+ 		first = false;
+ 	}
+ 	pr_cont("\n");
+-	printk_deferred_exit();
+ next_pool:
+ 	raw_spin_unlock_irqrestore(&pool->lock, flags);
+ 	/*
 --- a/lib/ratelimit.c
 +++ b/lib/ratelimit.c
 @@ -47,9 +47,7 @@ int ___ratelimit(struct ratelimit_state

@@ -1,7 +1,7 @@
 Subject: printk: add pr_flush()
 From: John Ogness <john.ogness@linutronix.de>
 Date: Mon Nov 30 01:42:10 2020 +0106
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 From: John Ogness <john.ogness@linutronix.de>
 
@@ -112,7 +112,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -3285,6 +3285,12 @@ void kmsg_dump(enum kmsg_dump_reason rea
+@@ -3286,6 +3286,12 @@ void kmsg_dump(enum kmsg_dump_reason rea
  			sync_mode = true;
  			pr_info("enabled sync mode\n");
  		}
@@ -125,7 +125,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	}
  
  	rcu_read_lock();
-@@ -3606,3 +3612,78 @@ bool kgdb_roundup_delay(unsigned int cpu
+@@ -3607,3 +3613,78 @@ bool kgdb_roundup_delay(unsigned int cpu
  }
  EXPORT_SYMBOL(kgdb_roundup_delay);
  #endif /* CONFIG_SMP */

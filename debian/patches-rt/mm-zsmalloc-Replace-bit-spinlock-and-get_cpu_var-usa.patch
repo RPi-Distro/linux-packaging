@@ -1,7 +1,7 @@
 From: Mike Galbraith <umgwanakikbuti@gmail.com>
 Date: Tue, 28 Sep 2021 09:38:47 +0200
 Subject: [PATCH] mm/zsmalloc: Replace bit spinlock and get_cpu_var() usage.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 For efficiency reasons, zsmalloc is using a slim `handle'. The value is
 the address of a memory allocation of 4 or 8 bytes depending on the size
@@ -38,7 +38,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -640,7 +640,6 @@ config ZSWAP_ZPOOL_DEFAULT_Z3FOLD
+@@ -643,7 +643,6 @@ config ZSWAP_ZPOOL_DEFAULT_Z3FOLD
  
  config ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
  	bool "zsmalloc"
@@ -46,7 +46,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	select ZSMALLOC
  	help
  	  Use the zsmalloc allocator as the default allocator.
-@@ -691,7 +690,7 @@ config Z3FOLD
+@@ -694,7 +693,7 @@ config Z3FOLD
  
  config ZSMALLOC
  	tristate "Memory allocator for compressed pages"

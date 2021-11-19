@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 17 Jul 2011 18:51:23 +0200
 Subject: [PATCH 05/10] lockdep: Make it RT aware
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.15/older/patches-5.15.2-rt20.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
 
 There is not really a softirq context on PREEMPT_RT.
 Softirqs on PREEMPT_RT are always invoked within the context of a threaded
@@ -62,7 +62,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
   extern void stop_critical_timings(void);
 --- a/kernel/locking/lockdep.c
 +++ b/kernel/locking/lockdep.c
-@@ -5473,6 +5473,7 @@ static noinstr void check_flags(unsigned
+@@ -5485,6 +5485,7 @@ static noinstr void check_flags(unsigned
  		}
  	}
  
@@ -70,7 +70,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	/*
  	 * We dont accurately track softirq state in e.g.
  	 * hardirq contexts (such as on 4KSTACKS), so only
-@@ -5487,6 +5488,7 @@ static noinstr void check_flags(unsigned
+@@ -5499,6 +5500,7 @@ static noinstr void check_flags(unsigned
  			DEBUG_LOCKS_WARN_ON(!current->softirqs_enabled);
  		}
  	}
