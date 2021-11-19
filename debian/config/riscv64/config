@@ -18,6 +18,12 @@ CONFIG_SOC_SIFIVE=y
 CONFIG_SOC_VIRT=y
 
 ##
+## file: arch/riscv/kvm/Kconfig
+##
+CONFIG_VIRTUALIZATION=y
+CONFIG_KVM=m
+
+##
 ## file: drivers/ata/Kconfig
 ##
 CONFIG_SATA_AHCI_PLATFORM=m
