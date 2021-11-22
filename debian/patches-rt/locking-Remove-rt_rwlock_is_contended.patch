@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue, 7 Sep 2021 12:11:47 +0200
 Subject: [PATCH] locking: Remove rt_rwlock_is_contended()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc2-rt4.tar.xz
 
 rt_rwlock_is_contended() has not users. It makes no sense to use it as
 rwlock_is_contended() because it is a sleeping lock on RT and preemption

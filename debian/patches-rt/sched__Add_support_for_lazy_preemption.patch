@@ -1,7 +1,7 @@
 Subject: sched: Add support for lazy preemption
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Fri Oct 26 18:50:54 2012 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc2-rt4.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
@@ -553,7 +553,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		(min_t(unsigned int, migration_disable_value(), 0xf)) << 4;
  }
  
-@@ -4170,15 +4176,17 @@ unsigned long trace_total_entries(struct
+@@ -4182,15 +4188,17 @@ unsigned long trace_total_entries(struct
  
  static void print_lat_help_header(struct seq_file *m)
  {
@@ -580,7 +580,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  static void print_event_info(struct array_buffer *buf, struct seq_file *m)
-@@ -4212,14 +4220,16 @@ static void print_func_help_header_irq(s
+@@ -4224,14 +4232,16 @@ static void print_func_help_header_irq(s
  
  	print_event_info(buf, m);
  

@@ -1,7 +1,7 @@
 Subject: printk: remove deferred printing
 From: John Ogness <john.ogness@linutronix.de>
 Date: Mon Nov 30 01:42:08 2020 +0106
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc2-rt4.tar.xz
 
 From: John Ogness <john.ogness@linutronix.de>
 
@@ -199,7 +199,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
   * Please don't use printk_ratelimit(), because it shares ratelimiting state
   * with all other unrelated printk_ratelimit() callsites.  Instead use
   * printk_ratelimited() or plain old __ratelimit().
-@@ -215,19 +200,6 @@ int _printk(const char *s, ...)
+@@ -216,19 +201,6 @@ int _printk(const char *s, ...)
  {
  	return 0;
  }
@@ -219,7 +219,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  static inline int printk_ratelimit(void)
  {
-@@ -471,8 +443,6 @@ struct pi_entry {
+@@ -475,8 +447,6 @@ struct pi_entry {
   * See the vsnprintf() documentation for format string extensions over C99.
   */
  #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
@@ -228,7 +228,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  /**
   * pr_emerg - Print an emergency-level message
-@@ -610,13 +580,9 @@ struct pi_entry {
+@@ -614,13 +584,9 @@ struct pi_entry {
  #ifdef CONFIG_PRINTK
  #define printk_once(fmt, ...)					\
  	DO_ONCE_LITE(printk, fmt, ##__VA_ARGS__)
@@ -460,7 +460,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  asmlinkage __visible int _printk(const char *fmt, ...)
  {
-@@ -3137,32 +3139,6 @@ void wake_up_klogd(void)
+@@ -3137,37 +3139,11 @@ void wake_up_klogd(void)
  	preempt_enable();
  }
  
@@ -468,6 +468,11 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -{
 -}
 -
+ void printk_trigger_flush(void)
+ {
+ 	wake_up_klogd();
+ }
+ 
 -int vprintk_deferred(const char *fmt, va_list args)
 -{
 -	int r;

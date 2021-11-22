@@ -1,7 +1,7 @@
 Subject: printk: introduce kernel sync mode
 From: John Ogness <john.ogness@linutronix.de>
 Date: Mon Nov 30 01:42:06 2020 +0106
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc2-rt4.tar.xz
 
 From: John Ogness <john.ogness@linutronix.de>
 
@@ -354,7 +354,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  		/* Get a consistent copy of @syslog_seq. */
  		mutex_lock(&syslog_lock);
-@@ -3412,6 +3558,18 @@ void kmsg_dump(enum kmsg_dump_reason rea
+@@ -3417,6 +3563,18 @@ void kmsg_dump(enum kmsg_dump_reason rea
  {
  	struct kmsg_dumper *dumper;
  

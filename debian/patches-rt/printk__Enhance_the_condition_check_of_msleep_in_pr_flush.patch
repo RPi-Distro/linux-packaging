@@ -1,7 +1,7 @@
 Subject: printk: Enhance the condition check of msleep in pr_flush()
 From: Chao Qin <chao.qin@intel.com>
 Date: Mon Jul 19 10:26:50 2021 +0800
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc2-rt4.tar.xz
 
 From: Chao Qin <chao.qin@intel.com>
 
@@ -28,7 +28,7 @@ Link: https://lore.kernel.org/lkml/20210719022649.3444072-1-chao.qin@intel.com
 ---
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -3650,7 +3650,9 @@ bool pr_flush(int timeout_ms, bool reset
+@@ -3655,7 +3655,9 @@ bool pr_flush(int timeout_ms, bool reset
  	u64 diff;
  	u64 seq;
  

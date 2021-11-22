@@ -172,10 +172,21 @@ x86__Enable_RT_also_on_32bit.patch
 ###########################################################################
 virt-acrn-Remove-unsued-acrn_irqfds_mutex.patch
 tpm_tis__fix_stall_after_iowrites.patch
-mm-zsmalloc-Replace-bit-spinlock-and-get_cpu_var-usa.patch
 drivers_block_zram__Replace_bit_spinlocks_with_rtmutex_for_-rt.patch
 generic-softirq-Disable-softirq-stacks-on-PREEMPT_RT.patch
 softirq-Disable-softirq-stacks-on-PREEMPT_RT.patch
+
+# zsmalloc
+0001_zsmalloc_introduce_some_helper_functions.patch
+0002_zsmalloc_rename_zs_stat_type_to_class_stat_type.patch
+0003_zsmalloc_decouple_class_actions_from_zspage_works.patch
+0004_zsmalloc_introduce_obj_allocated.patch
+0005_zsmalloc_move_huge_compressed_obj_from_page_to_zspage.patch
+0006_zsmalloc_remove_zspage_isolation_for_migration.patch
+0007_locking_rwlocks_introduce_write_lock_nested.patch
+0008_zsmalloc_replace_per_zpage_lock_with_pool_migrate_lock.patch
+0009_zsmalloc_replace_get_cpu_var_with_local_lock.patch
+zsmalloc-enable.patch
 
 ###########################################################################
 # Lazy preemption

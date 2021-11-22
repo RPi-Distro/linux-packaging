@@ -1,7 +1,7 @@
 Subject: printk: move console printing to kthreads
 From: John Ogness <john.ogness@linutronix.de>
 Date: Mon Nov 30 01:42:07 2020 +0106
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc2-rt4.tar.xz
 
 From: John Ogness <john.ogness@linutronix.de>
 
@@ -18,8 +18,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 ---
  include/linux/console.h |   12 
- kernel/printk/printk.c  |  715 ++++++++++++++----------------------------------
- 2 files changed, 235 insertions(+), 492 deletions(-)
+ kernel/printk/printk.c  |  717 ++++++++++++++----------------------------------
+ 2 files changed, 236 insertions(+), 493 deletions(-)
 ---
 --- a/include/linux/console.h
 +++ b/include/linux/console.h
@@ -499,17 +499,27 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	seq = read_console_seq(con);
 +
 +	prb_rec_init_rd(&r, &info, text, LOG_LINE_MAX + PREFIX_MAX);
-+
+ 
+-#define printk_time		false
 +	for (;;) {
 +		error = wait_event_interruptible(log_wait,
 +						 prb_read_valid(prb, seq, &r) || kthread_should_stop());
-+
+ 
+-#define prb_read_valid(rb, seq, r)	false
+-#define prb_first_valid_seq(rb)		0
+-#define read_console_seq()		0
+-#define latched_seq_write(dst, src)
+-#define kernel_sync_mode()		false
 +		if (kthread_should_stop())
 +			break;
-+
+ 
+-static u64 exclusive_console_stop_seq;
+-static unsigned long console_dropped;
 +		if (error)
 +			continue;
-+
+ 
+-static size_t record_print_text(const struct printk_record *r,
+-				bool syslog, bool time)
 +		if (seq != r.info->seq) {
 +			dropped += r.info->seq - seq;
 +			seq = r.info->seq;
@@ -522,8 +532,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +
 +		if (suppress_message_printing(r.info->level))
 +			continue;
- 
--#define printk_time		false
++
 +		if (con->flags & CON_EXTENDED) {
 +			len = info_print_ext_header(ext_text,
 +						    CONSOLE_EXT_LOG_MAX,
@@ -537,12 +546,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +						console_msg_format & MSG_FORMAT_SYSLOG,
 +						printk_time);
 +		}
- 
--#define prb_read_valid(rb, seq, r)	false
--#define prb_first_valid_seq(rb)		0
--#define read_console_seq()		0
--#define latched_seq_write(dst, src)
--#define kernel_sync_mode()		false
++
 +		console_lock();
 +
 +		/*
@@ -559,17 +563,13 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +			console_unlock();
 +			break;
 +		}
- 
--static u64 exclusive_console_stop_seq;
--static unsigned long console_dropped;
++
 +		if (!(con->flags & CON_EXTENDED) && dropped) {
 +			dropped_len = snprintf(dropped_text, 64,
 +					       "** %lu printk messages dropped **\n",
 +					       dropped);
 +			dropped = 0;
- 
--static size_t record_print_text(const struct printk_record *r,
--				bool syslog, bool time)
++
 +			con->write(con, dropped_text, dropped_len);
 +			printk_delay(r.info->level);
 +		}
@@ -966,7 +966,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  static DEFINE_PER_CPU(struct irq_work, wake_up_klogd_work) =
-@@ -3401,13 +3139,6 @@ void wake_up_klogd(void)
+@@ -3401,18 +3139,11 @@ void wake_up_klogd(void)
  
  void defer_console_output(void)
  {
@@ -977,6 +977,12 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 -	__this_cpu_or(printk_pending, PRINTK_PENDING_OUTPUT);
 -	irq_work_queue(this_cpu_ptr(&wake_up_klogd_work));
 -	preempt_enable();
+ }
+ 
+ void printk_trigger_flush(void)
+ {
+-	defer_console_output();
++	wake_up_klogd();
  }
  
  int vprintk_deferred(const char *fmt, va_list args)

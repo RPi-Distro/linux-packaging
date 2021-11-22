@@ -1,7 +1,7 @@
 Subject: net: dev: always take qdisc's busylock in __dev_xmit_skb()
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed Mar 30 13:36:29 2016 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc1-rt2.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc2-rt4.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
