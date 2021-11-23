@@ -1,5 +1,25 @@
-linux (5.15.3-2) UNRELEASED; urgency=medium
+linux (5.15.4-1) UNRELEASED; urgency=medium
 
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.4
+    - string: uninline memcpy_and_pad
+    - [x86] KVM: Fix steal time asm constraints
+    - btrfs: introduce btrfs_is_data_reloc_root
+    - btrfs: zoned: add a dedicated data relocation block group
+    - btrfs: zoned: only allow one process to add pages to a relocation inode
+    - btrfs: zoned: use regular writes for relocation
+    - btrfs: check for relocation inodes on zoned btrfs in should_nocow
+    - btrfs: zoned: allow preallocation for relocation inodes
+    - block: Add a helper to validate the block size
+    - loop: Use blk_validate_block_size() to validate block size
+    - Bluetooth: btusb: Add support for TP-Link UB500 Adapter
+    - PCI/MSI: Deal with devices lying about their MSI mask capability
+    - PCI: Add MSI masking quirk for Nvidia ION AHCI
+    - perf/core: Avoid put_page() when GUP fails
+    - thermal: Fix NULL pointer dereferences in of_thermal_ functions
+    - Revert "ACPI: scan: Release PM resources blocked by unused objects"
+
+  [ Salvatore Bonaccorso ]
   * [rt] Update to 5.15.3-rt21
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 19 Nov 2021 15:17:13 +0100
