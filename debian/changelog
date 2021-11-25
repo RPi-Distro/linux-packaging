@@ -215,7 +215,7 @@ linux (5.15.5-1) UNRELEASED; urgency=medium
     - signal: Replace force_sigsegv(SIGSEGV) with force_fatal_sig(SIGSEGV)
     - signal: Don't always set SA_IMMUTABLE for forced signals
     - signal: Replace force_fatal_sig with force_exit_sig when in doubt
-    - hugetlbfs: flush TLBs correctly after huge_pmd_unshare
+    - hugetlbfs: flush TLBs correctly after huge_pmd_unshare (CVE-2021-4002)
     - RDMA/netlink: Add __maybe_unused to static inline in C file
     - bpf: Forbid bpf_ktime_get_coarse_ns and bpf_timer_* in tracing progs
     - selinux: fix NULL-pointer dereference when hashtab allocation fails
