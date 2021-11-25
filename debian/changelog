@@ -234,6 +234,7 @@ linux (5.15.5-1) UNRELEASED; urgency=medium
   * Drop "arm64: dts: rockchip: disable USB type-c DisplayPort"
   * [rt] Refresh "printk: move console printing to kthreads"
   * [rt] Refresh "printk: remove deferred printing"
+  * Bump ABI to 2
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 19 Nov 2021 15:17:13 +0100
 
