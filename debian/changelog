@@ -232,6 +232,7 @@ linux (5.15.5-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * [rt] Update to 5.15.3-rt21
   * Drop "arm64: dts: rockchip: disable USB type-c DisplayPort"
+  * [rt] Refresh "printk: move console printing to kthreads"
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 19 Nov 2021 15:17:13 +0100
 
