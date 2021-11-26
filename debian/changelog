@@ -1,4 +1,4 @@
-linux (5.15.5-1) UNRELEASED; urgency=medium
+linux (5.15.5-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.4
@@ -237,7 +237,7 @@ linux (5.15.5-1) UNRELEASED; urgency=medium
   * Bump ABI to 2
   * fuse: release pipe buf after last use (Closes: #1000504)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 19 Nov 2021 15:17:13 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 26 Nov 2021 06:33:39 +0100
 
 linux (5.15.3-1) unstable; urgency=medium
 
