@@ -4,6 +4,7 @@ linux (5.16~rc2-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 5.16-rc2-rt4
+  * [arm64] drivers/firmware/efi: Enable EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 22 Nov 2021 12:57:16 +0100
 

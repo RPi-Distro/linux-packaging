@@ -329,6 +329,13 @@ CONFIG_RASPBERRYPI_FIRMWARE=y
 CONFIG_TURRIS_MOX_RWTM=m
 
 ##
+## file: drivers/firmware/efi/Kconfig
+##
+#. Enable until support for loading initrd from a device path is supported
+#. in bootloaders, cf. #997907 for details.
+CONFIG_EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER=y
+
+##
 ## file: drivers/gpio/Kconfig
 ##
 CONFIG_GPIOLIB=y
