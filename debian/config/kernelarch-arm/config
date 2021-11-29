@@ -91,6 +91,11 @@ CONFIG_MTD_PHYSMAP=y
 # CONFIG_PCI_IOV is not set
 
 ##
+## file: drivers/pwm/Kconfig
+##
+CONFIG_PWM_RASPBERRYPI_POE=m
+
+##
 ## file: drivers/scsi/Kconfig
 ##
 # CONFIG_BLK_DEV_3W_XXXX_RAID is not set

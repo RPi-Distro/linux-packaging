@@ -8,6 +8,9 @@ linux (5.16~rc2-1~exp1) UNRELEASED; urgency=medium
     EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER (Closes: #997907)
   * liblockdep: Remove code to build liblockdep packages
 
+  [ Uwe Kleine-König ]
+  * [arm*] Enable support for Raspberry Pi POE hat (PWM_RASPBERRYPI_POE)
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 22 Nov 2021 12:57:16 +0100
 
 linux (5.16~rc1-1~exp1) experimental; urgency=medium
