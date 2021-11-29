@@ -1,4 +1,4 @@
-linux (5.16~rc3-1~exp1) UNRELEASED; urgency=medium
+linux (5.16~rc3-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
 
@@ -14,7 +14,7 @@ linux (5.16~rc3-1~exp1) UNRELEASED; urgency=medium
   * [arm*] Enable suport for pinctrl-based I2C multiplexer (I2C_MUX_PINCTRL).
     These are used (among others) on the Raspberry Pi CM4 IO Board.
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 22 Nov 2021 12:57:16 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 29 Nov 2021 17:22:55 +0100
 
 linux (5.16~rc1-1~exp1) experimental; urgency=medium
 
