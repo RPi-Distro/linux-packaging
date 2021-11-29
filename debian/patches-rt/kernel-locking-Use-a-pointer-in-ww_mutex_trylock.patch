@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 4 Nov 2021 13:12:13 +0100
 Subject: [PATCH] kernel/locking: Use a pointer in ww_mutex_trylock().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc2-rt4.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc3-rt5.tar.xz
 
 mutex_acquire_nest() expects a pointer, pass the pointer.
 

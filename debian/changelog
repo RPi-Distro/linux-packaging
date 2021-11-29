@@ -7,6 +7,7 @@ linux (5.16~rc3-1~exp1) UNRELEASED; urgency=medium
   * [arm64] drivers/firmware/efi: Enable
     EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER (Closes: #997907)
   * liblockdep: Remove code to build liblockdep packages
+  * [rt] Update to 5.16-rc3-rt5
 
   [ Uwe Kleine-König ]
   * [arm*] Enable support for Raspberry Pi POE hat (PWM_RASPBERRYPI_POE)

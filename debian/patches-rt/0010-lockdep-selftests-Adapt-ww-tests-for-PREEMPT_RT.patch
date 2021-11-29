@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 12 Aug 2021 18:13:39 +0200
 Subject: [PATCH 10/10] lockdep/selftests: Adapt ww-tests for PREEMPT_RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc2-rt4.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc3-rt5.tar.xz
 
 The ww-mutex selftest operates directly on ww_mutex::base and assumes
 its type is struct mutex. This isn't true on PREEMPT_RT which turns the
