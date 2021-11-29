@@ -10,6 +10,8 @@ linux (5.16~rc3-1~exp1) UNRELEASED; urgency=medium
 
   [ Uwe Kleine-König ]
   * [arm*] Enable support for Raspberry Pi POE hat (PWM_RASPBERRYPI_POE)
+  * [arm*] Enable suport for pinctrl-based I2C multiplexer (I2C_MUX_PINCTRL).
+    These are used (among others) on the Raspberry Pi CM4 IO Board.
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 22 Nov 2021 12:57:16 +0100
 
