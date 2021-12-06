@@ -1,7 +1,7 @@
 From: Minchan Kim <minchan@kernel.org>
 Subject: zsmalloc: rename zs_stat_type to class_stat_type
 Date: Mon, 15 Nov 2021 10:59:02 -0800
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc3-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc4-rt8.tar.xz
 
 The stat aims for class stat, not zspage so rename it.
 

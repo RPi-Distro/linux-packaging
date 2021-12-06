@@ -28,16 +28,19 @@ printk__Enhance_the_condition_check_of_msleep_in_pr_flush.patch
 ###########################################################################
 # Posted and applied
 ###########################################################################
-mm-Disable-zsmalloc-on-PREEMPT_RT.patch
+net-Write-lock-dev_base_lock-without-disabling-botto.patch
+fs-namespace-Boost-the-mount_lock.lock-owner-instead.patch
+0001-blk-mq-Add-blk_mq_complete_request_direct.patch
+0002-mmc-core-Use-blk_mq_complete_request_direct.patch
 
 ###########################################################################
 # Posted
 ###########################################################################
 irq_poll-Use-raise_softirq_irqoff-in-cpu_dead-notifi.patch
 smp_wake_ksoftirqd_on_preempt_rt_instead_do_softirq.patch
-fs-namespace-Boost-the-mount_lock.lock-owner-instead.patch
 fscache-Use-only-one-fscache_object_cong_wait.patch
 kernel-locking-Use-a-pointer-in-ww_mutex_trylock.patch
+tcp-Don-t-acquire-inet_listen_hashbucket-lock-with-d.patch
 
 # sched
 0001_kernel_fork_redo_ifdefs_around_task_s_handling.patch
@@ -49,33 +52,30 @@ kernel-locking-Use-a-pointer-in-ww_mutex_trylock.patch
 0007_kernel_fork_only_cache_the_vmap_stack_in_finish_task_switch.patch
 0008_kernel_fork_use_is_enabled_in_account_kernel_stack.patch
 
+# lockdep
+0001-sched-Trigger-warning-if-migration_disabled-counter-.patch
+0002-locking-Remove-rt_rwlock_is_contended.patch
+0003-locking-rtmutex-Squash-self-deadlock-check-for-ww_rt.patch
+0004-locking-rtmutex-Add-rt_mutex_lock_nest_lock-and-rt_m.patch
+0005-lockdep-Remove-softirq-accounting-on-PREEMPT_RT.patch
+0006-lockdep-selftests-Avoid-using-local_lock_-acquire-re.patch
+0007-lockdep-selftests-Unbalanced-migrate_disable-rcu_rea.patch
+0008-lockdep-selftests-Skip-the-softirq-related-tests-on-.patch
+0009-lockdep-selftests-Adapt-ww-tests-for-PREEMPT_RT.patch
+0010-x86-mm-Include-spinlock_t-definition-in-pgtable.patch
+0011-locking-Allow-to-include-asm-spinlock_types.h-from-l.patch
+
 ###########################################################################
 # Post
 ###########################################################################
 cgroup__use_irqsave_in_cgroup_rstat_flush_locked.patch
 mm__workingset__replace_IRQ-off_check_with_a_lockdep_assert..patch
-tcp__Remove_superfluous_BH-disable_around_listening_hash.patch
+softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
 
 ###########################################################################
 # Kconfig bits:
 ###########################################################################
 jump-label__disable_if_stop_machine_is_used.patch
-
-###########################################################################
-# Locking: RT bits. Need review
-###########################################################################
-locking-Remove-rt_rwlock_is_contended.patch
-lockdep-selftests-Avoid-using-local_lock_-acquire-re.patch
-0001-sched-Trigger-warning-if-migration_disabled-counter-.patch
-0003-rtmutex-Add-a-special-case-for-ww-mutex-handling.patch
-0004-rtmutex-Add-rt_mutex_lock_nest_lock-and-rt_mutex_loc.patch
-0005-lockdep-Make-it-RT-aware.patch
-0006-lockdep-selftests-Add-rtmutex-to-the-last-column.patch
-0007-lockdep-selftests-Unbalanced-migrate_disable-rcu_rea.patch
-0008-lockdep-selftests-Skip-the-softirq-related-tests-on-.patch
-0010-lockdep-selftests-Adapt-ww-tests-for-PREEMPT_RT.patch
-x86-mm-Include-spinlock_t-definition-in-pgtable.patch
-locking-Allow-to-include-asm-spinlock_types.h-from-l.patch
 
 ###########################################################################
 # preempt: Conditional variants
@@ -143,7 +143,6 @@ net__dev__always_take_qdiscs_busylock_in___dev_xmit_skb.patch
 # randomness:
 ###########################################################################
 panic__skip_get_random_bytes_for_RT_FULL_in_init_oops_id.patch
-x86__stackprotector__Avoid_random_pool_on_rt.patch
 random__Make_it_work_on_rt.patch
 
 ###########################################################################
@@ -176,7 +175,7 @@ drivers_block_zram__Replace_bit_spinlocks_with_rtmutex_for_-rt.patch
 generic-softirq-Disable-softirq-stacks-on-PREEMPT_RT.patch
 softirq-Disable-softirq-stacks-on-PREEMPT_RT.patch
 
-# zsmalloc
+# zsmalloc, applied, akpm
 0001_zsmalloc_introduce_some_helper_functions.patch
 0002_zsmalloc_rename_zs_stat_type_to_class_stat_type.patch
 0003_zsmalloc_decouple_class_actions_from_zspage_works.patch
@@ -186,7 +185,6 @@ softirq-Disable-softirq-stacks-on-PREEMPT_RT.patch
 0007_locking_rwlocks_introduce_write_lock_nested.patch
 0008_zsmalloc_replace_per_zpage_lock_with_pool_migrate_lock.patch
 0009_zsmalloc_replace_get_cpu_var_with_local_lock.patch
-zsmalloc-enable.patch
 
 ###########################################################################
 # Lazy preemption

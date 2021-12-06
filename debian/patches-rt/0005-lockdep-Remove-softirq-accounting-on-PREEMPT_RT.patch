@@ -1,21 +1,25 @@
 From: Thomas Gleixner <tglx@linutronix.de>
-Date: Sun, 17 Jul 2011 18:51:23 +0200
-Subject: [PATCH 05/10] lockdep: Make it RT aware
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc3-rt5.tar.xz
+Date: Mon, 29 Nov 2021 18:46:48 +0100
+Subject: [PATCH 05/11] lockdep: Remove softirq accounting on PREEMPT_RT.
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc4-rt8.tar.xz
 
 There is not really a softirq context on PREEMPT_RT.
-Softirqs on PREEMPT_RT are always invoked within the context of a threaded
-interrupt handler or within ksoftirqd. The "in-softirq" context is preemptible
-and is protected by a per-CPU lock to ensure mutual exclusion.
+Softirqs on PREEMPT_RT are always invoked within the context of a
+threaded interrupt handler or within ksoftirqd. The "in-softirq" context
+is preemptible and is protected by a per-CPU lock to ensure mutual
+exclusion.
 
-There is no difference on PREEMPT_RT between spin_lock_irq() and spin_lock()
-because the former does not disable interrupts. Therefore if lock is used
-in_softirq() and locked once with spin_lock_irq() then lockdep will report this
-with "inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage".
+There is no difference on PREEMPT_RT between spin_lock_irq() and
+spin_lock() because the former does not disable interrupts. Therefore if
+a lock is used in_softirq() and locked once with spin_lock_irq() then
+lockdep will report this with "inconsistent {SOFTIRQ-ON-W} ->
+{IN-SOFTIRQ-W} usage".
 
 Teach lockdep that we don't really do softirqs on -RT.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20211129174654.668506-6-bigeasy@linutronix.de
 ---
  include/linux/irqflags.h |   23 +++++++++++++++--------
  kernel/locking/lockdep.c |    2 ++

@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Date: Thu, 12 Aug 2021 18:13:39 +0200
-Subject: [PATCH 10/10] lockdep/selftests: Adapt ww-tests for PREEMPT_RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc3-rt5.tar.xz
+Date: Mon, 29 Nov 2021 18:46:52 +0100
+Subject: [PATCH 09/11] lockdep/selftests: Adapt ww-tests for PREEMPT_RT
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc4-rt8.tar.xz
 
 The ww-mutex selftest operates directly on ww_mutex::base and assumes
 its type is struct mutex. This isn't true on PREEMPT_RT which turns the
@@ -14,6 +14,7 @@ true for the MUTEX and RTMUTEX implementation of WW-MUTEX. The
 assignment is required in order to pass the tests.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20211129174654.668506-10-bigeasy@linutronix.de
 ---
  lib/locking-selftest.c |   76 +++++++++++++++++++++++++++++--------------------
  1 file changed, 46 insertions(+), 30 deletions(-)

@@ -1,7 +1,7 @@
 From: Minchan Kim <minchan@kernel.org>
 Subject: zsmalloc: introduce obj_allocated
 Date: Mon, 15 Nov 2021 10:59:04 -0800
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc3-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc4-rt8.tar.xz
 
 The usage pattern for obj_to_head is to check whether the zpage
 is allocated or not. Thus, introduce obj_allocated.

@@ -1,7 +1,7 @@
 Subject: kdb: only use atomic consoles for output mirroring
 From: John Ogness <john.ogness@linutronix.de>
 Date: Fri Mar 19 14:57:31 2021 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc3-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc4-rt8.tar.xz
 
 From: John Ogness <john.ogness@linutronix.de>
 

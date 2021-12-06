@@ -1,7 +1,7 @@
 From: Minchan Kim <minchan@kernel.org>
 Subject: locking/rwlocks: introduce write_lock_nested
 Date: Mon, 15 Nov 2021 10:59:07 -0800
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc3-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc4-rt8.tar.xz
 
 In preparation for converting bit_spin_lock to rwlock in zsmalloc
 so that multiple writers of zspages can run at the same time but

@@ -1,8 +1,8 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Date: Thu, 12 Aug 2021 14:25:38 +0200
-Subject: [PATCH 07/10] lockdep/selftests: Unbalanced migrate_disable() &
- rcu_read_lock()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc3-rt5.tar.xz
+Date: Mon, 29 Nov 2021 18:46:50 +0100
+Subject: [PATCH 07/11] lockdep/selftests: Unbalanced migrate_disable() &
+ rcu_read_lock().
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc4-rt8.tar.xz
 
 The tests with unbalanced lock() + unlock() operation leave a modified
 preemption counter behind which is then reset to its original value
@@ -11,10 +11,10 @@ after the test.
 The spin_lock() function on PREEMPT_RT does not include a
 preempt_disable() statement but migrate_disable() and read_rcu_lock().
 As a consequence both counter never get back to their original value and
-system explodes later after the selftest.
+the system explodes later after the selftest.
 In the double-unlock case on PREEMPT_RT, the migrate_disable() and RCU
-code will trigger which should be avoided. These counter should not be
-decremented below their initial value.
+code will trigger a warning which should be avoided. These counter
+should not be decremented below their initial value.
 
 Save both counters and bring them back to their original value after the
 test.
@@ -22,6 +22,7 @@ In the double-unlock case, increment both counter in advance to they
 become balanced after the double unlock.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20211129174654.668506-8-bigeasy@linutronix.de
 ---
  lib/locking-selftest.c |   26 +++++++++++++++++++++++++-
  1 file changed, 25 insertions(+), 1 deletion(-)

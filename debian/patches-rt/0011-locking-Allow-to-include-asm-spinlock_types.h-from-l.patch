@@ -1,19 +1,21 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Date: Tue, 17 Aug 2021 09:48:31 +0200
-Subject: [PATCH] locking: Allow to include asm/spinlock_types.h from
+Date: Mon, 29 Nov 2021 18:46:54 +0100
+Subject: [PATCH 11/11] locking: Allow to include asm/spinlock_types.h from
  linux/spinlock_types_raw.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc3-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc4-rt8.tar.xz
 
 The printk header file includes ratelimit_types.h for its __ratelimit()
-based usage. It requires it for the static initializer used in
+based usage. It is required for the static initializer used in
 printk_ratelimited(). It uses a raw_spinlock_t and includes the
-spinlock_types.h. It makes no difference on non PREEMPT-RT builds but
-PREEMPT-RT replaces the inner part of some locks and therefore includes
-rtmutex.h and atomic.h which leads to recursive includes where defines
-are missing.
+spinlock_types.h.
+
+PREEMPT_RT substitutes spinlock_t with a rtmutex based implementation and so
+its spinlock_t implmentation (provided by spinlock_rt.h) includes rtmutex.h and
+atomic.h which leads to recursive includes where defines are missing.
+
 By including only the raw_spinlock_t defines it avoids the atomic.h
 related includes at this stage.
 
@@ -92,7 +94,42 @@ The generic fallback is not included, atomics itself are not used. If
 kernel.h does not include printk.h then it comes later from the bug.h
 include.
 
+Allow asm/spinlock_types.h to be included from
+linux/spinlock_types_raw.h.
+
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Brian Cain <bcain@codeaurora.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Chris Zankel <chris@zankel.net>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Guo Ren <guoren@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
+Cc: Matt Turner <mattst88@gmail.com>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Rich Felker <dalias@libc.org>
+Cc: Richard Henderson <rth@twiddle.net>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-hexagon@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20211129174654.668506-12-bigeasy@linutronix.de
 ---
  arch/alpha/include/asm/spinlock_types.h          |    2 +-
  arch/arm/include/asm/spinlock_types.h            |    2 +-
