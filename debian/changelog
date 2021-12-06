@@ -4,6 +4,8 @@ linux (5.16~rc4-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 5.16-rc4-rt8
+  * Makefile: Do not quote value for CONFIG_CC_IMPLICIT_FALLTHROUGH
+    (Closes: #1001083)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 06 Dec 2021 07:32:38 +0100
 

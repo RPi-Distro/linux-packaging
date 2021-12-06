@@ -1,0 +1,45 @@
+From: Salvatore Bonaccorso <carnil@debian.org>
+Date: Mon, 6 Dec 2021 21:42:01 +0100
+Subject: Makefile: Do not quote value for CONFIG_CC_IMPLICIT_FALLTHROUGH
+Origin: https://git.kernel.org/linus/cd8c917a56f20f48748dd43d9ae3caff51d5b987
+Bug-Debian: https://bugs.debian.org/1001083
+
+Andreas reported that a specific build environment for an external
+module, being a bit broken, does pass CC_IMPLICIT_FALLTHROUGH quoted as
+argument to gcc, causing an error
+
+  gcc-11: error: "-Wimplicit-fallthrough=5": linker input file not found: No such file or directory
+
+Until this is more generally fixed as outlined in [1], by fixing
+scripts/link-vmlinux.sh, scripts/gen_autoksyms.sh, etc to not directly
+include the include/config/auto.conf, and in a second step, change
+Kconfig to generate the auto.conf without "", workaround the issue by
+explicitly unquoting CC_IMPLICIT_FALLTHROUGH.
+
+Reported-by: Andreas Beckmann <anbe@debian.org>
+Link: https://bugs.debian.org/1001083
+Link: https://lore.kernel.org/linux-kbuild/CAK7LNAR-VXwHFEJqCcrFDZj+_4+Xd6oynbj_0eS8N504_ydmyw@mail.gmail.com/ [1]
+Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 8e35d7804fef..ef967a26bcd3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -789,7 +789,7 @@ stackp-flags-$(CONFIG_STACKPROTECTOR_STRONG)      := -fstack-protector-strong
+ KBUILD_CFLAGS += $(stackp-flags-y)
+ 
+ KBUILD_CFLAGS-$(CONFIG_WERROR) += -Werror
+-KBUILD_CFLAGS += $(KBUILD_CFLAGS-y) $(CONFIG_CC_IMPLICIT_FALLTHROUGH)
++KBUILD_CFLAGS += $(KBUILD_CFLAGS-y) $(CONFIG_CC_IMPLICIT_FALLTHROUGH:"%"=%)
+ 
+ ifdef CONFIG_CC_IS_CLANG
+ KBUILD_CPPFLAGS += -Qunused-arguments
+-- 
+2.34.1
+
