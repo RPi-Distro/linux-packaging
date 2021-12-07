@@ -6,6 +6,8 @@ linux (5.16~rc4-1~exp1) UNRELEASED; urgency=medium
   * [rt] Update to 5.16-rc4-rt8
   * Makefile: Do not quote value for CONFIG_CC_IMPLICIT_FALLTHROUGH
     (Closes: #1001083)
+  * [arm64] drivers/iio/adc: Enable QCOM_SPMI_IADC, QCOM_SPMI_VADC and
+    ROCKCHIP_SARADC as modules (Closes: #1001080)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 06 Dec 2021 07:32:38 +0100
 
