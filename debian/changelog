@@ -1,4 +1,4 @@
-linux (5.16~rc4-1~exp1) UNRELEASED; urgency=medium
+linux (5.16~rc4-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
 
@@ -11,7 +11,7 @@ linux (5.16~rc4-1~exp1) UNRELEASED; urgency=medium
   * [armhf] drivers/iio/adc: Enable ASPEED_ADC, EXYNOS_ADC, ROCKCHIP_SARADC,
     TI_AM335X_ADC and TWL4030_MADC as modules (Closes: #1001080)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 06 Dec 2021 07:32:38 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 07 Dec 2021 22:52:32 +0100
 
 linux (5.16~rc3-1~exp1) experimental; urgency=medium
 
