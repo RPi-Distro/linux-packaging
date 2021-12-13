@@ -1,26 +1,29 @@
-Subject: u64_stats: Disable preemption on 32bit-UP/SMP with RT during updates
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Date: Mon Aug 17 12:28:10 2020 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc4-rt8.tar.xz
+Date: Mon, 17 Aug 2020 12:28:10 +0200
+Subject: [PATCH] u64_stats: Disable preemption on 32bit UP+SMP PREEMPT_RT
+ during updates.
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc5-rt10.tar.xz
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+On PREEMPT_RT the seqcount_t for synchronisation is required on 32bit
+architectures even on UP because the softirq (and the threaded IRQ handler) can
+be preempted.
 
-On RT the seqcount_t is required even on UP because the softirq can be
-preempted. The IRQ handler is threaded so it is also preemptible.
+With the seqcount_t for synchronisation, a reader with higher priority can
+preempt the writer and then spin endlessly in read_seqcount_begin() while the
+writer can't make progress.
 
-Disable preemption on 32bit-RT during value updates. There is no need to
-disable interrupts on RT because the handler is run threaded. Therefore
-disabling preemption is enough to guarantee that the update is not
-interruped.
+To avoid such a lock up on PREEMPT_RT the writer must disable preemption during
+the update. There is no need to disable interrupts because no writer is using
+this API in hard-IRQ context on PREEMPT_RT.
+
+Disable preemption on 32bit-RT within the u64_stats write section.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-
-
+Link: https://lore.kernel.org/r/YbO4x7vRoDGUWxrv@linutronix.de
 ---
  include/linux/u64_stats_sync.h |   42 +++++++++++++++++++++++++++--------------
  1 file changed, 28 insertions(+), 14 deletions(-)
----
+
 --- a/include/linux/u64_stats_sync.h
 +++ b/include/linux/u64_stats_sync.h
 @@ -66,7 +66,7 @@
@@ -28,7 +31,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
  struct u64_stats_sync {
 -#if BITS_PER_LONG==32 && defined(CONFIG_SMP)
-+#if BITS_PER_LONG==32 && (defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT))
++#if BITS_PER_LONG == 32 && (defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT))
  	seqcount_t	seq;
  #endif
  };

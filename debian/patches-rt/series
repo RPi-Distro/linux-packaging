@@ -32,25 +32,8 @@ net-Write-lock-dev_base_lock-without-disabling-botto.patch
 fs-namespace-Boost-the-mount_lock.lock-owner-instead.patch
 0001-blk-mq-Add-blk_mq_complete_request_direct.patch
 0002-mmc-core-Use-blk_mq_complete_request_direct.patch
-
-###########################################################################
-# Posted
-###########################################################################
-irq_poll-Use-raise_softirq_irqoff-in-cpu_dead-notifi.patch
-smp_wake_ksoftirqd_on_preempt_rt_instead_do_softirq.patch
-fscache-Use-only-one-fscache_object_cong_wait.patch
+drm-i915-Don-t-disable-interrupts-and-pretend-a-lock.patch
 kernel-locking-Use-a-pointer-in-ww_mutex_trylock.patch
-tcp-Don-t-acquire-inet_listen_hashbucket-lock-with-d.patch
-
-# sched
-0001_kernel_fork_redo_ifdefs_around_task_s_handling.patch
-0002_kernel_fork_duplicate_task_struct_before_stack_allocation.patch
-0003_kernel_fork_ia64_provide_a_alloc_thread_stack_node_for_ia64.patch
-0004_kernel_fork_don_t_assign_the_stack_pointer_in_dup_task_struct.patch
-0005_kernel_fork_move_memcg_charge_kernel_stack_into_config_vmap_stack.patch
-0006_kernel_fork_move_task_stack_account_to_do_exit.patch
-0007_kernel_fork_only_cache_the_vmap_stack_in_finish_task_switch.patch
-0008_kernel_fork_use_is_enabled_in_account_kernel_stack.patch
 
 # lockdep
 0001-sched-Trigger-warning-if-migration_disabled-counter-.patch
@@ -64,6 +47,35 @@ tcp-Don-t-acquire-inet_listen_hashbucket-lock-with-d.patch
 0009-lockdep-selftests-Adapt-ww-tests-for-PREEMPT_RT.patch
 0010-x86-mm-Include-spinlock_t-definition-in-pgtable.patch
 0011-locking-Allow-to-include-asm-spinlock_types.h-from-l.patch
+
+###########################################################################
+# Posted
+###########################################################################
+irq_poll-Use-raise_softirq_irqoff-in-cpu_dead-notifi.patch
+smp_wake_ksoftirqd_on_preempt_rt_instead_do_softirq.patch
+fscache-Use-only-one-fscache_object_cong_wait.patch
+tcp-Don-t-acquire-inet_listen_hashbucket-lock-with-d.patch
+panic_remove_oops_id.patch
+mm-memcontrol-Disable-on-PREEMPT_RT.patch
+net-dev-Always-serialize-on-Qdisc-busylock-in-__dev_.patch
+u64_stats-Disable-preemption-on-32bit-UP-SMP-PREEMPT.patch
+
+# sched
+0001_kernel_fork_redo_ifdefs_around_task_s_handling.patch
+0002_kernel_fork_duplicate_task_struct_before_stack_allocation.patch
+0003_kernel_fork_ia64_provide_a_alloc_thread_stack_node_for_ia64.patch
+0004_kernel_fork_don_t_assign_the_stack_pointer_in_dup_task_struct.patch
+0005_kernel_fork_move_memcg_charge_kernel_stack_into_config_vmap_stack.patch
+0006_kernel_fork_move_task_stack_account_to_do_exit.patch
+0007_kernel_fork_only_cache_the_vmap_stack_in_finish_task_switch.patch
+0008_kernel_fork_use_is_enabled_in_account_kernel_stack.patch
+
+# random
+0001_random_remove_unused_irq_flags_argument_from_add_interrupt_randomness.patch
+0002_irq_remove_unsued_flags_argument_from___handle_irq_event_percpu.patch
+0003_random_split_add_interrupt_randomness.patch
+0004_random_move_the_fast_pool_reset_into_the_caller.patch
+0005_random_defer_processing_of_randomness_on_preempt_rt.patch
 
 ###########################################################################
 # Post
@@ -101,20 +113,6 @@ crypto__cryptd_-_add_a_lock_instead_preempt_disable_local_bh_disable.patch
 softirq__Check_preemption_after_reenabling_interrupts.patch
 
 ###########################################################################
-# mm: Assorted RT bits. Need care
-###########################################################################
-u64_stats__Disable_preemption_on_32bit-UP_SMP_with_RT_during_updates.patch
-
-###########################################################################
-# Disable memcontrol for now. The protection scopes are FUBARed
-###########################################################################
-mm-memcontro--Disable-on-PREEMPT_RT.patch
-#mm_memcontrol__Disable_preemption_in___mod_memcg_lruvec_state.patch
-#mm__memcontrol__Replace_disable-IRQ_locking_with_a_local_lock.patch
-#mm_memcontrol__Dont_call_schedule_work_on_in_preemption_disabled_context.patch
-#mm_memcontrol__Replace_local_irq_disable_with_local_locks.patch
-
-###########################################################################
 # ptrace: Revisit
 ###########################################################################
 signal__Revert_ptrace_preempt_magic.patch
@@ -136,19 +134,10 @@ rcu__Delay_RCU-selftests.patch
 ###########################################################################
 net_core__use_local_bh_disable_in_netif_rx_ni.patch
 net__Use_skbufhead_with_raw_lock.patch
-net__Dequeue_in_dev_cpu_dead_without_the_lock.patch
-net__dev__always_take_qdiscs_busylock_in___dev_xmit_skb.patch
-
-###########################################################################
-# randomness:
-###########################################################################
-panic__skip_get_random_bytes_for_RT_FULL_in_init_oops_id.patch
-random__Make_it_work_on_rt.patch
 
 ###########################################################################
 # DRM:
 ###########################################################################
-0002-drm-i915-Don-t-disable-interrupts-and-pretend-a-lock.patch
 0003-drm-i915-Use-preempt_disable-enable_rt-where-recomme.patch
 0004-drm-i915-Don-t-disable-interrupts-on-PREEMPT_RT-duri.patch
 0005-drm-i915-Don-t-check-for-atomic-context-on-PREEMPT_R.patch

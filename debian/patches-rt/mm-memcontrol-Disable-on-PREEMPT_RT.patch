@@ -1,0 +1,43 @@
+From: Thomas Gleixner <tglx@linutronix.de>
+Date: Tue, 7 Dec 2021 16:52:09 +0100
+Subject: [PATCH] mm/memcontrol: Disable on PREEMPT_RT
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc5-rt10.tar.xz
+
+MEMCG has a few constructs which are not compatible with PREEMPT_RT's
+requirements. This includes:
+- relying on disabled interrupts from spin_lock_irqsave() locking for
+  something not related to lock itself (like the per-CPU counter).
+
+- explicitly disabling interrupts and acquiring a spinlock_t based lock
+  like in memcg_check_events() -> eventfd_signal().
+
+- explicitly disabling interrupts and freeing memory like in
+  drain_obj_stock() -> obj_cgroup_put() -> obj_cgroup_release() ->
+  percpu_ref_exit().
+
+Commit 559271146efc ("mm/memcg: optimize user context object stock
+access") continued to optimize for the CPU local access which
+complicates the PREEMPT_RT locking requirements further.
+
+Disable MEMCG on PREEMPT_RT until the whole situation can be evaluated
+again.
+
+[ bigeasy: commit description. ]
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lkml.kernel.org/r/20211207155208.eyre5svucpg7krxe@linutronix.de
+---
+ init/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -943,6 +943,7 @@ config PAGE_COUNTER
+ 
+ config MEMCG
+ 	bool "Memory controller"
++	depends on !PREEMPT_RT
+ 	select PAGE_COUNTER
+ 	select EVENTFD
+ 	help
