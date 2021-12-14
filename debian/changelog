@@ -5,6 +5,7 @@ linux (5.16~rc5-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 5.16-rc5-rt10
+  * Refresh "Export symbols needed by Android drivers"
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 13 Dec 2021 20:29:01 +0100
 
