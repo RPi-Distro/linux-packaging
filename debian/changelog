@@ -1,4 +1,4 @@
-linux (5.16~rc5-1~exp1) UNRELEASED; urgency=medium
+linux (5.16~rc5-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
     - nfsd: fix use-after-free due to delegation race (Closes: #988044)
@@ -8,7 +8,7 @@ linux (5.16~rc5-1~exp1) UNRELEASED; urgency=medium
   * Refresh "Export symbols needed by Android drivers"
   * net/tls: Enable TLS_DEVICE (Closes: #1001731)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 13 Dec 2021 20:29:01 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 15 Dec 2021 09:31:18 +0100
 
 linux (5.16~rc4-1~exp1) experimental; urgency=medium
 
