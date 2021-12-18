@@ -1,3 +1,11 @@
+linux (5.16~rc5-1~exp2) UNRELEASED; urgency=medium
+
+  [ Aurelien Jarno ]
+  * [riscv64] Improve HiFive Unmatched support: enable INPUT_DA9063_ONKEY,
+    MFD_DA9063, REGULATOR_DA9063, RTC_DRV_DA9063, DA9063_WATCHDOG.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Sat, 18 Dec 2021 23:33:18 +0100
+
 linux (5.16~rc5-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
