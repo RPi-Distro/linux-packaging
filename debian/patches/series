@@ -114,6 +114,7 @@ bugfix/all/USB-gadget-detect-too-big-endpoint-0-requests.patch
 bugfix/all/USB-gadget-zero-allocate-endpoint-0-buffers.patch
 bugfix/all/bpf-fix-kernel-address-leakage-in-atomic-fetch.patch
 bugfix/all/bpf-fix-signed-bounds-propagation-after-mov32.patch
+bugfix/all/bpf-make-32-64-bounds-propagation-slightly-more-robust.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
