@@ -109,6 +109,7 @@ debian/ntfs-mark-it-as-broken.patch
 bugfix/all/atlantic-Fix-OOB-read-and-write-in-hw_atl_utils_fw_r.patch
 bugfix/all/fget-check-that-the-fd-still-exists-after-getting-a-.patch
 bugfix/all/USB-gadget-detect-too-big-endpoint-0-requests.patch
+bugfix/all/USB-gadget-zero-allocate-endpoint-0-buffers.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
