@@ -4,6 +4,7 @@ linux (5.15.5-2) UNRELEASED; urgency=medium
     (CVE-2021-43975)
   * fget: check that the fd still exists after getting a ref to it
     (CVE-2021-4083)
+  * USB: gadget: detect too-big endpoint 0 requests (CVE-2021-39685)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 18 Dec 2021 21:47:19 +0100
 
