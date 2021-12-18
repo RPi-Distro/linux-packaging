@@ -64,6 +64,23 @@ linux (5.16~rc1-1~exp1) experimental; urgency=medium
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 19 Nov 2021 22:45:28 +0100
 
+linux (5.15.5-2) unstable; urgency=medium
+
+  * atlantic: Fix OOB read and write in hw_atl_utils_fw_rpc_wait
+    (CVE-2021-43975)
+  * fget: check that the fd still exists after getting a ref to it
+    (CVE-2021-4083)
+  * USB: gadget: detect too-big endpoint 0 requests (CVE-2021-39685)
+  * USB: gadget: zero allocate endpoint 0 buffers (CVE-2021-39685)
+  * [x86] Revert "drm/i915: Implement Wa_1508744258" (Closes: #1001128)
+  * nfsd: fix use-after-free due to delegation race (Closes: #988044)
+  * bpf: Fix kernel address leakage in atomic fetch
+  * bpf: Fix signed bounds propagation after mov32
+  * bpf: Make 32->64 bounds propagation slightly more robust
+  * bpf: Fix kernel address leakage in atomic cmpxchg's r0 aux reg
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 19 Dec 2021 00:20:10 +0100
+
 linux (5.15.5-1) unstable; urgency=medium
 
   * New upstream stable update:
