@@ -2,6 +2,8 @@ linux (5.15.5-2) UNRELEASED; urgency=medium
 
   * atlantic: Fix OOB read and write in hw_atl_utils_fw_rpc_wait
     (CVE-2021-43975)
+  * fget: check that the fd still exists after getting a ref to it
+    (CVE-2021-4083)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 18 Dec 2021 21:47:19 +0100
 
