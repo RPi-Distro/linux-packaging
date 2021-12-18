@@ -9,6 +9,7 @@ linux (5.15.5-2) UNRELEASED; urgency=medium
   * [x86] Revert "drm/i915: Implement Wa_1508744258" (Closes: #1001128)
   * nfsd: fix use-after-free due to delegation race (Closes: #988044)
   * bpf: Fix kernel address leakage in atomic fetch
+  * bpf: Fix signed bounds propagation after mov32
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 18 Dec 2021 21:47:19 +0100
 
