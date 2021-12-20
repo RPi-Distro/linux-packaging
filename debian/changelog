@@ -9,6 +9,7 @@ linux (5.16~rc6-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * xen/blkfront: harden blkfront against event channel storms (CVE-2021-28711)
   * xen/netfront: harden netfront against event channel storms (CVE-2021-28712)
+  * xen/console: harden hvc_xen against event channel storms (CVE-2021-28713)
 
  -- Aurelien Jarno <aurel32@debian.org>  Sat, 18 Dec 2021 23:33:18 +0100
 
