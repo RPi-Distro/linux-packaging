@@ -6,6 +6,9 @@ linux (5.16~rc6-1~exp1) UNRELEASED; urgency=medium
   * [riscv64] Improve HiFive Unmatched support: enable INPUT_DA9063_ONKEY,
     MFD_DA9063, REGULATOR_DA9063, RTC_DRV_DA9063, DA9063_WATCHDOG.
 
+  [ Salvatore Bonaccorso ]
+  * xen/blkfront: harden blkfront against event channel storms (CVE-2021-28711)
+
  -- Aurelien Jarno <aurel32@debian.org>  Sat, 18 Dec 2021 23:33:18 +0100
 
 linux (5.16~rc5-1~exp1) experimental; urgency=medium
