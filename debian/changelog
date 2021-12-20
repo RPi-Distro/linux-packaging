@@ -11,6 +11,7 @@ linux (5.16~rc6-1~exp1) UNRELEASED; urgency=medium
   * xen/netfront: harden netfront against event channel storms (CVE-2021-28712)
   * xen/console: harden hvc_xen against event channel storms (CVE-2021-28713)
   * xen/netback: fix rx queue stall detection (CVE-2021-28714)
+  * xen/netback: don't queue unlimited number of packages (CVE-2021-28715)
 
  -- Aurelien Jarno <aurel32@debian.org>  Sat, 18 Dec 2021 23:33:18 +0100
 

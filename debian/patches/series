@@ -109,6 +109,7 @@ bugfix/all/xen-blkfront-harden-blkfront-against-event-channel-s.patch
 bugfix/all/xen-netfront-harden-netfront-against-event-channel-s.patch
 bugfix/all/xen-console-harden-hvc_xen-against-event-channel-sto.patch
 bugfix/all/xen-netback-fix-rx-queue-stall-detection.patch
+bugfix/all/xen-netback-don-t-queue-unlimited-number-of-packages.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
