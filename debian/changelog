@@ -12,6 +12,8 @@ linux (5.16~rc6-1~exp2) UNRELEASED; urgency=medium
     SURFACE_GPE, SURFACE_HOTPLUG and SURFACE_PLATFORM_PROFILE as modules
   * [x86] drivers/hid/surface-hid: Enable SURFACE_HID and SURFACE_KBD as
     modules
+  * [x86] drivers/power/supply: Enable BATTERY_SURFACE and CHARGER_SURFACE as
+    modules
 
  -- Uwe Kleine-König <ukleinek@debian.org>  Wed, 22 Dec 2021 09:28:37 +0100
 
