@@ -1423,6 +1423,11 @@ CONFIG_SURFACE_3_BUTTON=m
 CONFIG_SURFACE_PRO3_BUTTON=m
 
 ##
+## file: drivers/platform/surface/aggregator/Kconfig
+##
+CONFIG_SURFACE_AGGREGATOR=m
+
+##
 ## file: drivers/platform/x86/Kconfig
 ##
 CONFIG_X86_PLATFORM_DEVICES=y
