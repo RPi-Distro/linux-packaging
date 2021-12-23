@@ -34,6 +34,8 @@ fs-namespace-Boost-the-mount_lock.lock-owner-instead.patch
 0002-mmc-core-Use-blk_mq_complete_request_direct.patch
 drm-i915-Don-t-disable-interrupts-and-pretend-a-lock.patch
 kernel-locking-Use-a-pointer-in-ww_mutex_trylock.patch
+net-dev-Always-serialize-on-Qdisc-busylock-in-__dev_.patch
+u64_stats-Disable-preemption-on-32bit-UP-SMP-PREEMPT.patch
 
 # lockdep
 0001-sched-Trigger-warning-if-migration_disabled-counter-.patch
@@ -56,9 +58,6 @@ smp_wake_ksoftirqd_on_preempt_rt_instead_do_softirq.patch
 fscache-Use-only-one-fscache_object_cong_wait.patch
 tcp-Don-t-acquire-inet_listen_hashbucket-lock-with-d.patch
 panic_remove_oops_id.patch
-mm-memcontrol-Disable-on-PREEMPT_RT.patch
-net-dev-Always-serialize-on-Qdisc-busylock-in-__dev_.patch
-u64_stats-Disable-preemption-on-32bit-UP-SMP-PREEMPT.patch
 
 # sched
 0001_kernel_fork_redo_ifdefs_around_task_s_handling.patch
@@ -77,6 +76,11 @@ u64_stats-Disable-preemption-on-32bit-UP-SMP-PREEMPT.patch
 0004_random_move_the_fast_pool_reset_into_the_caller.patch
 0005_random_defer_processing_of_randomness_on_preempt_rt.patch
 
+# cgroup
+0001-mm-memcg-Protect-per-CPU-counter-by-disabling-preemp.patch
+0002-mm-memcg-Add-a-local_lock_t-for-IRQ-and-TASK-object.patch
+0003-mm-memcg-Allow-the-task_obj-optimization-only-on-non.patch
+
 ###########################################################################
 # Post
 ###########################################################################
@@ -94,6 +98,12 @@ jump-label__disable_if_stop_machine_is_used.patch
 ###########################################################################
 sched-Make-preempt_enable_no_resched-behave-like-pre.patch
 
+# net
+0001-net-dev-Remove-the-preempt_disable-in-netif_rx_inter.patch
+0002-net-dev-Remove-get_cpu-in-netif_rx_internal.patch
+0003-net-dev-Makes-sure-netif_rx-can-be-invoked-in-any-co.patch
+0004-net-dev-Make-rps_lock-disable-interrupts.patch
+
 ###########################################################################
 # sched:
 ###########################################################################
@@ -103,7 +113,6 @@ block_mq__do_not_invoke_preempt_disable.patch
 md__raid5__Make_raid5_percpu_handling_RT_aware.patch
 scsi_fcoe__Make_RT_aware..patch
 mm_vmalloc__Another_preempt_disable_region_which_sucks.patch
-net__Remove_preemption_disabling_in_netif_rx.patch
 sunrpc__Make_svc_xprt_do_enqueue_use_get_cpu_light.patch
 crypto__cryptd_-_add_a_lock_instead_preempt_disable_local_bh_disable.patch
 
@@ -128,12 +137,6 @@ fs_dcache__disable_preemption_on_i_dir_seqs_write_side.patch
 # RCU
 ###########################################################################
 rcu__Delay_RCU-selftests.patch
-
-###########################################################################
-# net:
-###########################################################################
-net_core__use_local_bh_disable_in_netif_rx_ni.patch
-net__Use_skbufhead_with_raw_lock.patch
 
 ###########################################################################
 # DRM:

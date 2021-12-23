@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: random: Defer processing of randomness on PREEMPT_RT.
 Date: Tue, 07 Dec 2021 13:17:37 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc5-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc6-rt12.tar.xz
 
 On interrupt invocation, add_interrupt_randomness() adds entropy to its
 per-CPU state and if it gathered enough of it then it will mix it into a

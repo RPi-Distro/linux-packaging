@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 1 Dec 2021 17:41:09 +0100
 Subject: [PATCH] softirq: Use a dedicated thread for timer wakeups.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc5-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc6-rt12.tar.xz
 
 A timer/hrtimer softirq is raised in-IRQ context. With threaded
 interrupts enabled or on PREEMPT_RT this leads to waking the ksoftirqd
@@ -35,6 +35,7 @@ if the softirq load is high. It is not be desired that the picked up
 softirqs are processed at SCHED_FIFO priority under high softirq load
 but this can already happen by a PI-boost by a force-threaded interrupt.
 
+Reported-by: kernel test robot <lkp@intel.com> [ static timer_threads ]
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
  include/linux/interrupt.h |   16 +++++++++
@@ -154,7 +155,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 +}
 +#endif
 +
-+struct smp_hotplug_thread timer_threads = {
++static struct smp_hotplug_thread timer_threads = {
 +        .store                  = &timersd,
 +        .setup                  = timersd_setup,
 +        .thread_should_run      = timersd_should_run,

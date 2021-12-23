@@ -1,7 +1,7 @@
 From: Minchan Kim <minchan@kernel.org>
 Subject: zsmalloc: decouple class actions from zspage works
 Date: Mon, 15 Nov 2021 10:59:03 -0800
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc5-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc6-rt12.tar.xz
 
 This patch moves class stat update out of obj_malloc since
 it's not related to zspage operation.

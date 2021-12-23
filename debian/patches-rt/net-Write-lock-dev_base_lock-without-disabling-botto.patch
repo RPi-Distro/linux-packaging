@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 26 Nov 2021 17:15:29 +0100
 Subject: [PATCH] net: Write lock dev_base_lock without disabling bottom
  halves.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc5-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc6-rt12.tar.xz
 
 The writer acquires dev_base_lock with disabled bottom halves.
 The reader can acquire dev_base_lock without disabling bottom halves

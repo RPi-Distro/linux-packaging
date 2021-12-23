@@ -1,7 +1,7 @@
 Subject: KVM: arm/arm64: downgrade preempt_disable()d region to migrate_disable()
 From: Josh Cartwright <joshc@ni.com>
 Date: Thu Feb 11 11:54:01 2016 -0600
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc5-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc6-rt12.tar.xz
 
 From: Josh Cartwright <joshc@ni.com>
 

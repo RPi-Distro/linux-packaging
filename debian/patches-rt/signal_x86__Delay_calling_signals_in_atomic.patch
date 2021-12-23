@@ -1,7 +1,7 @@
 Subject: signal/x86: Delay calling signals in atomic
 From: Oleg Nesterov <oleg@redhat.com>
 Date: Tue Jul 14 14:26:34 2015 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc5-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc6-rt12.tar.xz
 
 From: Oleg Nesterov <oleg@redhat.com>
 

@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: kernel/fork: Move task stack account to do_exit().
 Date: Thu, 18 Nov 2021 15:34:50 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc5-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc6-rt12.tar.xz
 
 There is no need to perform the stack accounting of the outgoing task in
 its final schedule() invocation which happens with disabled preemption.
