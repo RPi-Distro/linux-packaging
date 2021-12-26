@@ -312,10 +312,6 @@ CONFIG_CS89x0_ISA=m
 CONFIG_NET_VENDOR_DEC=y
 
 ##
-## file: drivers/net/ethernet/fujitsu/Kconfig
-##
-
-##
 ## file: drivers/net/ethernet/oki-semi/pch_gbe/Kconfig
 ##
 CONFIG_PCH_GBE=m
