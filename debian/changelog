@@ -1,4 +1,4 @@
-linux (5.16~rc7-1~exp1) UNRELEASED; urgency=medium
+linux (5.16~rc7-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
 
@@ -21,7 +21,7 @@ linux (5.16~rc7-1~exp1) UNRELEASED; urgency=medium
   * [rt] Update to 5.16-rc6-rt12
   * [x86] drivers/firmware/google: Re-enable GOOGLE_FIRMWARE (Closes: #947179)
 
- -- Uwe Kleine-König <ukleinek@debian.org>  Wed, 22 Dec 2021 09:28:37 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 27 Dec 2021 00:18:19 +0100
 
 linux (5.16~rc6-1~exp1) experimental; urgency=medium
 
