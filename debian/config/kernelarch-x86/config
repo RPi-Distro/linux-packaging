@@ -559,11 +559,6 @@ CONFIG_EFI_RUNTIME_MAP=y
 CONFIG_APPLE_PROPERTIES=y
 
 ##
-## file: drivers/firmware/google/Kconfig
-##
-# CONFIG_GOOGLE_FIRMWARE is not set
-
-##
 ## file: drivers/gpio/Kconfig
 ##
 CONFIG_GPIOLIB=y

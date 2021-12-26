@@ -19,6 +19,7 @@ linux (5.16~rc7-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 5.16-rc6-rt12
+  * [x86] drivers/firmware/google: Re-enable GOOGLE_FIRMWARE (Closes: #947179)
 
  -- Uwe Kleine-König <ukleinek@debian.org>  Wed, 22 Dec 2021 09:28:37 +0100
 
