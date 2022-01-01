@@ -829,6 +829,7 @@ linux (5.15.12-1) UNRELEASED; urgency=medium
   * [rt] Add new signing key for Clark Williams
   * [rt] Update to 5.15.10-rt24
   * debian/control: Add version to libopencsd-dev build-dependency
+  * [armhf] media: Set MEDIA_SUPPORT=m so drivers are no longer built-in
 
  -- Ben Hutchings <benh@debian.org>  Sat, 01 Jan 2022 17:10:47 +0100
 
