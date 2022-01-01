@@ -826,6 +826,7 @@ linux (5.15.12-1) UNRELEASED; urgency=medium
   [ Ben Hutchings ]
   * Bump ABI to 3
   * wait: Export new function __wake_up_pollfree() needed by binder
+  * [rt] Add new signing key for Clark Williams
 
  -- Ben Hutchings <benh@debian.org>  Sat, 01 Jan 2022 17:10:47 +0100
 
