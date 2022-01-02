@@ -3,6 +3,7 @@ linux (5.15.12-1) UNRELEASED; urgency=medium
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.6
     - scsi: sd: Fix sd_do_mode_sense() buffer length handling
+      (Closes: #1001559)
     - ACPI: Get acpi_device's parent from the parent field
     - ACPI: CPPC: Add NULL pointer check to cppc_get_perf()
     - USB: serial: pl2303: fix GC type detection
