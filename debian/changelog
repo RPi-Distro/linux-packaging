@@ -834,6 +834,10 @@ linux (5.15.12-1) UNRELEASED; urgency=medium
   [ Andrew Balmos ]
   * net/can: Enable CONFIG_CAN_MCP251X as module
 
+  [ Salvatore Bonaccorso ]
+  * drivers/infiniband/hw/irdma: Enable INFINIBAND_IRDMA as module
+    (Closes: #1003082)
+
  -- Ben Hutchings <benh@debian.org>  Sat, 01 Jan 2022 17:10:47 +0100
 
 linux (5.15.5-2) unstable; urgency=medium
