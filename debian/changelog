@@ -29,6 +29,8 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
   * d/rules: Tell blhc to ignore missing flags for perf-read-vdso* helpers
   * d/rules: Tell blhc to ignore kernel compilation
   * d/rules: Filter out -s option so that Kbuild is not silent
+  * d/bin/gencontrol.py, d/lib/python: Use classes for build restriction
+    formulae
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as

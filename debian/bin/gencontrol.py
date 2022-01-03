@@ -10,7 +10,8 @@ import re
 
 from debian_linux import config
 from debian_linux.debian import PackageDescription, PackageRelation, \
-    PackageRelationEntry, PackageRelationGroup, VersionLinux
+    PackageRelationEntry, PackageRelationGroup, VersionLinux, \
+    restriction_requires_profile
 from debian_linux.gencontrol import Gencontrol as Base, merge_packages, \
     iter_featuresets, iter_flavours
 from debian_linux.utils import Templates, read_control
@@ -424,8 +425,10 @@ class Gencontrol(Base):
             self.substitute(config_entry_relations.get('headers%' + compiler)
                             or config_entry_relations.get(compiler), vars))
         relations_compiler_headers = PackageRelation(
-            PackageRelationGroup(entry for entry in group
-                                 if 'cross' not in entry.restrictions)
+            PackageRelationGroup(
+                entry for entry in group
+                if not restriction_requires_profile(entry.restrictions,
+                                                    'cross'))
             for group in relations_compiler_headers)
         for group in relations_compiler_headers:
             for entry in group:
