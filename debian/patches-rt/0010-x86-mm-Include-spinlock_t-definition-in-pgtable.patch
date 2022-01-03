@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Mon, 29 Nov 2021 18:46:53 +0100
 Subject: [PATCH 10/11] x86/mm: Include spinlock_t definition in pgtable.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc6-rt12.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc8-rt13.tar.xz
 
 This header file provides forward declartion for pgd_lock but does not
 include the header defining its type. This works since the definition of

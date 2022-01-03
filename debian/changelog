@@ -13,6 +13,9 @@ linux (5.16~rc8-1~exp1) UNRELEASED; urgency=medium
   [ Noah Meyerhans ]
   * net: Use fq_codel as the default network qdisc (Closes: #890343)
 
+  [ Salvatore Bonaccorso ]
+  * [rt] Update to 5.16-rc8-rt13
+
  -- Aurelien Jarno <aurel32@debian.org>  Thu, 30 Dec 2021 19:09:07 +0100
 
 linux (5.16~rc7-1~exp1) experimental; urgency=medium

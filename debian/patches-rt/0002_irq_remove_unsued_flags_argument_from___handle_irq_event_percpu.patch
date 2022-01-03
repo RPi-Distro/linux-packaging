@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: irq: Remove unsued flags argument from __handle_irq_event_percpu().
 Date: Tue, 07 Dec 2021 13:17:34 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc6-rt12.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc8-rt13.tar.xz
 
 The __IRQF_TIMER bit from the flags argument was used in
 add_interrupt_randomness() to distinguish the timer interrupt from other

@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: random: Remove unused irq_flags argument from add_interrupt_randomness().
 Date: Tue, 07 Dec 2021 13:17:33 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc6-rt12.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc8-rt13.tar.xz
 
 Since commit
    ee3e00e9e7101 ("random: use registers from interrupted code for CPU's w/o a cycle counter")

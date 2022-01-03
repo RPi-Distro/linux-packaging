@@ -5,7 +5,7 @@ Subject: [PATCH 11/11] locking: Allow to include asm/spinlock_types.h from
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc6-rt12.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc8-rt13.tar.xz
 
 The printk header file includes ratelimit_types.h for its __ratelimit()
 based usage. It is required for the static initializer used in

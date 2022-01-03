@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: random: Split add_interrupt_randomness().
 Date: Tue, 07 Dec 2021 13:17:35 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc6-rt12.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc8-rt13.tar.xz
 
 Split add_interrupt_randomness() into two parts:
 - add_interrupt_randomness() which collects the entropy on the
