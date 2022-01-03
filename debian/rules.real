@@ -111,7 +111,8 @@ source-featureset: $(STAMPS_DIR)/source_$(FEATURESET)
 
 $(BUILD_DIR)/config.$(ARCH)_$(FEATURESET)_$(FLAVOUR): $(KCONFIG)
 	mkdir -p '$(dir $@)'
-	debian/bin/kconfig.py '$@' $(KCONFIG) $(KCONFIG_OPTIONS)
+	debian/bin/kconfig.py '$@' $(KCONFIG) $(KCONFIG_OPTIONS) \
+		$(call if_package,linux-image-$(ABINAME)$(LOCALVERSION)-dbg,-o DEBUG_INFO=y)
 
 define copy_source
 mkdir -p '$(1)'
@@ -426,7 +427,8 @@ endif
 	  install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)_dt \
 	  DIR='$(DIR)' PACKAGE_DIR='$(PACKAGE_DIR)' REAL_VERSION='$(REAL_VERSION)'
 	+$(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH='$(CURDIR)'/$(PACKAGE_DIR) INSTALL_MOD_STRIP=1
-ifeq ($(DEBUG),True)
+ifeq ($(call if_package,linux-image-$(ABINAME)$(LOCALVERSION)-dbg,y),y)
+# We are building debug info, so add debug links
 	set -o pipefail; \
 	find $(PACKAGE_DIR) -name '*.ko' | sed 's|$(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/kernel/||' | while read module ; do \
 	  $(CROSS_COMPILE)objcopy --add-gnu-debuglink=$(DIR)/$$module $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/kernel/$$module || exit; \

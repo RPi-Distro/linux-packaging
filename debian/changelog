@@ -31,6 +31,7 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
   * d/rules: Filter out -s option so that Kbuild is not silent
   * d/bin/gencontrol.py, d/lib/python: Use classes for build restriction
     formulae
+  * d/bin/gencontrol.py, d/rules.real: Replace DEBUG variable with if_package
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as
