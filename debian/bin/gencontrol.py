@@ -13,7 +13,7 @@ from debian_linux.debian import PackageDescription, PackageRelation, \
     PackageRelationEntry, PackageRelationGroup, VersionLinux, \
     restriction_requires_profile
 from debian_linux.gencontrol import Gencontrol as Base, merge_packages, \
-    iter_featuresets, iter_flavours
+    iter_featuresets, iter_flavours, add_package_build_restriction
 from debian_linux.utils import Templates, read_control
 
 locale.setlocale(locale.LC_CTYPE, "C.UTF-8")
@@ -347,6 +347,9 @@ class Gencontrol(Base):
                 raise RuntimeError("default-flavour %s for %s %s does not exist"
                                    % (self.default_flavour, arch, featureset))
 
+        self.quick_flavour = self.config.merge('base', arch, featureset) \
+                                        .get('quick-flavour')
+
     flavour_makeflags_base = (
         ('compiler', 'COMPILER', False),
         ('compiler-filename', 'COMPILER', True),
@@ -560,6 +563,11 @@ class Gencontrol(Base):
                 self.substitute_debhelper_config(
                     'image-dbg.meta', vars,
                     'linux-image%(localversion)s-dbg' % vars)
+
+        # In a quick build, only build the quick flavour (if any).
+        if flavour != self.quick_flavour:
+            for package in packages_own:
+                add_package_build_restriction(package, '!pkg.linux.quick')
 
         merge_packages(packages, packages_own, arch)
 
