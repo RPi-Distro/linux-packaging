@@ -33,6 +33,7 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
     formulae
   * d/bin/gencontrol.py, d/rules.real: Replace DEBUG variable with if_package
   * Introduce pkg.linux.quick build profile for quicker CI builds
+  * d/salsa-ci.yml: Add CI config using some of the common pipeline
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as
