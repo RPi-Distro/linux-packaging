@@ -1,4 +1,4 @@
-linux (5.16~rc8-1~exp1) UNRELEASED; urgency=medium
+linux (5.16~rc8-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
 
@@ -16,7 +16,7 @@ linux (5.16~rc8-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * [rt] Update to 5.16-rc8-rt13
 
- -- Aurelien Jarno <aurel32@debian.org>  Thu, 30 Dec 2021 19:09:07 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 03 Jan 2022 17:47:35 +0100
 
 linux (5.16~rc7-1~exp1) experimental; urgency=medium
 
