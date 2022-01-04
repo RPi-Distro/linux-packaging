@@ -34,6 +34,10 @@ MAKE_PERF += USE_ASCIIDOCTOR=1
 # Build with Python 3, not Python 2
 MAKE_PERF += PYTHON=/usr/bin/python3
 
+# Ensure the right options are picked up for libperl and libpython
+export PERL5LIB=/usr/lib/$(DEB_HOST_MULTIARCH)/perl/cross-config
+MAKE_PERF += PYTHON_CONFIG=$(CROSS_COMPILE)python3-config
+
 all:
 # perf changes some default directories depending on whether DESTDIR is
 # set.  We must define it even when building to avoid a rebuild when we
