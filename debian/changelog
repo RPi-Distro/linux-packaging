@@ -28,6 +28,7 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
     - tools/perf: Fix missing LDFLAGS for some programs
   * d/rules: Tell blhc to ignore missing flags for perf-read-vdso* helpers
   * d/rules: Tell blhc to ignore kernel compilation
+  * d/rules: Filter out -s option so that Kbuild is not silent
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as

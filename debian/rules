@@ -16,6 +16,11 @@ ifdef DEBIAN_KERNEL_JOBS
   MAKEFLAGS += -j$(DEBIAN_KERNEL_JOBS)
 endif
 
+# dpkg-buildpackage passes the -s option if DEB_BUILD_OPTIONS contains
+# terse, but that triggers Kbuild to turn off progress messages
+# completely, which we don't want.
+override MAKEFLAGS := $(subst s,,$(filter-out -%,$(MAKEFLAGS))) $(filter -%,$(MAKEFLAGS))
+
 .NOTPARALLEL:
 
 source: debian/control
