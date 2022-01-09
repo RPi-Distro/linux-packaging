@@ -18,10 +18,8 @@ installed.
    * git://kernel.ubuntu.com/ubuntu/linux.git
 
    However, it is also possible to use upstream tarball and patch releases.
-   Both tags and files should be signed by the relevant maintainer, which
-   you *must* verify using commands such as:
+   In this case you *must* verify signatures yourself using commands such as:
 
-   $ git tag -v v4.5
    $ xzcat linux-4.5.tar.xz | gpg --verify linux-4.5.tar.sign -
    $ xzcat patch-4.5.1.xz | gpg --verify patch-4.5.1.sign -
 
