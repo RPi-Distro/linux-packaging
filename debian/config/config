@@ -4259,6 +4259,12 @@ CONFIG_RTW88_8723DE=m
 CONFIG_RTW88_8821CE=m
 
 ##
+## file: drivers/net/wireless/realtek/rtw89/Kconfig
+##
+CONFIG_RTW89=m
+CONFIG_RTW89_8852AE=m
+
+##
 ## file: drivers/net/wireless/rsi/Kconfig
 ##
 CONFIG_WLAN_VENDOR_RSI=y
