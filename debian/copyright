@@ -25,10 +25,6 @@ Copyright: 1996-2006 Manoj Srivastava
            2006-2009 Bastian Blank <waldi@debian.org>
 License: GPL-2
 
-Files: debian/rules.d/tools/hv/check-hyperv.c
-Copyright: 2011 Lennart Poettering
-License: LGPL-2.1
-
 Files:
  arch/arm/boot/dts/armada-370.dtsi
  arch/arm/boot/dts/armada-370-d*.dts*
@@ -72,10 +68,9 @@ Files:
  arch/arm64/boot/dts/cavium/thunder-*.dts*
  arch/arm64/boot/dts/freescale/fsl-*.dts*
  arch/arm64/boot/dts/marvell/armada-*.dts*
- arch/arm64/boot/dts/marvell/berlin4ct-*.dts*
  arch/arm64/boot/dts/rockchip/rk33*.dts*
  arch/arm64/boot/dts/socionext/uniphier-ld*.dts*
- arch/arm64/boot/dts/zte/zx296718*.dts*
+ arch/arm64/boot/dts/synaptics/berlin4ct-*.dts*
  include/dt-bindings/clock/sun*.h
  include/dt-bindings/dma/axi-dmac.h
  include/dt-bindings/dma/sun4i-a10.h
