@@ -269,3 +269,37 @@ python-static:
     - xargs pyflakes3 < "$sources" || pass=false
     - $pass
   needs: []
+
+# kconfig static check
+
+kconfig-static:
+  stage: test
+  image: $SALSA_CI_IMAGES_BASE
+  except:
+    variables:
+      - $CI_COMMIT_TAG != null
+  script:
+    # Unpack source and apply featureset patches
+    - |
+      apt-get update && eatmydata apt-get install --no-install-recommends -y \
+        debhelper dpkg-dev git python3 quilt
+    - dpkg-source -x ${WORKING_DIR}/*.dsc ${WORKING_DIR}/${SOURCE_DIR}
+    - cd ${WORKING_DIR}/${SOURCE_DIR}
+    - debian/rules source
+
+    # Fetch kernel-team repository
+    - kernel_team_dir="$(mktemp -d)"
+    - |
+      git clone --depth=1 https://salsa.debian.org/kernel-team/kernel-team.git \
+        "$kernel_team_dir"
+
+    # Run process.py and treat any error output as a failure
+    - error_log="$(mktemp)"
+    - |
+      "$kernel_team_dir"/utils/kconfigeditor2/process.py . 2>"$error_log" \
+      || true
+    - |
+      if [ -s "$error_log" ]; then cat "$error_log"; false; fi
+  needs:
+    - job: extract-source
+      artifacts: true
