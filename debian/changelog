@@ -885,6 +885,7 @@ linux (5.15.13-1) UNRELEASED; urgency=medium
   * [rt] Add new signing key for Clark Williams
   * [rt] Update to 5.15.10-rt24
   * debian/control: Add version to libopencsd-dev build-dependency
+  * [armhf] media: Set MEDIA_SUPPORT=m so drivers are no longer built-in
 
   [ Andrew Balmos ]
   * net/can: Enable CONFIG_CAN_MCP251X as module
