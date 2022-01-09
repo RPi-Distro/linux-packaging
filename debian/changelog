@@ -1,4 +1,4 @@
-linux (5.15.12-1) UNRELEASED; urgency=medium
+linux (5.15.13-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.6
@@ -823,6 +823,61 @@ linux (5.15.12-1) UNRELEASED; urgency=medium
     - hamradio: improve the incomplete fix to avoid NPD
     - tun: avoid double free in tun_free_netdev
     - phonet/pep: refuse to enable an unbound pipe
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.13
+    - Input: i8042 - add deferred probe support
+    - Input: i8042 - enable deferred probe quirk for ASUS UM325UA
+    - tomoyo: Check exceeded quota early in tomoyo_domain_quota_is_ok().
+    - tomoyo: use hwight16() in tomoyo_domain_quota_is_ok()
+    - net/sched: Extend qdisc control block with tc control block
+    - [x86] platform/x86: apple-gmux: use resource_size() with res
+    - memblock: fix memblock_phys_alloc() section mismatch error
+    - ALSA: hda: intel-sdw-acpi: harden detection of controller
+    - ALSA: hda: intel-sdw-acpi: go through HDAS ACPI at max depth of 2
+    - efi: Move efifb_setup_from_dmi() prototype from arch headers
+    - selinux: initialize proto variable in selinux_ip_postroute_compat()
+    - scsi: lpfc: Terminate string in lpfc_debugfs_nvmeio_trc_write()
+    - net/mlx5: DR, Fix NULL vs IS_ERR checking in dr_domain_init_resources
+    - net/mlx5: Fix error print in case of IRQ request failed
+    - net/mlx5: Fix SF health recovery flow
+    - net/mlx5: Fix tc max supported prio for nic mode
+    - net/mlx5e: Wrap the tx reporter dump callback to extract the sq
+    - net/mlx5e: Fix interoperability between XSK and ICOSQ recovery flow
+    - net/mlx5e: Fix ICOSQ recovery flow for XSK
+    - net/mlx5e: Use tc sample stubs instead of ifdefs in source file
+    - net/mlx5e: Delete forward rule for ct or sample action
+    - udp: using datalen to cap ipv6 udp max gso segments
+    - sctp: use call_rcu to free endpoint
+    - net/smc: fix using of uninitialized completions
+    - net: usb: pegasus: Do not drop long Ethernet frames
+    - net/smc: don't send CDC/LLC message if link not ready
+    - net/smc: fix kernel panic caused by race of smc_sock
+    - igc: Do not enable crosstimestamping for i225-V models
+    - igc: Fix TX timestamp support for non-MSI-X platforms
+    - drm/amd/display: Send s0i2_rdy in stream_count == 0 optimization
+    - drm/amd/display: Set optimize_pwr_state for DCN31
+    - net/mlx5e: Fix wrong features assignment in case of error
+    - net: bridge: mcast: add and enforce query interval minimum
+    - net: bridge: mcast: add and enforce startup query interval minimum
+    - net: bridge: mcast: fix br_multicast_ctx_vlan_global_disabled helper
+    - [armhf] net/ncsi: check for error return from call to nla_put_u32
+    - i2c: validate user data in compat ioctl
+    - nfc: uapi: use kernel size_t to fix user-space builds
+    - uapi: fix linux/nfc.h userspace compilation errors
+    - drm/nouveau: wait for the exclusive fence after the shared ones v2
+      (Closes: #1000681)
+    - drm/amdgpu: When the VCN(1.0) block is suspended, powergating is
+      explicitly enabled
+    - drm/amdgpu: add support for IP discovery gc_info table v2
+    - drm/amd/display: Changed pipe split policy to allow for multi-display pipe
+      split
+    - xhci: Fresco FL1100 controller should not have BROKEN_MSI quirk set.
+    - usb: gadget: f_fs: Clear ffs_eventfd in ffs_data_clear.
+    - [arm*] binder: fix async_free_space accounting for empty parcels
+    - [x86] scsi: vmw_pvscsi: Set residual data length conditionally
+    - Input: appletouch - initialize work before device registration
+    - Input: spaceball - fix parsing of movement data packets
+    - net: fix use-after-free in tw_timer_handler
+    - fs/mount_setattr: always cleanup mount_kattr
 
   [ Ben Hutchings ]
   * Bump ABI to 3
@@ -837,8 +892,6 @@ linux (5.15.12-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * drivers/infiniband/hw/irdma: Enable INFINIBAND_IRDMA as module
     (Closes: #1003082)
-  * drm/nouveau: wait for the exclusive fence after the shared ones
-    (Closes: #1000681)
 
  -- Ben Hutchings <benh@debian.org>  Sat, 01 Jan 2022 17:10:47 +0100
 
