@@ -231,3 +231,41 @@ missing-breaks:
 
 rc-bugs:
     extends: .test-rc-bugs
+
+# Python static checkers
+
+python-static:
+  stage: test
+  image: $SALSA_CI_IMAGES_BASE
+  except:
+    variables:
+      - $CI_COMMIT_TAG != null
+  script:
+    - |
+      apt-get update && eatmydata apt-get install --no-install-recommends -y \
+        python3 pycodestyle pyflakes3
+
+    # Check Python modules under debian/lib and Python scripts under
+    # debian/bin or debian/rules.d.
+    - sources="$(mktemp)"
+    - find debian/lib/python -name '*.py' > "$sources"
+    - |
+      find debian/bin debian/rules.d -type f -perm /111 |
+          while read script; do
+              if awk '/^#!.*python/ { exit 0 } { exit 1 }' "$script"; then
+                  echo "$script"
+              fi
+          done \
+          >> "$sources"
+
+    # Run both checkers and coalesce their results rather than exiting
+    # on first failure
+    - pass=true
+    # Ignore E126,E226,W503 (ignored by default) and also E127,W291 which
+    # give false positives.
+    - |
+      xargs pycodestyle --max-line-length=100 --ignore E126,E127,E226,W291,W503 \
+        < "$sources" || pass=false
+    - xargs pyflakes3 < "$sources" || pass=false
+    - $pass
+  needs: []
