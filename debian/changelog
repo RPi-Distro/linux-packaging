@@ -36,6 +36,7 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
   * d/salsa-ci.yml: Add CI config using some of the common pipeline
   * d/salsa-ci.yml, d/tests/python: Only run static checks in CI
   * d/salsa-ci.yml: Run kconfigeditor2 as kconfig static check
+  * d/rules, d/salsa-ci.yml: Enable blhc, ignoring terse output
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as

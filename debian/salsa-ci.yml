@@ -213,15 +213,17 @@ build:
   dependencies:
     - extract-source
 
-# The folllowing jobs are the standard tests, excluding:
-# - any that require building again
-# - blhc, because it needs a verbose build log which we had to disable
+# The folllowing jobs are the standard tests, excluding any that
+# require building again
 
 lintian:
     extends: .test-lintian
 
 autopkgtest:
     extends: .test-autopkgtest
+
+blhc:
+    extends: .test-blhc
 
 piuparts:
     extends: .test-piuparts
