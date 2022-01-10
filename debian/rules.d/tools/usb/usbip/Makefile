@@ -19,10 +19,10 @@ all:
 		--disable-shared \
 		--disable-static \
 		--host=$(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
-	$(MAKE) V=$(KBUILD_VERBOSE)
+	$(MAKE) V=1
 
 install:
-	$(MAKE) V=$(KBUILD_VERBOSE) install
+	$(MAKE) V=1 install
 ifneq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	rm -rf $(DESTDIR)/usr/share/man
 endif
