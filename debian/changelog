@@ -13,6 +13,9 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as
     modules
 
+  [ Aurelien Jarno ]
+  * [riscv64] Add support for SBI SRST extension
+
  -- Helmut Grohne <helmut@subdivi.de>  Mon, 03 Jan 2022 23:53:17 +0100
 
 linux (5.16~rc8-1~exp1) experimental; urgency=medium
