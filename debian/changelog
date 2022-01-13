@@ -1,4 +1,4 @@
-linux (5.15.13-1) UNRELEASED; urgency=medium
+linux (5.15.14-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.6
@@ -878,6 +878,73 @@ linux (5.15.13-1) UNRELEASED; urgency=medium
     - Input: spaceball - fix parsing of movement data packets
     - net: fix use-after-free in tw_timer_handler
     - fs/mount_setattr: always cleanup mount_kattr
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.14
+    - fscache_cookie_enabled: check cookie is valid before accessing it
+    - tracing: Fix check for trace_percpu_buffer validity in get_trace_buf()
+    - tracing: Tag trace_percpu_buffer as a percpu pointer
+    - Revert "RDMA/mlx5: Fix releasing unallocated memory in dereg MR flow"
+    - ieee802154: atusb: fix uninit value in atusb_set_extended_addr
+    - i40e: Fix to not show opcode msg on unsuccessful VF MAC change
+    - iavf: Fix limit of total number of queues to active queues of VF
+    - RDMA/core: Don't infoleak GRH fields
+    - Revert "net: usb: r8152: Add MAC passthrough support for more Lenovo
+      Docks"
+    - netrom: fix copying in user data in nr_setsockopt
+    - RDMA/uverbs: Check for null return of kmalloc_array
+    - mac80211: initialize variable have_higher_than_11mbit
+    - mac80211: mesh: embedd mesh_paths and mpp_paths into ieee80211_if_mesh
+    - sfc: The RX page_ring is optional
+    - i40e: fix use-after-free in i40e_sync_filters_subtask()
+    - i40e: Fix for displaying message regarding NVM version
+    - i40e: Fix incorrect netdev's real number of RX/TX queues
+    - ipv4: Check attribute length for RTA_GATEWAY in multipath route
+    - ipv4: Check attribute length for RTA_FLOW in multipath route
+    - ipv6: Check attribute length for RTA_GATEWAY in multipath route
+    - ipv6: Check attribute length for RTA_GATEWAY when deleting multipath route
+    - lwtunnel: Validate RTA_ENCAP_TYPE attribute length
+    - sctp: hold endpoint before calling cb in sctp_transport_lookup_process
+    - batman-adv: mcast: don't send link-local multicast to mcast routers
+    - sch_qfq: prevent shift-out-of-bounds in qfq_init_qdisc
+    - net: ena: Fix undefined state when tx request id is out of bounds
+    - net: ena: Fix wrong rx request id by resetting device
+    - net: ena: Fix error handling when calculating max IO queues number
+    - md/raid1: fix missing bitmap update w/o WriteMostly devices
+    - [x86] KVM: x86: Check for rmaps allocation
+    - cgroup: Use open-time credentials for process migraton perm checks
+      (CVE-2021-4197)
+    - cgroup: Allocate cgroup_file_ctx for kernfs_open_file->priv
+      (CVE-2021-4197)
+    - cgroup: Use open-time cgroup namespace for process migration perm checks
+      (CVE-2021-4197)
+    - Revert "i2c: core: support bus regulator controlling in adapter"
+    - xfs: map unwritten blocks in XFS_IOC_{ALLOC,FREE}SP just like fallocate
+      (CVE-2021-4155)
+    - power: supply: core: Break capacity loop
+    - rndis_host: support Hytera digital radios
+    - net ticp:fix a kernel-infoleak in __tipc_sendmsg()
+    - phonet: refcount leak in pep_sock_accep (CVE-2021-45095)
+    - fbdev: fbmem: add a helper to determine if an aperture is used by a fw fb
+    - drm/amdgpu: disable runpm if we are the primary adapter
+    - [arm64] power: bq25890: Enable continuous conversion for ADC at charging
+    - ipv6: Continue processing multipath route even if gateway attribute is
+      invalid
+    - ipv6: Do cleanup if attribute validation fails in multipath route
+    - drm/amdgpu: fix dropped backing store handling in
+      amdgpu_dma_buf_move_notify
+    - scsi: libiscsi: Fix UAF in iscsi_conn_get_param()/iscsi_conn_teardown()
+    - ip6_vti: initialize __ip6_tnl_parm struct in vti6_siocdevprivate
+    - net: udp: fix alignment problem in udp4_seq_show()
+    - atlantic: Fix buff_ring OOB in aq_ring_rx_clean
+    - drm/amd/pm: skip setting gfx cgpg in the s0ix suspend-resume
+    - drm/amdgpu: always reset the asic in suspend (v2)
+    - drm/amdgpu: put SMU into proper state on runpm suspending for BOCO capable
+      platform
+    - mISDN: change function names to avoid conflicts
+    - drm/amd/display: fix B0 TMDS deepcolor no dislay issue
+    - drm/amd/display: Added power down for DCN10
+    - ipv6: raw: check passed optlen before reading
+    - Revert "drm/amdgpu: stop scheduler when calling hw_fini (v2)"
+    - drm/amd/pm: keep the BACO feature enabled for suspend
 
   [ Ben Hutchings ]
   * Bump ABI to 3
