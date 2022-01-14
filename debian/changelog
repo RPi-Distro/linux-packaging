@@ -960,6 +960,8 @@ linux (5.15.14-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * drivers/infiniband/hw/irdma: Enable INFINIBAND_IRDMA as module
     (Closes: #1003082)
+  * bpf: Fix out of bounds access from invalid *_or_null type verification
+    (CVE-2022-23222)
 
  -- Ben Hutchings <benh@debian.org>  Sat, 01 Jan 2022 17:10:47 +0100
 
