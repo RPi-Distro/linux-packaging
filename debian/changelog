@@ -8,6 +8,7 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
   [ Ben Hutchings ]
   * linux-perf: Fix detection of libperl and libpython in cross-build
   * debian/README.source: Tag signatures are automatically verified
+  * [rt] trace: Enable OSNOISE_TRACER, TIMERLAT_TRACER, HIST_TRIGGERS
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as
