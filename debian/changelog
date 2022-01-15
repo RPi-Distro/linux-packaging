@@ -24,6 +24,7 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
     - usbip: Build with standard CPPFLAGS
     - objtool: Build with standard CFLAGS and CPPFLAGS
     - tools/perf: Define DEBUG=0 for sub-make so libapi doesn't use wrong flags
+    - libapi: Define _FORTIFY_SOURCE as 2, not empty
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as
