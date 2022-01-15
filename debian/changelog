@@ -17,6 +17,8 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
   * d/copyright: Fix license name with spaces in it
   * d/copyright: Update for removed and renamed source files
   * d/tests/selftests: Use $AUTOPKGTEST_TMP instead of $ADTTMP
+  * Fix missing user-space hardening:
+    - d/rules.real: Define KBUILD_HOST{C,LD}FLAGS for sub-make
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as
