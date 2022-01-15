@@ -23,6 +23,7 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
     - cpupower: Build with standard CPPFLAGS
     - usbip: Build with standard CPPFLAGS
     - objtool: Build with standard CFLAGS and CPPFLAGS
+    - tools/perf: Define DEBUG=0 for sub-make so libapi doesn't use wrong flags
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as

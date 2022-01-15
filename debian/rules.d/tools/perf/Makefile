@@ -38,6 +38,11 @@ MAKE_PERF += PYTHON=/usr/bin/python3
 export PERL5LIB=/usr/lib/$(DEB_HOST_MULTIARCH)/perl/cross-config
 MAKE_PERF += PYTHON_CONFIG=$(CROSS_COMPILE)python3-config
 
+# Explicitly set DEBUG=0.  This is the default for perf itself, but
+# it's not passed down to libapi and it uses the wrong compiler
+# options unless it's explicitly set.
+MAKE_PERF += DEBUG=0
+
 all:
 # perf changes some default directories depending on whether DESTDIR is
 # set.  We must define it even when building to avoid a rebuild when we
