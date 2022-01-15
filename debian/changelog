@@ -19,6 +19,7 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
   * d/tests/selftests: Use $AUTOPKGTEST_TMP instead of $ADTTMP
   * Fix missing user-space hardening:
     - d/rules.real: Define KBUILD_HOST{C,LD}FLAGS for sub-make
+    - linux-kbuild: Build modpost with standard CPPFLAGS
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as
