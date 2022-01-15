@@ -39,9 +39,20 @@ class Main(object):
 
     def __call__(self):
         import tempfile
-        self.dir = tempfile.mkdtemp(prefix='genorig', dir='debian')
+        temp_dir = tempfile.mkdtemp(prefix='genorig', dir='debian')
         old_umask = os.umask(0o022)
         try:
+            # When given a remote repo, we need a local copy.
+            if not self.input_repo.startswith('/') and ':' in self.input_repo:
+                temp_repo = os.path.join(temp_dir, 'git')
+                subprocess.run(
+                    ['git', 'clone', '--bare', '--depth=1', '-b', self.tag,
+                     self.input_repo, temp_repo],
+                    check=True)
+                self.input_repo = temp_repo
+
+            self.dir = os.path.join(temp_dir, 'export')
+            os.mkdir(self.dir)
             self.upstream_export(self.input_repo)
 
             # exclude_files() will change dir mtimes.  Capture the
@@ -58,7 +69,7 @@ class Main(object):
             self.tar(orig_date)
         finally:
             os.umask(old_umask)
-            shutil.rmtree(self.dir)
+            shutil.rmtree(temp_dir)
 
     def upstream_export(self, input_repo):
         self.log("Exporting %s from %s\n" % (self.tag, input_repo))

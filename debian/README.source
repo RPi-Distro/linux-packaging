@@ -10,14 +10,16 @@ Updating the upstream source
 In addition to the build-dependencies, you will need the rsync package
 installed.
 
-1) You must fetch the release tag from the relevant upstream git
-   repository, one of:
+1) Run: ./debian/bin/genorig.py <repository>
+
+   where <repository> is a local or remote git repository with the
+   upstream release tag in it.
+
+   If you do not have a local repository, use the appropriate one of:
 
    * https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
    * https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
    * git://kernel.ubuntu.com/ubuntu/linux.git
-
-2) Run: ./debian/bin/genorig.py <repository>
 
    This will produce ../orig/linux_<version>.orig.tar.xz
    (e.g. linux_3.5~rc1.orig.tar.xz).
@@ -25,7 +27,7 @@ installed.
    It involves deleting files for DFSG compliance, as listed in the
    Files-Excluded field in debian/copyright.
 
-3) Run: make -f debian/rules orig
+2) Run: make -f debian/rules orig
 
    This will apply the main quilt series to the upstream source, which
    will usually fail due to conflicts with upstream changes.  You need
