@@ -6,7 +6,7 @@ srcdir := $(top_srcdir)/tools/usb/usbip
 unexport MAKEFLAGS
 
 all: export CFLAGS := $(shell dpkg-buildflags --get CFLAGS)
-all: export CPPFLAGS := $(shell dpkg-buildflags --get CFLAGS) \
+all: export CPPFLAGS := $(shell dpkg-buildflags --get CPPFLAGS) \
 	-isystem $(top_srcdir)/debian/build/build-tools/include
 all: export LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS)
 all:
