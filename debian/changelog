@@ -11,6 +11,7 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
   * [rt] trace: Enable OSNOISE_TRACER, TIMERLAT_TRACER, HIST_TRIGGERS
   * d/bin/git-tag-gpg-wrapper, debian/upstream: Use ASCII-armored keyring
   * d/watch: Rewrite to find all upstream versions through Git
+  * d/bin/genorig.py, d/README.source: Only support Git as upstream
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as

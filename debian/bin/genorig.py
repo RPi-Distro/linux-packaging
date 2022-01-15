@@ -5,7 +5,6 @@ from debian import deb822
 import glob
 import os
 import os.path
-import re
 import shutil
 import subprocess
 import time
@@ -15,10 +14,10 @@ from debian_linux.debian import Changelog, VersionLinux
 
 
 class Main(object):
-    def __init__(self, input_files, override_version):
+    def __init__(self, input_repo, override_version):
         self.log = sys.stdout.write
 
-        self.input_files = input_files
+        self.input_repo = input_repo
 
         changelog = Changelog(version=VersionLinux)[0]
         source = changelog.source
@@ -43,17 +42,11 @@ class Main(object):
         self.dir = tempfile.mkdtemp(prefix='genorig', dir='debian')
         old_umask = os.umask(0o022)
         try:
-            if os.path.isdir(self.input_files[0]):
-                self.upstream_export(self.input_files[0])
-            else:
-                self.upstream_extract(self.input_files[0])
-            if len(self.input_files) > 1:
-                self.upstream_patch(self.input_files[1])
+            self.upstream_export(self.input_repo)
 
             # exclude_files() will change dir mtimes.  Capture the
             # original release time so we can apply it to the final
-            # tarball.  Note this doesn't work in case we apply an
-            # upstream patch, as that doesn't carry a release time.
+            # tarball.
             orig_date = time.strftime(
                 "%a, %d %b %Y %H:%M:%S +0000",
                 time.gmtime(
@@ -90,44 +83,6 @@ class Main(object):
         ret2 = extract_proc.wait()
         if ret1 or ret2:
             raise RuntimeError("Can't create archive")
-
-    def upstream_extract(self, input_tar):
-        self.log("Extracting tarball %s\n" % input_tar)
-        match = re.match(r'(^|.*/)(?P<dir>linux-\d+\.\d+(\.\d+)?(-\S+)?)\.tar'
-                         r'(\.(?P<extension>(bz2|gz|xz)))?$',
-                         input_tar)
-        if not match:
-            raise RuntimeError("Can't identify name of tarball")
-
-        cmdline = ['tar', '-xaf', input_tar, '-C', self.dir]
-
-        if subprocess.Popen(cmdline).wait():
-            raise RuntimeError("Can't extract tarball")
-
-        os.rename(os.path.join(self.dir, match.group('dir')),
-                  os.path.join(self.dir, self.orig))
-
-    def upstream_patch(self, input_patch):
-        self.log("Patching source with %s\n" % input_patch)
-        match = re.match(r'(^|.*/)patch-\d+\.\d+(\.\d+)?(-\S+?)?'
-                         r'(\.(?P<extension>(bz2|gz|xz)))?$',
-                         input_patch)
-        if not match:
-            raise RuntimeError("Can't identify name of patch")
-        cmdline = []
-        if match.group('extension') == 'bz2':
-            cmdline.append('bzcat')
-        elif match.group('extension') == 'gz':
-            cmdline.append('zcat')
-        elif match.group('extension') == 'xz':
-            cmdline.append('xzcat')
-        else:
-            cmdline.append('cat')
-        cmdline.append(input_patch)
-        cmdline.append('| (cd %s; patch -p1 -f -s -t --no-backup-if-mismatch)'
-                       % os.path.join(self.dir, self.orig))
-        if os.spawnv(os.P_WAIT, '/bin/sh', ['sh', '-c', ' '.join(cmdline)]):
-            raise RuntimeError("Can't patch source")
 
     def exclude_files(self):
         self.log("Excluding file patterns specified in debian/copyright\n")
@@ -194,10 +149,10 @@ class Main(object):
 
 if __name__ == '__main__':
     from optparse import OptionParser
-    parser = OptionParser(usage="%prog [OPTION]... {TAR [PATCH] | REPO}")
+    parser = OptionParser(usage="%prog [OPTION]... REPO")
     parser.add_option("-V", "--override-version", dest="override_version",
                       help="Override version", metavar="VERSION")
     options, args = parser.parse_args()
 
-    assert 1 <= len(args) <= 2
-    Main(args, options.override_version)()
+    assert len(args) == 1
+    Main(args[0], options.override_version)()
