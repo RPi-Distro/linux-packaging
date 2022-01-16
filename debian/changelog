@@ -17,6 +17,10 @@ linux (5.16.1-1~exp1) UNRELEASED; urgency=medium
   * d/watch: Rewrite to find all upstream versions through Git
   * d/bin/genorig.py, d/README.source: Only support Git as upstream
   * d/bin/genorig.py, d/README.source: Add support for remote upstream repos
+  * lintian: Refresh lintian-overrides
+  * d/copyright: Fix license name with spaces in it
+  * d/copyright: Update for removed and renamed source files
+  * d/tests/selftests: Use $AUTOPKGTEST_TMP instead of $ADTTMP
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as

@@ -703,6 +703,7 @@ ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	dh_installdocs
 	dh_installman
 endif
+	dh_lintian
 	dh_strip
 	dh_compress
 	dh_fixperms
