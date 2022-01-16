@@ -1,6 +1,10 @@
-linux (5.16-1~exp1) UNRELEASED; urgency=medium
+linux (5.16.1-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_5.16
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.1
+    - bpf: Fix out of bounds access from invalid *_or_null type verification
+      (CVE-2022-23222)
 
   [ Helmut Grohne ]
   * Multiarchify python build-depends. (Closes: #983757)
