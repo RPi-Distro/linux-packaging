@@ -32,7 +32,9 @@ build-arch: debian/control
 	dh_testdir
 # The perf-read-vdso* programs are built for different architectures,
 # without standard flags, but are not exposed to untrusted input.
-	@printf '%s\n' 'blhc: ignore-line-regexp: .* -o *[^ ]*/perf-read-vdso.*'
+# Kernel code needs different hardening options that blhc doesn't know
+# about.
+	@printf '%s\n' 'blhc: ignore-line-regexp: (.* -o *[^ ]*/perf-read-vdso.*|.* -D__KERNEL__ .*)'
 	$(MAKE) -f debian/rules.gen build-arch_$(DEB_HOST_ARCH)
 
 build-indep: debian/control
