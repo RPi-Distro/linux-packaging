@@ -1002,6 +1002,8 @@ linux (5.15.15-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * drivers/infiniband/hw/irdma: Enable INFINIBAND_IRDMA as module
     (Closes: #1003082)
+  * vfs: fs_context: fix up param length parsing in legacy_parse_param
+    (CVE-2022-0185)
 
  -- Ben Hutchings <benh@debian.org>  Sat, 01 Jan 2022 17:10:47 +0100
 
