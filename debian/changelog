@@ -1,4 +1,4 @@
-linux (5.15.15-1) UNRELEASED; urgency=medium
+linux (5.15.15-1) unstable; urgency=high
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.15.6
@@ -1005,7 +1005,7 @@ linux (5.15.15-1) UNRELEASED; urgency=medium
   * vfs: fs_context: fix up param length parsing in legacy_parse_param
     (CVE-2022-0185)
 
- -- Ben Hutchings <benh@debian.org>  Sat, 01 Jan 2022 17:10:47 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 18 Jan 2022 22:31:03 +0100
 
 linux (5.15.5-2) unstable; urgency=medium
 
