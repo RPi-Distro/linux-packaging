@@ -137,12 +137,21 @@ variables:
 extract-source:
   stage: provisioning
   image: $SALSA_CI_IMAGES_GBP
+  cache:
+    key: "orig-${RELEASE}"
+    paths:
+      - orig
   extends:
     - .artifacts-default-expire
   except:
     variables:
       - $CI_COMMIT_TAG != null
   script:
+    # Move cache to where genorig.py and orig target want it
+    - mkdir -p orig
+    - rm -rf ../orig
+    - mv orig ../orig
+
     # Install dependencies of gencontrol.py and debian/rules orig
     - apt-get update
     - |
@@ -154,14 +163,23 @@ extract-source:
         quilt \
         rsync
 
+    - version=$(dpkg-parsechangelog -SVersion)
+    - upstream_version=$(echo $version | sed 's/-[^-]*$//')
+
     # Merge upstream source.  We could use origtargz to download a
     # tarball fom the archive if available or run uscan if not, but
     # uscan is currently excessively slow for us (bug #1003251).
-    - debian/bin/genorig.py https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+    - |
+      if [ -f ../orig/linux_${upstream_version}.orig.tar.xz ]; then
+          ln -s orig/linux_${upstream_version}.orig.tar.xz ..
+      else
+          debian/bin/genorig.py https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+      fi
     - debian/rules orig
 
     # Fudge source version and distribution *before* gencontrol.py
     - sed -i -e '1 s/) [^;]*/+salsaci) UNRELEASED/' debian/changelog
+    - version=${version}+salsaci
 
     # Run gencontrol.py
     # - create temporary log
@@ -177,7 +195,13 @@ extract-source:
     # Put packed source in artifacts
     - dpkg-buildpackage -uc -us -S -sa -d
     - mkdir -p ${WORKING_DIR}
-    - mv ../*.dsc ../orig/*.orig.tar* ../*.debian.tar* ${WORKING_DIR}
+    - cp ../orig/linux_${upstream_version}.orig.tar.xz ${WORKING_DIR}
+    - mv ../linux_${version}.dsc ../linux_${version}.debian.tar.xz ${WORKING_DIR}
+
+    # Move cache back to where GitLab wants it.  Only include
+    # tarballs, not unpacked source.
+    - mkdir orig
+    - mv ../orig/*.tar.xz orig
 
 build:
   stage: build

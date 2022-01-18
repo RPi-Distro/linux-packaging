@@ -38,6 +38,7 @@ linux (5.16-1~exp1) UNRELEASED; urgency=medium
   * d/salsa-ci.yml: Run kconfigeditor2 as kconfig static check
   * d/rules, d/salsa-ci.yml: Enable blhc, ignoring terse output
   * bpftool, objtool, usbip: Always build with V=1 so blhc can check them
+  * d/salsa-ci.yml: Use per-release cache of orig tarballs
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as
