@@ -1,7 +1,7 @@
 From: Anup Patel <anup.patel@wdc.com>
 Date: Wed, 9 Jun 2021 17:43:22 +0530
 Subject: RISC-V: Use SBI SRST extension when available
-Origin: https://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux.git/commit?id=b579dfe71a6a5c3967ca9ad648673b6ca10ab0d5
+Origin: https://git.kernel.org/linus/b579dfe71a6a5c3967ca9ad648673b6ca10ab0d5
 
 The SBI SRST extension provides a standard way to poweroff and
 reboot the system irrespective to whether Linux RISC-V S-mode
