@@ -58,6 +58,7 @@ smp_wake_ksoftirqd_on_preempt_rt_instead_do_softirq.patch
 fscache-Use-only-one-fscache_object_cong_wait.patch
 tcp-Don-t-acquire-inet_listen_hashbucket-lock-with-d.patch
 panic_remove_oops_id.patch
+locking-local_lock-Make-the-empty-local_lock_-functi.patch
 
 # sched
 0001_kernel_fork_redo_ifdefs_around_task_s_handling.patch
@@ -77,9 +78,10 @@ panic_remove_oops_id.patch
 0005_random_defer_processing_of_randomness_on_preempt_rt.patch
 
 # cgroup
-0001-mm-memcg-Protect-per-CPU-counter-by-disabling-preemp.patch
-0002-mm-memcg-Add-a-local_lock_t-for-IRQ-and-TASK-object.patch
-0003-mm-memcg-Allow-the-task_obj-optimization-only-on-non.patch
+0001-mm-memcg-Disable-threshold-event-handlers-on-PREEMPT.patch
+0002-mm-memcg-Protect-per-CPU-counter-by-disabling-preemp.patch
+0003-mm-memcg-Add-a-local_lock_t-for-IRQ-and-TASK-object.patch
+0004-mm-memcg-Allow-the-task_obj-optimization-only-on-non.patch
 
 ###########################################################################
 # Post
@@ -87,6 +89,10 @@ panic_remove_oops_id.patch
 cgroup__use_irqsave_in_cgroup_rstat_flush_locked.patch
 mm__workingset__replace_IRQ-off_check_with_a_lockdep_assert..patch
 softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
+
+# These two need some feedback.
+i2c-rcar-Allow-interrupt-handler-to-be-threaded.patch
+i2c-core-Let-i2c_handle_smbus_host_notify-use-handle.patch
 
 ###########################################################################
 # Kconfig bits:

@@ -1,7 +1,7 @@
 From: Minchan Kim <minchan@kernel.org>
 Subject: zsmalloc: remove zspage isolation for migration
 Date: Mon, 15 Nov 2021 10:59:06 -0800
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc8-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
 
 zspage isolation for migration introduced additional exceptions
 to be dealt with since the zspage was isolated from class list.

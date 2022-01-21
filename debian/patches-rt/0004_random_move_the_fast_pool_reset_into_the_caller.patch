@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: random: Move the fast_pool reset into the caller.
 Date: Tue, 07 Dec 2021 13:17:36 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc8-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
 
 The state of the fast_pool (number of added entropy, timestamp of last
 addition) is reset after entropy has been consumed.
@@ -17,7 +17,7 @@ Link: https://lore.kernel.org/r/20211207121737.2347312-5-bigeasy@linutronix.de
 
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
-@@ -1242,37 +1242,35 @@ static __u32 get_reg(struct fast_pool *f
+@@ -1260,37 +1260,35 @@ static __u32 get_reg(struct fast_pool *f
  	return *ptr;
  }
  
@@ -66,7 +66,7 @@ Link: https://lore.kernel.org/r/20211207121737.2347312-5-bigeasy@linutronix.de
  }
  
  void add_interrupt_randomness(int irq)
-@@ -1298,7 +1296,10 @@ void add_interrupt_randomness(int irq)
+@@ -1316,7 +1314,10 @@ void add_interrupt_randomness(int irq)
  	fast_mix(fast_pool);
  	add_interrupt_bench(cycles);
  

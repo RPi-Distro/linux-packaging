@@ -33,6 +33,9 @@ linux (5.16.2-1~exp1) UNRELEASED; urgency=medium
   [ YunQiang Su ]
   * [mips*/generic] Change zload address for QEMU compatibility.
 
+  [ Salvatore Bonaccorso ]
+  * [rt] Update to 5.16.2-rt18
+
  -- Helmut Grohne <helmut@subdivi.de>  Mon, 03 Jan 2022 23:53:17 +0100
 
 linux (5.16~rc8-1~exp1) experimental; urgency=medium

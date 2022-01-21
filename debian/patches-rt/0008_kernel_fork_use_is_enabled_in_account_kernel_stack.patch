@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: kernel/fork: Use IS_ENABLED() in account_kernel_stack().
 Date: Thu, 18 Nov 2021 15:34:52 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc8-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
 
 Not strickly needed but checking CONFIG_VMAP_STACK instead of
 task_stack_vm_area()' result allows the compiler the remove the else

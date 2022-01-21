@@ -1,7 +1,7 @@
 From: Minchan Kim <minchan@kernel.org>
 Subject: locking/rwlocks: introduce write_lock_nested
 Date: Mon, 15 Nov 2021 10:59:07 -0800
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc8-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
 
 In preparation for converting bit_spin_lock to rwlock in zsmalloc
 so that multiple writers of zspages can run at the same time but
@@ -10,6 +10,7 @@ it's not deadlock. This patch adds write_lock_nested to support
 the case for LOCKDEP.
 
 [bigeasy: folded write_lock_nested() fixups for PREEMPT_RT.]
+[bigeasy: folded Fixup write_lock_nested() implementation. ]
 
 Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Minchan Kim <minchan@kernel.org>
@@ -17,14 +18,15 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Link: https://lore.kernel.org/r/20211115185909.3949505-8-minchan@kernel.org
 Link: https://lkml.kernel.org/r/YZfrMTAXV56HFWJY@google.com
+Link: https://lkml.kernel.org/r/20211123170134.y6xb7pmpgdn4m3bn@linutronix.de
 ---
  include/linux/rwlock.h          |    6 ++++++
- include/linux/rwlock_api_smp.h  |    9 +++++++++
+ include/linux/rwlock_api_smp.h  |    8 ++++++++
  include/linux/rwlock_rt.h       |   10 ++++++++++
  include/linux/spinlock_api_up.h |    1 +
- kernel/locking/spinlock.c       |    6 ++++++
+ kernel/locking/spinlock.c       |   10 ++++++++++
  kernel/locking/spinlock_rt.c    |   12 ++++++++++++
- 6 files changed, 44 insertions(+)
+ 6 files changed, 47 insertions(+)
 
 --- a/include/linux/rwlock.h
 +++ b/include/linux/rwlock.h
@@ -51,15 +53,7 @@ Link: https://lkml.kernel.org/r/YZfrMTAXV56HFWJY@google.com
  void __lockfunc _raw_read_lock_bh(rwlock_t *lock)	__acquires(lock);
  void __lockfunc _raw_write_lock_bh(rwlock_t *lock)	__acquires(lock);
  void __lockfunc _raw_read_lock_irq(rwlock_t *lock)	__acquires(lock);
-@@ -46,6 +47,7 @@ void __lockfunc
- 
- #ifdef CONFIG_INLINE_WRITE_LOCK
- #define _raw_write_lock(lock) __raw_write_lock(lock)
-+#define _raw_write_lock_nested(lock, subclass) __raw_write_lock_nested(lock, subclass)
- #endif
- 
- #ifdef CONFIG_INLINE_READ_LOCK_BH
-@@ -209,6 +211,13 @@ static inline void __raw_write_lock(rwlo
+@@ -209,6 +210,13 @@ static inline void __raw_write_lock(rwlo
  	LOCK_CONTENDED(lock, do_raw_write_trylock, do_raw_write_lock);
  }
  
@@ -111,10 +105,14 @@ Link: https://lkml.kernel.org/r/YZfrMTAXV56HFWJY@google.com
  #define _raw_write_lock_bh(lock)		__LOCK_BH(lock)
 --- a/kernel/locking/spinlock.c
 +++ b/kernel/locking/spinlock.c
-@@ -300,6 +300,12 @@ void __lockfunc _raw_write_lock(rwlock_t
+@@ -300,6 +300,16 @@ void __lockfunc _raw_write_lock(rwlock_t
  	__raw_write_lock(lock);
  }
  EXPORT_SYMBOL(_raw_write_lock);
++
++#ifndef CONFIG_DEBUG_LOCK_ALLOC
++#define __raw_write_lock_nested(lock, subclass)	__raw_write_lock(((void)(subclass), (lock)))
++#endif
 +
 +void __lockfunc _raw_write_lock_nested(rwlock_t *lock, int subclass)
 +{

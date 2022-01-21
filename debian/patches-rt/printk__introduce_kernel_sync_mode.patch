@@ -1,7 +1,7 @@
 Subject: printk: introduce kernel sync mode
 From: John Ogness <john.ogness@linutronix.de>
 Date: Mon Nov 30 01:42:06 2020 +0106
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc8-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
 
 From: John Ogness <john.ogness@linutronix.de>
 

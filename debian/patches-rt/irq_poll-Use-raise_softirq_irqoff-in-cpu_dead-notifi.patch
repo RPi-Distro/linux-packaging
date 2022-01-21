@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 2 Apr 2020 21:16:30 +0200
 Subject: [PATCH] irq_poll: Use raise_softirq_irqoff() in cpu_dead notifier
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16-rc8-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
 
 __raise_softirq_irqoff() adds a bit to the pending sofirq mask and this
 is it. The softirq won't be handled in a deterministic way but randomly

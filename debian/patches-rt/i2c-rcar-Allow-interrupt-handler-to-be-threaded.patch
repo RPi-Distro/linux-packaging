@@ -1,0 +1,50 @@
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Date: Wed, 19 Jan 2022 15:56:50 +0100
+Subject: [PATCH] i2c: rcar: Allow interrupt handler to be threaded.
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
+
+This is a revert of commit
+   24c6d4bc56388 ("i2c: rcar: make sure irq is not threaded on Gen2 and earlier")
+
+The IRQ-handler is not threaded unless requested. On PREEMPT_RT the
+handler must be threaded because the handler acquires spinlock_t locks
+which are sleeping locks on PREEMPT_RT. This is either via the DMA API
+or the possible wake_up() invocation.
+
+Remove IRQF_NO_THREAD from flags passed to request_irq().
+
+Fixes: 24c6d4bc56388 ("i2c: rcar: make sure irq is not threaded on Gen2 and earlier")
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-renesas-soc@vger.kernel.org
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ drivers/i2c/busses/i2c-rcar.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -1025,7 +1025,6 @@ static int rcar_i2c_probe(struct platfor
+ 	struct rcar_i2c_priv *priv;
+ 	struct i2c_adapter *adap;
+ 	struct device *dev = &pdev->dev;
+-	unsigned long irqflags = 0;
+ 	irqreturn_t (*irqhandler)(int irq, void *ptr) = rcar_i2c_gen3_irq;
+ 	int ret;
+ 
+@@ -1076,7 +1075,6 @@ static int rcar_i2c_probe(struct platfor
+ 	rcar_i2c_write(priv, ICSAR, 0); /* Gen2: must be 0 if not using slave */
+ 
+ 	if (priv->devtype < I2C_RCAR_GEN3) {
+-		irqflags |= IRQF_NO_THREAD;
+ 		irqhandler = rcar_i2c_gen2_irq;
+ 	}
+ 
+@@ -1102,7 +1100,7 @@ static int rcar_i2c_probe(struct platfor
+ 	if (ret < 0)
+ 		goto out_pm_disable;
+ 	priv->irq = ret;
+-	ret = devm_request_irq(dev, priv->irq, irqhandler, irqflags, dev_name(dev), priv);
++	ret = devm_request_irq(dev, priv->irq, irqhandler, 0, dev_name(dev), priv);
+ 	if (ret < 0) {
+ 		dev_err(dev, "cannot get irq %d\n", priv->irq);
+ 		goto out_pm_disable;
