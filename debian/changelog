@@ -22,6 +22,28 @@ linux (5.16.2-1~exp1) UNRELEASED; urgency=medium
   * d/copyright: Fix license name with spaces in it
   * d/copyright: Update for removed and renamed source files
   * d/tests/selftests: Use $AUTOPKGTEST_TMP instead of $ADTTMP
+  * Fix missing user-space hardening:
+    - d/rules.real: Define KBUILD_HOST{C,LD}FLAGS for sub-make
+    - linux-kbuild: Build modpost with standard CPPFLAGS
+    - cpupower: Build with standard CPPFLAGS
+    - usbip: Build with standard CPPFLAGS
+    - objtool: Build with standard CFLAGS and CPPFLAGS
+    - tools/perf: Define DEBUG=0 for sub-make so libapi doesn't use wrong flags
+    - libapi: Define _FORTIFY_SOURCE as 2, not empty
+    - tools/perf: Fix missing LDFLAGS for some programs
+  * d/rules: Tell blhc to ignore missing flags for perf-read-vdso* helpers
+  * d/rules: Tell blhc to ignore kernel compilation
+  * d/rules: Filter out -s option so that Kbuild is not silent
+  * d/bin/gencontrol.py, d/lib/python: Use classes for build restriction
+    formulae
+  * d/bin/gencontrol.py, d/rules.real: Replace DEBUG variable with if_package
+  * Introduce pkg.linux.quick build profile for quicker CI builds
+  * d/salsa-ci.yml: Add CI config using some of the common pipeline
+  * d/salsa-ci.yml, d/tests/python: Only run static checks in CI
+  * d/salsa-ci.yml: Run kconfigeditor2 as kconfig static check
+  * d/rules, d/salsa-ci.yml: Enable blhc, ignoring terse output
+  * bpftool, objtool, usbip: Always build with V=1 so blhc can check them
+  * d/salsa-ci.yml: Use per-release cache of orig tarballs
 
   [ Vincent Blut ]
   * drivers/net/wireless/realtek/rtw89: Enable RTW89 and RTW89_8852AE as

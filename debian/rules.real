@@ -46,9 +46,11 @@ setup_env := env -u ABINAME -u ARCH -u FEATURESET -u FLAVOUR -u VERSION -u LOCAL
 setup_env += DISTRIBUTION_OFFICIAL_BUILD=1 DISTRIBUTOR="$(DISTRIBUTOR)" DISTRIBUTION_VERSION="$(SOURCEVERSION)" KBUILD_BUILD_TIMESTAMP="$(SOURCE_DATE)" KBUILD_BUILD_VERSION_TIMESTAMP="$(DISTRIBUTOR) $(SOURCEVERSION) ($(SOURCE_DATE_UTC_ISO))" KBUILD_BUILD_USER="$(word 1,$(subst @, ,$(MAINTAINER)))" KBUILD_BUILD_HOST="$(word 2,$(subst @, ,$(MAINTAINER)))"
 setup_env += KBUILD_VERBOSE=$(if $(filter terse,$(DEB_BUILD_OPTIONS)),0,1)
 
-MAKE_CLEAN = $(setup_env) $(MAKE) KCFLAGS=-fdebug-prefix-map=$(CURDIR)/=
+MAKE_CLEAN = $(setup_env) $(MAKE) KCFLAGS=-fdebug-prefix-map=$(CURDIR)/= KBUILD_HOSTCFLAGS='$(CFLAGS) $(CPPFLAGS)' KBUILD_HOSTLDFLAGS='$(LDFLAGS)'
 MAKE_SELF := $(MAKE) -f debian/rules.real $(MAKEOVERRIDES)
 MAKEOVERRIDES =
+
+BUILDDEB_ARGS := $(if $(filter pkg.linux.quick,$(DEB_BUILD_PROFILES)),-Zgzip,-Zxz)
 
 #
 # Targets
@@ -111,7 +113,8 @@ source-featureset: $(STAMPS_DIR)/source_$(FEATURESET)
 
 $(BUILD_DIR)/config.$(ARCH)_$(FEATURESET)_$(FLAVOUR): $(KCONFIG)
 	mkdir -p '$(dir $@)'
-	debian/bin/kconfig.py '$@' $(KCONFIG) $(KCONFIG_OPTIONS)
+	debian/bin/kconfig.py '$@' $(KCONFIG) $(KCONFIG_OPTIONS) \
+		$(call if_package,linux-image-$(ABINAME)$(LOCALVERSION)-dbg,-o DEBUG_INFO=y)
 
 define copy_source
 mkdir -p '$(1)'
@@ -235,7 +238,7 @@ endif
 	dh_installdeb
 	dh_gencontrol -- $(GENCONTROL_ARGS)
 	dh_md5sums
-	dh_builddeb -- -Zxz $(BUILDDEB_ARGS)
+	dh_builddeb -- $(BUILDDEB_ARGS)
 
 install-dummy:
 	dh_testdir
@@ -426,7 +429,8 @@ endif
 	  install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)_dt \
 	  DIR='$(DIR)' PACKAGE_DIR='$(PACKAGE_DIR)' REAL_VERSION='$(REAL_VERSION)'
 	+$(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH='$(CURDIR)'/$(PACKAGE_DIR) INSTALL_MOD_STRIP=1
-ifeq ($(DEBUG),True)
+ifeq ($(call if_package,linux-image-$(ABINAME)$(LOCALVERSION)-dbg,y),y)
+# We are building debug info, so add debug links
 	set -o pipefail; \
 	find $(PACKAGE_DIR) -name '*.ko' | sed 's|$(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/kernel/||' | while read module ; do \
 	  $(CROSS_COMPILE)objcopy --add-gnu-debuglink=$(DIR)/$$module $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/kernel/$$module || exit; \
@@ -571,7 +575,7 @@ ifneq (,$(filter linux-image-%,$(packages_enabled)))
 	dh_fixperms
 ifeq ($(UDEB_UNSIGNED_TEST_BUILD),False)
 	dh_gencontrol
-	dh_builddeb
+	dh_builddeb -- $(BUILDDEB_ARGS)
 endif
 endif  # enabled
 
@@ -643,7 +647,7 @@ endif
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
-	dh_builddeb
+	dh_builddeb -- $(BUILDDEB_ARGS)
 
 build-kbuild: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,scripts)
@@ -671,7 +675,7 @@ endif
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
-	dh_builddeb
+	dh_builddeb -- $(BUILDDEB_ARGS)
 
 build-cpupower: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/power/cpupower)
@@ -712,7 +716,7 @@ endif
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
-	dh_builddeb
+	dh_builddeb -- $(BUILDDEB_ARGS)
 
 build-perf: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/perf)
@@ -741,7 +745,7 @@ endif
 	dh_shlibdeps -Xperf-read-vdso
 	dh_gencontrol
 	dh_md5sums
-	dh_builddeb
+	dh_builddeb -- $(BUILDDEB_ARGS)
 
 install-perf-meta: PACKAGE_NAME = linux-perf$(SOURCE_SUFFIX)
 install-perf-meta: DH_OPTIONS = -p$(PACKAGE_NAME)
@@ -777,7 +781,7 @@ endif
 	test -n "$$VERSION" -a -n "$(DEB_VERSION)" && \
 	dh_gencontrol -- -v$$VERSION+$(DEB_VERSION)
 	dh_md5sums
-	dh_builddeb
+	dh_builddeb -- $(BUILDDEB_ARGS)
 
 build-hyperv-daemons: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/hv)
@@ -810,7 +814,7 @@ endif
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
-	dh_builddeb
+	dh_builddeb -- $(BUILDDEB_ARGS)
 
 build-bootwrapper: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,arch/powerpc/boot)
@@ -831,7 +835,7 @@ install-bootwrapper: build-bootwrapper
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
-	dh_builddeb
+	dh_builddeb -- $(BUILDDEB_ARGS)
 
 .PHONY: binary-% build-% install-% setup-% source-%
 
