@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: random: Move the fast_pool reset into the caller.
 Date: Tue, 07 Dec 2021 13:17:36 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
 
 The state of the fast_pool (number of added entropy, timestamp of last
 addition) is reset after entropy has been consumed.

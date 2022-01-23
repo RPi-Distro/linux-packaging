@@ -1,7 +1,7 @@
 From: Minchan Kim <minchan@kernel.org>
 Subject: zsmalloc: replace per zpage lock with pool->migrate_lock
 Date: Mon, 15 Nov 2021 10:59:08 -0800
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
 
 The zsmalloc has used a bit for spin_lock in zpage handle to keep
 zpage object alive during several operations. However, it causes

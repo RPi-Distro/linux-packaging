@@ -57,6 +57,7 @@ linux (5.16.2-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 5.16.2-rt18
+  * [rt] Update to 5.16.2-rt19
 
   [ Bastian Blank ]
   * Build-depend on pahole after rename from dwarves.

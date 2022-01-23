@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: kernel/fork: Redo ifdefs around task's handling.
 Date: Thu, 18 Nov 2021 15:34:45 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
 
 The use of ifdef CONFIG_VMAP_STACK is confusing in terms what is
 actually happenning and what can happen.

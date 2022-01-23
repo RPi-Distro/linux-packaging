@@ -2,7 +2,7 @@ From: Peter Zijlstra <peterz@infradead.org>
 Date: Mon, 29 Nov 2021 18:46:46 +0100
 Subject: [PATCH 03/11] locking/rtmutex: Squash self-deadlock check for
  ww_rt_mutex.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
 
 Similar to the issues in commits:
 

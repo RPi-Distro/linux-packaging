@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 17 Dec 2021 18:19:19 +0100
 Subject: [PATCH 2/4] mm/memcg: Protect per-CPU counter by disabling preemption
  on PREEMPT_RT where needed.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
 
 The per-CPU counter are modified with the non-atomic modifier. The
 consistency is ensured by disabling interrupts for the update.

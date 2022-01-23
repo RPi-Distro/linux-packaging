@@ -11,19 +11,20 @@ arm64_mm_make_arch_faults_on_old_pte_check_for_migratability.patch
 ###########################################################################
 # John's printk queue
 ###########################################################################
-printk__rename_printk_cpulock_API_and_always_disable_interrupts.patch
-console__add_write_atomic_interface.patch
-kdb__only_use_atomic_consoles_for_output_mirroring.patch
-serial__8250__implement_write_atomic.patch
-printk__relocate_printk_delay.patch
-printk__call_boot_delay_msec_in_printk_delay.patch
-printk__use_seqcount_latch_for_console_seq.patch
-printk__introduce_kernel_sync_mode.patch
-printk__move_console_printing_to_kthreads.patch
-printk__remove_deferred_printing.patch
-printk__add_console_handover.patch
-printk__add_pr_flush.patch
-printk__Enhance_the_condition_check_of_msleep_in_pr_flush.patch
+0001-printk-rename-cpulock-functions.patch
+0002-printk-cpu-sync-always-disable-interrupts.patch
+0003-printk-use-percpu-flag-instead-of-cpu_online.patch
+0004-printk-get-caller_id-timestamp-after-migration-disab.patch
+0005-printk-refactor-and-rework-printing-logic.patch
+0006-printk-move-buffer-definitions-into-console_emit_nex.patch
+0007-printk-add-pr_flush.patch
+0008-printk-add-kthread-console-printers.patch
+0009-printk-reimplement-console_lock-for-proper-kthread-s.patch
+0010-printk-remove-console_locked.patch
+0011-console-introduce-CON_MIGHT_SLEEP-for-vt.patch
+0012-printk-add-infrastucture-for-atomic-consoles.patch
+0013-serial-8250-implement-write_atomic.patch
+0014-printk-avoid-preempt_disable-for-PREEMPT_RT.patch
 
 ###########################################################################
 # Posted and applied
@@ -91,8 +92,8 @@ mm__workingset__replace_IRQ-off_check_with_a_lockdep_assert..patch
 softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
 
 # These two need some feedback.
-i2c-rcar-Allow-interrupt-handler-to-be-threaded.patch
-i2c-core-Let-i2c_handle_smbus_host_notify-use-handle.patch
+genirq-Provide-generic_handle_irq_safe.patch
+Use-generic_handle_irq_safe-where-it-makes-sense.patch
 
 ###########################################################################
 # Kconfig bits:

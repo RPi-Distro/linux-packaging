@@ -1,7 +1,7 @@
 From: Minchan Kim <minchan@kernel.org>
 Subject: zsmalloc: introduce some helper functions
 Date: Mon, 15 Nov 2021 10:59:01 -0800
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
 
 get_zspage_mapping returns fullness as well as class_idx. However,
 the fullness is usually not used since it could be stale in some

@@ -1,23 +1,20 @@
-Subject: serial: 8250: implement write_atomic
 From: John Ogness <john.ogness@linutronix.de>
-Date: Mon Nov 30 01:42:02 2020 +0106
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt18.tar.xz
-
-From: John Ogness <john.ogness@linutronix.de>
+Date: Mon, 30 Nov 2020 01:42:02 +0106
+Subject: [PATCH 13/14] serial: 8250: implement write_atomic
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
 
 Implement a non-sleeping NMI-safe write_atomic() console function in
-order to support emergency console printing.
+order to support atomic console printing during a panic.
 
 Since interrupts need to be disabled during transmit, all usage of
 the IER register is wrapped with access functions that use the
-console_atomic_lock() function to synchronize register access while
-tracking the state of the interrupts. This is necessary because
+printk_cpu_sync_get_irqsave() function to synchronize register access
+while tracking the state of the interrupts. This is necessary because
 write_atomic() can be called from an NMI context that has preempted
 write_atomic().
 
 Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
  drivers/tty/serial/8250/8250.h         |   47 ++++++++++++++++
  drivers/tty/serial/8250/8250_core.c    |   17 ++++--
@@ -25,9 +22,10 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  drivers/tty/serial/8250/8250_ingenic.c |    7 ++
  drivers/tty/serial/8250/8250_mtk.c     |   29 +++++++++-
  drivers/tty/serial/8250/8250_port.c    |   92 ++++++++++++++++++++-------------
+ drivers/tty/serial/8250/Kconfig        |    1 
  include/linux/serial_8250.h            |    5 +
- 7 files changed, 162 insertions(+), 44 deletions(-)
----
+ 8 files changed, 163 insertions(+), 44 deletions(-)
+
 --- a/drivers/tty/serial/8250/8250.h
 +++ b/drivers/tty/serial/8250/8250.h
 @@ -132,12 +132,55 @@ static inline void serial_dl_write(struc
@@ -44,12 +42,12 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	is_console = uart_console(port);
 +
 +	if (is_console)
-+		console_atomic_lock(flags);
++		printk_cpu_sync_get_irqsave(flags);
 +
 +	serial_out(up, UART_IER, ier);
 +
 +	if (is_console)
-+		console_atomic_unlock(flags);
++		printk_cpu_sync_put_irqrestore(flags);
 +}
 +
 +static inline unsigned char serial8250_clear_IER(struct uart_8250_port *up)
@@ -66,13 +64,13 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +		clearval = UART_IER_UUE;
 +
 +	if (is_console)
-+		console_atomic_lock(flags);
++		printk_cpu_sync_get_irqsave(flags);
 +
 +	prior = serial_port_in(port, UART_IER);
 +	serial_port_out(port, UART_IER, clearval);
 +
 +	if (is_console)
-+		console_atomic_unlock(flags);
++		printk_cpu_sync_put_irqrestore(flags);
 +
 +	return prior;
 +}
@@ -156,10 +154,10 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +		is_console = uart_console(port);
 +
 +		if (is_console)
-+			console_atomic_lock(flags);
++			printk_cpu_sync_get_irqsave(flags);
  		up->ier = port->serial_in(port, UART_IER);
 +		if (is_console)
-+			console_atomic_unlock(flags);
++			printk_cpu_sync_put_irqrestore(flags);
 +
  		if (up->ier & (UART_IER_RLSI | UART_IER_RDI)) {
  			port->ops->stop_rx(port);
@@ -181,10 +179,10 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		 */
 +		is_console = uart_console(p);
 +		if (is_console)
-+			console_atomic_lock(flags);
++			printk_cpu_sync_get_irqsave(flags);
  		ier = p->serial_in(p, UART_IER);
 +		if (is_console)
-+			console_atomic_unlock(flags);
++			printk_cpu_sync_put_irqrestore(flags);
  
  		if (ier & UART_IER_MSI)
  			value |= UART_MCR_MDCE | UART_MCR_FCM;
@@ -203,13 +201,13 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	is_console = uart_console(port);
 +
 +	if (is_console)
-+		console_atomic_lock(flags);
++		printk_cpu_sync_get_irqsave(flags);
 +
 +	ier = serial_in(up, UART_IER);
 +	serial_out(up, UART_IER, ier & (~mask));
 +
 +	if (is_console)
-+		console_atomic_unlock(flags);
++		printk_cpu_sync_put_irqrestore(flags);
  }
  
  static void mtk8250_enable_intrs(struct uart_8250_port *up, int mask)
@@ -220,13 +218,13 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	unsigned int ier;
 +
 +	if (uart_console(port))
-+		console_atomic_lock(flags);
++		printk_cpu_sync_get_irqsave(flags);
 +
 +	ier = serial_in(up, UART_IER);
 +	serial_out(up, UART_IER, ier | mask);
 +
 +	if (uart_console(port))
-+		console_atomic_unlock(flags);
++		printk_cpu_sync_put_irqrestore(flags);
  }
  
  static void mtk8250_set_flow_ctrl(struct uart_8250_port *up, int mode)
@@ -340,9 +338,9 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +
 +	wait_for_xmitr(up, UART_LSR_THRE);
 +
-+	console_atomic_lock(flags);
++	printk_cpu_sync_get_irqsave(flags);
 +	serial8250_console_putchar_locked(port, ch);
-+	console_atomic_unlock(flags);
++	printk_cpu_sync_put_irqrestore(flags);
 +}
 +
  /*
@@ -359,7 +357,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	unsigned long flags;
 +	unsigned int ier;
 +
-+	console_atomic_lock(flags);
++	printk_cpu_sync_get_irqsave(flags);
 +
 +	touch_nmi_watchdog();
 +
@@ -375,7 +373,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +	wait_for_xmitr(up, BOTH_EMPTY);
 +	serial8250_set_IER(up, ier);
 +
-+	console_atomic_unlock(flags);
++	printk_cpu_sync_put_irqrestore(flags);
 +}
 +
  /*
@@ -455,6 +453,16 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	if (options)
  		uart_parse_options(options, &baud, &parity, &bits, &flow);
  	else if (probe)
+--- a/drivers/tty/serial/8250/Kconfig
++++ b/drivers/tty/serial/8250/Kconfig
+@@ -9,6 +9,7 @@ config SERIAL_8250
+ 	depends on !S390
+ 	select SERIAL_CORE
+ 	select SERIAL_MCTRL_GPIO if GPIOLIB
++	select HAVE_ATOMIC_CONSOLE
+ 	help
+ 	  This selects whether you want to include the driver for the standard
+ 	  serial ports.  The standard answer is Y.  People who might say N
 --- a/include/linux/serial_8250.h
 +++ b/include/linux/serial_8250.h
 @@ -7,6 +7,7 @@
