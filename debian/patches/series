@@ -35,12 +35,6 @@ bugfix/all/firmware-remove-redundant-log-messages-from-drivers.patch
 bugfix/all/radeon-amdgpu-firmware-is-required-for-drm-and-kms-on-r600-onward.patch
 debian/firmware_class-refer-to-debian-wiki-firmware-page.patch
 
-# Patches from aufs5 repository, imported with debian/bin/genpatch-aufs.
-# These are only the changes needed to allow aufs to be built out-of-tree.
-#features/all/aufs5/aufs5-base.patch
-#features/all/aufs5/aufs5-mmap.patch
-#features/all/aufs5/aufs5-standalone.patch
-
 # Change some defaults for security reasons
 debian/af_802154-Disable-auto-loading-as-mitigation-against.patch
 debian/rds-Disable-auto-loading-as-mitigation-against-local.patch
