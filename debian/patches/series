@@ -17,7 +17,7 @@ debian/mips-disable-werror.patch
 debian/mips-boston-disable-its.patch
 debian/mips-ieee754-relaxed.patch
 debian/arch-sh4-fix-uimage-build.patch
-debian/tools-perf-version.patch
+debian/tools-perf-perf-read-vdso-in-libexec.patch
 debian/tools-perf-install.patch
 debian/wireless-add-debian-wireless-regdb-certificates.patch
 debian/export-symbols-needed-by-android-drivers.patch

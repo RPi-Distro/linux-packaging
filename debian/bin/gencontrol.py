@@ -198,16 +198,10 @@ class Gencontrol(Base):
         if self.config.merge('packages').get('tools-unversioned', True):
             packages.extend(self.process_packages(
                 self.templates["control.tools-unversioned"], vars))
+            self.substitute_debhelper_config('perf', vars, 'linux-perf')
         if self.config.merge('packages').get('tools-versioned', True):
             packages.extend(self.process_packages(
                 self.templates["control.tools-versioned"], vars))
-            self.substitute_debhelper_config('perf', vars,
-                                              'linux-perf-%(version)s' % vars)
-            if do_meta:
-                packages.extend(self.process_packages(
-                    self.templates["control.tools-versioned.meta"], vars))
-                self.substitute_debhelper_config('perf.meta', vars,
-                                                  'linux-perf')
         if self.config.merge('packages').get('source', True):
             packages.extend(self.process_packages(
                 self.templates["control.sourcebin"], vars))

@@ -63,7 +63,7 @@ endef
 
 build-arch-arch: \
 	$(call if_package, linux-kbuild-$(VERSION),      build-kbuild) \
-	$(call if_package, linux-perf-$(VERSION),        build-perf) \
+	$(call if_package, linux-perf,                   build-perf) \
 	$(call if_package, linux-bootwrapper-$(ABINAME), build-bootwrapper) \
 	$(call if_package, bpftool,                      build-bpftool) \
 	$(call if_package, usbip,                        build-usbip) \
@@ -73,9 +73,7 @@ binary-arch-arch: \
 	$(call if_package, $(SOURCE_BASENAME)-config-$(VERSION), install-config_$(ARCH)) \
 	$(call if_package, linux-libc-dev,               install-libc-dev_$(ARCH)) \
 	$(call if_package, linux-kbuild-$(VERSION),      install-kbuild) \
-	$(call if_package, linux-perf-$(VERSION),        install-perf) \
-	$(if $(filter-out x-$(VERSION),x$(SOURCE_SUFFIX)), \
-	  $(call if_package, linux-perf$(SOURCE_SUFFIX), install-perf-meta)) \
+	$(call if_package, linux-perf,                   install-perf) \
 	$(call if_package, linux-bootwrapper-$(ABINAME), install-bootwrapper) \
 	$(call if_package, bpftool,                      install-bpftool) \
 	$(call if_package, usbip,                        install-usbip) \
@@ -721,7 +719,7 @@ endif
 build-perf: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/perf)
 
-install-perf: PACKAGE_NAME = linux-perf-$(VERSION)
+install-perf: PACKAGE_NAME = linux-perf
 install-perf: DH_OPTIONS = -p$(PACKAGE_NAME)
 install-perf: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 install-perf: build-perf
@@ -730,9 +728,9 @@ install-perf: build-perf
 	dh_prep
 	$(call make-tools,tools/perf) install DESTDIR=$(DIR)
 	# do not ship python2 script
-	rm -f $(DIR)/usr/lib/perf_$(VERSION)-core/scripts/python/call-graph-from-sql.py
-	dh_perl /usr/lib/perf_$(VERSION)-core/scripts/perl/Perf-Trace-Util/lib/
-	dh_python3 /usr/lib/perf_$(VERSION)-core/scripts/python/Perf-Trace-Util/lib/
+	rm -f $(DIR)/usr/lib/perf-core/scripts/python/call-graph-from-sql.py
+	dh_perl /usr/lib/perf-core/scripts/perl/Perf-Trace-Util/lib/
+	dh_python3 /usr/lib/perf-core/scripts/python/Perf-Trace-Util/lib/
 	dh_installchangelogs
 ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	dh_installdocs
@@ -746,14 +744,6 @@ endif
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
-
-install-perf-meta: PACKAGE_NAME = linux-perf$(SOURCE_SUFFIX)
-install-perf-meta: DH_OPTIONS = -p$(PACKAGE_NAME)
-install-perf-meta: LINK_DOC_PACKAGE = linux-perf-$(VERSION)
-install-perf-meta:
-	dh_testdir
-	dh_prep
-	+$(MAKE_SELF) install-base
 
 build-usbip: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/usb/usbip)
