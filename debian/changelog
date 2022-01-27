@@ -7,6 +7,8 @@ linux (5.16.3-1~exp1) UNRELEASED; urgency=medium
       (CVE-2022-23222)
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.2
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.3
+    - netfilter: nft_payload: do not update layer 4 checksum when mangling
+      fragments (Closes: #1002706)
 
   [ Helmut Grohne ]
   * Multiarchify python build-depends. (Closes: #983757)
