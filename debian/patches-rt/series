@@ -34,7 +34,6 @@ fs-namespace-Boost-the-mount_lock.lock-owner-instead.patch
 0001-blk-mq-Add-blk_mq_complete_request_direct.patch
 0002-mmc-core-Use-blk_mq_complete_request_direct.patch
 drm-i915-Don-t-disable-interrupts-and-pretend-a-lock.patch
-kernel-locking-Use-a-pointer-in-ww_mutex_trylock.patch
 net-dev-Always-serialize-on-Qdisc-busylock-in-__dev_.patch
 u64_stats-Disable-preemption-on-32bit-UP-SMP-PREEMPT.patch
 

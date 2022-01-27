@@ -17,7 +17,7 @@ Link: https://lore.kernel.org/r/20211207121737.2347312-5-bigeasy@linutronix.de
 
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
-@@ -1260,37 +1260,35 @@ static __u32 get_reg(struct fast_pool *f
+@@ -1262,37 +1262,35 @@
  	return *ptr;
  }
  
@@ -32,12 +32,12 @@ Link: https://lore.kernel.org/r/20211207121737.2347312-5-bigeasy@linutronix.de
 +
  		if ((fast_pool->count >= 64) &&
  		    crng_fast_load((char *) fast_pool->pool,
--				   sizeof(fast_pool->pool))) {
+-				   sizeof(fast_pool->pool)) > 0) {
 -			fast_pool->count = 0;
 -			fast_pool->last = now;
 -		}
 -		return;
-+				   sizeof(fast_pool->pool)))
++				   sizeof(fast_pool->pool)) > 0)
 +			pool_reset = true;
 +
 +		return pool_reset;
@@ -66,7 +66,7 @@ Link: https://lore.kernel.org/r/20211207121737.2347312-5-bigeasy@linutronix.de
  }
  
  void add_interrupt_randomness(int irq)
-@@ -1316,7 +1314,10 @@ void add_interrupt_randomness(int irq)
+@@ -1318,7 +1316,10 @@
  	fast_mix(fast_pool);
  	add_interrupt_bench(cycles);
  
