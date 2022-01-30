@@ -198,6 +198,19 @@ linux (5.16~rc1-1~exp1) experimental; urgency=medium
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 19 Nov 2021 22:45:28 +0100
 
+linux (5.15.15-2) unstable; urgency=high
+
+  [ Bastian Blank ]
+  * Build-depend on pahole after rename from dwarves.
+
+  [ Salvatore Bonaccorso ]
+  * [x86] mwifiex: Fix skb_over_panic in mwifiex_usb_recv() (CVE-2021-43976)
+  * [x86] drm/i915: Flush TLBs before releasing backing store (CVE-2022-0330)
+  * drm/vmwgfx: Fix stale file descriptors on failed usercopy (CVE-2022-22942)
+  * ucount:  Make get_ucount a safe get_user replacement (CVE-2022-24122)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 30 Jan 2022 11:14:49 +0100
+
 linux (5.15.15-1) unstable; urgency=high
 
   * New upstream stable update:
