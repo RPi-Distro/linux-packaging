@@ -108,6 +108,7 @@ debian/ntfs-mark-it-as-broken.patch
 bugfix/all/vfs-fs_context-fix-up-param-length-parsing-in-legacy.patch
 bugfix/x86/mwifiex-Fix-skb_over_panic-in-mwifiex_usb_recv.patch
 bugfix/x86/drm-i915-Flush-TLBs-before-releasing-backing-store.patch
+bugfix/all/drm-vmwgfx-Fix-stale-file-descriptors-on-failed-user.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
