@@ -32,7 +32,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -661,6 +661,8 @@ void __mod_memcg_lruvec_state(struct lru
+@@ -667,6 +667,8 @@
  	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
  	memcg = pn->memcg;
  
@@ -41,29 +41,29 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	/* Update memcg */
  	__this_cpu_add(memcg->vmstats_percpu->state[idx], val);
  
-@@ -668,6 +670,8 @@ void __mod_memcg_lruvec_state(struct lru
+@@ -674,6 +676,8 @@
  	__this_cpu_add(pn->lruvec_stats_percpu->state[idx], val);
  
- 	memcg_rstat_updated(memcg);
+ 	memcg_rstat_updated(memcg, val);
 +	if (IS_ENABLED(CONFIG_PREEMPT_RT))
 +		preempt_enable();
  }
  
  /**
-@@ -750,8 +754,12 @@ void __count_memcg_events(struct mem_cgr
+@@ -756,8 +760,12 @@
  	if (mem_cgroup_disabled())
  		return;
  
 +	if (IS_ENABLED(PREEMPT_RT))
 +		preempt_disable();
  	__this_cpu_add(memcg->vmstats_percpu->events[idx], count);
- 	memcg_rstat_updated(memcg);
+ 	memcg_rstat_updated(memcg, count);
 +	if (IS_ENABLED(PREEMPT_RT))
 +		preempt_enable();
  }
  
  static unsigned long memcg_events(struct mem_cgroup *memcg, int event)
-@@ -7173,9 +7181,18 @@ void mem_cgroup_swapout(struct page *pag
+@@ -7179,9 +7187,18 @@
  	 * i_pages lock which is taken with interrupts-off. It is
  	 * important here to have the interrupts disabled because it is the
  	 * only synchronisation we have for updating the per-CPU variables.

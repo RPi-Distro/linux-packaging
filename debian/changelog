@@ -12,6 +12,8 @@ linux (5.16.4-1~exp1) UNRELEASED; urgency=medium
 
   * objtool: check: give big enough buffer for pv_ops (Closes: #1004495)
   * Refresh "firmware: Remove redundant log messages from drivers"
+  * [rt] Refresh "mm/memcg: Protect per-CPU counter by disabling preemption on
+    PREEMPT_RT where needed."
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 29 Jan 2022 13:47:22 +0100
 
