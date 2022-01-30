@@ -1,4 +1,4 @@
-linux (5.16.4-1~exp1) UNRELEASED; urgency=medium
+linux (5.16.4-1~exp1) experimental; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.4
@@ -15,7 +15,7 @@ linux (5.16.4-1~exp1) UNRELEASED; urgency=medium
   * [rt] Refresh "mm/memcg: Protect per-CPU counter by disabling preemption on
     PREEMPT_RT where needed."
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 29 Jan 2022 13:47:22 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 30 Jan 2022 19:00:56 +0100
 
 linux (5.16.3-1~exp1) experimental; urgency=medium
 
