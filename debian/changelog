@@ -1,3 +1,164 @@
+linux (5.16.5-1~exp1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.5
+    - Bluetooth: refactor malicious adv data check
+    - btrfs: fix too long loop when defragging a 1 byte file
+    - btrfs: allow defrag to be interruptible
+    - btrfs: defrag: fix wrong number of defragged sectors
+    - btrfs: defrag: properly update range->start for autodefrag
+    - btrfs: fix deadlock when reserving space during defrag
+    - btrfs: add back missing dirty page rate limiting to defrag
+    - btrfs: update writeback index when starting defrag
+    - net: sfp: ignore disabled SFP node
+    - net: stmmac: configure PTP clock source prior to PTP initialization
+    - net: stmmac: skip only stmmac_ptp_register when resume from suspend
+    - [armel,armhf] 9179/1: uaccess: avoid alignment faults in
+      copy_[from|to]_kernel_nofault
+    - [armel,armhf] 9180/1: Thumb2: align ALT_UP() sections in modules
+      sufficiently
+    - [arm64] KVM: arm64: vgic-v3: Restrict SEIS workaround to known broken
+      systems
+    - [s390x] module: fix loading modules with a lot of relocations
+    - [s390x] hypfs: include z/VM guests with access control group set
+    - [s390x] nmi: handle guarded storage validity failures for KVM guests
+    - [s390x] nmi: handle vector validity failures for KVM guests
+    - bpf: Guard against accessing NULL pt_regs in bpf_get_task_stack()
+    - [s390x] scsi: zfcp: Fix failed recovery on gone remote port with non-NPIV
+      FCP devices
+    - udf: Restore i_lenAlloc when inode expansion fails
+    - udf: Fix NULL ptr deref when converting from inline format
+    - [x86] efi: runtime: avoid EFIv2 runtime services on Apple x86 machines
+    - tracing: Don't inc err_log entry count if entry allocation fails
+    - ceph: properly put ceph_string reference after async create attempt
+    - ceph: set pool_ns in new inode layout for async creates
+    - fsnotify: invalidate dcache before IN_DELETE event
+    - fsnotify: fix fsnotify hooks in pseudo filesystems
+    - Revert "KVM: SVM: avoid infinite loop on NPF from bad address"
+    - psi: Fix uaf issue when psi trigger is destroyed while being polled
+    - [x86] perf/x86/intel/uncore: Fix CAS_COUNT_WRITE issue for ICX
+    - [x86] perf/x86/intel: Add a quirk for the calculation of the number of
+      counters on Alder Lake
+    - [arm64,armhf] drm/etnaviv: relax submit size limits
+    - drm/atomic: Add the crtc to affected crtc only if uapi.enable = true
+    - drm/amdgpu: filter out radeon secondary ids as well
+    - [x86] KVM: LAPIC: Also cancel preemption timer during SET_LAPIC
+    - [x86] KVM: SVM: Never reject emulation due to SMAP errata for !SEV guests
+    - [x86] KVM: SVM: Don't intercept #GP for SEV guests
+    - [x86] KVM: x86: nSVM: skip eax alignment check for non-SVM instructions
+    - [x86] KVM: x86: Move CPUID.(EAX=0x12,ECX=1) mangling to
+      __kvm_update_cpuid_runtime()
+    - [x86] KVM: x86: Free kvm_cpuid_entry2 array on post-KVM_RUN
+      KVM_SET_CPUID{,2}
+    - [x86] KVM: x86: Forcibly leave nested virt when SMM state is toggled
+    - [x86] KVM: x86: Check .flags in kvm_cpuid_check_equal() too
+    - [x86] KVM: x86: Keep MSR_IA32_XSS unchanged for INIT
+    - [x86] KVM: x86: Update vCPU's runtime CPUID on write to MSR_IA32_XSS
+    - [x86] KVM: x86: Sync the states size with the XCR0/IA32_XSS at, any time
+    - [powerpc*] KVM: PPC: Book3S HV Nested: Fix nested HFSCR being clobbered
+      with multiple vCPUs
+    - security, lsm: dentry_init_security() Handle multi LSM registration
+    - [arm64] extable: fix load_unaligned_zeropad() reg indices
+    - dm: revert partial fix for redundant bio-based IO accounting
+    - block: add bio_start_io_acct_time() to control start_time
+    - dm: properly fix redundant bio-based IO accounting
+    - [arm*] serial: pl011: Fix incorrect rs485 RTS polarity on set_mctrl
+    - serial: 8250: of: Fix mapped region size when using reg-offset property
+    - [armhf] serial: stm32: fix software flow control transfer
+    - tty: n_gsm: fix SW flow control encoding/handling
+    - tty: Add support for Brainboxes UC cards.
+    - usb-storage: Add unusual-devs entry for VL817 USB-SATA bridge
+    - usb: xhci-plat: fix crash when suspend if remote wake enable
+    - [arm64,armhf] usb: common: ulpi: Fix crash in ulpi_match()
+    - usb: gadget: f_sourcesink: Fix isoc transfer for USB_SPEED_SUPER_PLUS
+    - [arm64] usb: dwc3: xilinx: Skip resets and USB3 register settings for
+      USB2.0 mode
+    - [arm64] usb: dwc3: xilinx: Fix error handling when getting USB3 PHY
+    - USB: core: Fix hang in usb_kill_urb by adding memory barriers
+    - [arm64] usb: typec: tcpci: don't touch CC line if it's Vconn source
+    - usb: typec: tcpm: Do not disconnect while receiving VBUS off
+    - usb: typec: tcpm: Do not disconnect when receiving VSAFE0V
+    - mt76: connac: introduce MCU_CE_CMD macro
+    - jbd2: export jbd2_journal_[grab|put]_journal_head
+    - ocfs2: fix a deadlock when commit trans
+    - sched/membarrier: Fix membarrier-rseq fence command missing from query
+      bitmask
+    - PCI/sysfs: Find shadow ROM before static attribute initialization
+    - [x86] MCE/AMD: Allow thresholding interface updates after init
+    - [x86] cpu: Add Xeon Icelake-D to list of CPUs that support PPIN
+    - i40e: Increase delay to 1 s after global EMP reset
+    - i40e: Fix issue when maximum queues is exceeded
+    - i40e: Fix queues reservation for XDP
+    - i40e: Fix for failed to init adminq while VF reset
+    - i40e: fix unsigned stat widths
+    - scsi: bnx2fc: Flush destroy_work queue before calling
+      bnx2fc_interface_put()
+    - ipv6_tunnel: Rate limit warning messages
+    - [armel,armhf] 9170/1: fix panic when kasan and kprobe are enabled
+    - net: fix information leakage in /proc/net/ptype
+    - hwmon: (lm90) Mark alert as broken for MAX6646/6647/6649
+    - hwmon: (lm90) Mark alert as broken for MAX6680
+    - ping: fix the sk_bound_dev_if match in ping_lookup
+    - ipv4: avoid using shared IP generator for connected sockets
+    - hwmon: (lm90) Reduce maximum conversion rate for G781
+    - NFSv4: Handle case where the lookup of a directory fails
+    - NFSv4: nfs_atomic_open() can race when looking up a non-regular file
+    - net-procfs: show net devices bound packet types
+    - [arm64] drm/msm: Fix wrong size calculation
+    - [arm64] drm/msm/dsi: Fix missing put_device() call in dsi_get_phy
+    - [arm64] drm/msm/dsi: invalid parameter check in msm_dsi_phy_enable
+    - ipv6: annotate accesses to fn->fn_sernum
+    - NFS: Ensure the server has an up to date ctime before hardlinking
+    - NFS: Ensure the server has an up to date ctime before renaming
+    - [arm64] KVM: arm64: pkvm: Use the mm_ops indirection for cache maintenance
+    - SUNRPC: Don't dereference xprt->snd_task if it's a cookie
+    - netfilter: conntrack: don't increment invalid counter on NF_REPEAT
+    - [powerpc*] 64s: Mask SRR0 before checking against the masked NIP
+    - perf: Fix perf_event_read_local() time
+    - sched/pelt: Relax the sync of util_sum with util_avg
+    - net: phy: broadcom: hook up soft_reset for BCM54616S
+    - ethtool: Fix link extended state for big endian
+    - phylib: fix potential use-after-free
+    - rxrpc: Adjust retransmission backoff
+    - [arm64] efi/libstub: arm64: Fix image check alignment at entry
+    - io_uring: fix bug in slow unregistering of nodes
+    - block: fix memory leak in disk_register_independent_access_ranges
+    - [x86] Drivers: hv: balloon: account for vmbus packet header in
+      max_pkt_size
+    - hwmon: (lm90) Re-enable interrupts after alert clears
+    - hwmon: (lm90) Mark alert as broken for MAX6654
+    - hwmon: (lm90) Fix sysfs and udev notifications
+    - hwmon: (adt7470) Prevent divide by zero in adt7470_fan_write()
+    - ipv4: fix ip option filtering for locally generated fragments
+    - net/smc: Transitional solution for clcsock race issue
+    - video: hyperv_fb: Fix validation of screen resolution
+    - hwmon: (nct6775) Fix crash in clear_caseopen
+    - [arm64] drm/msm/hdmi: Fix missing put_device() call in msm_hdmi_get_phy
+    - [arm64] drm/msm/dpu: invalid parameter check in dpu_setup_dspp_pcc
+    - [arm64] drm/msm/a6xx: Add missing suspend_count increment
+    - yam: fix a memory leak in yam_siocdevprivate()
+    - [armhf] net: cpsw: Properly initialise struct page_pool_params
+    - [arm64] net: hns3: handle empty unknown interrupt for VF
+    - sch_htb: Fail on unsupported parameters when offload is requested
+    - ceph: put the requests/sessions when it fails to alloc memory
+    - gve: Fix GFP flags when allocing pages
+    - Revert "ipv6: Honor all IPv6 PIO Valid Lifetime values"
+    - net: bridge: vlan: fix single net device option dumping
+    - ipv4: raw: lock the socket in raw_bind()
+    - ipv4: tcp: send zero IPID in SYNACK messages
+    - ipv4: remove sparse error in ip_neigh_gw4()
+    - net: bridge: vlan: fix memory leak in __allowed_ingress
+    - dt-bindings: can: tcan4x5x: fix mram-cfg RX FIFO config
+    - perf/core: Fix cgroup event list management
+    - [arm64] usb: dwc3: xilinx: fix uninitialized return value
+    - [x86] KVM: nVMX: Rename vmcs_to_field_offset{,_table}
+    - [x86] KVM: nVMX: Implement evmcs_field_offset() suitable for
+      handle_vmread()
+    - [x86] KVM: nVMX: Allow VMREAD when Enlightened VMCS is in use
+    - block: Fix wrong offset in bio_truncate()
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 03 Feb 2022 21:24:54 +0100
+
 linux (5.16.4-1~exp1) experimental; urgency=medium
 
   * New upstream stable update:
