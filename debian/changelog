@@ -1,4 +1,4 @@
-linux (5.16.6-1~exp1) UNRELEASED; urgency=medium
+linux (5.16.7-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.5
@@ -194,6 +194,10 @@ linux (5.16.6-1~exp1) UNRELEASED; urgency=medium
     - tcp: fix mem under-charging with zerocopy sendmsg()
     - tcp: add missing tcp_skb_can_collapse() test in tcp_shift_skb_data()
     - ovl: fix NULL pointer dereference in copy up warning
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.7
+    - [arm*] Revert "drm/vc4: hdmi: Make sure the device is powered with CEC"
+    - [arm*] Revert "drm/vc4: hdmi: Make sure the device is powered with CEC"
+      again
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 03 Feb 2022 21:24:54 +0100
 
