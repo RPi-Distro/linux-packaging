@@ -1,4 +1,4 @@
-linux (5.16.5-1~exp1) UNRELEASED; urgency=medium
+linux (5.16.6-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.5
@@ -156,6 +156,44 @@ linux (5.16.5-1~exp1) UNRELEASED; urgency=medium
       handle_vmread()
     - [x86] KVM: nVMX: Allow VMREAD when Enlightened VMCS is in use
     - block: Fix wrong offset in bio_truncate()
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.6
+    - PCI: pciehp: Fix infinite loop in IRQ handler upon power fault
+    - [arm*] drm/vc4: hdmi: Make sure the device is powered with CEC
+    - cgroup-v1: Require capabilities to set release_agent (CVE-2022-0492)
+    - Revert "mm/gup: small refactoring: simplify try_grab_page()"
+    - net: phy: Fix qca8081 with speeds lower than 2.5Gb/s
+    - ovl: don't fail copy up if no fileattr support on upper
+    - lockd: fix server crash on reboot of client holding lock
+    - lockd: fix failure to cleanup client locks
+    - net/mlx5e: TC, Reject rules with drop and modify hdr action
+    - net/mlx5: Bridge, take rtnl lock in init error handler
+    - net/mlx5e: Fix handling of wrong devices during bond netevent
+    - net/mlx5: Use del_timer_sync in fw reset flow of halting poll
+    - net/mlx5e: Fix module EEPROM query
+    - net/mlx5e: TC, Reject rules with forward and drop actions
+    - net/mlx5: Fix offloading with ESWITCH_IPV4_TTL_MODIFY_ENABLE
+    - net/mlx5e: Don't treat small ceil values as unlimited in HTB offload
+    - net/mlx5: Bridge, Fix devlink deadlock on net namespace deletion
+    - net/mlx5e: Avoid field-overflowing memcpy()
+    - net/mlx5e: Fix wrong calculation of header index in HW_GRO
+    - net/mlx5e: Fix broken SKB allocation in HW-GRO
+    - net/mlx5: E-Switch, Fix uninitialized variable modact
+    - net/mlx5e: Avoid implicit modify hdr for decap drop rule
+    - ipheth: fix EOVERFLOW in ipheth_rcvbulk_callback
+    - i40e: Fix reset bw limit when DCB enabled with 1 TC
+    - i40e: Fix reset path while removing the driver
+    - [amd64,arm64] net: amd-xgbe: ensure to reset the tx_timer_active flag
+    - [amd64,arm64] net: amd-xgbe: Fix skb data length underflow
+    - fanotify: Fix stale file descriptor in copy_event_to_user()
+    - net: sched: fix use-after-free in tc_new_tfilter()
+    - rtnetlink: make sure to refresh master_dev/m_ops in __rtnl_newlink()
+    - bpf: Fix possible race in inc_misses_counter
+    - cpuset: Fix the bug that subpart_cpus updated wrongly in update_cpumask()
+    - e1000e: Handshake with CSME starts from ADL platforms
+    - af_packet: fix data-race in packet_setsockopt / packet_setsockopt
+    - tcp: fix mem under-charging with zerocopy sendmsg()
+    - tcp: add missing tcp_skb_can_collapse() test in tcp_shift_skb_data()
+    - ovl: fix NULL pointer dereference in copy up warning
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 03 Feb 2022 21:24:54 +0100
 
