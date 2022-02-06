@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Fri, 24 Sep 2021 17:05:48 +0200
 Subject: [PATCH] */softirq: Disable softirq stacks on PREEMPT_RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
 
 PREEMPT_RT preempts softirqs and the current implementation avoids
 do_softirq_own_stack() and only uses __do_softirq().
@@ -37,7 +37,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  static __always_inline void call_do_irq(struct pt_regs *regs, void *sp)
  {
-@@ -820,10 +822,12 @@ void *mcheckirq_ctx[NR_CPUS] __read_most
+@@ -821,10 +823,12 @@ void *mcheckirq_ctx[NR_CPUS] __read_most
  void *softirq_ctx[NR_CPUS] __read_mostly;
  void *hardirq_ctx[NR_CPUS] __read_mostly;
  

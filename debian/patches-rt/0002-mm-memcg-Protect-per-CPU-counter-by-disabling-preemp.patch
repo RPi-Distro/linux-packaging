@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 17 Dec 2021 18:19:19 +0100
 Subject: [PATCH 2/4] mm/memcg: Protect per-CPU counter by disabling preemption
  on PREEMPT_RT where needed.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
 
 The per-CPU counter are modified with the non-atomic modifier. The
 consistency is ensured by disabling interrupts for the update.
@@ -32,7 +32,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -667,6 +667,8 @@
+@@ -667,6 +667,8 @@ void __mod_memcg_lruvec_state(struct lru
  	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
  	memcg = pn->memcg;
  
@@ -41,7 +41,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	/* Update memcg */
  	__this_cpu_add(memcg->vmstats_percpu->state[idx], val);
  
-@@ -674,6 +676,8 @@
+@@ -674,6 +676,8 @@ void __mod_memcg_lruvec_state(struct lru
  	__this_cpu_add(pn->lruvec_stats_percpu->state[idx], val);
  
  	memcg_rstat_updated(memcg, val);
@@ -50,7 +50,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  /**
-@@ -756,8 +760,12 @@
+@@ -756,8 +760,12 @@ void __count_memcg_events(struct mem_cgr
  	if (mem_cgroup_disabled())
  		return;
  
@@ -63,7 +63,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  static unsigned long memcg_events(struct mem_cgroup *memcg, int event)
-@@ -7179,9 +7187,18 @@
+@@ -7194,9 +7202,18 @@ void mem_cgroup_swapout(struct page *pag
  	 * i_pages lock which is taken with interrupts-off. It is
  	 * important here to have the interrupts disabled because it is the
  	 * only synchronisation we have for updating the per-CPU variables.

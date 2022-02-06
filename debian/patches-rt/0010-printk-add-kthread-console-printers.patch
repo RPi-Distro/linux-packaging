@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
-Date: Mon, 13 Dec 2021 21:22:17 +0106
-Subject: [PATCH 08/14] printk: add kthread console printers
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
+Date: Fri, 4 Feb 2022 16:01:17 +0106
+Subject: [PATCH 10/16] printk: add kthread console printers
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
 
 Create a kthread for each console to perform console printing. During
 normal operation (@system_state == SYSTEM_RUNNING), the kthread
@@ -15,18 +15,11 @@ by the printk caller.
 Console printers synchronize against each other and against console
 lockers by taking the console lock for each message that is printed.
 
-NOTE: The kthread printers do not disable preemption while holding
-      the console lock. This introduces a regression that was
-      previously fixed with commit fd5f7cde1b85 ("printk: Never set
-      console_may_schedule in console_trylock()"). A follow-up
-      commit will correct this.
-
 Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
  include/linux/console.h |    2 
- kernel/printk/printk.c  |  157 +++++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 157 insertions(+), 2 deletions(-)
+ kernel/printk/printk.c  |  159 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 159 insertions(+), 2 deletions(-)
 
 --- a/include/linux/console.h
 +++ b/include/linux/console.h
@@ -41,7 +34,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  };
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -348,6 +348,20 @@ static int console_msg_format = MSG_FORM
+@@ -348,6 +348,13 @@ static int console_msg_format = MSG_FORM
  /* syslog_lock protects syslog_* variables and write access to clear_seq. */
  static DEFINE_MUTEX(syslog_lock);
  
@@ -52,26 +45,34 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 + */
 +static bool kthreads_started;
 +
-+static inline bool kthread_printers_active(void)
+ #ifdef CONFIG_PRINTK
+ static atomic_t printk_direct = ATOMIC_INIT(0);
+ 
+@@ -374,6 +381,14 @@ void printk_direct_exit(void)
+ 	atomic_dec(&printk_direct);
+ }
+ 
++static inline bool allow_direct_printing(void)
 +{
-+	return (kthreads_started &&
-+		system_state == SYSTEM_RUNNING &&
-+		!oops_in_progress);
++	return (!kthreads_started ||
++		system_state != SYSTEM_RUNNING ||
++		oops_in_progress ||
++		atomic_read(&printk_direct));
 +}
 +
- #ifdef CONFIG_PRINTK
  DECLARE_WAIT_QUEUE_HEAD(log_wait);
  /* All 3 protected by @syslog_lock. */
-@@ -2199,7 +2213,7 @@ asmlinkage int vprintk_emit(int facility
+ /* the next printk record to read by syslog(READ) or /proc/kmsg */
+@@ -2226,7 +2241,7 @@ asmlinkage int vprintk_emit(int facility
  	printed_len = vprintk_store(facility, level, dev_info, fmt, args);
  
  	/* If called from the scheduler, we can not call up(). */
 -	if (!in_sched) {
-+	if (!in_sched && !kthread_printers_active()) {
++	if (!in_sched && allow_direct_printing()) {
  		/*
  		 * Disable preemption to avoid being preempted while holding
  		 * console_sem which would prevent anyone from printing to
-@@ -2240,6 +2254,8 @@ asmlinkage __visible int _printk(const c
+@@ -2267,6 +2282,8 @@ asmlinkage __visible int _printk(const c
  }
  EXPORT_SYMBOL(_printk);
  
@@ -80,15 +81,16 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  #else /* CONFIG_PRINTK */
  
  #define CONSOLE_LOG_MAX		0
-@@ -2270,6 +2286,7 @@ static int console_lock_spinning_disable
- static void call_console_driver(struct console *con, const char *text, size_t len,
+@@ -2298,6 +2315,8 @@ static void call_console_driver(struct c
  				char *dropped_text) {}
  static bool suppress_message_printing(int level) { return false; }
+ static void printk_delay(int level) {}
 +static void start_printk_kthread(struct console *con) {}
++static bool allow_direct_printing(void) { return true; }
  
  #endif /* CONFIG_PRINTK */
  
-@@ -2458,6 +2475,10 @@ void resume_console(void)
+@@ -2486,6 +2505,10 @@ void resume_console(void)
  	down_console_sem();
  	console_suspended = 0;
  	console_unlock();
@@ -99,18 +101,18 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	pr_flush(1000, true);
  }
  
-@@ -2672,6 +2693,10 @@ static bool console_flush_all(bool do_co
+@@ -2701,6 +2724,10 @@ static bool console_flush_all(bool do_co
  	*handover = false;
  
  	do {
 +		/* Let the kthread printers do the work if they can. */
-+		if (kthread_printers_active())
-+			return false;
++		if (!allow_direct_printing())
++			break;
 +
  		any_progress = false;
  
  		for_each_console(con) {
-@@ -2883,6 +2908,10 @@ void console_start(struct console *conso
+@@ -2909,6 +2936,10 @@ void console_start(struct console *conso
  	console_lock();
  	console->flags |= CON_ENABLED;
  	console_unlock();
@@ -121,7 +123,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	pr_flush(1000, true);
  }
  EXPORT_SYMBOL(console_start);
-@@ -3074,6 +3103,8 @@ void register_console(struct console *ne
+@@ -3113,6 +3144,8 @@ void register_console(struct console *ne
  		/* Begin with next message. */
  		newcon->seq = prb_next_seq(prb);
  	}
@@ -130,7 +132,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	console_unlock();
  	console_sysfs_notify();
  
-@@ -3130,6 +3161,11 @@ int unregister_console(struct console *c
+@@ -3169,6 +3202,11 @@ int unregister_console(struct console *c
  		}
  	}
  
@@ -142,10 +144,10 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	if (res)
  		goto out_disable_unlock;
  
-@@ -3235,6 +3271,13 @@ static int __init printk_late_init(void)
- 	ret = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "printk:online",
+@@ -3275,6 +3313,13 @@ static int __init printk_late_init(void)
  					console_cpu_notify, NULL);
  	WARN_ON(ret < 0);
+ 	printk_sysctl_init();
 +
 +	console_lock();
 +	for_each_console(con)
@@ -156,7 +158,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	return 0;
  }
  late_initcall(printk_late_init);
-@@ -3305,6 +3348,116 @@ bool pr_flush(int timeout_ms, bool reset
+@@ -3345,6 +3390,116 @@ bool pr_flush(int timeout_ms, bool reset
  }
  EXPORT_SYMBOL(pr_flush);
  
@@ -273,7 +275,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  /*
   * Delayed printk version, for scheduler-internal messages:
   */
-@@ -3324,7 +3477,7 @@ static void wake_up_klogd_work_func(stru
+@@ -3364,7 +3519,7 @@ static void wake_up_klogd_work_func(stru
  	}
  
  	if (pending & PRINTK_PENDING_WAKEUP)

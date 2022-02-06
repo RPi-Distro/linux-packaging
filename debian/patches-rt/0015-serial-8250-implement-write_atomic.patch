@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
-Date: Mon, 30 Nov 2020 01:42:02 +0106
-Subject: [PATCH 13/14] serial: 8250: implement write_atomic
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
+Date: Fri, 4 Feb 2022 16:01:17 +0106
+Subject: [PATCH 15/16] serial: 8250: implement write_atomic
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
 
 Implement a non-sleeping NMI-safe write_atomic() console function in
 order to support atomic console printing during a panic.
@@ -118,7 +118,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	spin_unlock_irqrestore(&up->port.lock, flags);
  
-@@ -568,6 +566,14 @@ serial8250_register_ports(struct uart_dr
+@@ -567,6 +565,14 @@ serial8250_register_ports(struct uart_dr
  
  #ifdef CONFIG_SERIAL_8250_CONSOLE
  
@@ -133,7 +133,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  static void univ8250_console_write(struct console *co, const char *s,
  				   unsigned int count)
  {
-@@ -661,6 +667,7 @@ static int univ8250_console_match(struct
+@@ -660,6 +666,7 @@ static int univ8250_console_match(struct
  
  static struct console univ8250_console = {
  	.name		= "ttyS",
@@ -473,7 +473,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  #include <linux/serial_core.h>
  #include <linux/serial_reg.h>
  #include <linux/platform_device.h>
-@@ -125,6 +126,8 @@ struct uart_8250_port {
+@@ -123,6 +124,8 @@ struct uart_8250_port {
  #define MSR_SAVE_FLAGS UART_MSR_ANY_DELTA
  	unsigned char		msr_saved_flags;
  
@@ -482,7 +482,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	struct uart_8250_dma	*dma;
  	const struct uart_8250_ops *ops;
  
-@@ -180,6 +183,8 @@ void serial8250_init_port(struct uart_82
+@@ -178,6 +181,8 @@ void serial8250_init_port(struct uart_82
  void serial8250_set_defaults(struct uart_8250_port *up);
  void serial8250_console_write(struct uart_8250_port *up, const char *s,
  			      unsigned int count);

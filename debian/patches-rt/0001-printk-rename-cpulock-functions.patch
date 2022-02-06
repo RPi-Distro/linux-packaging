@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
-Date: Tue, 28 Sep 2021 11:27:02 +0206
-Subject: [PATCH 01/14] printk: rename cpulock functions
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
+Date: Fri, 4 Feb 2022 16:01:15 +0106
+Subject: [PATCH 01/16] printk: rename cpulock functions
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
 
 Since the printk cpulock is CPU-reentrant and since it is used
 in all contexts, its usage must be carefully considered and
@@ -23,7 +23,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/include/linux/printk.h
 +++ b/include/linux/printk.h
-@@ -281,43 +281,43 @@ static inline void printk_trigger_flush(
+@@ -277,43 +277,43 @@ static inline void printk_trigger_flush(
  #endif
  
  #ifdef CONFIG_SMP
@@ -90,7 +90,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -3586,26 +3586,26 @@ EXPORT_SYMBOL_GPL(kmsg_dump_rewind);
+@@ -3600,26 +3600,26 @@ EXPORT_SYMBOL_GPL(kmsg_dump_rewind);
  #endif
  
  #ifdef CONFIG_SMP
@@ -126,7 +126,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
   *
   * If no processor has the lock, the calling processor takes the lock and
   * becomes the owner. If the calling processor is already the owner of the
-@@ -3614,7 +3614,7 @@ EXPORT_SYMBOL(__printk_wait_on_cpu_lock)
+@@ -3628,7 +3628,7 @@ EXPORT_SYMBOL(__printk_wait_on_cpu_lock)
   * Context: Any context. Expects interrupts to be disabled.
   * Return: 1 on success, otherwise 0.
   */
@@ -135,7 +135,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  {
  	int cpu;
  	int old;
-@@ -3624,79 +3624,80 @@ int __printk_cpu_trylock(void)
+@@ -3638,79 +3638,80 @@ int __printk_cpu_trylock(void)
  	/*
  	 * Guarantee loads and stores from this CPU when it is the lock owner
  	 * are _not_ visible to the previous lock owner. This pairs with

@@ -1,7 +1,7 @@
 Subject: ptrace: fix ptrace vs tasklist_lock race
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu Aug 29 18:21:04 2013 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
@@ -50,7 +50,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * Special states are those that do not use the normal wait-loop pattern. See
   * the comment with set_special_state().
-@@ -2009,6 +2005,81 @@ static inline int test_tsk_need_resched(
+@@ -2007,6 +2003,81 @@ static inline int test_tsk_need_resched(
  	return unlikely(test_tsk_thread_flag(tsk,TIF_NEED_RESCHED));
  }
  
@@ -196,7 +196,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -3226,7 +3226,7 @@ unsigned long wait_task_inactive(struct
+@@ -3239,7 +3239,7 @@ unsigned long wait_task_inactive(struct
  		 * is actually now running somewhere else!
  		 */
  		while (task_running(rq, p)) {
@@ -205,7 +205,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  				return 0;
  			cpu_relax();
  		}
-@@ -3241,7 +3241,7 @@ unsigned long wait_task_inactive(struct
+@@ -3254,7 +3254,7 @@ unsigned long wait_task_inactive(struct
  		running = task_running(rq, p);
  		queued = task_on_rq_queued(p);
  		ncsw = 0;

@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 19 Jan 2022 16:10:39 +0100
 Subject: [PATCH] *: Use generic_handle_irq_safe() where it makes sense.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
 
 The i2c-i801 driver invokes i2c_handle_smbus_host_notify() from his
 interrupt service routine. On PREEMPT_RT i2c-i801's handler is forced
@@ -52,7 +52,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
 --- a/drivers/i2c/i2c-core-base.c
 +++ b/drivers/i2c/i2c-core-base.c
-@@ -1423,7 +1423,7 @@ int i2c_handle_smbus_host_notify(struct
+@@ -1424,7 +1424,7 @@ int i2c_handle_smbus_host_notify(struct
  	if (irq <= 0)
  		return -ENXIO;
  
@@ -102,7 +102,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -1367,11 +1367,8 @@ static void lan78xx_status(struct lan78x
+@@ -1537,11 +1537,8 @@ static void lan78xx_status(struct lan78x
  		netif_dbg(dev, link, dev->net, "PHY INTR: 0x%08x\n", intdata);
  		lan78xx_defer_kevent(dev, EVENT_LINK_RESET);
  

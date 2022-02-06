@@ -1,7 +1,7 @@
 Subject: cgroup: use irqsave in cgroup_rstat_flush_locked()
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue Jul  3 18:19:48 2018 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
@@ -28,7 +28,7 @@ Link: https://www.spinics.net/lists/cgroups/msg23051.html
 ---
 --- a/kernel/cgroup/rstat.c
 +++ b/kernel/cgroup/rstat.c
-@@ -156,8 +156,9 @@ static void cgroup_rstat_flush_locked(st
+@@ -153,8 +153,9 @@ static void cgroup_rstat_flush_locked(st
  		raw_spinlock_t *cpu_lock = per_cpu_ptr(&cgroup_rstat_cpu_lock,
  						       cpu);
  		struct cgroup *pos = NULL;
@@ -39,7 +39,7 @@ Link: https://www.spinics.net/lists/cgroups/msg23051.html
  		while ((pos = cgroup_rstat_cpu_pop_updated(pos, cgrp, cpu))) {
  			struct cgroup_subsys_state *css;
  
-@@ -169,7 +170,7 @@ static void cgroup_rstat_flush_locked(st
+@@ -166,7 +167,7 @@ static void cgroup_rstat_flush_locked(st
  				css->ss->css_rstat_flush(css, cpu);
  			rcu_read_unlock();
  		}

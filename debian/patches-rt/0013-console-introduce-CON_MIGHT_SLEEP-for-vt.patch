@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
-Date: Thu, 16 Dec 2021 16:06:29 +0106
-Subject: [PATCH 11/14] console: introduce CON_MIGHT_SLEEP for vt
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
+Date: Fri, 4 Feb 2022 16:01:17 +0106
+Subject: [PATCH 13/16] console: introduce CON_MIGHT_SLEEP for vt
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
 
 Deadlocks and the framebuffer console have been a recurring issue
 that is getting worse. Daniel Vetter suggested [0] that
@@ -44,7 +44,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	char	name[16];
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -2781,6 +2781,8 @@ static bool console_flush_all(bool do_co
+@@ -2835,6 +2835,8 @@ static bool console_flush_all(bool do_co
  
  			if (!console_is_usable(con))
  				continue;

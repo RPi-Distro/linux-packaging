@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: kernel/fork, IA64: Provide a alloc_thread_stack_node() for IA64.
 Date: Thu, 18 Nov 2021 15:34:47 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.16/older/patches-5.16.2-rt19.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
 
 Provide a generic alloc_thread_stack_node() for IA64/
 CONFIG_ARCH_THREAD_STACK_ALLOCATOR which returns stack pointer and sets
@@ -42,7 +42,7 @@ Link: https://lore.kernel.org/r/20211118143452.136421-4-bigeasy@linutronix.de
  #define __HAVE_THREAD_FUNCTIONS
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -329,6 +329,22 @@ void thread_stack_cache_init(void)
+@@ -330,6 +330,22 @@ void thread_stack_cache_init(void)
  }
  
  # endif /* THREAD_SIZE >= PAGE_SIZE || defined(CONFIG_VMAP_STACK) */
