@@ -1,3 +1,19 @@
+linux (5.17~rc3-1~exp1) UNRELEASED; urgency=medium
+
+  * New upstream release candidate
+
+  [ Ben Hutchings ]
+  * Rebase patches:
+    - Drop "x86-32: Disable 3D-Now in generic config"
+    - Drop "RISC-V: Use SBI SRST extension when available"
+    - Drop "objtool: check: give big enough buffer for pv_ops"
+    - Drop part of "sh: Do not use hyphen in exported variable names"
+    - Update "add sysctl to disallow unprivileged CLONE_NEWUSER by default"
+    - Update "Disable uImage generation for mips generic"
+    - Update "MODSIGN: do not load mok when secure boot disabled"
+
+ -- Ben Hutchings <benh@debian.org>  Sun, 06 Feb 2022 23:43:46 +0100
+
 linux (5.16.7-1) unstable; urgency=medium
 
   * New upstream stable update:
