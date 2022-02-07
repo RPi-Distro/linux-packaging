@@ -13,6 +13,7 @@ linux (5.17~rc3-1~exp1) UNRELEASED; urgency=medium
     - Update "MODSIGN: do not load mok when secure boot disabled"
   * [rt] Update to 5.17-rc2-rt4
   * linux-kbuild: Build extract-cert in certs/ instead of scripts/
+  * d/rules.real: Pass C compiler options to user-space build in HOSTCFLAGS too
 
   [ Aurelien Jarno ]
   * [riscv64] Add basic support for StarFive JH7100 RISC-V SoC: enable
