@@ -1,6 +1,5 @@
 PROGS = \
 	bin2c \
-	extract-cert \
 	kallsyms \
 	recordmcount \
 	sign-file \
@@ -43,4 +42,4 @@ SUBDIRS = \
 include $(top_rulesdir)/Makefile.inc
 
 CPPFLAGS += -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
-extract-cert sign-file: LDLIBS += -lcrypto
+sign-file: LDLIBS += -lcrypto

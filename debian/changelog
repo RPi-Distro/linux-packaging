@@ -12,6 +12,7 @@ linux (5.17~rc3-1~exp1) UNRELEASED; urgency=medium
     - Update "Disable uImage generation for mips generic"
     - Update "MODSIGN: do not load mok when secure boot disabled"
   * [rt] Update to 5.17-rc2-rt4
+  * linux-kbuild: Build extract-cert in certs/ instead of scripts/
 
  -- Ben Hutchings <benh@debian.org>  Sun, 06 Feb 2022 23:43:46 +0100
 

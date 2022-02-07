@@ -648,6 +648,7 @@ endif
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
 build-kbuild: $(STAMPS_DIR)/build-tools-headers
+	$(call make-tools,certs)
 	$(call make-tools,scripts)
 	$(call make-tools,tools/objtool)
 
@@ -659,6 +660,7 @@ install-kbuild: build-kbuild
 	dh_testdir
 	dh_testroot
 	dh_prep
+	$(call make-tools,certs) install DESTDIR=$(DIR) prefix=$(PREFIX_DIR)
 	$(call make-tools,scripts) install DESTDIR=$(DIR) prefix=$(PREFIX_DIR)
 	$(call make-tools,tools/objtool) install DESTDIR=$(DIR) prefix=$(PREFIX_DIR)
 	dh_link $(PREFIX_DIR) /usr/src/$(PACKAGE_NAME)
