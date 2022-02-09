@@ -8,12 +8,15 @@ if [ "$old_version_suffix" ]; then
 	/usr/share/doc/linux-perf "linux-perf-${old_version_suffix}" 5.16\~rc8-1\~exp1 linux-perf -- "$@"
 fi
 
-for wrapper in /usr/bin/perf \
-	       /usr/share/bash-completion/completions/perf \
-	       /usr/share/man/man1/perf.1.gz; do
-    diversion="${wrapper%/perf*}/perf.wrapper${wrapper#*/perf}"
-    dpkg-divert --package linux-perf --divert "$diversion" --rename \
-	--remove "$wrapper"
-done
+if [ "$1" = remove ]
+then
+	for wrapper in /usr/bin/perf \
+		       /usr/share/bash-completion/completions/perf \
+		       /usr/share/man/man1/perf.1.gz; do
+	    diversion="${wrapper%/perf*}/perf.wrapper${wrapper#*/perf}"
+	    dpkg-divert --package linux-perf --divert "$diversion" --rename \
+		--remove "$wrapper"
+	done
+fi
 
 #DEBHELPER#

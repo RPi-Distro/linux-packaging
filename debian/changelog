@@ -22,6 +22,13 @@ linux (5.17~rc3-1~exp1) UNRELEASED; urgency=medium
 
  -- Ben Hutchings <benh@debian.org>  Sun, 06 Feb 2022 23:43:46 +0100
 
+linux (5.16.7-2) unstable; urgency=medium
+
+  * linux-perf: Protect invocation of dpkg-divert to run only on relevant
+    actions in maintscripts. Thanks to Guillem Jover (Closes: #1005141)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 09 Feb 2022 09:35:55 +0100
+
 linux (5.16.7-1) unstable; urgency=medium
 
   * New upstream stable update:
