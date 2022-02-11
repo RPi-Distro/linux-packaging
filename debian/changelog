@@ -1,4 +1,4 @@
-linux (5.17~rc3-1~exp1) UNRELEASED; urgency=medium
+linux (5.17~rc3-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
 
@@ -20,7 +20,7 @@ linux (5.17~rc3-1~exp1) UNRELEASED; urgency=medium
     I2C_DESIGNWARE_PLATFORM, MFD_TPS65086, REGULATOR_TPS65086, SERIAL_8250_DW,
     SOC_STARFIVE
 
- -- Ben Hutchings <benh@debian.org>  Sun, 06 Feb 2022 23:43:46 +0100
+ -- Ben Hutchings <benh@debian.org>  Fri, 11 Feb 2022 02:28:15 +0100
 
 linux (5.16.7-2) unstable; urgency=medium
 
