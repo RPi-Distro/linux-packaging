@@ -1,4 +1,4 @@
-linux (5.16.8-1) UNRELEASED; urgency=medium
+linux (5.16.9-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.8
@@ -108,10 +108,15 @@ linux (5.16.8-1) UNRELEASED; urgency=medium
     - ext4: fix incorrect type issue during replay_del_range
     - cgroup/cpuset: Fix "suspicious RCU usage" lockdep warning
     - [arm64] gpio: mpc8xxx: Fix an ignored error return from platform_get_irq()
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.9
+    - ata: libata-core: Fix ata_dev_config_cpr()
+    - [s390x] KVM: s390: Return error on SIDA memop on normal guest
+      (CVE-2022-0516)
+    - ksmbd: fix SMB 3.11 posix extension mount failure
+    - crypto: api - Move cryptomgr soft dependency into algapi
+    - tipc: improve size validations for received domain records CVE-2022-0435)
 
   [ Salvatore Bonaccorso ]
-  * [390x] KVM: s390: Return error on SIDA memop on normal guest (CVE-2022-0516)
-  * tipc: improve size validations for received domain records (CVE-2022-0435)
   * Bump ABI to 2
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 12 Feb 2022 17:12:40 +0100
