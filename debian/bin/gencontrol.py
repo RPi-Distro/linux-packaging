@@ -627,6 +627,8 @@ class Gencontrol(Base):
                                     arch, featureset, flavour))
         makeflags['KCONFIG'] = ' '.join(kconfig)
         makeflags['KCONFIG_OPTIONS'] = ''
+        if build_debug:
+            makeflags['KCONFIG_OPTIONS'] += ' -o DEBUG_INFO=y'
         if build_signed:
             makeflags['KCONFIG_OPTIONS'] += ' -o MODULE_SIG=y'
         # Add "salt" to fix #872263
