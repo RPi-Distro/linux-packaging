@@ -110,6 +110,7 @@ linux (5.16.9-1) UNRELEASED; urgency=medium
     - [arm64] gpio: mpc8xxx: Fix an ignored error return from platform_get_irq()
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.9
     - ata: libata-core: Fix ata_dev_config_cpr()
+    - moxart: fix potential use-after-free on remove path (CVE-2022-0487)
     - [s390x] KVM: s390: Return error on SIDA memop on normal guest
       (CVE-2022-0516)
     - ksmbd: fix SMB 3.11 posix extension mount failure
