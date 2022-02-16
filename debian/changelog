@@ -288,6 +288,7 @@ linux (5.16.10-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 2
+  * [rt] Refresh "mm/memcg: Add a local_lock_t for IRQ and TASK object."
 
   [ Luca Boccassi ]
   * drivers/watchdog: enable CONFIG_WATCHDOG_HRTIMER_PRETIMEOUT
