@@ -289,6 +289,15 @@ linux (5.16.10-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Bump ABI to 2
   * [rt] Refresh "mm/memcg: Add a local_lock_t for IRQ and TASK object."
+  * bpf: Introduce composable reg, ret and arg types.
+  * bpf: Replace ARG_XXX_OR_NULL with ARG_XXX | PTR_MAYBE_NULL
+  * bpf: Replace RET_XXX_OR_NULL with RET_XXX | PTR_MAYBE_NULL
+  * bpf: Replace PTR_TO_XXX_OR_NULL with PTR_TO_XXX | PTR_MAYBE_NULL
+  * bpf: Introduce MEM_RDONLY flag
+  * bpf: Convert PTR_TO_MEM_OR_NULL to composable types.
+  * bpf: Make per_cpu_ptr return rdonly PTR_TO_MEM.
+  * bpf: Add MEM_RDONLY for helper args that are pointers to rdonly mem.
+  * bpf/selftests: Test PTR_TO_RDONLY_MEM
 
   [ Luca Boccassi ]
   * drivers/watchdog: enable CONFIG_WATCHDOG_HRTIMER_PRETIMEOUT
