@@ -262,7 +262,7 @@ linux (5.16.10-1) UNRELEASED; urgency=medium
     - [arm64,armhf] usb: ulpi: Move of_node_put to ulpi_dev_release
     - [arm64,armhf] usb: ulpi: Call of_node_put correctly
     - [arm64,armhf] usb: dwc3: gadget: Prevent core from processing stale TRBs
-    - USB: gadget: validate interface OS descriptor requests
+    - USB: gadget: validate interface OS descriptor requests (CVE-2022-25258)
     - usb: gadget: rndis: check size of RNDIS_MSG_SET command
     - usb: gadget: f_uac2: Define specific wTerminalType
     - USB: serial: ftdi_sio: add support for Brainboxes US-159/235/320
