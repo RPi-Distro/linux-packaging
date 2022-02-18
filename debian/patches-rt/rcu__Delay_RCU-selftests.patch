@@ -1,7 +1,7 @@
 Subject: rcu: Delay RCU-selftests
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed Mar 10 15:09:02 2021 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc4-rt7.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 

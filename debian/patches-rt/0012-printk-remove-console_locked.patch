@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
-Date: Fri, 4 Feb 2022 16:01:17 +0106
+Date: Mon, 7 Feb 2022 15:54:54 +0106
 Subject: [PATCH 12/16] printk: remove @console_locked
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc4-rt7.tar.xz
 
 The static global variable @console_locked is used to help debug VT
 code to make sure that certain code paths are running with the
@@ -38,7 +38,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  /*
   *	Array of consoles built from command line options (console=)
-@@ -2594,7 +2586,6 @@ void console_lock(void)
+@@ -2596,7 +2588,6 @@ void console_lock(void)
  	if (console_suspended)
  		return;
  	pause_all_consoles();
@@ -46,7 +46,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	console_may_schedule = 1;
  }
  EXPORT_SYMBOL(console_lock);
-@@ -2619,7 +2610,6 @@ int console_trylock(void)
+@@ -2621,7 +2612,6 @@ int console_trylock(void)
  		up_console_sem();
  		return 0;
  	}
@@ -54,7 +54,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	console_may_schedule = 0;
  	return 1;
  }
-@@ -2646,14 +2636,25 @@ static int console_trylock_sched(bool ma
+@@ -2648,14 +2638,25 @@ static int console_trylock_sched(bool ma
  		return 0;
  	}
  	pause_all_consoles();
@@ -82,7 +82,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  EXPORT_SYMBOL(is_console_locked);
  
-@@ -2686,8 +2687,6 @@ static inline bool console_is_usable(str
+@@ -2688,8 +2689,6 @@ static inline bool console_is_usable(str
  
  static void __console_unlock(void)
  {
@@ -91,7 +91,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	/*
  	 * Depending on whether console_lock() or console_trylock() was used,
  	 * appropriately allow the kthread printers to continue.
-@@ -2965,7 +2964,6 @@ void console_unblank(void)
+@@ -2967,7 +2966,6 @@ void console_unblank(void)
  		console_lock();
  	}
  

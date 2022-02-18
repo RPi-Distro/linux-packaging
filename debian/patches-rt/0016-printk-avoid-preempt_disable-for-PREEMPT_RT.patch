@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Fri, 4 Feb 2022 16:01:17 +0106
 Subject: [PATCH 16/16] printk: avoid preempt_disable() for PREEMPT_RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc4-rt7.tar.xz
 
 During non-normal operation, printk() calls will attempt to
 write the messages directly to the consoles. This involves
@@ -83,7 +83,7 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
  	}
  
  	wake_up_klogd();
-@@ -2922,8 +2936,13 @@ static bool console_emit_next_record(str
+@@ -2924,8 +2938,13 @@ static bool console_emit_next_record(str
  		len = record_print_text(&r, console_msg_format & MSG_FORMAT_SYSLOG, printk_time);
  	}
  

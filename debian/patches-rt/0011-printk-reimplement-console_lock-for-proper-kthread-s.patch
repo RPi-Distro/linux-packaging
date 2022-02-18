@@ -1,8 +1,8 @@
 From: John Ogness <john.ogness@linutronix.de>
-Date: Fri, 4 Feb 2022 16:01:17 +0106
+Date: Mon, 7 Feb 2022 15:54:47 +0106
 Subject: [PATCH 11/16] printk: reimplement console_lock for proper kthread
  support
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc4-rt7.tar.xz
 
 With non-threaded console printers preemption is disabled while
 holding the console lock in order to avoid the situation where the
@@ -20,7 +20,7 @@ situation is needed.
 
 The kthread printers do not need to synchronize against each other,
 but they do need to synchronize against console_lock() callers. To
-provide this synchonization, introduce a per-console mutex. The
+provide this synchronization, introduce a per-console mutex. The
 mutex is taken by the kthread printer during printing and is also
 taken by console_lock() callers. Since mutexes have owners, when
 calling console_lock(), the scheduler is able to schedule any
@@ -44,28 +44,36 @@ kthread printers is as follows (pseudo code):
 
 console_lock()
 {
-	down(&console_sem);
-	for_each_console(con) {
-		mutex_lock(&con->lock);
-		con->flags |= CON_PAUSED;
-		mutex_unlock(&con->lock);
-	}
+        down(&console_sem);
+        for_each_console(con) {
+                mutex_lock(&con->lock);
+                con->flags |= CON_PAUSED;
+                mutex_unlock(&con->lock);
+        }
+        /* console lock acquired */
 }
 
 console_trylock()
 {
-	assert(down_trylock(&console_sem));
-	assert(atomic_cmpxchg(&console_lock_count, 0, -1));
+        if (down_trylock(&console_sem) == 0) {
+                if (atomic_cmpxchg(&console_lock_count, 0, -1) == 0) {
+                        /* console lock acquired */
+                }
+        }
 }
 
-kthread_printer()
+threaded_printer()
 {
-	mutex_lock(&con->lock);
-	assert(con->flags & CON_PAUSED);
-	assert(atomic_inc_unless_negative(&console_lock_count));
-	con->write();
-	atomic_dec(&console_lock_count);
-	mutex_unlock(&con->lock);
+        mutex_lock(&con->lock);
+        if (!(con->flags & CON_PAUSED)) {
+                if (atomic_inc_unless_negative(&console_lock_count)) {
+                        /* console locking now blocked */
+
+                        con->write();
+                        atomic_dec(&console_lock_count);
+                }
+        }
+        mutex_unlock(&con->lock);
 }
 
 Also note that the console owner and waiter logic now only applies
@@ -197,7 +205,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
   * This is used for debugging the mess that is the VT code by
   * keeping track if we have the console semaphore held. It's
   * definitely not the perfect debug tool (we don't know if _WE_
-@@ -2505,10 +2556,6 @@ void resume_console(void)
+@@ -2507,10 +2558,6 @@ void resume_console(void)
  	down_console_sem();
  	console_suspended = 0;
  	console_unlock();
@@ -208,7 +216,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	pr_flush(1000, true);
  }
  
-@@ -2546,6 +2593,7 @@ void console_lock(void)
+@@ -2548,6 +2595,7 @@ void console_lock(void)
  	down_console_sem();
  	if (console_suspended)
  		return;
@@ -216,7 +224,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	console_locked = 1;
  	console_may_schedule = 1;
  }
-@@ -2567,15 +2615,45 @@ int console_trylock(void)
+@@ -2569,15 +2617,45 @@ int console_trylock(void)
  		up_console_sem();
  		return 0;
  	}
@@ -263,7 +271,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  EXPORT_SYMBOL(is_console_locked);
  
-@@ -2609,6 +2687,19 @@ static inline bool console_is_usable(str
+@@ -2611,6 +2689,19 @@ static inline bool console_is_usable(str
  static void __console_unlock(void)
  {
  	console_locked = 0;
@@ -283,7 +291,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	up_console_sem();
  }
  
-@@ -2631,7 +2722,8 @@ static void __console_unlock(void)
+@@ -2633,7 +2724,8 @@ static void __console_unlock(void)
   *
   * @handover will be set to true if a printk waiter has taken over the
   * console_lock, in which case the caller is no longer holding the
@@ -293,7 +301,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
   */
  static bool console_emit_next_record(struct console *con, char *text, char *ext_text,
  				     char *dropped_text, bool *handover)
-@@ -2639,12 +2731,14 @@ static bool console_emit_next_record(str
+@@ -2641,12 +2733,14 @@ static bool console_emit_next_record(str
  	struct printk_info info;
  	struct printk_record r;
  	unsigned long flags;
@@ -309,7 +317,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	if (!prb_read_valid(prb, con->seq, &r))
  		return false;
-@@ -2670,18 +2764,23 @@ static bool console_emit_next_record(str
+@@ -2672,18 +2766,23 @@ static bool console_emit_next_record(str
  		len = record_print_text(&r, console_msg_format & MSG_FORMAT_SYSLOG, printk_time);
  	}
  
@@ -345,7 +353,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	stop_critical_timings();	/* don't trace print latency */
  	call_console_driver(con, write_text, len, dropped_text);
-@@ -2689,8 +2788,10 @@ static bool console_emit_next_record(str
+@@ -2691,8 +2790,10 @@ static bool console_emit_next_record(str
  
  	con->seq++;
  
@@ -358,7 +366,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	printk_delay(r.info->level);
  skip:
-@@ -2824,7 +2925,7 @@ void console_unlock(void)
+@@ -2826,7 +2927,7 @@ void console_unlock(void)
  		 * Re-check if there is a new record to flush. If the trylock
  		 * fails, another context is already handling the printing.
  		 */
@@ -367,7 +375,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  EXPORT_SYMBOL(console_unlock);
  
-@@ -2855,6 +2956,10 @@ void console_unblank(void)
+@@ -2857,6 +2958,10 @@ void console_unblank(void)
  	if (oops_in_progress) {
  		if (down_trylock_console_sem() != 0)
  			return;
@@ -378,7 +386,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	} else {
  		pr_flush(1000, true);
  		console_lock();
-@@ -2936,10 +3041,6 @@ void console_start(struct console *conso
+@@ -2938,10 +3043,6 @@ void console_start(struct console *conso
  	console_lock();
  	console->flags |= CON_ENABLED;
  	console_unlock();
@@ -389,7 +397,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	pr_flush(1000, true);
  }
  EXPORT_SYMBOL(console_start);
-@@ -3134,7 +3235,11 @@ void register_console(struct console *ne
+@@ -3136,7 +3237,11 @@ void register_console(struct console *ne
  	if (newcon->flags & CON_EXTENDED)
  		nr_ext_console_drivers++;
  
@@ -401,7 +409,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	if (newcon->flags & CON_PRINTBUFFER) {
  		/* Get a consistent copy of @syslog_seq. */
  		mutex_lock(&syslog_lock);
-@@ -3397,16 +3502,17 @@ static bool printer_should_wake(struct c
+@@ -3399,16 +3504,17 @@ static bool printer_should_wake(struct c
  	if (kthread_should_stop())
  		return true;
  
@@ -423,7 +431,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	return prb_read_valid(prb, seq, NULL);
  }
-@@ -3417,7 +3523,6 @@ static int printk_kthread_func(void *dat
+@@ -3419,7 +3525,6 @@ static int printk_kthread_func(void *dat
  	char *dropped_text = NULL;
  	char *ext_text = NULL;
  	bool progress;
@@ -431,7 +439,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	u64 seq = 0;
  	char *text;
  	int error;
-@@ -3450,9 +3555,17 @@ static int printk_kthread_func(void *dat
+@@ -3452,9 +3557,17 @@ static int printk_kthread_func(void *dat
  			continue;
  
  		do {
@@ -452,7 +460,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  				break;
  			}
  
-@@ -3466,14 +3579,13 @@ static int printk_kthread_func(void *dat
+@@ -3468,14 +3581,13 @@ static int printk_kthread_func(void *dat
  			 */
  			console_may_schedule = 0;
  			progress = console_emit_next_record(con, text, ext_text,

@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
-Date: Fri, 4 Feb 2022 16:01:17 +0106
+Date: Mon, 7 Feb 2022 15:54:42 +0106
 Subject: [PATCH 10/16] printk: add kthread console printers
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc4-rt7.tar.xz
 
 Create a kthread for each console to perform console printing. During
 normal operation (@system_state == SYSTEM_RUNNING), the kthread
@@ -81,8 +81,8 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
  #else /* CONFIG_PRINTK */
  
  #define CONSOLE_LOG_MAX		0
-@@ -2298,6 +2315,8 @@ static void call_console_driver(struct c
- 				char *dropped_text) {}
+@@ -2300,6 +2317,8 @@ static void call_console_driver(struct c
+ }
  static bool suppress_message_printing(int level) { return false; }
  static void printk_delay(int level) {}
 +static void start_printk_kthread(struct console *con) {}
@@ -90,7 +90,7 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
  
  #endif /* CONFIG_PRINTK */
  
-@@ -2486,6 +2505,10 @@ void resume_console(void)
+@@ -2488,6 +2507,10 @@ void resume_console(void)
  	down_console_sem();
  	console_suspended = 0;
  	console_unlock();
@@ -101,7 +101,7 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
  	pr_flush(1000, true);
  }
  
-@@ -2701,6 +2724,10 @@ static bool console_flush_all(bool do_co
+@@ -2703,6 +2726,10 @@ static bool console_flush_all(bool do_co
  	*handover = false;
  
  	do {
@@ -112,7 +112,7 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
  		any_progress = false;
  
  		for_each_console(con) {
-@@ -2909,6 +2936,10 @@ void console_start(struct console *conso
+@@ -2911,6 +2938,10 @@ void console_start(struct console *conso
  	console_lock();
  	console->flags |= CON_ENABLED;
  	console_unlock();
@@ -123,7 +123,7 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
  	pr_flush(1000, true);
  }
  EXPORT_SYMBOL(console_start);
-@@ -3113,6 +3144,8 @@ void register_console(struct console *ne
+@@ -3115,6 +3146,8 @@ void register_console(struct console *ne
  		/* Begin with next message. */
  		newcon->seq = prb_next_seq(prb);
  	}
@@ -132,7 +132,7 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
  	console_unlock();
  	console_sysfs_notify();
  
-@@ -3169,6 +3202,11 @@ int unregister_console(struct console *c
+@@ -3171,6 +3204,11 @@ int unregister_console(struct console *c
  		}
  	}
  
@@ -144,7 +144,7 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
  	if (res)
  		goto out_disable_unlock;
  
-@@ -3275,6 +3313,13 @@ static int __init printk_late_init(void)
+@@ -3277,6 +3315,13 @@ static int __init printk_late_init(void)
  					console_cpu_notify, NULL);
  	WARN_ON(ret < 0);
  	printk_sysctl_init();
@@ -158,7 +158,7 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
  	return 0;
  }
  late_initcall(printk_late_init);
-@@ -3345,6 +3390,116 @@ bool pr_flush(int timeout_ms, bool reset
+@@ -3347,6 +3392,116 @@ bool pr_flush(int timeout_ms, bool reset
  }
  EXPORT_SYMBOL(pr_flush);
  
@@ -275,7 +275,7 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
  /*
   * Delayed printk version, for scheduler-internal messages:
   */
-@@ -3364,7 +3519,7 @@ static void wake_up_klogd_work_func(stru
+@@ -3373,7 +3528,7 @@ static void wake_up_klogd_work_func(stru
  	}
  
  	if (pending & PRINTK_PENDING_WAKEUP)

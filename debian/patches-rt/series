@@ -3,6 +3,7 @@
 ###########################################################################
 # John's printk queue
 ###########################################################################
+printk-defer_console_output-use-atomic-update.patch
 0001-printk-rename-cpulock-functions.patch
 0002-printk-cpu-sync-always-disable-interrupts.patch
 0003-printk-use-percpu-flag-instead-of-cpu_online.patch
@@ -32,6 +33,7 @@ irq_poll-Use-raise_softirq_irqoff-in-cpu_dead-notifi.patch
 smp_wake_ksoftirqd_on_preempt_rt_instead_do_softirq.patch
 tcp-Don-t-acquire-inet_listen_hashbucket-lock-with-d.patch
 locking-local_lock-Make-the-empty-local_lock_-functi.patch
+locking-Enable-RT_MUTEXES-by-default-on-PREEMPT_RT.patch
 
 # sched
 0001_kernel_fork_redo_ifdefs_around_task_s_handling.patch
@@ -49,21 +51,27 @@ locking-local_lock-Make-the-empty-local_lock_-functi.patch
 0003-mm-memcg-Add-a-local_lock_t-for-IRQ-and-TASK-object.patch
 0004-mm-memcg-Allow-the-task_obj-optimization-only-on-non.patch
 
+# net
+0001-net-dev-Remove-preempt_disable-and-get_cpu-in-netif_.patch
+0002-net-dev-Make-rps_lock-disable-interrupts.patch
+0003-net-dev-Makes-sure-netif_rx-can-be-invoked-in-any-co.patch
+
 ###########################################################################
 # Post
 ###########################################################################
 cgroup__use_irqsave_in_cgroup_rstat_flush_locked.patch
 mm__workingset__replace_IRQ-off_check_with_a_lockdep_assert..patch
 softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
-locking-Enable-RT_MUTEXES-by-default-on-PREEMPT_RT.patch
 
 # These two need some feedback.
 genirq-Provide-generic_handle_irq_safe.patch
 Use-generic_handle_irq_safe-where-it-makes-sense.patch
 
-# Random, WIP
+# Random, WIP, v4
 0001-random-use-computational-hash-for-entropy-extraction.patch
-0002-random-do-not-take-spinlocks-in-irq-handler.patch
+0002-random-remove-batched-entropy-locking.patch
+0003-random-defer-fast-pool-mixing-to-worker.patch
+random-Move-crng_fast_load-to-the-worker.patch
 
 ###########################################################################
 # Kconfig bits:
@@ -74,11 +82,6 @@ jump-label__disable_if_stop_machine_is_used.patch
 # preempt: Conditional variants
 ###########################################################################
 sched-Make-preempt_enable_no_resched-behave-like-pre.patch
-
-# net
-0001-net-dev-Remove-preempt_disable-and-get_cpu-in-netif_.patch
-0002-net-dev-Make-rps_lock-disable-interrupts.patch
-0003-net-dev-Makes-sure-netif_rx-can-be-invoked-in-any-co.patch
 
 ###########################################################################
 # sched:

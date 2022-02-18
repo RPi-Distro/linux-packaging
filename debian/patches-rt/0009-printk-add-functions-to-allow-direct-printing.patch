@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
-Date: Fri, 4 Feb 2022 16:01:16 +0106
+Date: Mon, 7 Feb 2022 15:54:30 +0106
 Subject: [PATCH 09/16] printk: add functions to allow direct printing
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc4-rt7.tar.xz
 
 Once kthread printing is introduced, console printing will no longer
 occur in the context of the printk caller. However, there are some
@@ -27,14 +27,14 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
  drivers/tty/sysrq.c     |    2 ++
  include/linux/printk.h  |   11 +++++++++++
  kernel/hung_task.c      |   11 ++++++++++-
- kernel/printk/printk.c  |   25 +++++++++++++++++++++++++
+ kernel/printk/printk.c  |   39 ++++++++++++++++++++++++++++++++++++++-
  kernel/rcu/tree_stall.h |    2 ++
  kernel/reboot.c         |   14 +++++++++++++-
  kernel/watchdog.c       |    4 ++++
  kernel/watchdog_hld.c   |    4 ++++
  lib/dump_stack.c        |    2 ++
  lib/nmi_backtrace.c     |    2 ++
- 10 files changed, 75 insertions(+), 2 deletions(-)
+ 10 files changed, 88 insertions(+), 3 deletions(-)
 
 --- a/drivers/tty/sysrq.c
 +++ b/drivers/tty/sysrq.c
@@ -126,7 +126,7 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
 +
 +/**
 + * printk_direct_enter - cause console printing to occur in the context of
-+ * 	printk() callers
++ *                       printk() callers
 + *
 + * This globally effects all printk() callers.
 + *
@@ -150,6 +150,48 @@ Signed-off-by: John Ogness <john.ogness@linutronix.de>
  DECLARE_WAIT_QUEUE_HEAD(log_wait);
  /* All 3 protected by @syslog_lock. */
  /* the next printk record to read by syslog(READ) or /proc/kmsg */
+@@ -3327,6 +3352,7 @@ EXPORT_SYMBOL(pr_flush);
+  */
+ #define PRINTK_PENDING_WAKEUP	0x01
+ #define PRINTK_PENDING_OUTPUT	0x02
++#define PRINTK_DIRECT_OUTPUT	0x04
+ 
+ static DEFINE_PER_CPU(int, printk_pending);
+ 
+@@ -3335,9 +3361,15 @@ static void wake_up_klogd_work_func(stru
+ 	int pending = __this_cpu_xchg(printk_pending, 0);
+ 
+ 	if (pending & PRINTK_PENDING_OUTPUT) {
++		if (pending & PRINTK_DIRECT_OUTPUT)
++			printk_direct_enter();
++
+ 		/* If trylock fails, someone else is doing the printing */
+ 		if (console_trylock())
+ 			console_unlock();
++
++		if (pending & PRINTK_DIRECT_OUTPUT)
++			printk_direct_exit();
+ 	}
+ 
+ 	if (pending & PRINTK_PENDING_WAKEUP)
+@@ -3362,11 +3394,16 @@ void wake_up_klogd(void)
+ 
+ void defer_console_output(void)
+ {
++	int val = PRINTK_PENDING_OUTPUT;
++
+ 	if (!printk_percpu_data_ready())
+ 		return;
+ 
++	if (atomic_read(&printk_direct))
++		val |= PRINTK_DIRECT_OUTPUT;
++
+ 	preempt_disable();
+-	this_cpu_or(printk_pending, PRINTK_PENDING_OUTPUT);
++	this_cpu_or(printk_pending, val);
+ 	irq_work_queue(this_cpu_ptr(&wake_up_klogd_work));
+ 	preempt_enable();
+ }
 --- a/kernel/rcu/tree_stall.h
 +++ b/kernel/rcu/tree_stall.h
 @@ -587,6 +587,7 @@ static void print_cpu_stall(unsigned lon

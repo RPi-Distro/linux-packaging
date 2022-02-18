@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
-Date: Fri, 4 Feb 2022 16:01:15 +0106
+Date: Mon, 7 Feb 2022 15:53:45 +0106
 Subject: [PATCH 03/16] printk: use percpu flag instead of cpu_online()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc2-rt4.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc4-rt7.tar.xz
 
 The CON_ANYTIME console flag is used to label consoles that will
 work correctly before percpu resources are allocated. To check

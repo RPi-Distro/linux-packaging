@@ -6,6 +6,9 @@ linux (5.17~rc4-1~exp1) UNRELEASED; urgency=medium
   * Add pkg.linux.nokerneldbg build profile that excludes kernel debug
     packages.
 
+  [ Salvatore Bonaccorso ]
+  * [rt] Update to 5.17-rc4-rt7
+
  -- Bastian Blank <waldi@debian.org>  Mon, 14 Feb 2022 19:30:43 +0100
 
 linux (5.17~rc3-1~exp1) experimental; urgency=medium
