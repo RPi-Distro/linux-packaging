@@ -169,6 +169,9 @@ linux (5.16.11-1) UNRELEASED; urgency=medium
     - [arm64,riscv64] net: macb: Align the dma and coherent dma masks
     - kconfig: fix failing to generate auto.conf
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 3
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 20 Feb 2022 16:56:50 +0100
 
 linux (5.16.10-1) unstable; urgency=medium
