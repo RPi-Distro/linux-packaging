@@ -81,7 +81,6 @@ features/x86/x86-make-x32-syscall-support-conditional.patch
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
-bugfix/all/iwlwifi-fix-use-after-free.patch
 
 # Miscellaneous features
 
@@ -101,15 +100,6 @@ features/all/db-mok-keyring/KEYS-Make-use-of-platform-keyring-for-module-signatu
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
-bugfix/all/bpf-introduce-composable-reg-ret-and-arg-types.patch
-bugfix/all/bpf-replace-arg_xxx_or_null-with-arg_xxx-ptr_maybe_null.patch
-bugfix/all/bpf-replace-ret_xxx_or_null-with-ret_xxx-ptr_maybe_null.patch
-bugfix/all/bpf-replace-ptr_to_xxx_or_null-with-ptr_to_xxx-ptr_maybe_null.patch
-bugfix/all/bpf-introduce-mem_rdonly-flag.patch
-bugfix/all/bpf-convert-ptr_to_mem_or_null-to-composable-types.patch
-bugfix/all/bpf-make-per_cpu_ptr-return-rdonly-ptr_to_mem.patch
-bugfix/all/bpf-add-mem_rdonly-for-helper-args-that-are-pointers-to-rdonly-mem.patch
-bugfix/all/bpf-selftests-test-ptr_to_rdonly_mem.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch

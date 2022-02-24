@@ -1,6 +1,173 @@
-linux (5.16.10-2) UNRELEASED; urgency=medium
+linux (5.16.11-1) UNRELEASED; urgency=medium
 
-  * iwlwifi: fix use-after-free (Closes: #1005884)
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.11
+    - drm/nouveau/pmu/gm200-: use alternate falcon reset sequence
+    - HID:Add support for UGTABLET WP5540
+    - [x86] Revert "svm: Add warning message for AVIC IPI invalid target"
+    - mmc: block: fix read single on recovery logic
+    - mm: don't try to NUMA-migrate COW pages that have other uses
+    - [amd64] HID: amd_sfh: Add illuminance mask to limit ALS max value
+    - [amd64] HID: amd_sfh: Increase sensor command timeout
+    - [amd64] HID: amd_sfh: Correct the structure field name
+    - [amd64] PCI: hv: Fix NUMA node assignment when kernel boots with custom
+      NUMA topology
+    - HID: apple: Set the tilde quirk flag on the Wellspring 5 and later
+    - btrfs: don't hold CPU for too long when defragging a file
+    - btrfs: send: in case of IO error log it
+    - btrfs: defrag: don't try to defrag extents which are under writeback
+    - [amd64] platform/x86: amd-pmc: Correct usage of SMU version
+    - net: ieee802154: at86rf230: Stop leaking skb's
+    - ax25: improve the incomplete fix to avoid UAF and NPD bugs
+    - cifs: unlock chan_lock before calling cifs_put_tcp_session
+    - vfs: make freeze_super abort when sync_filesystem returns error
+    - vfs: make sync_filesystem return errors from ->sync_fs
+    - quota: make dquot_quota_sync return errors from ->sync_fs
+    - scsi: pm80xx: Fix double completion for SATA devices
+    - scsi: core: Reallocate device's budget map on queue depth change
+    - scsi: pm8001: Fix use-after-free for aborted TMF sas_task
+    - scsi: pm8001: Fix use-after-free for aborted SSP/STP sas_task
+    - drm/amd: Warn users about potential s0ix problems
+    - nvme: fix a possible use-after-free in controller reset during load
+    - nvme-tcp: fix possible use-after-free in transport error_recovery work
+    - nvme-rdma: fix possible use-after-free in transport error_recovery work
+    - drm/amd: add support to check whether the system is set to s3
+    - drm/amd: Only run s3 or s0ix if system is configured properly
+    - drm/amdgpu: fix logic inversion in check
+    - [amd64] x86/Xen: streamline (and fix) PV CPU enumeration
+    - Revert "module, async: async_synchronize_full() on module init iff async
+      is used"
+    - random: wake up /dev/random writers after zap
+    - [x86] KVM: x86/xen: Fix runstate updates to be atomic when preempting vCPU
+    - [x86] KVM: x86: nSVM/nVMX: set nested_run_pending on VM entry which is a
+      result of RSM
+    - [x86] KVM: x86: SVM: don't passthrough SMAP/SMEP/PKE bits in !NPT &&
+      !gCR0.PG case
+    - [x86] KVM: x86: nSVM: fix potential NULL derefernce on nested migration
+    - [x86] KVM: x86: nSVM: mark vmcb01 as dirty when restoring SMM saved state
+    - iwlwifi: remove deprecated broadcast filtering feature
+    - iwlwifi: fix use-after-free (Closes: #1005884)
+    - drm/radeon: Fix backlight control on iMac 12,1
+    - drm/atomic: Don't pollute crtc_state->mode_blob with error pointers
+    - drm/amdgpu: skipping SDMA hw_init and hw_fini for S0ix.
+    - [x86] drm/i915/opregion: check port number bounds for SWSCI display power
+      state
+    - [x86] drm/i915: Fix dbuf slice config lookup
+    - [x86] drm/i915: Fix mbus join config lookup
+    - vsock: remove vsock from connected table when connect is interrupted by a
+      signal
+    - [arm64] tee: export teedev_open() and teedev_close_context()
+    - [arm64] optee: use driver internal tee_context for some rpc
+    - [arm*] drm/cma-helper: Set VM_DONTEXPAND for mmap
+    - [x86] drm/i915/gvt: Make DRM_I915_GVT depend on X86
+    - [x86] drm/i915/ttm: tweak priority hint selection
+    - iwlwifi: pcie: fix locking when "HW not ready"
+    - iwlwifi: pcie: gen2: fix locking when "HW not ready"
+    - iwlwifi: mvm: fix condition which checks the version of rate_n_flags
+    - iwlwifi: fix iwl_legacy_rate_to_fw_idx
+    - iwlwifi: mvm: don't send SAR GEO command for 3160 devices
+    - netfilter: nft_synproxy: unregister hooks on init error path
+    - ipv4: fix data races in fib_alias_hw_flags_set
+    - ipv6: fix data-race in fib6_info_hw_flags_set / fib6_purge_rt
+    - ipv6: mcast: use rcu-safe version of ipv6_get_lladdr()
+    - ipv6: per-netns exclusive flowlabel checks
+    - Revert "net: ethernet: bgmac: Use devm_platform_ioremap_resource_byname"
+    - mac80211: mlme: check for null after calling kmemdup
+    - brcmfmac: firmware: Fix crash in brcm_alt_fw_path
+    - cfg80211: fix race in netlink owner interface destruction
+    - [arm64,armhf] net: dsa: mv88e6xxx: flush switchdev FDB workqueue before
+      removing VLAN
+    - ping: fix the dif and sdif check in ping_lookup
+    - bonding: force carrier update when releasing slave
+    - mctp: fix use after free
+    - drop_monitor: fix data-race in dropmon_net_event / trace_napi_poll_hit
+    - net_sched: add __rcu annotation to netdev->qdisc
+    - crypto: af_alg - get rid of alg_memory_allocated
+    - bonding: fix data-races around agg_select_timer
+    - net/smc: Avoid overwriting the copies of clcsock callback functions
+    - atl1c: fix tx timeout after link flap on Mikrotik 10/25G NIC
+    - tipc: fix wrong publisher node address in link publications
+    - [arm64] dpaa2-eth: Initialize mutex used in one step timestamping path
+    - [arm64] net: mscc: ocelot: fix use-after-free in ocelot_vlan_del()
+    - net: bridge: multicast: notify switchdev driver whenever MC processing
+      gets disabled
+    - [arm64] Correct wrong label in macro __init_el2_gicv3
+    - ALSA: usb-audio: Don't abort resume upon errors
+    - ALSA: usb-audio: revert to IMPLICIT_FB_FIXED_DEV for M-Audio FastTrack
+      Ultra
+    - ALSA: memalloc: Fix dma_need_sync() checks
+    - ALSA: memalloc: invalidate SG pages before sync
+    - ALSA: hda/realtek: Add quirk for Legion Y9000X 2019
+    - ALSA: hda/realtek: Fix deadlock by COEF mutex
+    - ALSA: hda: Fix regression on forced probe mask option
+    - ALSA: hda: Fix missing codec probe on Shenker Dock 15
+    - ASoC: ops: Fix stereo change notifications in snd_soc_put_volsw()
+    - ASoC: ops: Fix stereo change notifications in snd_soc_put_volsw_range()
+    - ASoC: ops: Fix stereo change notifications in snd_soc_put_volsw_sx()
+    - ASoC: ops: Fix stereo change notifications in snd_soc_put_xr_sx()
+    - cifs: fix set of group SID via NTSD xattrs
+    - cifs: fix confusing unneeded warning message on smb2.1 and earlier
+    - ACPI: processor: idle: fix lockup regression on 32-bit ThinkPad T40
+    - [armhf] mtd: rawnand: gpmi: don't leak PM reference in error path
+    - smb3: fix snapshot mount option
+    - tipc: fix wrong notification node addresses
+    - scsi: ufs: Remove dead code
+    - scsi: ufs: Fix a deadlock in the error handler
+    - [arm64] ASoC: qcom: Actually clear DMA interrupt register for HDMI
+    - block/wbt: fix negative inflight counter when remove scsi device
+    - NFS: Remove an incorrect revalidation in nfs4_update_changeattr_locked()
+    - NFS: LOOKUP_DIRECTORY is also ok with symlinks
+    - NFS: Do not report writeback errors in nfs_getattr()
+    - tty: n_tty: do not look ahead for EOL character past the end of the buffer
+    - block: fix surprise removal for drivers calling blk_set_queue_dying
+    - mtd: phram: Prevent divide by zero bug in phram_setup()
+    - scsi: lpfc: Fix pt2pt NVMe PRLI reject LOGO loop
+    - EDAC: Fix calculation of returned address and next offset in
+      edac_align_ptr()
+    - [x86] ptrace: Fix xfpregs_set()'s incorrect xmm clearing
+    - ucounts: Base set_cred_ucounts changes on the real user
+    - ucounts: Handle wrapping in is_ucounts_overlimit
+    - ucounts: Enforce RLIMIT_NPROC not RLIMIT_NPROC+1
+    - rlimit: Fix RLIMIT_NPROC enforcement failure caused by capability calls in
+      set_user
+    - ucounts: Move RLIMIT_NPROC handling after set_user
+    - net: sched: limit TC_ACT_REPEAT loops
+    - [armhf] dmaengine: stm32-dmamux: Fix PM disable depth imbalance in
+      stm32_dmamux_probe
+    - copy_process(): Move fd_install() out of sighand->siglock critical section
+    - scsi: qedi: Fix ABBA deadlock in qedi_process_tmf_resp() and
+      qedi_process_cmd_cleanup_resp()
+    - ice: enable parsing IPSEC SPI headers for RSS
+    - [arm*] i2c: brcmstb: fix support for DSL and CM variants
+    - HID: elo: fix memory leak in elo_probe
+    - [x86,arm64] Drivers: hv: vmbus: Fix memory leak in vmbus_add_channel_kobj
+    - [x86] KVM: x86/pmu: Refactoring find_arch_event() to pmc_perf_hw_id()
+    - [x86] KVM: x86/pmu: Don't truncate the PerfEvtSeln MSR when creating a
+      perf event
+    - [x86] KVM: x86/pmu: Use AMD64_RAW_EVENT_MASK for PERF_TYPE_RAW
+    - [armhf] OMAP2+: hwmod: Add of_node_put() before break
+    - [armhf] OMAP2+: adjust the location of put_device() call in
+      omapdss_init_of
+    - [arm*] staging: vc04_services: Fix RCU dereference check
+    - [riscv64] irqchip/sifive-plic: Add missing thead,c900-plic match string
+    - [x86] bug: Merge annotate_reachable() into _BUG_FLAGS() asm
+    - netfilter: conntrack: don't refresh sctp entries in closed state
+    - ksmbd: fix same UniqueId for dot and dotdot entries
+    - ksmbd: don't align last entry offset in smb2 query directory
+    - lib/iov_iter: initialize "flags" in new pipe_buffer
+    - mm: io_uring: allow oom-killer from io_uring_setup
+    - [x86] ACPI: PM: Revert "Only mark EC GPE for wakeup on Intel systems"
+    - kconfig: let 'shell' return enough output for deep path names
+    - ata: libata-core: Disable TRIM on M88V29
+    - [armhf] soc: aspeed: lpc-ctrl: Block error printing on probe defer cases
+    - xprtrdma: fix pointer derefs in error cases of rpcrdma_ep_create
+    - [arm64,armhf] drm/rockchip: dw_hdmi: Do not leave clock enabled in error
+      case
+    - tracing: Fix tp_printk option related with tp_printk_stop_on_boot
+    - drm/amdgpu: add utcl2_harvest to gc 10.3.1
+    - net: usb: qmi_wwan: Add support for Dell DW5829e
+    - [arm64,riscv64] net: macb: Align the dma and coherent dma masks
+    - kconfig: fix failing to generate auto.conf
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 20 Feb 2022 16:56:50 +0100
 
