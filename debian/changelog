@@ -171,6 +171,7 @@ linux (5.16.11-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 3
+  * cgroup-v1: Correct privileges check in release_agent writes
 
   [ Vincent Blut ]
   * drivers/hid: Enable HID_NINTENDO as module and NINTENDO_FF as built-in
