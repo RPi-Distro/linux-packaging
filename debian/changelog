@@ -173,6 +173,7 @@ linux (5.16.11-1) UNRELEASED; urgency=medium
   * Bump ABI to 3
   * cgroup-v1: Correct privileges check in release_agent writes
   * netfilter: xt_socket: fix a typo in socket_mt_destroy()
+  * netfilter: xt_socket: missing ifdef CONFIG_IP6_NF_IPTABLES dependency
 
   [ Vincent Blut ]
   * drivers/hid: Enable HID_NINTENDO as module and NINTENDO_FF as built-in

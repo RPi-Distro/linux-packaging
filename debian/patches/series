@@ -83,6 +83,7 @@ bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
 bugfix/all/cgroup-v1-Correct-privileges-check-in-release_agent-.patch
 bugfix/all/netfilter-xt_socket-fix-a-typo-in-socket_mt_destroy.patch
+bugfix/all/netfilter-xt_socket-missing-ifdef-CONFIG_IP6_NF_IPTA.patch
 
 # Miscellaneous features
 
