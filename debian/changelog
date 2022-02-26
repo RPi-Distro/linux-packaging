@@ -1,11 +1,11 @@
-linux (5.17~rc5-1~exp1) UNRELEASED; urgency=medium
+linux (5.17~rc5-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 5.17-rc5-rt8
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 24 Feb 2022 09:04:51 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 26 Feb 2022 14:11:52 +0100
 
 linux (5.17~rc4-1~exp1) experimental; urgency=medium
 
