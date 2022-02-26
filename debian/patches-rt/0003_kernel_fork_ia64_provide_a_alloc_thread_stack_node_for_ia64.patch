@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: kernel/fork, IA64: Provide a alloc_thread_stack_node() for IA64.
 Date: Thu, 18 Nov 2021 15:34:47 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc4-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
 
 Provide a generic alloc_thread_stack_node() for IA64/
 CONFIG_ARCH_THREAD_STACK_ALLOCATOR which returns stack pointer and sets

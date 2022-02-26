@@ -4,7 +4,7 @@ Subject: [PATCH 1/4] mm/memcg: Disable threshold event handlers on PREEMPT_RT
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc4-rt7.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
 
 During the integration of PREEMPT_RT support, the code flow around
 memcg_check_events() resulted in `twisted code'. Moving the code around
