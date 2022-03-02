@@ -1607,6 +1607,8 @@ CONFIG_ENERGY_MODEL=y
 ## file: lib/Kconfig.debug
 ##
 CONFIG_DEBUG_INFO_BTF=y
+#. In case debug info is disabled
+CONFIG_DEBUG_INFO_BTF_MODULES_NOOP=y
 
 ##
 ## file: mm/Kconfig
