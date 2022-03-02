@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Date: Thu, 16 Dec 2021 10:57:55 +0100
+Date: Sat, 12 Feb 2022 00:38:39 +0100
 Subject: [PATCH 2/3] net: dev: Make rps_lock() disable interrupts.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 Disabling interrupts and in the RPS case locking input_pkt_queue is
 split into local_irq_disable() and optional spin_lock().
@@ -22,6 +22,9 @@ it with __napi_schedule_irqoff() which already disables interrupts on
 PREEMPT_RT as needed. Move this call to rps_ipi_queued() and rename the
 function to napi_schedule_rps as suggested by Jakub.
 
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
  net/core/dev.c |   76 +++++++++++++++++++++++++++++++--------------------------

@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue, 30 Nov 2021 12:48:08 +0100
 Subject: [PATCH] tcp: Don't acquire inet_listen_hashbucket::lock with disabled
  BH.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 Commit
    9652dc2eb9e40 ("tcp: relax listening_hash operations")

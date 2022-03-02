@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Mon, 7 Feb 2022 10:52:20 +0106
 Subject: [PATCH] printk: defer_console_output: use atomic update
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 The per-cpu @printk_pending variable can be updated from
 sleepable contexts, such as:

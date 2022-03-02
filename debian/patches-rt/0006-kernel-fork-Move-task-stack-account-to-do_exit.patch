@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: kernel/fork: Move task stack account to do_exit().
-Date: Thu, 18 Nov 2021 15:34:50 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Date: Thu, 17 Feb 2022 11:24:04 +0100
+Subject: [PATCH 6/8] kernel/fork: Move task stack account to do_exit().
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 There is no need to perform the stack accounting of the outgoing task in
 its final schedule() invocation which happens with disabled preemption.
@@ -13,7 +13,8 @@ Move the accounting of the stack memory from release_task_stack() to
 exit_task_stack_account() which then can be invoked from do_exit().
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20211118143452.136421-7-bigeasy@linutronix.de
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/r/20220217102406.3697941-7-bigeasy@linutronix.de
 ---
  include/linux/sched/task_stack.h |    2 ++
  kernel/exit.c                    |    1 +
@@ -102,7 +103,7 @@ Link: https://lore.kernel.org/r/20211118143452.136421-7-bigeasy@linutronix.de
  	for (i = 0; i < NR_CACHED_STACKS; i++) {
  		if (this_cpu_cmpxchg(cached_stacks[i], NULL,
  				     tsk->stack_vm_area) != NULL)
-@@ -453,12 +450,25 @@ static void account_kernel_stack(struct
+@@ -454,12 +451,25 @@ static void account_kernel_stack(struct
  	}
  }
  
@@ -129,7 +130,7 @@ Link: https://lore.kernel.org/r/20211118143452.136421-7-bigeasy@linutronix.de
  	free_thread_stack(tsk);
  }
  
-@@ -917,6 +927,7 @@ static struct task_struct *dup_task_stru
+@@ -918,6 +928,7 @@ static struct task_struct *dup_task_stru
  #ifdef CONFIG_THREAD_INFO_IN_TASK
  	refcount_set(&tsk->stack_refcount, 1);
  #endif
@@ -137,7 +138,7 @@ Link: https://lore.kernel.org/r/20211118143452.136421-7-bigeasy@linutronix.de
  
  	err = scs_prepare(tsk, node);
  	if (err)
-@@ -960,8 +971,6 @@ static struct task_struct *dup_task_stru
+@@ -961,8 +972,6 @@ static struct task_struct *dup_task_stru
  	tsk->wake_q.next = NULL;
  	tsk->worker_private = NULL;
  
@@ -146,7 +147,7 @@ Link: https://lore.kernel.org/r/20211118143452.136421-7-bigeasy@linutronix.de
  	kcov_task_init(tsk);
  	kmap_local_fork(tsk);
  
-@@ -980,6 +989,7 @@ static struct task_struct *dup_task_stru
+@@ -981,6 +990,7 @@ static struct task_struct *dup_task_stru
  	return tsk;
  
  free_stack:
@@ -154,7 +155,7 @@ Link: https://lore.kernel.org/r/20211118143452.136421-7-bigeasy@linutronix.de
  	free_thread_stack(tsk);
  free_tsk:
  	free_task_struct(tsk);
-@@ -2448,6 +2458,7 @@ static __latent_entropy struct task_stru
+@@ -2459,6 +2469,7 @@ static __latent_entropy struct task_stru
  	exit_creds(p);
  bad_fork_free:
  	WRITE_ONCE(p->__state, TASK_DEAD);

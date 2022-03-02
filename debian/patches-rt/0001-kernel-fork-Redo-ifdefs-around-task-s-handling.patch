@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: kernel/fork: Redo ifdefs around task's handling.
-Date: Thu, 18 Nov 2021 15:34:45 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Date: Thu, 17 Feb 2022 11:23:59 +0100
+Subject: [PATCH 1/8] kernel/fork: Redo ifdefs around task's handling.
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 The use of ifdef CONFIG_VMAP_STACK is confusing in terms what is
 actually happenning and what can happen.
@@ -21,7 +21,8 @@ Move the code within free_thread_stack() and alloc_thread_stack_node()
 into the relavant ifdef block.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20211118143452.136421-2-bigeasy@linutronix.de
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/r/20220217102406.3697941-2-bigeasy@linutronix.de
 ---
  kernel/fork.c |   74 ++++++++++++++++++++++++++++++----------------------------
  1 file changed, 39 insertions(+), 35 deletions(-)

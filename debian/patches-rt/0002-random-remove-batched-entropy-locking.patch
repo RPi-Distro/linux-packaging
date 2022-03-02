@@ -1,10 +1,10 @@
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Wed, 9 Feb 2022 13:56:43 +0100
-Subject: [PATCH 2/3] random: remove batched entropy locking
+Date: Fri, 28 Jan 2022 23:29:45 +0100
+Subject: [PATCH 2/5] random: remove batched entropy locking
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 Rather than use spinlocks to protect batched entropy, we can instead
 disable interrupts locally, since we're dealing with per-cpu data, and
@@ -17,12 +17,12 @@ counter is still doing the necessary CPU-to-CPU communication.
 This should improve performance a bit. It will also fix the linked splat
 that Jonathan received with a PROVE_RAW_LOCK_NESTING=y.
 
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Suggested-by: Andy Lutomirski <luto@kernel.org>
 Reported-by: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
 Tested-by: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
 Link: https://lore.kernel.org/lkml/YfMa0QgsjCVdRAvJ@latitude/
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Sultan Alsawaf <sultan@kerneltoast.com>
 Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---

@@ -1,7 +1,7 @@
 Subject: block/mq: do not invoke preempt_disable()
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue Jul 14 14:26:34 2015 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
@@ -19,7 +19,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
 --- a/block/blk-mq.c
 +++ b/block/blk-mq.c
-@@ -2040,14 +2040,14 @@ static void __blk_mq_delay_run_hw_queue(
+@@ -2044,14 +2044,14 @@ static void __blk_mq_delay_run_hw_queue(
  		return;
  
  	if (!async && !(hctx->flags & BLK_MQ_F_BLOCKING)) {

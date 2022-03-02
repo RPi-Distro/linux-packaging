@@ -1,7 +1,8 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: kernel/fork: Don't assign the stack pointer in dup_task_struct().
-Date: Thu, 18 Nov 2021 15:34:48 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Date: Thu, 17 Feb 2022 11:24:02 +0100
+Subject: [PATCH 4/8] kernel/fork: Don't assign the stack pointer in
+ dup_task_struct().
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 All four versions of alloc_thread_stack_node() assign now
 task_struct::stack in case the allocation was successful.
@@ -10,7 +11,8 @@ Let alloc_thread_stack_node() return an error code instead of the stack
 pointer and remove the stack assignment in dup_task_struct().
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20211118143452.136421-5-bigeasy@linutronix.de
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/r/20220217102406.3697941-5-bigeasy@linutronix.de
 ---
  kernel/fork.c |   47 ++++++++++++++++-------------------------------
  1 file changed, 16 insertions(+), 31 deletions(-)
@@ -110,8 +112,8 @@ Link: https://lore.kernel.org/r/20211118143452.136421-5-bigeasy@linutronix.de
 +	return stack ? 0 : -ENOMEM;
  }
  
- static void free_thread_stack(struct task_struct *tsk, bool cache_only)
-@@ -894,8 +892,6 @@ void set_task_stack_end_magic(struct tas
+ static void free_thread_stack(struct task_struct *tsk)
+@@ -895,8 +893,6 @@ void set_task_stack_end_magic(struct tas
  static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
  {
  	struct task_struct *tsk;
@@ -120,7 +122,7 @@ Link: https://lore.kernel.org/r/20211118143452.136421-5-bigeasy@linutronix.de
  	int err;
  
  	if (node == NUMA_NO_NODE)
-@@ -908,24 +904,13 @@ static struct task_struct *dup_task_stru
+@@ -909,24 +905,13 @@ static struct task_struct *dup_task_stru
  	if (err)
  		goto free_tsk;
  

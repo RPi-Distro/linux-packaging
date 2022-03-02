@@ -1,7 +1,7 @@
 Subject: softirq: Check preemption after reenabling interrupts
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun Nov 13 17:17:09 2011 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
@@ -62,7 +62,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  EXPORT_SYMBOL(__dev_kfree_skb_irq);
  
-@@ -5741,12 +5743,14 @@ static void net_rps_action_and_irq_enabl
+@@ -5760,12 +5762,14 @@ static void net_rps_action_and_irq_enabl
  		sd->rps_ipi_list = NULL;
  
  		local_irq_enable();
@@ -77,7 +77,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  static bool sd_has_rps_ipi_waiting(struct softnet_data *sd)
-@@ -5822,6 +5826,7 @@ void __napi_schedule(struct napi_struct
+@@ -5841,6 +5845,7 @@ void __napi_schedule(struct napi_struct
  	local_irq_save(flags);
  	____napi_schedule(this_cpu_ptr(&softnet_data), n);
  	local_irq_restore(flags);
@@ -85,7 +85,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  EXPORT_SYMBOL(__napi_schedule);
  
-@@ -10646,6 +10651,7 @@ static int dev_cpu_dead(unsigned int old
+@@ -10665,6 +10670,7 @@ static int dev_cpu_dead(unsigned int old
  
  	raise_softirq_irqoff(NET_TX_SOFTIRQ);
  	local_irq_enable();

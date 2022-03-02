@@ -1,7 +1,7 @@
 Subject: ptrace: fix ptrace vs tasklist_lock race
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu Aug 29 18:21:04 2013 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
@@ -50,7 +50,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  /*
   * Special states are those that do not use the normal wait-loop pattern. See
   * the comment with set_special_state().
-@@ -2006,6 +2002,81 @@ static inline int test_tsk_need_resched(
+@@ -2009,6 +2005,81 @@ static inline int test_tsk_need_resched(
  	return unlikely(test_tsk_thread_flag(tsk,TIF_NEED_RESCHED));
  }
  

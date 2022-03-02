@@ -1,7 +1,8 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: kernel/fork, IA64: Provide a alloc_thread_stack_node() for IA64.
-Date: Thu, 18 Nov 2021 15:34:47 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Date: Thu, 17 Feb 2022 11:24:01 +0100
+Subject: [PATCH 3/8] kernel/fork, IA64: Provide a alloc_thread_stack_node()
+ for IA64.
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 Provide a generic alloc_thread_stack_node() for IA64/
 CONFIG_ARCH_THREAD_STACK_ALLOCATOR which returns stack pointer and sets
@@ -13,11 +14,12 @@ of fat fingering the IA64 code.
 Do the same for free_thread_stack().
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20211118143452.136421-4-bigeasy@linutronix.de
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/r/20220217102406.3697941-4-bigeasy@linutronix.de
 ---
  arch/ia64/include/asm/thread_info.h |    6 +++---
- kernel/fork.c                       |   16 ++++++++++++++++
- 2 files changed, 19 insertions(+), 3 deletions(-)
+ kernel/fork.c                       |   17 +++++++++++++++++
+ 2 files changed, 20 insertions(+), 3 deletions(-)
 
 --- a/arch/ia64/include/asm/thread_info.h
 +++ b/arch/ia64/include/asm/thread_info.h
@@ -42,7 +44,7 @@ Link: https://lore.kernel.org/r/20211118143452.136421-4-bigeasy@linutronix.de
  #define __HAVE_THREAD_FUNCTIONS
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -330,6 +330,22 @@ void thread_stack_cache_init(void)
+@@ -330,6 +330,23 @@ void thread_stack_cache_init(void)
  }
  
  # endif /* THREAD_SIZE >= PAGE_SIZE || defined(CONFIG_VMAP_STACK) */
@@ -57,9 +59,10 @@ Link: https://lore.kernel.org/r/20211118143452.136421-4-bigeasy@linutronix.de
 +	return stack;
 +}
 +
-+static void free_thread_stack(struct task_struct *tsk, bool cache_only)
++static void free_thread_stack(struct task_struct *tsk)
 +{
 +	arch_free_thread_stack(tsk);
++	tsk->stack = NULL;
 +}
 +
  #endif /* !CONFIG_ARCH_THREAD_STACK_ALLOCATOR */

@@ -24,37 +24,67 @@ printk-defer_console_output-use-atomic-update.patch
 ###########################################################################
 # Posted and applied
 ###########################################################################
+# Slipped, waiting for 5.18
 fs-namespace-Boost-the-mount_lock.lock-owner-instead.patch
+
+# in -tip or traveling to -tip.
+locking-local_lock-Make-the-empty-local_lock_-functi.patch
+locking-Enable-RT_MUTEXES-by-default-on-PREEMPT_RT.patch
+irq_poll-Use-raise_softirq_irqoff-in-cpu_dead-notifi.patch
+smp_wake_ksoftirqd_on_preempt_rt_instead_do_softirq.patch
+signal_x86__Delay_calling_signals_in_atomic.patch
+
+# net-next
+tcp-Don-t-acquire-inet_listen_hashbucket-lock-with-d.patch
+
+# Random, backports from git.kernel.org/pub/scm/linux/kernel/git/crng/random.git
+# stashed for 5.18
+0001-random-use-computational-hash-for-entropy-extraction.patch
+0002-random-remove-batched-entropy-locking.patch
+0003-random-fix-locking-in-crng_fast_load.patch
+0004-random-defer-fast-pool-mixing-to-worker.patch
+0005-random-clear-fast-pool-crng-and-batches-in-cpuhp-bri.patch
+
+# sched/fork, expecting in 5.18
+0001-kernel-fork-Redo-ifdefs-around-task-s-handling.patch
+0002-kernel-fork-Duplicate-task_struct-before-stack-alloc.patch
+0003-kernel-fork-IA64-Provide-a-alloc_thread_stack_node-f.patch
+0004-kernel-fork-Don-t-assign-the-stack-pointer-in-dup_ta.patch
+0005-kernel-fork-Move-memcg_charge_kernel_stack-into-CONF.patch
+0006-kernel-fork-Move-task-stack-account-to-do_exit.patch
+0007-kernel-fork-Only-cache-the-VMAP-stack-in-finish_task.patch
+0008-kernel-fork-Use-IS_ENABLED-in-account_kernel_stack.patch
+
+# In net-next
+0001-net-dev-Remove-preempt_disable-and-get_cpu-in-netif_.patch
+0002-net-dev-Make-rps_lock-disable-interrupts.patch
+0003-net-dev-Makes-sure-netif_rx-can-be-invoked-in-any-co.patch
+net-Correct-wrong-BH-disable-in-hard-interrupt.patch
+
+# These genirq should arrive in 5.18 on way or another.
+0001-genirq-Provide-generic_handle_irq_safe.patch
+0002-i2c-core-Use-generic_handle_irq_safe-in-i2c_handle_s.patch
+0003-i2c-cht-wc-Use-generic_handle_irq_safe.patch
+0004-misc-hi6421-spmi-pmic-Use-generic_handle_irq_safe.patch
+0005-mfd-ezx-pcap-Use-generic_handle_irq_safe.patch
+0006-net-usb-lan78xx-Use-generic_handle_irq_safe.patch
+0007-staging-greybus-gpio-Use-generic_handle_irq_safe.patch
 
 ###########################################################################
 # Posted
 ###########################################################################
-irq_poll-Use-raise_softirq_irqoff-in-cpu_dead-notifi.patch
-smp_wake_ksoftirqd_on_preempt_rt_instead_do_softirq.patch
-tcp-Don-t-acquire-inet_listen_hashbucket-lock-with-d.patch
-locking-local_lock-Make-the-empty-local_lock_-functi.patch
-locking-Enable-RT_MUTEXES-by-default-on-PREEMPT_RT.patch
+drm-i915-Depend-on-PREEMPT_RT.patch
 
-# sched
-0001_kernel_fork_redo_ifdefs_around_task_s_handling.patch
-0002_kernel_fork_duplicate_task_struct_before_stack_allocation.patch
-0003_kernel_fork_ia64_provide_a_alloc_thread_stack_node_for_ia64.patch
-0004_kernel_fork_don_t_assign_the_stack_pointer_in_dup_task_struct.patch
-0005_kernel_fork_move_memcg_charge_kernel_stack_into_config_vmap_stack.patch
-0006_kernel_fork_move_task_stack_account_to_do_exit.patch
-0007_kernel_fork_only_cache_the_vmap_stack_in_finish_task_switch.patch
-0008_kernel_fork_use_is_enabled_in_account_kernel_stack.patch
-
-# cgroup
-0001-mm-memcg-Disable-threshold-event-handlers-on-PREEMPT.patch
-0002-mm-memcg-Protect-per-CPU-counter-by-disabling-preemp.patch
-0003-mm-memcg-Add-a-local_lock_t-for-IRQ-and-TASK-object.patch
-0004-mm-memcg-Allow-the-task_obj-optimization-only-on-non.patch
-
-# net
-0001-net-dev-Remove-preempt_disable-and-get_cpu-in-netif_.patch
-0002-net-dev-Make-rps_lock-disable-interrupts.patch
-0003-net-dev-Makes-sure-netif_rx-can-be-invoked-in-any-co.patch
+# cgroup, in -mm, still hasing out details, 5.18 should work.
+0001-mm-memcg-Revert-mm-memcg-optimize-user-context-objec.patch
+0002-mm-memcg-Disable-threshold-event-handlers-on-PREEMPT.patch
+0003-mm-memcg-Protect-per-CPU-counter-by-disabling-preemp.patch
+0004-mm-memcg-Opencode-the-inner-part-of-obj_cgroup_uncha.patch
+0005-mm-memcg-Protect-memcg_stock-with-a-local_lock_t.patch
+0006-mm-memcg-Disable-migration-instead-of-preemption-in-.patch
+0007-mm-memcg-Add-missing-counter-index-which-are-not-upd.patch
+0008-mm-memcg-Add-a-comment-regarding-the-release-obj.patch
+mm-memcg-Only-perform-the-debug-checks-on-PREEMPT_RT.patch
 
 ###########################################################################
 # Post
@@ -62,16 +92,6 @@ locking-Enable-RT_MUTEXES-by-default-on-PREEMPT_RT.patch
 cgroup__use_irqsave_in_cgroup_rstat_flush_locked.patch
 mm__workingset__replace_IRQ-off_check_with_a_lockdep_assert..patch
 softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
-
-# These two need some feedback.
-genirq-Provide-generic_handle_irq_safe.patch
-Use-generic_handle_irq_safe-where-it-makes-sense.patch
-
-# Random, WIP, v4
-0001-random-use-computational-hash-for-entropy-extraction.patch
-0002-random-remove-batched-entropy-locking.patch
-0003-random-defer-fast-pool-mixing-to-worker.patch
-random-Move-crng_fast_load-to-the-worker.patch
 
 ###########################################################################
 # Kconfig bits:
@@ -117,21 +137,8 @@ fs_dcache__disable_preemption_on_i_dir_seqs_write_side.patch
 rcu__Delay_RCU-selftests.patch
 
 ###########################################################################
-# DRM:
-###########################################################################
-0003-drm-i915-Use-preempt_disable-enable_rt-where-recomme.patch
-0004-drm-i915-Don-t-disable-interrupts-on-PREEMPT_RT-duri.patch
-0005-drm-i915-Don-t-check-for-atomic-context-on-PREEMPT_R.patch
-0006-drm-i915-Disable-tracing-points-on-PREEMPT_RT.patch
-0007-drm-i915-skip-DRM_I915_LOW_LEVEL_TRACEPOINTS-with-NO.patch
-0008-drm-i915-gt-Queue-and-wait-for-the-irq_work-item.patch
-0009-drm-i915-gt-Use-spin_lock_irq-instead-of-local_irq_d.patch
-0010-drm-i915-Drop-the-irqs_disabled-check.patch
-
-###########################################################################
 # X86:
 ###########################################################################
-signal_x86__Delay_calling_signals_in_atomic.patch
 x86__kvm_Require_const_tsc_for_RT.patch
 x86__Allow_to_enable_RT.patch
 x86__Enable_RT_also_on_32bit.patch
@@ -144,6 +151,19 @@ tpm_tis__fix_stall_after_iowrites.patch
 drivers_block_zram__Replace_bit_spinlocks_with_rtmutex_for_-rt.patch
 generic-softirq-Disable-softirq-stacks-on-PREEMPT_RT.patch
 softirq-Disable-softirq-stacks-on-PREEMPT_RT.patch
+
+###########################################################################
+# DRM:
+###########################################################################
+0003-drm-i915-Use-preempt_disable-enable_rt-where-recomme.patch
+0004-drm-i915-Don-t-disable-interrupts-on-PREEMPT_RT-duri.patch
+0005-drm-i915-Don-t-check-for-atomic-context-on-PREEMPT_R.patch
+0006-drm-i915-Disable-tracing-points-on-PREEMPT_RT.patch
+0007-drm-i915-skip-DRM_I915_LOW_LEVEL_TRACEPOINTS-with-NO.patch
+0008-drm-i915-gt-Queue-and-wait-for-the-irq_work-item.patch
+0009-drm-i915-gt-Use-spin_lock_irq-instead-of-local_irq_d.patch
+0010-drm-i915-Drop-the-irqs_disabled-check.patch
+Revert-drm-i915-Depend-on-PREEMPT_RT.patch
 
 ###########################################################################
 # Lazy preemption

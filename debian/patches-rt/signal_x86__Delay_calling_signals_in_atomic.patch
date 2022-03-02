@@ -1,7 +1,7 @@
 Subject: signal/x86: Delay calling signals in atomic
 From: Oleg Nesterov <oleg@redhat.com>
 Date: Tue Jul 14 14:26:34 2015 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 From: Oleg Nesterov <oleg@redhat.com>
 
@@ -11,13 +11,13 @@ a per CPU debug stack defined by the IST. If we schedule out, another task
 can come in and use the same stack and cause the stack to be corrupted
 and crash the kernel on return.
 
-When CONFIG_PREEMPT_RT is enabled, spin_locks become mutexes, and
+When CONFIG_PREEMPT_RT is enabled, spinlock_t locks become sleeping, and
 one of these is the spin lock used in signal handling.
 
 Some of the debug code (int3) causes do_trap() to send a signal.
-This function calls a spin lock that has been converted to a mutex
-and has the possibility to sleep. If this happens, the above issues with
-the corrupted stack is possible.
+This function calls a spinlock_t lock that has been converted to a
+sleeping lock. If this happens, the above issues with the corrupted
+stack is possible.
 
 Instead of calling the signal right away, for PREEMPT_RT and x86_64,
 the signal information is stored on the stacks task_struct and
@@ -26,22 +26,19 @@ code will send the signal when preemption is enabled.
 
 [ rostedt: Switched from #ifdef CONFIG_PREEMPT_RT to
   ARCH_RT_DELAYS_SIGNAL_SEND and added comments to the code. ]
-
+[bigeasy: Add on 32bit as per Yang Shi, minor rewording. ]
 
 Signed-off-by: Oleg Nesterov <oleg@redhat.com>
 Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-[bigeasy: also needed on 32bit as per Yang Shi <yang.shi@linaro.org>]
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-
-
+Link: https://lkml.kernel.org/r/Ygq5aBB%2FqMQw6aP5@linutronix.de
 ---
  arch/x86/include/asm/signal.h |   13 +++++++++++++
- include/linux/sched.h         |    4 ++++
+ include/linux/sched.h         |    3 +++
  kernel/entry/common.c         |    8 ++++++++
  kernel/signal.c               |   28 ++++++++++++++++++++++++++++
- 4 files changed, 53 insertions(+)
+ 4 files changed, 52 insertions(+)
 ---
 --- a/arch/x86/include/asm/signal.h
 +++ b/arch/x86/include/asm/signal.h
@@ -67,12 +64,11 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  typedef sigset_t compat_sigset_t;
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1083,6 +1083,10 @@ struct task_struct {
+@@ -1087,6 +1087,9 @@ struct task_struct {
  	/* Restored if set_restore_sigmask() was used: */
  	sigset_t			saved_sigmask;
  	struct sigpending		pending;
 +#ifdef CONFIG_PREEMPT_RT
-+	/* TODO: move me into ->restart_block ? */
 +	struct				kernel_siginfo forced_info;
 +#endif
  	unsigned long			sas_ss_sp;

@@ -1,7 +1,8 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: kernel/fork: Move memcg_charge_kernel_stack() into CONFIG_VMAP_STACK.
-Date: Thu, 18 Nov 2021 15:34:49 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc5-rt8.tar.xz
+Date: Thu, 17 Feb 2022 11:24:03 +0100
+Subject: [PATCH 5/8] kernel/fork: Move memcg_charge_kernel_stack() into
+ CONFIG_VMAP_STACK.
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
 
 memcg_charge_kernel_stack() is only used in the CONFIG_VMAP_STACK case.
 
@@ -9,7 +10,8 @@ Move memcg_charge_kernel_stack() into the CONFIG_VMAP_STACK block and
 invoke it from within alloc_thread_stack_node().
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20211118143452.136421-6-bigeasy@linutronix.de
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/r/20220217102406.3697941-6-bigeasy@linutronix.de
 ---
  kernel/fork.c |   69 ++++++++++++++++++++++++++++++----------------------------
  1 file changed, 36 insertions(+), 33 deletions(-)
@@ -73,7 +75,7 @@ Link: https://lore.kernel.org/r/20211118143452.136421-6-bigeasy@linutronix.de
  	/*
  	 * We can't call find_vm_area() in interrupt context, and
  	 * free_thread_stack() can be called in interrupt context,
-@@ -417,36 +453,6 @@ static void account_kernel_stack(struct
+@@ -418,36 +454,6 @@ static void account_kernel_stack(struct
  	}
  }
  
@@ -110,7 +112,7 @@ Link: https://lore.kernel.org/r/20211118143452.136421-6-bigeasy@linutronix.de
  static void release_task_stack(struct task_struct *tsk)
  {
  	if (WARN_ON(READ_ONCE(tsk->__state) != TASK_DEAD))
-@@ -908,9 +914,6 @@ static struct task_struct *dup_task_stru
+@@ -909,9 +915,6 @@ static struct task_struct *dup_task_stru
  	if (err)
  		goto free_tsk;
  
