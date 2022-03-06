@@ -148,6 +148,9 @@ linux (5.16.12-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Bump ABI to 4
 
+  [ Ben Hutchings [
+  * module: Avoid ABI changes when debug info is disabled
+
  -- Vincent Blut <vincent.debian@free.fr>  Sat, 26 Feb 2022 14:00:16 +0100
 
 linux (5.16.11-1) unstable; urgency=medium
