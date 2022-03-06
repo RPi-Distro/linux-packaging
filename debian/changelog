@@ -147,6 +147,17 @@ linux (5.16.12-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 4
+  * Mitigate Spectre v2-type Branch History Buffer attacks (CVE-2022-0001,
+    CVE-2022-0002)
+    - [x86] speculation: Rename RETPOLINE_AMD to RETPOLINE_LFENCE
+    - [x86] speculation: Add eIBRS + Retpoline options
+    - Documentation/hw-vuln: Update spectre doc
+    - [x86] speculation: Include unprivileged eBPF status in Spectre v2
+      mitigation reporting
+    - [x86] speculation: Use generic retpoline by default on AMD
+    - [x86] speculation: Update link to AMD speculation whitepaper
+    - [x86] speculation: Warn about Spectre v2 LFENCE mitigation
+    - [x86] speculation: Warn about eIBRS + LFENCE + Unprivileged eBPF + SMT
 
   [ Ben Hutchings [
   * module: Avoid ABI changes when debug info is disabled
