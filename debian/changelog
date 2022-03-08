@@ -1,4 +1,4 @@
-linux (5.16.12-1) UNRELEASED; urgency=medium
+linux (5.16.12-1) unstable; urgency=high
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.12
@@ -162,7 +162,7 @@ linux (5.16.12-1) UNRELEASED; urgency=medium
   [ Ben Hutchings [
   * module: Avoid ABI changes when debug info is disabled
 
- -- Vincent Blut <vincent.debian@free.fr>  Sat, 26 Feb 2022 14:00:16 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 08 Mar 2022 18:47:04 +0100
 
 linux (5.16.11-1) unstable; urgency=medium
 
