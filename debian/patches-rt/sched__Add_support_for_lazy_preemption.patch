@@ -1,7 +1,7 @@
 Subject: sched: Add support for lazy preemption
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Fri Oct 26 18:50:54 2012 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
@@ -220,8 +220,8 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 +#endif
 +
  #ifdef CONFIG_PREEMPT_RT
- static inline bool task_match_saved_state(struct task_struct *p, long match_state)
- {
+ 
+ static inline bool task_state_match_and(struct task_struct *tsk, long state)
 --- a/include/linux/thread_info.h
 +++ b/include/linux/thread_info.h
 @@ -177,7 +177,17 @@ static __always_inline unsigned long rea
@@ -358,7 +358,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	preempt_enable();
  }
  EXPORT_SYMBOL_GPL(migrate_enable);
-@@ -4433,6 +4475,9 @@ int sched_fork(unsigned long clone_flags
+@@ -4434,6 +4476,9 @@ int sched_fork(unsigned long clone_flags
  	p->on_cpu = 0;
  #endif
  	init_task_preempt_count(p);
@@ -368,7 +368,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #ifdef CONFIG_SMP
  	plist_node_init(&p->pushable_tasks, MAX_PRIO);
  	RB_CLEAR_NODE(&p->pushable_dl_tasks);
-@@ -6267,6 +6312,7 @@ static void __sched notrace __schedule(u
+@@ -6268,6 +6313,7 @@ static void __sched notrace __schedule(u
  
  	next = pick_next_task(rq, prev, &rf);
  	clear_tsk_need_resched(prev);
@@ -376,7 +376,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	clear_preempt_need_resched();
  #ifdef CONFIG_SCHED_DEBUG
  	rq->last_seen_need_resched_ns = 0;
-@@ -6478,6 +6524,30 @@ static void __sched notrace preempt_sche
+@@ -6479,6 +6525,30 @@ static void __sched notrace preempt_sche
  	} while (need_resched());
  }
  
@@ -407,7 +407,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #ifdef CONFIG_PREEMPTION
  /*
   * This is the entry point to schedule() from in-kernel preemption
-@@ -6491,7 +6561,8 @@ asmlinkage __visible void __sched notrac
+@@ -6492,7 +6562,8 @@ asmlinkage __visible void __sched notrac
  	 */
  	if (likely(!preemptible()))
  		return;
@@ -417,7 +417,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	preempt_schedule_common();
  }
  NOKPROBE_SYMBOL(preempt_schedule);
-@@ -6524,6 +6595,9 @@ asmlinkage __visible void __sched notrac
+@@ -6525,6 +6596,9 @@ asmlinkage __visible void __sched notrac
  	if (likely(!preemptible()))
  		return;
  
@@ -427,7 +427,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	do {
  		/*
  		 * Because the function tracer can trace preempt_count_sub()
-@@ -8690,7 +8764,9 @@ void __init init_idle(struct task_struct
+@@ -8691,7 +8765,9 @@ void __init init_idle(struct task_struct
  
  	/* Set the preempt count _outside_ the spinlocks! */
  	init_idle_preempt_count(idle, cpu);
@@ -544,7 +544,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 --- a/kernel/trace/trace.c
 +++ b/kernel/trace/trace.c
-@@ -2610,11 +2610,19 @@ unsigned int tracing_gen_ctx_irq_test(un
+@@ -2612,11 +2612,19 @@ unsigned int tracing_gen_ctx_irq_test(un
  	if (softirq_count() >> (SOFTIRQ_SHIFT + 1))
  		trace_flags |= TRACE_FLAG_BH_OFF;
  
@@ -566,7 +566,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		(min_t(unsigned int, migration_disable_value(), 0xf)) << 4;
  }
  
-@@ -4195,15 +4203,17 @@ unsigned long trace_total_entries(struct
+@@ -4197,15 +4205,17 @@ unsigned long trace_total_entries(struct
  
  static void print_lat_help_header(struct seq_file *m)
  {
@@ -593,7 +593,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  }
  
  static void print_event_info(struct array_buffer *buf, struct seq_file *m)
-@@ -4237,14 +4247,16 @@ static void print_func_help_header_irq(s
+@@ -4239,14 +4249,16 @@ static void print_func_help_header_irq(s
  
  	print_event_info(buf, m);
  

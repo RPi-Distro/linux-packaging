@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 17 Feb 2022 11:24:02 +0100
 Subject: [PATCH 4/8] kernel/fork: Don't assign the stack pointer in
  dup_task_struct().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
 
 All four versions of alloc_thread_stack_node() assign now
 task_struct::stack in case the allocation was successful.

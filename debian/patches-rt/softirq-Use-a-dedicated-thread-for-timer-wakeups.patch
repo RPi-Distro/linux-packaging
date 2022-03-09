@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 1 Dec 2021 17:41:09 +0100
 Subject: [PATCH] softirq: Use a dedicated thread for timer wakeups.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
 
 A timer/hrtimer softirq is raised in-IRQ context. With threaded
 interrupts enabled or on PREEMPT_RT this leads to waking the ksoftirqd
@@ -46,7 +46,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/include/linux/interrupt.h
 +++ b/include/linux/interrupt.h
-@@ -605,6 +605,22 @@ extern void __raise_softirq_irqoff(unsig
+@@ -606,6 +606,22 @@ extern void __raise_softirq_irqoff(unsig
  extern void raise_softirq_irqoff(unsigned int nr);
  extern void raise_softirq(unsigned int nr);
  
@@ -163,16 +163,16 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 +        .thread_comm            = "ktimers/%u",
 +};
 +
- static __init int spawn_ksoftirqd(void)
+ __init void softirq_spawn_ksoftirqd(void)
  {
  	cpuhp_setup_state_nocalls(CPUHP_SOFTIRQ_DEAD, "softirq:dead", NULL,
  				  takeover_tasklets);
  	BUG_ON(smpboot_register_percpu_thread(&softirq_threads));
 +	if (IS_ENABLED(CONFIG_PREEMPT_RT))
 +		BUG_ON(smpboot_register_percpu_thread(&timer_threads));
- 
- 	return 0;
  }
+ 
+ /*
 --- a/kernel/time/hrtimer.c
 +++ b/kernel/time/hrtimer.c
 @@ -1805,7 +1805,7 @@ void hrtimer_interrupt(struct clock_even

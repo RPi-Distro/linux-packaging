@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 17 Feb 2022 10:48:02 +0100
 Subject: [PATCH 5/8] mm/memcg: Protect memcg_stock with a local_lock_t
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
 
 The members of the per-CPU structure memcg_stock_pcp are protected by
 disabling interrupts. This is not working on PREEMPT_RT because it

@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Sat, 12 Feb 2022 00:38:39 +0100
 Subject: [PATCH 2/3] net: dev: Make rps_lock() disable interrupts.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
 
 Disabling interrupts and in the RPS case locking input_pkt_queue is
 split into local_irq_disable() and optional spin_lock().

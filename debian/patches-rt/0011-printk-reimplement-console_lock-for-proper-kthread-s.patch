@@ -2,7 +2,7 @@ From: John Ogness <john.ogness@linutronix.de>
 Date: Mon, 7 Feb 2022 15:54:47 +0106
 Subject: [PATCH 11/16] printk: reimplement console_lock for proper kthread
  support
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
 
 With non-threaded console printers preemption is disabled while
 holding the console lock in order to avoid the situation where the

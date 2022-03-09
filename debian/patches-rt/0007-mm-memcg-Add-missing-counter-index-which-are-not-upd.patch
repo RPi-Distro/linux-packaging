@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 25 Feb 2022 10:37:56 +0100
 Subject: [PATCH 7/8] mm/memcg: Add missing counter index which are not update
  in interrupt.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
 
 Shakeel Butt reported that I missed a few counters which are not updated
 in-interrupt context and therefore disabling preemption is fine.

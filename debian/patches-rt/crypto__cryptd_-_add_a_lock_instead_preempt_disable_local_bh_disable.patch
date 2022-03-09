@@ -1,7 +1,7 @@
 Subject: crypto: cryptd - add a lock instead preempt_disable/local_bh_disable
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu Jul 26 18:52:00 2018 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 

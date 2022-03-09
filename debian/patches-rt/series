@@ -44,6 +44,10 @@ tcp-Don-t-acquire-inet_listen_hashbucket-lock-with-d.patch
 0003-random-fix-locking-in-crng_fast_load.patch
 0004-random-defer-fast-pool-mixing-to-worker.patch
 0005-random-clear-fast-pool-crng-and-batches-in-cpuhp-bri.patch
+# Minimal duct tape for the v5.17. Jason has
+#  "random: do crng pre-init loading in worker rather than irq"
+# queued.
+random-Move-crng_fast_load-to-the-worker.patch
 
 # sched/fork, expecting in 5.18
 0001-kernel-fork-Redo-ifdefs-around-task-s-handling.patch
@@ -70,12 +74,7 @@ net-Correct-wrong-BH-disable-in-hard-interrupt.patch
 0006-net-usb-lan78xx-Use-generic_handle_irq_safe.patch
 0007-staging-greybus-gpio-Use-generic_handle_irq_safe.patch
 
-###########################################################################
-# Posted
-###########################################################################
-drm-i915-Depend-on-PREEMPT_RT.patch
-
-# cgroup, in -mm, still hasing out details, 5.18 should work.
+# cgroup, in -mm, 5.18 should work.
 0001-mm-memcg-Revert-mm-memcg-optimize-user-context-objec.patch
 0002-mm-memcg-Disable-threshold-event-handlers-on-PREEMPT.patch
 0003-mm-memcg-Protect-per-CPU-counter-by-disabling-preemp.patch
@@ -87,21 +86,19 @@ drm-i915-Depend-on-PREEMPT_RT.patch
 mm-memcg-Only-perform-the-debug-checks-on-PREEMPT_RT.patch
 
 ###########################################################################
-# Post
+# Posted
 ###########################################################################
+drm-i915-Depend-on-PREEMPT_RT.patch
 cgroup__use_irqsave_in_cgroup_rstat_flush_locked.patch
 mm__workingset__replace_IRQ-off_check_with_a_lockdep_assert..patch
-softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
+x86-kvm-Require-const-tsc-for-RT.patch
+ptrace-fix-ptrace-vs-tasklist_lock-race-on-PREEMPT_R.patch
+rcu-tasks-Use-rcuwait-for-the-rcu_tasks_kthread.patch
 
 ###########################################################################
-# Kconfig bits:
+# Post
 ###########################################################################
-jump-label__disable_if_stop_machine_is_used.patch
-
-###########################################################################
-# preempt: Conditional variants
-###########################################################################
-sched-Make-preempt_enable_no_resched-behave-like-pre.patch
+softirq-Spawn-ksoftirqd-before-the-RCU-tests.patch
 
 ###########################################################################
 # sched:
@@ -123,7 +120,6 @@ softirq__Check_preemption_after_reenabling_interrupts.patch
 # ptrace: Revisit
 ###########################################################################
 signal__Revert_ptrace_preempt_magic.patch
-ptrace__fix_ptrace_vs_tasklist_lock_race.patch
 
 ###########################################################################
 # fs: The namespace part needs a proper fix
@@ -132,20 +128,15 @@ fs_dcache__use_swait_queue_instead_of_waitqueue.patch
 fs_dcache__disable_preemption_on_i_dir_seqs_write_side.patch
 
 ###########################################################################
-# RCU
-###########################################################################
-rcu__Delay_RCU-selftests.patch
-
-###########################################################################
 # X86:
 ###########################################################################
-x86__kvm_Require_const_tsc_for_RT.patch
 x86__Allow_to_enable_RT.patch
 x86__Enable_RT_also_on_32bit.patch
 
 ###########################################################################
 # For later, not essencial
 ###########################################################################
+softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
 virt-acrn-Remove-unsued-acrn_irqfds_mutex.patch
 tpm_tis__fix_stall_after_iowrites.patch
 drivers_block_zram__Replace_bit_spinlocks_with_rtmutex_for_-rt.patch
@@ -179,6 +170,7 @@ arch_arm64__Add_lazy_preempt_support.patch
 ###########################################################################
 # ARM/ARM64
 ###########################################################################
+jump-label__disable_if_stop_machine_is_used.patch
 ARM__enable_irq_in_translation_section_permission_fault_handlers.patch
 KVM__arm_arm64__downgrade_preempt_disabled_region_to_migrate_disable.patch
 arm64-mm-Make-arch_faults_on_old_pte-check-for-migra.patch

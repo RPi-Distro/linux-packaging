@@ -1,7 +1,7 @@
 Subject: softirq: Check preemption after reenabling interrupts
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun Nov 13 17:17:09 2011 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc6-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
@@ -19,24 +19,26 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 
 ---
- include/linux/preempt.h |    3 +++
+ include/linux/preempt.h |    7 +++++++
  net/core/dev.c          |    6 ++++++
- 2 files changed, 9 insertions(+)
+ 2 files changed, 13 insertions(+)
 ---
 --- a/include/linux/preempt.h
 +++ b/include/linux/preempt.h
-@@ -212,8 +212,10 @@ do { \
+@@ -212,6 +212,12 @@ do { \
  
- #ifndef CONFIG_PREEMPT_RT
- # define preempt_enable_no_resched() sched_preempt_enable_no_resched()
+ #define preempt_enable_no_resched() sched_preempt_enable_no_resched()
+ 
++#ifndef CONFIG_PREEMPT_RT
 +# define preempt_check_resched_rt() barrier();
- #else
- # define preempt_enable_no_resched() preempt_enable()
++#else
 +# define preempt_check_resched_rt() preempt_check_resched()
- #endif
- 
++#endif
++
  #define preemptible()	(preempt_count() == 0 && !irqs_disabled())
-@@ -284,6 +286,7 @@ do { \
+ 
+ #ifdef CONFIG_PREEMPTION
+@@ -280,6 +286,7 @@ do { \
  #define preempt_disable_notrace()		barrier()
  #define preempt_enable_no_resched_notrace()	barrier()
  #define preempt_enable_notrace()		barrier()
