@@ -62,6 +62,172 @@ linux (5.17~rc3-1~exp1) experimental; urgency=medium
 
  -- Ben Hutchings <benh@debian.org>  Fri, 11 Feb 2022 02:28:15 +0100
 
+linux (5.16.12-1) unstable; urgency=high
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.12
+    - mm/filemap: Fix handling of THPs in generic_file_buffered_read()
+    - cgroup/cpuset: Fix a race between cpuset_attach() and cpu hotplug
+    - btrfs: tree-checker: check item_size for inode_item
+    - btrfs: tree-checker: check item_size for dev_item
+    - slab: remove __alloc_size attribute from __kmalloc_track_caller
+    - io_uring: don't convert to jiffies for waiting on timeouts
+    - io_uring: disallow modification of rsrc_data during quiesce
+    - selinux: fix misuse of mutex_is_locked()
+    - vhost/vsock: don't check owner in vhost_vsock_stop() while releasing
+    - [x86] KVM: x86/mmu: make apf token non-zero to fix bug
+    - [x86] KVM: x86: nSVM: disallow userspace setting of MSR_AMD64_TSC_RATIO to
+      non default value when tsc scaling disabled
+    - drm/amd: Check if ASPM is enabled from PCIe subsystem
+    - drm/amdgpu: disable MMHUB PG for Picasso
+    - drm/amdgpu: do not enable asic reset for raven2
+    - [x86] drm/i915: Widen the QGV point mask
+    - [x86] drm/i915: Disconnect PHYs left connected by BIOS on disabled ports
+    - [x86] drm/i915: Correctly populate use_sagv_wm for all pipes
+    - [x86] drm/i915: Fix bw atomic check when switching between SAGV vs. no
+      SAGV
+    - sr9700: sanity check for packet length
+    - USB: zaurus: support another broken Zaurus
+    - CDC-NCM: avoid overflow in sanity checking
+    - ping: remove pr_err from ping_lookup
+    - Revert "i40e: Fix reset bw limit when DCB enabled with 1 TC"
+    - [arm64,armhf] gpu: host1x: Always return syncpoint value when waiting
+    - perf data: Fix double free in perf_session__delete()
+    - mptcp: fix race in incoming ADD_ADDR option processing
+    - mptcp: add mibs counter for ignored incoming options
+    - bnx2x: fix driver load from initrd
+    - bnxt_en: Fix devlink fw_activate
+    - bnxt_en: Fix active FEC reporting to ethtool
+    - bnxt_en: Fix offline ethtool selftest with RDMA enabled
+    - bnxt_en: Fix occasional ethtool -t loopback test failures
+    - bnxt_en: Fix incorrect multicast rx mask setting when not requested
+    - bnxt_en: Restore the resets_reliable flag in bnxt_open()
+    - hwmon: Handle failure to register sensor with thermal zone correctly
+    - net/mlx5: Fix tc max supported prio for nic mode
+    - ice: fix setting l4 port flag when adding filter
+    - ice: fix concurrent reset and removal of VFs
+    - ice: check the return of ice_ptp_gettimex64
+    - ice: initialize local variable 'tlv'
+    - net/mlx5: Update the list of the PCI supported devices
+    - bpf: Fix crash due to incorrect copy_map_value
+    - bpf: Do not try bpf_msg_push_data with len 0
+    - bpf: Fix a bpf_timer initialization issue
+    - bpf: Add schedule points in batch ops
+    - io_uring: add a schedule point in io_add_buffers()
+    - net: __pskb_pull_tail() & pskb_carve_frag_list() drop_monitor friends
+    - nvme: also mark passthrough-only namespaces ready in nvme_update_ns_info
+    - tipc: Fix end of loop tests for list_for_each_entry()
+    - gso: do not skip outer ip header in case of ipip and net_failover
+    - [armel,armhf] net: mv643xx_eth: process retval from of_get_mac_address
+    - openvswitch: Fix setting ipv6 fields causing hw csum failure
+    - drm/edid: Always set RGB444
+    - net/mlx5e: Fix wrong return value on ioctl EEPROM query failure
+    - net/mlx5e: TC, Reject rules with forward and drop actions
+    - net/mlx5e: TC, Reject rules with drop and modify hdr action
+    - block: clear iocb->private in blkdev_bio_end_io_async()
+    - [arm*] drm/vc4: crtc: Fix runtime_pm reference counting
+    - [x86] drm/i915/dg2: Print PHY name properly on calibration error
+    - drm/amd/display: For vblank_disable_immediate, check PSR is really used
+    - net/sched: act_ct: Fix flow table lookup after ct clear or switching zones
+    - net: Force inlining of checksum functions in net/checksum.h
+    - netfilter: nf_tables: unregister flowtable hooks on netns exit
+    - [arm64,armhf] net: dsa: avoid call to __dev_set_promiscuity() while
+      rtnl_mutex isn't held
+    - nfp: flower: Fix a potential leak in nfp_tunnel_add_shared_mac()
+    - netfilter: nf_tables: fix memory leak during stateful obj update
+    - net/smc: Use a mutex for locking "struct smc_pnettable"
+    - [x86] surface: surface3_power: Fix battery readings on batteries without a
+      serial number
+    - udp_tunnel: Fix end of loop test in udp_tunnel_nic_unregister()
+    - net/mlx5: DR, Cache STE shadow memory
+    - net/mlx5: DR, Don't allow match on IP w/o matching on full
+      ethertype/ip_version
+    - net/mlx5: Fix possible deadlock on rule deletion
+    - net/mlx5: Fix wrong limitation of metadata match on ecpf
+    - net/mlx5: DR, Fix the threshold that defines when pool sync is initiated
+    - net/mlx5e: MPLSoUDP decap, fix check for unsupported matches
+    - net/mlx5e: kTLS, Use CHECKSUM_UNNECESSARY for device-offloaded packets
+    - net/mlx5: DR, Fix slab-out-of-bounds in mlx5_cmd_dr_create_fte
+    - net/mlx5: Update log_max_qp value to be 17 at most
+    - net/mlx5e: Add missing increment of count
+    - [armel,armhf] PCI: mvebu: Fix device enumeration regression
+    - [arm64,armhf] gpio: rockchip: Reset int_bothedge when changing trigger
+    - regmap-irq: Update interrupt clear register for proper reset
+    - net: use sk_is_tcp() in more places
+    - net-timestamp: convert sk->sk_tskey to atomic_t
+    - bnxt_en: Increase firmware message response DMA wait time
+    - configfs: fix a race in configfs_{,un}register_subsystem()
+    - RDMA/ib_srp: Fix a deadlock
+    - bpf: Extend kfunc with PTR_TO_CTX, PTR_TO_MEM argument support
+    - bpf: Fix crash due to out of bounds access into reg2btf_ids.
+    - tracing: Dump stacktrace trigger to the corresponding instance
+    - tracing: Have traceon and traceoff trigger honor the instance
+    - iio:imu:adis16480: fix buffering for devices with no burst mode
+    - iio: adc: ad7124: fix mask used for setting AIN_BUFP & AIN_BUFM bits
+    - iio: imu: st_lsm6dsx: wait for settling time in st_lsm6dsx_read_oneshot
+    - iio: Fix error handling for PM
+    - ata: pata_hpt37x: disable primary channel on HPT371
+    - Revert "USB: serial: ch341: add new Product ID for CH341A"
+    - usb: gadget: rndis: add spinlock for rndis response list
+    - tracefs: Set the group ownership in apply_options() not parse_options()
+    - USB: serial: option: add support for DW5829e
+    - USB: serial: option: add Telit LE910R1 compositions
+    - [arm*] usb: dwc2: drd: fix soft connect when gadget is unconfigured
+    - [arm64] usb: dwc3: pci: Add "snps,dis_u2_susphy_quirk" for Intel Bay Trail
+    - [arm64] usb: dwc3: pci: Fix Bay Trail phy GPIO mappings
+    - [arm64,armhf] usb: dwc3: gadget: Let the interrupt handler disable bottom
+      halves.
+    - xhci: re-initialize the HC during resume if HCE was set
+    - xhci: Prevent futile URB re-submissions due to incorrect return value.
+    - nvmem: core: Fix a conflict between MTD and NVMEM on wp-gpios property
+    - mtd: core: Fix a conflict between MTD and NVMEM on wp-gpios property
+    - driver core: Free DMA range map when device is released
+    - btrfs: defrag: don't try to merge regular extents with preallocated
+      extents
+    - btrfs: defrag: don't defrag extents which are already at max capacity
+    - btrfs: defrag: remove an ambiguous condition for rejection
+    - btrfs: prevent copying too big compressed lzo segment
+    - btrfs: defrag: allow defrag_one_cluster() to skip large extent which is
+      not a target
+    - btrfs: autodefrag: only scan one inode once
+    - btrfs: reduce extent threshold for autodefrag
+    - RDMA/cma: Do not change route.addr.src_addr outside state checks
+    - [amd64] thermal: int340x: fix memory leak in int3400_notify()
+    - [x86] tps6598x: clear int mask on probe failure
+    - [amd64] IB/qib: Fix duplicate sysfs directory name
+    - mm/hugetlb: fix kernel crash with hugetlb mremap
+    - hugetlbfs: fix a truncation issue in hugepages parameter
+    - tty: n_gsm: fix encoding of control signal octet bit DV
+    - tty: n_gsm: fix encoding of command/response bit
+    - tty: n_gsm: fix proper link termination after failed open
+    - tty: n_gsm: fix NULL pointer access due to DLCI release
+    - tty: n_gsm: fix wrong tty control line for flow control
+    - tty: n_gsm: fix wrong modem processing in convergence layer type 2
+    - tty: n_gsm: fix deadlock in gsmtty_open()
+    - memblock: use kfree() to release kmalloced memblock regions
+
+  [ Vincent Blut ]
+  * drivers/leds: Enable LEDS_CLASS_MULTICOLOR as module (Closes: #1006490)
+
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 4
+  * Mitigate Spectre v2-type Branch History Buffer attacks (CVE-2022-0001,
+    CVE-2022-0002)
+    - [x86] speculation: Rename RETPOLINE_AMD to RETPOLINE_LFENCE
+    - [x86] speculation: Add eIBRS + Retpoline options
+    - Documentation/hw-vuln: Update spectre doc
+    - [x86] speculation: Include unprivileged eBPF status in Spectre v2
+      mitigation reporting
+    - [x86] speculation: Use generic retpoline by default on AMD
+    - [x86] speculation: Update link to AMD speculation whitepaper
+    - [x86] speculation: Warn about Spectre v2 LFENCE mitigation
+    - [x86] speculation: Warn about eIBRS + LFENCE + Unprivileged eBPF + SMT
+
+  [ Ben Hutchings [
+  * module: Avoid ABI changes when debug info is disabled
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 08 Mar 2022 18:47:04 +0100
+
 linux (5.16.11-1) unstable; urgency=medium
 
   * New upstream stable update:
