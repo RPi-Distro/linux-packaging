@@ -5,6 +5,7 @@ linux (5.17-1~exp1) UNRELEASED; urgency=medium
   [ Bastian Blank ]
   * [arm64] Enable HyperV support.  (closes: #1007023)
   * Replace FB_HYPERV with DRM_HYPERV.
+  * Allow disabling debug info by build profile.
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 5.17-rt15
