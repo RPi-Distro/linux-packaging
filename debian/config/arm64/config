@@ -489,10 +489,22 @@ CONFIG_DRM_VMWGFX_FBCON=y
 CONFIG_TEGRA_HOST1X=m
 
 ##
+## file: drivers/hid/Kconfig
+##
+CONFIG_HID_HYPERV_MOUSE=m
+
+##
 ## file: drivers/hid/i2c-hid/Kconfig
 ##
 CONFIG_I2C_HID_ACPI=m
 CONFIG_I2C_HID_OF=m
+
+##
+## file: drivers/hv/Kconfig
+##
+CONFIG_HYPERV=m
+CONFIG_HYPERV_UTILS=m
+CONFIG_HYPERV_BALLOON=m
 
 ##
 ## file: drivers/hwmon/Kconfig
@@ -590,6 +602,11 @@ CONFIG_INPUT_HISI_POWERKEY=m
 ## file: drivers/input/mouse/Kconfig
 ##
 CONFIG_MOUSE_ELAN_I2C=m
+
+##
+## file: drivers/input/serio/Kconfig
+##
+CONFIG_HYPERV_KEYBOARD=m
 
 ##
 ## file: drivers/input/touchscreen/Kconfig
@@ -931,6 +948,11 @@ CONFIG_FDDI=y
 CONFIG_SKFP=m
 
 ##
+## file: drivers/net/hyperv/Kconfig
+##
+CONFIG_HYPERV_NET=m
+
+##
 ## file: drivers/net/mdio/Kconfig
 ##
 CONFIG_MDIO_XGENE=m
@@ -1015,6 +1037,7 @@ CONFIG_MESON_EFUSE=m
 CONFIG_PCI=y
 CONFIG_PCI_PRI=y
 CONFIG_PCI_PASID=y
+CONFIG_PCI_HYPERV=m
 
 ##
 ## file: drivers/pci/controller/Kconfig
@@ -1276,6 +1299,7 @@ CONFIG_RTC_DRV_XGENE=y
 ##
 ## file: drivers/scsi/Kconfig
 ##
+CONFIG_HYPERV_STORAGE=m
 CONFIG_SCSI_DMX3191D=m
 
 ##
@@ -1565,6 +1589,7 @@ CONFIG_BACKLIGHT_LP855X=m
 ##
 CONFIG_FB_ARMCLCD=y
 CONFIG_FB_EFI=y
+CONFIG_FB_HYPERV=m
 CONFIG_FB_SIMPLE=y
 
 ##
@@ -1628,6 +1653,11 @@ CONFIG_BT_LEDS=y
 ## file: net/dsa/Kconfig
 ##
 CONFIG_NET_DSA=m
+
+##
+## file: net/vmw_vsock/Kconfig
+##
+CONFIG_HYPERV_VSOCKETS=m
 
 ##
 ## file: sound/pci/hda/Kconfig
