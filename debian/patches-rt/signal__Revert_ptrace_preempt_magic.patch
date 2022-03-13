@@ -1,7 +1,7 @@
 Subject: signal: Revert ptrace preempt magic
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed Sep 21 19:57:12 2011 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt13.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
@@ -18,7 +18,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
 --- a/kernel/signal.c
 +++ b/kernel/signal.c
-@@ -2304,16 +2304,8 @@ static void ptrace_stop(int exit_code, i
+@@ -2316,16 +2316,8 @@ static void ptrace_stop(int exit_code, i
  		if (gstop_done && ptrace_reparented(current))
  			do_notify_parent_cldstop(current, false, why);
  

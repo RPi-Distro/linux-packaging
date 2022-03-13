@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 9 Sep 2021 10:15:30 +0200
 Subject: [PATCH] virt: acrn: Remove unsued acrn_irqfds_mutex.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt13.tar.xz
 
 acrn_irqfds_mutex is not used, never was.
 

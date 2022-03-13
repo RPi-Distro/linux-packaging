@@ -5,7 +5,7 @@ Subject: [PATCH 3/3] net: dev: Makes sure netif_rx() can be invoked in any
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt13.tar.xz
 
 Dave suggested a while ago (eleven years by now) "Let's make netif_rx()
 work in all contexts and get rid of netif_rx_ni()". Eric agreed and

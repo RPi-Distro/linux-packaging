@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 25 Feb 2022 16:04:51 +0100
 Subject: [PATCH 8/8] mm/memcg: Add a comment regarding the release `obj'.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt12.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt13.tar.xz
 
 Please fold into
     mm/memcg: Protect memcg_stock with a local_lock_t
