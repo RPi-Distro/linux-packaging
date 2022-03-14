@@ -576,6 +576,7 @@ CONFIG_DRM=m
 CONFIG_DRM_DP_CEC=y
 CONFIG_DRM_RADEON=m
 CONFIG_DRM_AMDGPU=m
+CONFIG_DRM_HYPERV=m
 
 ##
 ## file: drivers/gpu/drm/amd/acp/Kconfig
@@ -1858,7 +1859,6 @@ CONFIG_FB_KYRO=m
 CONFIG_FB_VOODOO1=m
 CONFIG_FB_TRIDENT=m
 CONFIG_FB_VIRTUAL=m
-CONFIG_FB_HYPERV=m
 #. Doesn't support handover; see #822575
 # CONFIG_FB_SIMPLE is not set
 
