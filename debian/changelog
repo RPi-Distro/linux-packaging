@@ -1,4 +1,4 @@
-linux (5.16.14-1) UNRELEASED; urgency=medium
+linux (5.16.14-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.13
@@ -214,7 +214,7 @@ linux (5.16.14-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Bump ABI to 5
 
- -- Bastian Blank <waldi@debian.org>  Wed, 09 Mar 2022 09:11:36 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 15 Mar 2022 07:54:31 +0100
 
 linux (5.16.12-1) unstable; urgency=high
 
