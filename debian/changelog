@@ -9,6 +9,9 @@ linux (5.17-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * [rt] Update to 5.17-rt15
 
+  [ Diederik de Haas ]
+  * [armhf] Enable SUN8I_THERMAL as module (Closes: #1007799)
+
  -- Bastian Blank <waldi@debian.org>  Mon, 14 Mar 2022 09:34:01 +0100
 
 linux (5.17~rc8-1~exp1) experimental; urgency=medium
