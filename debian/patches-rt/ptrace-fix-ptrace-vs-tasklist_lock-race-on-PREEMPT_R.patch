@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 2 Mar 2022 22:04:23 +0100
 Subject: [PATCH] ptrace: fix ptrace vs tasklist_lock race on PREEMPT_RT.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rt15.tar.xz
 
 As explained by Alexander Fyodorov <halcy@yandex.ru>:
 

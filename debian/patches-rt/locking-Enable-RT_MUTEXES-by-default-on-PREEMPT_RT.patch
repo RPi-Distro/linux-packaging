@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 26 Jan 2022 15:31:20 +0100
 Subject: [PATCH] locking: Enable RT_MUTEXES by default on PREEMPT_RT.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rt15.tar.xz
 
 The CONFIG_RT_MUTEXES option is enabled by CONFIG_FUTEX and CONFIG_I2C.
 If both are disabled then CONFIG_PREEMPT_RT builds fail to compile.

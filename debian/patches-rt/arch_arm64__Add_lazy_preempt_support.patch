@@ -1,7 +1,7 @@
 Subject: arch/arm64: Add lazy preempt support
 From: Anders Roxell <anders.roxell@linaro.org>
 Date: Thu May 14 17:52:17 2015 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rt15.tar.xz
 
 From: Anders Roxell <anders.roxell@linaro.org>
 

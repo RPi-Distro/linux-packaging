@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 16 Feb 2022 18:50:46 +0100
 Subject: [PATCH] net: Correct wrong BH disable in hard-interrupt.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rt15.tar.xz
 
 I missed the obvious case where netif_ix() is invoked from hard-IRQ
 context.

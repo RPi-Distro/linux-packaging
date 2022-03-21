@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Mon, 7 Feb 2022 15:54:14 +0106
 Subject: [PATCH 06/16] printk: refactor and rework printing logic
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rt15.tar.xz
 
 Refactor/rework printing logic in order to prepare for moving to threaded
 console printing.

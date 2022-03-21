@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 2 Apr 2020 21:16:30 +0200
 Subject: [PATCH] irq_poll: Add local_bh_disable() in cpu_dead notifier
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rc7-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rt15.tar.xz
 
 __raise_softirq_irqoff() adds a bit to the pending sofirq mask and this
 is it. The softirq won't be handled in a deterministic way but randomly
