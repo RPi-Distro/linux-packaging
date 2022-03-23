@@ -60,6 +60,9 @@ packages_enabled := $(shell dh_listpackages)
 define if_package
 $(if $(filter $(1),$(packages_enabled)),$(2))
 endef
+define if_profile
+$(if $(filter $(1),$(DEB_BUILD_PROFILES)),$(2))
+endef
 
 build-arch-arch: \
 	$(call if_package, linux-kbuild-$(VERSION),      build-kbuild) \
@@ -111,7 +114,8 @@ source-featureset: $(STAMPS_DIR)/source_$(FEATURESET)
 
 $(BUILD_DIR)/config.$(ARCH)_$(FEATURESET)_$(FLAVOUR): $(KCONFIG)
 	mkdir -p '$(dir $@)'
-	debian/bin/kconfig.py '$@' $(KCONFIG) $(KCONFIG_OPTIONS)
+	debian/bin/kconfig.py '$@' $(KCONFIG) $(KCONFIG_OPTIONS) \
+		$(call if_profile, pkg.linux.nokerneldbginfo pkg.linux.quick,-o DEBUG_INFO=n)
 
 define copy_source
 mkdir -p '$(1)'
