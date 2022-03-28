@@ -106,6 +106,9 @@ linux (5.16.15-1) UNRELEASED; urgency=medium
     - btrfs: make send work with concurrent block group relocation
     - vhost: allow batching hint without size
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 6
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 28 Mar 2022 21:07:00 +0200
 
 linux (5.16.14-1) unstable; urgency=medium
