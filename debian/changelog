@@ -1,4 +1,4 @@
-linux (5.16.16-1) UNRELEASED; urgency=medium
+linux (5.16.17-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.15
@@ -125,6 +125,45 @@ linux (5.16.16-1) UNRELEASED; urgency=medium
     - sfc: extend the locking on mcdi->seqno
     - bnx2: Fix an error message
     - ice: Fix race condition during interface enslave
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.17
+    - crypto: qcom-rng - ensure buffer for generate is completely filled
+    - ocfs2: fix crash when initialize filecheck kobj fails
+    - mm: swap: get rid of livelock in swapin readahead
+    - block: release rq qos structures for queue without disk
+    - [x86] drm/mgag200: Fix PLL setup for g200wb and g200ew
+    - efi: fix return value of __setup handlers
+    - alx: acquire mutex for alx_reinit in alx_change_mtu
+    - vsock: each transport cycles only on its own sockets
+    - esp6: fix check on ipv6_skip_exthdr's return value
+    - net: phy: marvell: Fix invalid comparison in the resume and suspend
+      functions
+    - net/packet: fix slab-out-of-bounds access in packet_recvmsg()
+    - nvmet: revert "nvmet: make discovery NQN configurable"
+    - atm: eni: Add check for dma_map_single
+    - ice: fix NULL pointer dereference in ice_update_vsi_tx_ring_stats()
+    - iavf: Fix double free in iavf_reset_task
+    - hv_netvsc: Add check for kvmalloc_array
+    - [armhf] drm/imx: parallel-display: Remove bus flags check in
+      imx_pd_bridge_atomic_check()
+    - [arm64,armhf] drm/panel: simple: Fix Innolux G070Y2-L01 BPP settings
+    - net: handle ARPHRD_PIMREG in dev_is_mac_header_xmit()
+    - [arm64,armhf] net: dsa: Add missing of_node_put() in dsa_port_parse_of
+    - net: phy: mscc: Add MODULE_FIRMWARE macros
+    - bnx2x: fix built-in kernel driver load failure
+    - [arm64] net: bcmgenet: skip invalid partial checksums
+    - [arm64] net: mscc: ocelot: fix backwards compatibility with single-chain
+      tc-flower offload
+    - iavf: Fix hang during reboot/shutdown
+    - usb: gadget: rndis: prevent integer overflow in rndis_set_response()
+    - usb: gadget: Fix use-after-free bug by not setting udc->dev.driver
+    - usb: usbtmc: Fix bug in pipe direction for control transfers
+    - scsi: mpt3sas: Page fault in reply q processing
+    - Input: aiptek - properly check endpoint type
+    - [arm64] errata: avoid duplicate field initializer
+    - perf symbols: Fix symbol size calculation condition
+    - Revert "ath10k: drop beacon and probe response which leak from other
+      channel"
+    - btrfs: skip reserved bytes warning on unmount after log cleanup failure
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 6
