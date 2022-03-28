@@ -109,6 +109,9 @@ linux (5.16.15-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Bump ABI to 6
 
+  [ Vincent Blut ]
+  * sound/pci/hda: Enable SND_HDA_CODEC_CS8409 as module (Closes: #1008122)
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 28 Mar 2022 21:07:00 +0200
 
 linux (5.16.14-1) unstable; urgency=medium
