@@ -1,4 +1,4 @@
-linux (5.16.15-1) UNRELEASED; urgency=medium
+linux (5.16.16-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.15
@@ -105,6 +105,26 @@ linux (5.16.15-1) UNRELEASED; urgency=medium
     - perf parse: Fix event parser error for hybrid systems
     - btrfs: make send work with concurrent block group relocation
     - vhost: allow batching hint without size
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.16
+    - Revert "xfrm: state and policy should fail if XFRMA_IF_ID 0"
+    - [arm64] dts: rockchip: fix rk3399-puma-haikou USB OTG mode
+    - xfrm: Check if_id in xfrm_migrate
+    - xfrm: Fix xfrm migrate issues when address family changes
+    - mac80211: refuse aggregations sessions before authorized
+    - [mips64el,mipsel] smp: fill in sibling and core maps earlier
+    - Bluetooth: hci_core: Fix leaking sent_cmd skb
+    - [x86] atm: firestream: check the return value of ioremap() in fs_init()
+    - netfilter: egress: silence egress hook lockdep splats
+    - Input: goodix - use the new soc_intel_is_byt() helper
+    - Input: goodix - workaround Cherry Trail devices with a bogus ACPI
+      Interrupt() resource
+    - iwlwifi: don't advertise TWT support
+    - drm/vrr: Set VRR capable prop only if it is attached to connector
+    - nl80211: Update bss channel on channel switch for P2P_CLIENT
+    - tcp: make tcp_read_sock() more robust
+    - sfc: extend the locking on mcdi->seqno
+    - bnx2: Fix an error message
+    - ice: Fix race condition during interface enslave
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 6
