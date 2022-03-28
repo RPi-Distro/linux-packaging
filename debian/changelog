@@ -1,3 +1,113 @@
+linux (5.16.15-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.15
+    - HID: elo: Revert USB reference counting
+    - HID: hid-thrustmaster: fix OOB read in thrustmaster_interrupts
+    - [arm64] clk: qcom: gdsc: Add support to update GDSC transition delay
+    - HID: vivaldi: fix sysfs attributes leak
+    - HID: nintendo: check the return value of alloc_workqueue()
+    - [arm64] dts: armada-3720-turris-mox: Add missing ethernet0 alias
+    - tipc: fix kernel panic when enabling bearer
+    - [arm64] net: phy: meson-gxl: fix interrupt handling in forced mode
+    - mISDN: Fix memory leak in dsp_pipeline_build()
+    - vhost: fix hung thread due to erroneous iotlb entries
+    - virtio-blk: Don't use MAX_DISCARD_SEGMENTS if max_discard_seg is zero
+    - virtio-blk: Remove BUG_ON() in virtio_queue_rq()
+    - isdn: hfcpci: check the return value of dma_set_mask() in setup_hw()
+    - net: qlogic: check the return value of dma_alloc_coherent() in
+      qed_vf_hw_prepare()
+    - esp: Fix possible buffer overflow in ESP transformation (CVE-2022-27666)
+    - esp: Fix BEET mode inter address family tunneling on GSO
+    - net: gro: move skb_gro_receive_list to udp_offload.c
+    - qed: return status of qed_iov_get_link
+    - smsc95xx: Ignore -ENODEV errors when device is unplugged
+    - gpiolib: acpi: Convert ACPI value of debounce to microseconds
+    - [x86] drm/i915/psr: Set "SF Partial Frame Enable" also on full update
+    - drm/sun4i: mixer: Fix P010 and P210 format numbers
+    - iavf: Fix handling of vlan strip virtual channel messages
+    - i40e: stop disabling VFs due to PF error responses
+    - ice: stop disabling VFs due to PF error responses
+    - ice: Fix error with handling of bonding MTU
+    - ice: Don't use GFP_KERNEL in atomic context
+    - ice: Fix curr_link_speed advertised speed
+    - ethernet: Fix error handling in xemaclite_of_probe
+    - tipc: fix incorrect order of state message data sanity check
+    - [armhf] net: ethernet: ti: cpts: Handle error for clk_enable
+    - ax25: Fix NULL pointer dereference in ax25_kill_by_device
+    - net/mlx5: Fix size field in bufferx_reg struct
+    - net/mlx5: Fix a race on command flush flow
+    - net/mlx5e: Lag, Only handle events from highest priority multipath entry
+    - net/mlx5e: SHAMPO, reduce TIR indication
+    - NFC: port100: fix use-after-free in port100_send_complete
+    - mm: gup: make fault_in_safe_writeable() use fixup_user_fault()
+    - net: phy: DP83822: clear MISR2 register to disable interrupts
+    - sctp: fix kernel-infoleak for SCTP sockets
+    - [arm64] net: bcmgenet: Don't claim WOL when its not available
+    - [arm64] net: phy: meson-gxl: improve link-up behavior
+    - swiotlb: fix info leak with DMA_FROM_DEVICE (CVE-2022-0854)
+    - [arm64] usb: dwc3: pci: add support for the Intel Raptor Lake-S
+    - [x86] pinctrl: tigerlake: Revert "Add Alder Lake-M ACPI ID"
+    - KVM: Fix lockdep false negative during host resume
+    - [x86] kvm: x86: Disable KVM_HC_CLOCK_PAIRING if tsc is in always catchup
+      mode
+    - [arm64,armhf] spi: rockchip: Fix error in getting num-cs property
+    - [arm64,armhf] spi: rockchip: terminate dma transmission when slave abort
+    - [arm*] drm/vc4: hdmi: Unregister codec device on unbind
+    - of/fdt: move elfcorehdr reservation early for crash dump kernel
+    - [x86] kvm: Don't use pv tlb/ipi/sched_yield if on 1 vCPU
+    - drivers: hamradio: 6pack: fix UAF bug caused by mod_timer()
+    - net-sysfs: add check for netdevice being present to speed_show
+    - [armhf] hwmon: (pmbus) Clear pmbus fault/warning bits after read
+    - nvme-tcp: send H2CData PDUs based on MAXH2CDATA
+    - PCI: Mark all AMD Navi10 and Navi14 GPU ATS as broken
+    - gpio: Return EPROBE_DEFER if gc->to_irq is NULL
+    - drm/amdgpu: bypass tiling flag check in virtual display case (v2)
+    - Revert "xen-netback: remove 'hotplug-status' once it has served its
+      purpose"
+    - Revert "xen-netback: Check for hotplug-status existence before watching"
+    - ipv6: prevent a possible race condition with lifetimes
+    - tracing: Ensure trace buffer is at least 4096 bytes large
+    - tracing/osnoise: Make osnoise_main to sleep for microseconds
+    - [armel,armhf] Spectre-BHB: provide empty stub for non-config
+    - fuse: fix fileattr op failure
+    - fuse: fix pipe buffer lifetime for direct_io (CVE-2022-1011)
+    - [arm64,x86] staging: rtl8723bs: Fix access-point mode deadlock
+    - [arm64] net: macb: Fix lost RX packet wakeup race in NAPI receive
+    - [arm64] mmc: meson: Fix usage of meson_mmc_post_req()
+    - tracing/osnoise: Force quiescent states while tracing
+    - tracing/osnoise: Do not unregister events twice
+    - [arm64] dts: marvell: armada-37xx: Remap IO space to bus address 0x0
+    - [arm64] Ensure execute-only permissions are not allowed without EPAN
+    - swiotlb: rework "fix info leak with DMA_FROM_DEVICE" (CVE-2022-0854)
+    - virtio: unexport virtio_finalize_features
+    - virtio: acknowledge all features before access
+    - net/mlx5: Fix offloading with ESWITCH_IPV4_TTL_MODIFY_ENABLE
+    - [armel,armhf] fix Thumb2 regression with Spectre BHB
+    - watch_queue: Fix filter limit check (CVE-2022-0995)
+    - watch_queue, pipe: Free watchqueue state after clearing pipe ring
+      (CVE-2022-0995)
+    - watch_queue: Fix to release page in ->release() (CVE-2022-0995)
+    - watch_queue: Fix to always request a pow-of-2 pipe ring size
+      (CVE-2022-0995)
+    - watch_queue: Fix the alloc bitmap size to reflect notes allocated
+      (CVE-2022-0995)
+    - watch_queue: Free the alloc bitmap when the watch_queue is torn down
+      (CVE-2022-0995)
+    - watch_queue: Fix lack of barrier/sync/lock between post and read
+      (CVE-2022-0995)
+    - watch_queue: Make comment about setting ->defunct more accurate
+      (CVE-2022-0995)
+    - [x86] boot: Fix memremap of setup_indirect structures
+    - [x86] boot: Add setup_indirect support in early_memremap_is_setup_data()
+    - [x86] module: Fix the paravirt vs alternative order
+    - [x86] traps: Mark do_int3() NOKPROBE_SYMBOL
+    - perf parse: Fix event parser error for hybrid systems
+    - btrfs: make send work with concurrent block group relocation
+    - vhost: allow batching hint without size
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 28 Mar 2022 21:07:00 +0200
+
 linux (5.16.14-1) unstable; urgency=medium
 
   * New upstream stable update:
