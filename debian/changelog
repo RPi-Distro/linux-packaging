@@ -1,4 +1,4 @@
-linux (5.16.18-1) UNRELEASED; urgency=medium
+linux (5.16.18-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.16.15
@@ -212,7 +212,7 @@ linux (5.16.18-1) UNRELEASED; urgency=medium
   [ Vincent Blut ]
   * sound/pci/hda: Enable SND_HDA_CODEC_CS8409 as module (Closes: #1008122)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 28 Mar 2022 21:07:00 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 29 Mar 2022 22:46:53 +0200
 
 linux (5.16.14-1) unstable; urgency=medium
 
