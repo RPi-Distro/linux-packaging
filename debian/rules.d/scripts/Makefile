@@ -28,6 +28,7 @@ SCRIPTS =  \
 	mkuboot.sh \
 	modules-check.sh \
 	namespace.pl \
+	pahole-flags.sh \
 	patch-kernel \
 	recordmcount.pl \
 	setlocalversion \
