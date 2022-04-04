@@ -19,6 +19,7 @@ debian/mips-ieee754-relaxed.patch
 debian/arch-sh4-fix-uimage-build.patch
 debian/tools-perf-perf-read-vdso-in-libexec.patch
 debian/tools-perf-install.patch
+debian/tools-perf-install-python-bindings.patch
 debian/wireless-add-debian-wireless-regdb-certificates.patch
 debian/export-symbols-needed-by-android-drivers.patch
 debian/android-enable-building-ashmem-and-binder-as-modules.patch

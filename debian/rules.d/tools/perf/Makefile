@@ -57,7 +57,7 @@ endif
 	grep cplus_demangle $(CURDIR)/perf
 
 install:
-	+$(MAKE_PERF) -C $(top_srcdir)/tools/perf -f Makefile.perf install
+	+$(MAKE_PERF) -C $(top_srcdir)/tools/perf -f Makefile.perf install install-python_ext
 # Don't install a 'trace' alias yet:
 # - We need a wrapper for it anyway, so there's little point adding a
 #   versioned link
