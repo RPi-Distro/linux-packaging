@@ -11,6 +11,9 @@ linux (5.19~rc7-1~exp1) UNRELEASED; urgency=medium
   [ Uwe Kleine-König ]
   * Enable IOSM modem driver as a module.
 
+  [ Diederik de Haas ]
+  * [arm64] drivers/crypto: Enable CRYPTO_DEV_ROCKCHIP as module
+
  -- Ben Hutchings <benh@debian.org>  Thu, 14 Jul 2022 12:52:40 +0200
 
 linux (5.19~rc6-1~exp1) experimental; urgency=medium
