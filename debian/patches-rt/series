@@ -52,7 +52,6 @@ mm__workingset__replace_IRQ-off_check_with_a_lockdep_assert..patch
 random-Move-crng_fast_load-to-the-worker.patch
 
 # sched/fork, expecting in 5.18
-tcp-Don-t-acquire-inet_listen_hashbucket-lock-with-d.patch
 0001-kernel-fork-Redo-ifdefs-around-task-s-handling.patch
 0002-kernel-fork-Duplicate-task_struct-before-stack-alloc.patch
 0003-kernel-fork-IA64-Provide-a-alloc_thread_stack_node-f.patch
