@@ -2,7 +2,7 @@ From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Date: Sun, 13 Feb 2022 22:48:04 +0100
 Subject: [PATCH 5/5] random: clear fast pool, crng, and batches in cpuhp bring
  up
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17.1-rt17.tar.xz
 
 For the irq randomness fast pool, rather than having to use expensive
 atomics, which were visibly the most expensive thing in the entire irq

@@ -1,13 +1,13 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 2 Mar 2022 22:04:23 +0100
 Subject: [PATCH] ptrace: fix ptrace vs tasklist_lock race on PREEMPT_RT.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17.1-rt17.tar.xz
 
 As explained by Alexander Fyodorov <halcy@yandex.ru>:
 
 |read_lock(&tasklist_lock) in ptrace_stop() is converted to sleeping
 |lock on a PREEMPT_RT kernel, and it can remove __TASK_TRACED from
-|task->state (by moving  it to task->saved_state). If parent does
+|task->__state (by moving  it to task->saved_state). If parent does
 |wait() on child followed by a sys_ptrace call, the following race can
 |happen:
 |
@@ -21,18 +21,25 @@ As explained by Alexander Fyodorov <halcy@yandex.ru>:
 
 The patch is based on his initial patch where an additional check is
 added in case the __TASK_TRACED moved to ->saved_state. The pi_lock is
-taken in case the caller is interrupted between looking into ->state and
-->saved_state.
+acquired to have stable view on ->__state and ->saved_state.
+
+wait_task_inactive() needs to check both task states while waiting for the
+expected task state. Should the expected task state be in ->saved_state then
+the task is blocked on a sleeping lock. In this case wait_task_inactive() needs
+to wait until the lock situtation has been resolved (the expected state is in
+->__state). This ensures that the task is idle and does not wakeup as part of
+lock resolving and races for instance with __switch_to_xtra() while the
+debugger clears TIF_BLOCKSTEP() (noted by Oleg Nesterov).
 
 [ Fix for ptrace_unfreeze_traced() by Oleg Nesterov ]
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/Yh/b19JikC+Vnm8i@linutronix.de
+Link: https://lore.kernel.org/r/YkW55u6u2fo5QmV7@linutronix.de
 ---
- include/linux/sched.h |  127 ++++++++++++++++++++++++++++++++++++++++++++++++--
+ include/linux/sched.h |  128 ++++++++++++++++++++++++++++++++++++++++++++++++--
  kernel/ptrace.c       |   25 +++++----
- kernel/sched/core.c   |    5 +
- 3 files changed, 140 insertions(+), 17 deletions(-)
+ kernel/sched/core.c   |   11 +++-
+ 3 files changed, 146 insertions(+), 18 deletions(-)
 
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
@@ -49,7 +56,7 @@ Link: https://lore.kernel.org/r/Yh/b19JikC+Vnm8i@linutronix.de
  /*
   * Special states are those that do not use the normal wait-loop pattern. See
   * the comment with set_special_state().
-@@ -2009,6 +2005,129 @@ static inline int test_tsk_need_resched(
+@@ -2009,6 +2005,130 @@ static inline int test_tsk_need_resched(
  	return unlikely(test_tsk_thread_flag(tsk,TIF_NEED_RESCHED));
  }
  
@@ -69,21 +76,22 @@ Link: https://lore.kernel.org/r/Yh/b19JikC+Vnm8i@linutronix.de
 +	return match;
 +}
 +
-+static inline bool __task_state_match_eq(struct task_struct *tsk, long state)
++static inline int __task_state_match_eq(struct task_struct *tsk, long state)
 +{
-+	bool match = false;
++	int match = 0;
 +
 +	if (READ_ONCE(tsk->__state) == state)
-+		match = true;
++		match = 1;
 +	else if (tsk->saved_state == state)
-+		match = true;
++		match = -1;
++
 +	return match;
 +}
 +
-+static inline bool task_state_match_eq(struct task_struct *tsk, long state)
++static inline int task_state_match_eq(struct task_struct *tsk, long state)
 +{
 +	unsigned long flags;
-+	bool match;
++	int match;
 +
 +	raw_spin_lock_irqsave(&tsk->pi_lock, flags);
 +	match = __task_state_match_eq(tsk, state);
@@ -102,7 +110,7 @@ Link: https://lore.kernel.org/r/Yh/b19JikC+Vnm8i@linutronix.de
 +		WRITE_ONCE(tsk->__state, new_state);
 +		match = true;
 +	} else if (tsk->saved_state & state) {
-+		tsk->__state = new_state;
++		tsk->saved_state = new_state;
 +		match = true;
 +	}
 +	raw_spin_unlock_irqrestore(&tsk->pi_lock, flags);
@@ -134,12 +142,12 @@ Link: https://lore.kernel.org/r/Yh/b19JikC+Vnm8i@linutronix.de
 +	return READ_ONCE(tsk->__state) & state;
 +}
 +
-+static inline bool __task_state_match_eq(struct task_struct *tsk, long state)
++static inline int __task_state_match_eq(struct task_struct *tsk, long state)
 +{
 +	return READ_ONCE(tsk->__state) == state;
 +}
 +
-+static inline bool task_state_match_eq(struct task_struct *tsk, long state)
++static inline int task_state_match_eq(struct task_struct *tsk, long state)
 +{
 +	return __task_state_match_eq(tsk, state);
 +}
@@ -229,7 +237,16 @@ Link: https://lore.kernel.org/r/Yh/b19JikC+Vnm8i@linutronix.de
  
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -3239,7 +3239,8 @@ unsigned long wait_task_inactive(struct
+@@ -3219,6 +3219,8 @@ unsigned long wait_task_inactive(struct
+ 	struct rq *rq;
+ 
+ 	for (;;) {
++		int match_type = 0;
++
+ 		/*
+ 		 * We do the initial early heuristics without holding
+ 		 * any task-queue locks at all. We'll only try to get
+@@ -3239,7 +3241,8 @@ unsigned long wait_task_inactive(struct
  		 * is actually now running somewhere else!
  		 */
  		while (task_running(rq, p)) {
@@ -239,12 +256,23 @@ Link: https://lore.kernel.org/r/Yh/b19JikC+Vnm8i@linutronix.de
  				return 0;
  			cpu_relax();
  		}
-@@ -3254,7 +3255,7 @@ unsigned long wait_task_inactive(struct
+@@ -3254,7 +3257,9 @@ unsigned long wait_task_inactive(struct
  		running = task_running(rq, p);
  		queued = task_on_rq_queued(p);
  		ncsw = 0;
 -		if (!match_state || READ_ONCE(p->__state) == match_state)
-+		if (!match_state || __task_state_match_eq(p, match_state))
++		if (match_state)
++			match_type = __task_state_match_eq(p, match_state);
++		if (!match_state || match_type)
  			ncsw = p->nvcsw | LONG_MIN; /* sets MSB */
  		task_rq_unlock(rq, p, &rf);
  
+@@ -3284,7 +3289,7 @@ unsigned long wait_task_inactive(struct
+ 		 * running right now), it's preempted, and we should
+ 		 * yield - it could be a while.
+ 		 */
+-		if (unlikely(queued)) {
++		if (unlikely(queued || match_type < 0)) {
+ 			ktime_t to = NSEC_PER_SEC / HZ;
+ 
+ 			set_current_state(TASK_UNINTERRUPTIBLE);

@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 17 Feb 2022 11:24:00 +0100
 Subject: [PATCH 2/8] kernel/fork: Duplicate task_struct before stack
  allocation.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17.1-rt17.tar.xz
 
 alloc_thread_stack_node() already populates the task_struct::stack
 member except on IA64. The stack pointer is saved and populated again

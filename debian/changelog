@@ -7,6 +7,7 @@ linux (5.17.3-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * linux-kbuild: Include scripts/pahole-flags.sh (Closes: #1008501)
   * [x86] drivers/cpufreq: Enable X86_AMD_PSTATE as module (Closes: #1009302)
+  * [rt] Update to 5.17.1-rt17
 
   [ Adriaan Schmidt ]
   * tools: install perf python bindings (Closes: #860957)

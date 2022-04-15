@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Mon, 21 Feb 2022 18:49:33 +0100
 Subject: [PATCH 6/8] mm/memcg: Disable migration instead of preemption in
  drain_all_stock().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17.1-rt17.tar.xz
 
 Before the for-each-CPU loop, preemption is disabled so that so that
 drain_local_stock() can be invoked directly instead of scheduling a
