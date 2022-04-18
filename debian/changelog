@@ -19,6 +19,10 @@ linux (5.17.3-1~exp1) UNRELEASED; urgency=medium
   * d/certs: Add certificate and key to enable test signing in CI
   * d/salsa-ci.yml: Add jobs to build and test the signed packages
 
+  [ Vagrant Cascadian ]
+  * [arm64] Add nvmem-rockchip-efuse and phy-rockchip-inno-hdmi to fb-modules
+    udeb.
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 30 Mar 2022 09:25:27 +0200
 
 linux (5.17.1-1~exp1) experimental; urgency=medium
