@@ -1,4 +1,4 @@
-linux (5.17.3-1~exp1) UNRELEASED; urgency=medium
+linux (5.17.3-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.17.2
@@ -8,6 +8,7 @@ linux (5.17.3-1~exp1) UNRELEASED; urgency=medium
   * linux-kbuild: Include scripts/pahole-flags.sh (Closes: #1008501)
   * [x86] drivers/cpufreq: Enable X86_AMD_PSTATE as module (Closes: #1009302)
   * [rt] Update to 5.17.1-rt17
+  * Set ABI to 1
 
   [ Adriaan Schmidt ]
   * tools: install perf python bindings (Closes: #860957)
@@ -23,7 +24,7 @@ linux (5.17.3-1~exp1) UNRELEASED; urgency=medium
   * [arm64] Add nvmem-rockchip-efuse and phy-rockchip-inno-hdmi to fb-modules
     udeb.
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 30 Mar 2022 09:25:27 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 18 Apr 2022 14:36:36 +0200
 
 linux (5.17.1-1~exp1) experimental; urgency=medium
 
