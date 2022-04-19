@@ -2,6 +2,7 @@ linux (5.17.3-2) UNRELEASED; urgency=medium
 
   [ Diederik de Haas ]
   * [arm64,armel.marvell] Remove duplicate MTD_SPI_NOR config option
+  * [arm64] Remove duplicate CAN_MCP251X config option
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 19 Apr 2022 22:26:36 +0200
 

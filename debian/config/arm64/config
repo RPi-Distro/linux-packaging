@@ -740,11 +740,6 @@ CONFIG_VMXNET3=m
 CONFIG_CAN_FLEXCAN=m
 
 ##
-## file: drivers/net/can/spi/Kconfig
-##
-CONFIG_CAN_MCP251X=m
-
-##
 ## file: drivers/net/dsa/Kconfig
 ##
 CONFIG_NET_DSA_MV88E6060=m
