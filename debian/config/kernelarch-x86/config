@@ -538,6 +538,7 @@ CONFIG_EDAC_AMD8111=m
 ## file: drivers/extcon/Kconfig
 ##
 CONFIG_EXTCON=m
+CONFIG_EXTCON_AXP288=m
 CONFIG_EXTCON_INTEL_CHT_WC=m
 
 ##
