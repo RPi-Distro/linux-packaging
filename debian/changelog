@@ -7,6 +7,16 @@ linux (5.17.3-2) UNRELEASED; urgency=medium
   * [x86] drivers/power/supply: Enable AXP288_CHARGER as module
     (Closes: #940672)
 
+  [ Vagrant Cascadian ]
+  * [arm64] Enable modules for MNT Reform: DRM_LVDS_CODEC,
+    DRM_SIMPLE_BRIDGE, DRM_TI_SN65DSI86, DRM_CDNS_MHDP8546, DRM_IMX_DCSS,
+    DRM_PANEL_LVDS, I2C_IMX_LPI2C, I2C_MUX_REG, INTERCONNECT_IMX,
+    INTERCONNECT_IMX8MQ, MFD_WM8994, MUX_GPIO, MUX_MMIO, RTC_DRV_PCF8523,
+    USB_EHCI_FSL, BACKLIGHT_GPIO, BACKLIGHT_LED, SND_SOC_WM8960,
+    SND_SOC_FSL_MICFIL, SND_IMX_SOC, SND_SOC_FSL_ASOC_CARD,
+    SND_SOC_IMX_AUDMIX and SND_SOC_IMX_HDMI. Thanks to Johannes Schauer
+    Marin Rodrigues. (Closes: #1009858)
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 19 Apr 2022 22:41:36 +0200
 
 linux (5.17.3-1) unstable; urgency=medium
