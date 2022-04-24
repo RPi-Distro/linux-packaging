@@ -1,4 +1,195 @@
-linux (5.17.3-2) UNRELEASED; urgency=medium
+linux (5.17.4-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.17.4
+    - [arm64] cpuidle: PSCI: Move the `has_lpi` check to the beginning of the
+      function
+    - ACPI: processor idle: Check for architectural support for LPI
+    - btrfs: remove no longer used counter when reading data page
+    - btrfs: remove unused variable in btrfs_{start,write}_dirty_block_groups()
+    - media: si2157: unknown chip version Si2147-A30 ROM 0x50
+    - drm/amdgpu: Ensure HDA function is suspended before ASIC reset
+    - btrfs: release correct delalloc amount in direct IO write path
+    - btrfs: fix btrfs_submit_compressed_write cgroup attribution
+    - btrfs: return allocated block group from do_chunk_alloc()
+    - ALSA: core: Add snd_card_free_on_error() helper
+    - [i386] ALSA: sis7019: Fix the missing error handling
+    - ALSA: ali5451: Fix the missing snd_card_free() call at probe error
+    - ALSA: als300: Fix the missing snd_card_free() call at probe error
+    - ALSA: als4000: Fix the missing snd_card_free() call at probe error
+    - ALSA: atiixp: Fix the missing snd_card_free() call at probe error
+    - ALSA: azt3328: Fix the missing snd_card_free() call at probe error
+    - ALSA: bt87x: Fix the missing snd_card_free() call at probe error
+    - ALSA: ca0106: Fix the missing snd_card_free() call at probe error
+    - ALSA: cmipci: Fix the missing snd_card_free() call at probe error
+    - ALSA: cs4281: Fix the missing snd_card_free() call at probe error
+    - [i386] ALSA: cs5535audio: Fix the missing snd_card_free() call at probe
+      error
+    - ALSA: emu10k1x: Fix the missing snd_card_free() call at probe error
+    - ALSA: ens137x: Fix the missing snd_card_free() call at probe error
+    - ALSA: es1938: Fix the missing snd_card_free() call at probe error
+    - ALSA: es1968: Fix the missing snd_card_free() call at probe error
+    - ALSA: fm801: Fix the missing snd_card_free() call at probe error
+    - ALSA: hdsp: Fix the missing snd_card_free() call at probe error
+    - ALSA: hdspm: Fix the missing snd_card_free() call at probe error
+    - ALSA: ice1724: Fix the missing snd_card_free() call at probe error
+    - ALSA: intel8x0: Fix the missing snd_card_free() call at probe error
+    - [x86] ALSA: intel_hdmi: Fix the missing snd_card_free() call at probe
+      error
+    - ALSA: korg1212: Fix the missing snd_card_free() call at probe error
+    - ALSA: lola: Fix the missing snd_card_free() call at probe error
+    - ALSA: lx6464es: Fix the missing snd_card_free() call at probe error
+    - ALSA: maestro3: Fix the missing snd_card_free() call at probe error
+    - ALSA: oxygen: Fix the missing snd_card_free() call at probe error
+    - ALSA: riptide: Fix the missing snd_card_free() call at probe error
+    - ALSA: rme32: Fix the missing snd_card_free() call at probe error
+    - ALSA: rme9652: Fix the missing snd_card_free() call at probe error
+    - ALSA: rme96: Fix the missing snd_card_free() call at probe error
+    - [i386] ALSA: sc6000: Fix the missing snd_card_free() call at probe error
+    - ALSA: sonicvibes: Fix the missing snd_card_free() call at probe error
+    - ALSA: via82xx: Fix the missing snd_card_free() call at probe error
+    - ALSA: usb-audio: Cap upper limits of buffer/period bytes for implicit fb
+    - [x86] ALSA: memalloc: Add fallback SG-buffer allocations for x86
+    - ALSA: nm256: Don't call card private_free at probe error path
+    - [arm64] drm/msm: Add missing put_task_struct() in debugfs path
+    - nfsd: Fix a write performance regression
+    - Revert "ath11k: mesh: add support for 256 bitmap in blockack frames in
+      11ax"
+    - [arm64] KVM: arm64: Generalise VM features into a set of flags
+    - [arm64] KVM: arm64: mixed-width check should be skipped for uninitialized
+      vCPUs
+    - SUNRPC: Fix the svc_deferred_event trace class
+    - net/sched: flower: fix parsing of ethertype following VLAN header
+    - veth: Ensure eth header is in skb's linear part
+    - gpiolib: acpi: use correct format characters
+    - cifs: release cached dentries only if mount is complete
+    - ice: arfs: fix use-after-free when freeing @rx_cpu_rmap
+    - Revert "iavf: Fix deadlock occurrence during resetting VF interface"
+    - net: mdio: don't defer probe forever if PHY IRQ provider is missing
+    - sctp: use the correct skb for security_sctp_assoc_request
+    - net/sched: fix initialization order when updating chain 0 head
+    - cachefiles: unmark inode in use in error path
+    - cachefiles: Fix KASAN slab-out-of-bounds in cachefiles_set_volume_xattr
+    - [arm64] net: dsa: felix: suppress -EPROBE_DEFER errors
+    - io_uring: flag the fact that linked file assignment is sane
+    - [armhf] net: ethernet: stmmac: fix altr_tse_pcs function when using a
+      fixed-link
+    - net/sched: taprio: Check if socket flags are valid
+    - cfg80211: hold bss_lock while updating nontrans_list
+    - netfilter: nft_socket: make cgroup match work in input too
+    - [arm64] drm/msm: Fix range size vs end confusion
+    - [arm64] drm/msm/dsi: Use connector directly in
+      msm_dsi_manager_connector_init()
+    - [arm64] drm/msm/dp: add fail safe mode outside of event_mutex context
+    - io_uring: stop using io_wq_work as an fd placeholder
+    - net/smc: use memcpy instead of snprintf to avoid out of bounds read
+    - net/smc: Fix NULL pointer dereference in smc_pnet_find_ib()
+    - scsi: pm80xx: Mask and unmask upper interrupt vectors 32-63
+    - scsi: pm80xx: Enable upper inbound, outbound queues
+    - scsi: iscsi: Move iscsi_ep_disconnect()
+    - scsi: iscsi: Fix offload conn cleanup when iscsid restarts
+    - scsi: iscsi: Fix endpoint reuse regression
+    - scsi: iscsi: Fix conn cleanup and stop race during iscsid restart
+    - scsi: iscsi: Fix unbound endpoint error handling
+    - sctp: Initialize daddr on peeled off socket
+    - netfilter: nf_tables: nft_parse_register can return a negative value
+    - io_uring: fix assign file locking issue
+    - ALSA: ad1889: Fix the missing snd_card_free() call at probe error
+    - ALSA: mtpav: Don't call card private_free at probe error path
+    - io_uring: move io_uring_rsrc_update2 validation
+    - io_uring: verify that resv2 is 0 in io_uring_rsrc_update2
+    - io_uring: verify pad field is 0 in io_get_ext_arg
+    - ALSA: usb-audio: Increase max buffer size
+    - ALSA: usb-audio: Limit max buffer and period sizes per time
+    - macvlan: Fix leaking skb in source mode with nodst option
+    - [armhf] net: ftgmac100: access hardware register after clock ready
+    - cifs: potential buffer overflow in handling symlinks
+    - vfio/pci: Fix vf_token mechanism when device-specific VF drivers are used
+    - tun: annotate access to queue->trans_start
+    - [arm64] net: dsa: felix: fix tagging protocol changes with multiple CPU
+      ports
+    - [arm64] net: bcmgenet: Revert "Use stronger register read/writes to assure
+      ordering"
+    - block: fix offset/size check in bio_trim()
+    - block: null_blk: end timed out poll request
+    - io_uring: abort file assignment prior to assigning creds
+    - [powerpc*] KVM: PPC: Book3S HV P9: Fix "lost kick" race
+    - drm/amd: Add USBC connector ID
+    - btrfs: fix fallocate to use file_modified to update permissions
+      consistently
+    - btrfs: do not warn for free space inode in cow_file_range
+    - drm/amdgpu: conduct a proper cleanup of PDB bo
+    - drm/amdgpu/gmc: use PCI BARs for APUs in passthrough
+    - drm/amd/display: FEC check in timing validation
+    - drm/amdkfd: Fix Incorrect VMIDs passed to HWS
+    - drm/amdgpu/vcn: improve vcn dpg stop procedure
+    - [arm64,x86] Drivers: hv: vmbus: Deactivate sysctl_record_panic_msg by
+      default in isolated guests
+    - [arm64,x86] Drivers: hv: vmbus: Propagate VMbus coherence to each VMbus
+      device
+    - [amd64,arm64] PCI: hv: Propagate coherence from VMbus device to PCI device
+    - [arm64,x86] Drivers: hv: vmbus: Prevent load re-ordering when reading ring
+      buffer
+    - scsi: target: tcmu: Fix possible page UAF
+    - scsi: lpfc: Improve PCI EEH Error and Recovery Handling
+    - scsi: lpfc: Fix unload hang after back to back PCI EEH faults
+    - scsi: lpfc: Fix queue failures when recovering from PCI parity error
+    - [powerpc*] scsi: ibmvscsis: Increase INITIAL_SRP_LIMIT to 1024
+    - ata: libata-core: Disable READ LOG DMA EXT for Samsung 840 EVOs
+    - [armhf] gpu: ipu-v3: Fix dev_dbg frequency output
+    - [powerpc*] static_call: Properly initialise DEFINE_STATIC_CALL_RET0()
+    - [arm64] alternatives: mark patch_alternative() as `noinstr`
+    - tlb: hugetlb: Add more sizes to tlb_remove_huge_tlb_entry
+    - [arm64,x86] Drivers: hv: balloon: Disable balloon and hot-add accordingly
+    - net: usb: aqc111: Fix out-of-bounds accesses in RX fixup
+    - myri10ge: fix an incorrect free for skb in myri10ge_sw_tso
+    - drm/amd/display: Fix allocate_mst_payload assert on resume
+    - drbd: set QUEUE_FLAG_STABLE_WRITES
+    - scsi: mpt3sas: Fail reset operation if config request timed out
+    - scsi: mvsas: Add PCI ID of RocketRaid 2640
+    - scsi: megaraid_sas: Target with invalid LUN ID is deleted during scan
+    - drivers: net: slip: fix NPD bug in sl_tx_timeout()
+    - io_uring: zero tag on rsrc removal
+    - io_uring: use nospec annotation for more indexes
+    - [arm64] perf/imx_ddr: Fix undefined behavior due to shift overflowing the
+      constant
+    - mm/secretmem: fix panic when growing a memfd_secret
+    - mm, page_alloc: fix build_zonerefs_node()
+    - mm: fix unexpected zeroed page mapping with zram swap
+    - hugetlb: do not demote poisoned hugetlb pages
+    - revert "fs/binfmt_elf: fix PT_LOAD p_align values for loaders"
+    - revert "fs/binfmt_elf: use PT_LOAD p_align values for static PIE"
+    - [x86] KVM: x86/mmu: Resolve nx_huge_pages when kvm.ko is loaded
+    - SUNRPC: Fix NFSD's request deferral on RDMA transports
+    - cifs: verify that tcon is valid before dereference in cifs_kill_sb
+    - ath9k: Properly clear TX status area before reporting to mac80211
+    - ath9k: Fix usage of driver-private space in tx_info
+    - btrfs: zoned: activate block group only for extent allocation
+    - btrfs: fix root ref counts in error handling in btrfs_get_root_ref
+    - btrfs: mark resumed async balance as writing
+    - ALSA: hda/realtek: Add quirk for Clevo PD50PNT
+    - ALSA: hda/realtek: add quirk for Lenovo Thinkpad X12 speakers
+    - ALSA: pcm: Test for "silence" field in struct "pcm_format_data"
+    - nl80211: correctly check NL80211_ATTR_REG_ALPHA2 size
+    - ipv6: fix panic when forwarding a pkt with no in6 dev
+    - drm/amdgpu: Enable gfxoff quirk on MacBook Pro
+    - [x86] tsx: Use MSR_TSX_CTRL to clear CPUID bits
+    - [x86] tsx: Disable TSX development mode at boot
+    - genirq/affinity: Consider that CPUs on nodes can be unbalanced
+    - tick/nohz: Use WARN_ON_ONCE() to prevent console saturation
+    - dm integrity: fix memory corruption when tag_size is less than digest size
+    - i2c: dev: check return value when calling dev_set_name()
+    - [arm64,armhf] Revert "net: dsa: setup master before ports"
+    - smp: Fix offline cpu check in flush_smp_call_function_queue()
+    - dt-bindings: memory: snps,ddrc-3.80a compatible also need interrupts
+    - timers: Fix warning condition in __run_timers()
+    - mm, kfence: support kmem_dump_obj() for KFENCE objects
+    - [x86] drm/i915: Sunset igpu legacy mmap support based on GRAPHICS_VER_FULL
+    - cpu/hotplug: Remove the 'cpu' member of cpuhp_cpu_state
+    - ax25: Fix UAF bugs in ax25 timers (CVE-2022-1205)
+    - io_uring: use right issue_flags for splice/tee
+    - io_uring: fix poll file assign deadlock
+    - io_uring: fix poll error reporting
 
   [ Diederik de Haas ]
   * [armhf] drivers/net/ethernet/freescale: Enable FEC as module
