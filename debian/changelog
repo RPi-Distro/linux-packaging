@@ -208,6 +208,9 @@ linux (5.17.4-1) UNRELEASED; urgency=medium
     SND_SOC_IMX_AUDMIX and SND_SOC_IMX_HDMI. Thanks to Johannes Schauer
     Marin Rodrigues. (Closes: #1009858)
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 2
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 19 Apr 2022 22:41:36 +0200
 
 linux (5.17.3-1) unstable; urgency=medium
