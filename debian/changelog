@@ -1,4 +1,4 @@
-linux (5.17.4-1) UNRELEASED; urgency=medium
+linux (5.17.5-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.17.4
@@ -190,6 +190,153 @@ linux (5.17.4-1) UNRELEASED; urgency=medium
     - io_uring: use right issue_flags for splice/tee
     - io_uring: fix poll file assign deadlock
     - io_uring: fix poll error reporting
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.17.5
+    - etherdevice: Adjust ether_addr* prototypes to silence -Wstringop-overead
+    - perf tools: Fix segfault accessing sample_id xyarray
+    - drm/amd/display: Only set PSR version when valid
+    - block/compat_ioctl: fix range check in BLKGETSIZE
+    - gfs2: assign rgrp glock before compute_bitstructs
+    - scsi: ufs: core: scsi_get_lba() error fix
+    - net/sched: cls_u32: fix netns refcount changes in u32_change()
+    - ALSA: usb-audio: Clear MIDI port active flag after draining
+    - ALSA: usb-audio: add mapping for MSI MAG X570S Torpedo MAX.
+    - ALSA: hda/realtek: Add quirk for Clevo NP70PNP
+    - ASoC: atmel: Remove system clock tree configuration for at91sam9g20ek
+    - ASoC: topology: Correct error handling in soc_tplg_dapm_widget_create()
+    - ASoC: rk817: Use devm_clk_get() in rk817_platform_probe
+    - ASoC: msm8916-wcd-digital: Check failure for devm_snd_soc_register_component
+    - ASoC: codecs: wcd934x: do not switch off SIDO Buck when codec is in use
+    - dmaengine: idxd: fix device cleanup on disable
+    - dmaengine: imx-sdma: Fix error checking in sdma_event_remap
+    - dmaengine: mediatek:Fix PM usage reference leak of mtk_uart_apdma_alloc_chan_resources
+    - dmaengine: dw-edma: Fix unaligned 64bit access
+    - spi: spi-mtk-nor: initialize spi controller after resume
+    - firmware: cs_dsp: Fix overrun of unterminated control name string
+    - esp: limit skb_page_frag_refill use to a single page
+    - spi: cadence-quadspi: fix incorrect supports_op() return value
+    - igc: Fix infinite loop in release_swfw_sync
+    - igc: Fix BUG: scheduling while atomic
+    - igc: Fix suspending when PTM is active
+    - ice: allow creating VFs for !CONFIG_NET_SWITCHDEV
+    - ice: fix crash in switchdev mode
+    - ice: Fix memory leak in ice_get_orom_civd_data()
+    - ALSA: hda/hdmi: fix warning about PCM count when used with SOF
+    - rxrpc: Restore removed timer deletion
+    - net/smc: Fix sock leak when release after smc_shutdown()
+    - net/packet: fix packet_sock xmit return value checking
+    - ip6_gre: Avoid updating tunnel->tun_hlen in __gre6_xmit()
+    - ip6_gre: Fix skb_under_panic in __gre6_xmit()
+    - net: restore alpha order to Ethernet devices in config
+    - net/sched: cls_u32: fix possible leak in u32_init_knode()
+    - l3mdev: l3mdev_master_upper_ifindex_by_index_rcu should be using netdev_master_upper_dev_get_rcu
+    - ipv6: make ip6_rt_gc_expire an atomic_t
+    - can: isotp: stop timeout monitoring when no first frame was sent
+    - net: dsa: hellcreek: Calculate checksums in tagger
+    - net: mscc: ocelot: fix broken IP multicast flooding
+    - netlink: reset network and mac headers in netlink_dump()
+    - drm/i915/display/psr: Unset enable_psr2_sel_fetch if other checks in intel_psr2_config_valid() fails
+    - RISC-V: KVM: Remove 's' & 'u' as valid ISA extension
+    - RISC-V: KVM: Restrict the extensions that can be disabled
+    - net: stmmac: Use readl_poll_timeout_atomic() in atomic state
+    - dmaengine: idxd: match type for retries var in idxd_enqcmds()
+    - dmaengine: idxd: fix retry value to be constant for duration of function call
+    - dmaengine: idxd: add RO check for wq max_batch_size write
+    - dmaengine: idxd: add RO check for wq max_transfer_size write
+    - dmaengine: idxd: skip clearing device context when device is read-only
+    - selftests: mlxsw: vxlan_flooding: Prevent flooding of unwanted packets
+    - selftests: mlxsw: vxlan_flooding_ipv6: Prevent flooding of unwanted packets
+    - userfaultfd: mark uffd_wp regardless of VM_WRITE flag
+    - arm64: mm: fix p?d_leaf()
+    - XArray: Disallow sibling entries of nodes
+    - drm/msm/gpu: Rename runtime suspend/resume functions
+    - drm/msm/gpu: Remove mutex from wait_event condition
+    - ARM: vexpress/spc: Avoid negative array index when !SMP
+    - reset: renesas: Check return value of reset_control_deassert()
+    - reset: tegra-bpmp: Restore Handle errors in BPMP response
+    - platform/x86: samsung-laptop: Fix an unsigned comparison which can never be negative
+    - ALSA: usb-audio: Fix undefined behavior due to shift overflowing the constant
+    - drm/msm/disp: check the return value of kzalloc()
+    - selftests: KVM: Free the GIC FD when cleaning up in arch_timer
+    - ALSA: hda: intel-dsp-config: update AlderLake PCI IDs
+    - arm64: dts: imx: Fix imx8*-var-som touchscreen property sizes
+    - vxlan: fix error return code in vxlan_fdb_append
+    - cifs: Check the IOCB_DIRECT flag, not O_DIRECT
+    - net: atlantic: Avoid out-of-bounds indexing
+    - mt76: Fix undefined behavior due to shift overflowing the constant
+    - brcmfmac: sdio: Fix undefined behavior due to shift overflowing the constant
+    - dpaa_eth: Fix missing of_node_put in dpaa_get_ts_info()
+    - drm/msm/mdp5: check the return of kzalloc()
+    - KVM: x86: hyper-v: Avoid writing to TSC page without an active vCPU
+    - net: macb: Restart tx only if queue pointer is lagging
+    - scsi: iscsi: Release endpoint ID when its freed
+    - scsi: iscsi: Merge suspend fields
+    - scsi: iscsi: Fix NOP handling during conn recovery
+    - scsi: qedi: Fix failed disconnect handling
+    - stat: fix inconsistency between struct stat and struct compat_stat
+    - VFS: filename_create(): fix incorrect intent.
+    - nvme: add a quirk to disable namespace identifiers
+    - nvme-pci: disable namespace identifiers for the MAXIO MAP1002/1202
+    - nvme-pci: disable namespace identifiers for Qemu controllers
+    - irq_work: use kasan_record_aux_stack_noalloc() record callstack
+    - EDAC/synopsys: Read the error count from the correct register
+    - mm/memory-failure.c: skip huge_zero_page in memory_failure()
+    - memcg: sync flush only if periodic flush is delayed
+    - mm, hugetlb: allow for "high" userspace addresses
+    - oom_kill.c: futex: delay the OOM reaper to allow time for proper futex cleanup
+    - mm/mmu_notifier.c: fix race in mmu_interval_notifier_remove()
+    - ata: pata_marvell: Check the 'bmdma_addr' beforing reading
+    - dma: at_xdmac: fix a missing check on list iterator
+    - dmaengine: imx-sdma: fix init of uart scripts
+    - net: atlantic: invert deep par in pm functions, preventing null derefs
+    - drm/radeon: fix logic inversion in radeon_sync_resv
+    - io_uring: free iovec if file assignment fails
+    - Input: omap4-keypad - fix pm_runtime_get_sync() error checking
+    - scsi: sr: Do not leak information in ioctl
+    - sched/pelt: Fix attach_entity_load_avg() corner case
+    - perf/core: Fix perf_mmap fail when CONFIG_PERF_USE_VMALLOC enabled
+    - drm/panel/raspberrypi-touchscreen: Avoid NULL deref if not initialised
+    - drm/panel/raspberrypi-touchscreen: Initialise the bridge in prepare
+    - powerpc/time: Always set decrementer in timer_interrupt()
+    - KVM: PPC: Fix TCE handling for VFIO
+    - drm/vc4: Use pm_runtime_resume_and_get to fix pm_runtime_get_sync() usage
+    - powerpc/perf: Fix power9 event alternatives
+    - powerpc/perf: Fix power10 event alternatives
+    - arm/xen: Fix some refcount leaks
+    - perf script: Always allow field 'data_src' for auxtrace
+    - perf report: Set PERF_SAMPLE_DATA_SRC bit for Arm SPE event
+    - fs: fix acl translation
+    - cifs: fix NULL ptr dereference in refresh_mounts()
+    - cifs: use correct lock type in cifs_reconnect()
+    - xtensa: patch_text: Fixup last cpu should be master
+    - xtensa: fix a7 clobbering in coprocessor context load/store
+    - openvswitch: fix OOB access in reserve_sfa_size()
+    - gpio: Request interrupts after IRQ is initialized
+    - ASoC: rt5682: fix an incorrect NULL check on list iterator
+    - ASoC: soc-dapm: fix two incorrect uses of list iterator
+    - e1000e: Fix possible overflow in LTR decoding
+    - codecs: rt5682s: fix an incorrect NULL check on list iterator
+    - ARC: entry: fix syscall_trace_exit argument
+    - drm/vmwgfx: Fix gem refcounting and memory evictions
+    - arm_pmu: Validate single/group leader events
+    - KVM: x86/pmu: Update AMD PMC sample period to fix guest NMI-watchdog
+    - KVM: x86: Don't re-acquire SRCU lock in complete_emulated_io()
+    - KVM: x86: Pend KVM_REQ_APICV_UPDATE during vCPU creation to fix a race
+    - KVM: nVMX: Defer APICv updates while L2 is active until L1 is active
+    - KVM: SVM: Simplify and harden helper to flush SEV guest page(s)
+    - KVM: SVM: Flush when freeing encrypted pages even on SME_COHERENT CPUs
+    - ext4: fix fallocate to use file_modified to update permissions consistently
+    - ext4: fix symlink file size not match to file content
+    - ext4: fix use-after-free in ext4_search_dir
+    - ext4: limit length to bitmap_maxbytes - blocksize in punch_hole
+    - ext4, doc: fix incorrect h_reserved size
+    - ext4: fix overhead calculation to account for the reserved gdt blocks
+    - ext4: force overhead calculation if the s_overhead_cluster makes no sense
+    - ext4: update the cached overhead value in the superblock
+    - jbd2: fix a potential race while discarding reserved buffers after an abort
+    - spi: atmel-quadspi: Fix the buswidth adjustment between spi-mem and controller
+    - ASoC: SOF: topology: cleanup dailinks on widget unload
+    - io_uring: fix leaks on IOPOLL and CQE_SKIP
+    - arm64: dts: qcom: add IPA qcom,qmp property
 
   [ Diederik de Haas ]
   * [armhf] drivers/net/ethernet/freescale: Enable FEC as module
