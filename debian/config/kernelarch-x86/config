@@ -886,6 +886,11 @@ CONFIG_LEDS_CLEVO_MAIL=m
 CONFIG_LEDS_MENF21BMC=m
 
 ##
+## file: drivers/leds/simple/Kconfig
+##
+CONFIG_LEDS_SIEMENS_SIMATIC_IPC=m
+
+##
 ## file: drivers/media/cec/Kconfig
 ##
 CONFIG_MEDIA_CEC_SUPPORT=y
