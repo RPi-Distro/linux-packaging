@@ -4,6 +4,9 @@ linux (5.17.6-2) UNRELEASED; urgency=medium
   * [x86] sound/soc/amd: Enable SND_SOC_AMD_ACP5x, SND_SOC_AMD_VANGOGH_MACH,
     SND_SOC_AMD_ACP6x and SND_SOC_AMD_YC_MACH as modules (Closes: #1010580)
 
+  [ Alejandro R. Sedeño ]
+  * drivers/net/wwan: Enable MHI_WWAN_MBIM as module
+
  -- Vincent Blut <vincent.debian@free.fr>  Wed, 11 May 2022 20:06:31 +0200
 
 linux (5.17.6-1) unstable; urgency=medium
