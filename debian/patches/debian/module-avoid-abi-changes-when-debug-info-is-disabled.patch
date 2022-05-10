@@ -18,7 +18,7 @@ reference for the current ABI.
 ---
 --- a/include/linux/module.h
 +++ b/include/linux/module.h
-@@ -470,7 +470,7 @@ struct module {
+@@ -471,7 +471,7 @@ struct module {
  	unsigned int num_bpf_raw_events;
  	struct bpf_raw_event_map *bpf_raw_events;
  #endif
@@ -73,7 +73,7 @@ reference for the current ABI.
  					  __MUTEX_INITIALIZER(name.mutex) };   \
 --- a/lib/Kconfig.debug
 +++ b/lib/Kconfig.debug
-@@ -343,6 +343,16 @@ config GDB_SCRIPTS
+@@ -384,6 +384,16 @@ config GDB_SCRIPTS
  
  endif # DEBUG_INFO
  
