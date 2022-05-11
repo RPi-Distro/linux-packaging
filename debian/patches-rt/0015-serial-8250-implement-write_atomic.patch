@@ -347,7 +347,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
   *	Restore serial console when h/w power-off detected
   */
 @@ -3325,6 +3330,32 @@ static void serial8250_console_restore(s
- 	serial8250_out_MCR(up, UART_MCR_DTR | UART_MCR_RTS);
+ 	serial8250_out_MCR(up, up->mcr | UART_MCR_DTR | UART_MCR_RTS);
  }
  
 +void serial8250_console_write_atomic(struct uart_8250_port *up,
@@ -391,13 +391,13 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 -		locked = spin_trylock_irqsave(&port->lock, flags);
 -	else
 -		spin_lock_irqsave(&port->lock, flags);
--
++	spin_lock_irqsave(&port->lock, flags);
+ 
 -	/*
 -	 *	First save the IER then disable the interrupts
 -	 */
 -	ier = serial_port_in(port, UART_IER);
-+	spin_lock_irqsave(&port->lock, flags);
- 
+-
 -	if (up->capabilities & UART_CAP_UUE)
 -		serial_port_out(port, UART_IER, UART_IER_UUE);
 -	else
