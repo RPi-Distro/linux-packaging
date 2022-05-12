@@ -33,9 +33,9 @@ Acked-by: Roman Gushchin <guro@fb.com>
 
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -629,6 +629,35 @@ static DEFINE_SPINLOCK(stats_flush_lock)
- static DEFINE_PER_CPU(unsigned int, stats_updates);
- static atomic_t stats_flush_threshold = ATOMIC_INIT(0);
+@@ -632,6 +632,35 @@ static u64 flush_next_time;
+ 
+ #define FLUSH_TIME (2UL*HZ)
  
 +/*
 + * Accessors to ensure that preemption is disabled on PREEMPT_RT because it can

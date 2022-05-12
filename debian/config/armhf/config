@@ -930,6 +930,11 @@ CONFIG_SUNDANCE=m
 CONFIG_FTGMAC100=m
 
 ##
+## file: drivers/net/ethernet/freescale/Kconfig
+##
+CONFIG_FEC=m
+
+##
 ## file: drivers/net/ethernet/intel/Kconfig
 ##
 CONFIG_NET_VENDOR_INTEL=y
