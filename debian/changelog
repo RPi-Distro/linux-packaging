@@ -13,10 +13,9 @@ linux (5.18~rc6-1~exp1) UNRELEASED; urgency=medium
       from drivers/staging/"
       This seems to partially revert #901492, but there is no anbox-modules in
       the archive, even though the ITP bug was closed.
-    - debian/module-avoid-abi-changes-when-debug-info-is-disabled.patch
-      In upstream commit b202d84422 a whole code block was removed upon which
-      the patch would've been applied.
-      I do not know how to deal with that as it could break salsa's CI.
+
+  [ Ben Hutchings ]
+  * Rewrite "module: Avoid ABI changes when debug info is disabled" for 5.18
 
  -- Diederik de Haas <didi.debian@cknow.org>  Tue, 10 May 2022 15:03:21 +0200
 
