@@ -685,22 +685,42 @@ CONFIG_MEDIA_CONTROLLER=y
 ##
 ## file: drivers/media/platform/Kconfig
 ##
-CONFIG_VIDEO_ASPEED=m
 CONFIG_VIDEO_MUX=m
-CONFIG_VIDEO_OMAP3=m
-CONFIG_VIDEO_CODA=m
-CONFIG_VIDEO_IMX_PXP=m
-CONFIG_VIDEO_TI_VPE=m
 
 ##
-## file: drivers/media/platform/marvell-ccic/Kconfig
+## file: drivers/media/platform/aspeed/Kconfig
+##
+CONFIG_VIDEO_ASPEED=m
+
+##
+## file: drivers/media/platform/chips-media/Kconfig
+##
+CONFIG_VIDEO_CODA=m
+
+##
+## file: drivers/media/platform/marvell/Kconfig
 ##
 CONFIG_VIDEO_MMP_CAMERA=m
 
 ##
-## file: drivers/media/platform/omap/Kconfig
+## file: drivers/media/platform/nxp/Kconfig
+##
+CONFIG_VIDEO_IMX_PXP=m
+
+##
+## file: drivers/media/platform/ti/Kconfig
+##
+CONFIG_VIDEO_TI_VPE=m
+
+##
+## file: drivers/media/platform/ti/omap/Kconfig
 ##
 CONFIG_VIDEO_OMAP2_VOUT=m
+
+##
+## file: drivers/media/platform/ti/omap3isp/Kconfig
+##
+CONFIG_VIDEO_OMAP3=m
 
 ##
 ## file: drivers/media/radio/Kconfig

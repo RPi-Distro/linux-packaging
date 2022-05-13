@@ -657,7 +657,7 @@ CONFIG_QCOM_APCS_IPC=m
 CONFIG_XGENE_SLIMPRO_MBOX=m
 
 ##
-## file: drivers/media/platform/Kconfig
+## file: drivers/media/platform/qcom/venus/Kconfig
 ##
 CONFIG_VIDEO_QCOM_VENUS=m
 
