@@ -1,4 +1,134 @@
-linux (5.17.6-2) UNRELEASED; urgency=medium
+linux (5.17.7-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.17.7
+    - [arm64] pci_irq_vector() can't be used in atomic context any longer. This
+      conflicts with the usage of this function in nic_mbx_intr_handler(). age
+      of this function in nic_mbx_intr_handler().
+    - ipmi: When handling send message responses, don't process the message
+    - ipmi:ipmi_ipmb: Fix null-ptr-deref in ipmi_unregister_smi()
+    - [mips*] Fix CP0 counter erratum detection for R4k CPUs
+    - ALSA: hda/realtek: Add quirk for Yoga Duet 7 13ITL6 speakers
+    - ALSA: fireworks: fix wrong return count shorter than expected by 4 bytes
+    - [arm64] mmc: sdhci-msm: Reset GCC_SDCC_BCR register for SDHC
+    - [arm64,armhf] mmc: sunxi-mmc: Fix DMA descriptors allocated above 32 bits
+    - mmc: core: Set HS clock speed before sending HS CMD13
+    - gpiolib: of: fix bounds check for 'gpio-reserved-ranges'
+    - [x86] fpu: Prevent FPU state corruption
+    - [x86] KVM: x86/svm: Account for family 17h event renumberings in
+      amd_pmc_perf_hw_id
+    - [amd64] iommu/vt-d: Calculate mask for non-aligned flushes
+    - drm/amdgpu: do not use passthrough mode in Xen dom0
+    - Revert "SUNRPC: attempt AF_LOCAL connect on setup"
+    - timekeeping: Mark NMI safe time accessors as notrace
+    - firewire: fix potential uaf in outbound_phy_packet_callback()
+    - firewire: remove check of list iterator against head past the loop body
+    - firewire: core: extend card->lock in fw_core_handle_bus_reset
+    - net: stmmac: disable Split Header (SPH) for Intel platforms
+    - btrfs: sysfs: export the balance paused state of exclusive operation
+    - btrfs: force v2 space cache usage for subpage mount
+    - btrfs: do not BUG_ON() on failure to update inode when setting xattr
+    - btrfs: export a helper for compression hard check
+    - btrfs: do not allow compression on nodatacow files
+    - btrfs: skip compression property for anything other than files and dirs
+    - genirq: Synchronize interrupt thread startup
+    - ASoC: da7219: Fix change notifications for tone generator frequency
+    - [arm64] ASoC: wm8958: Fix change notifications for DSP controls
+    - [arm64,armhf] ASoC: meson: Fix event generation for AUI ACODEC mux
+    - [arm64,armhf] ASoC: meson: Fix event generation for G12A tohdmi mux
+    - [arm64,armhf] ASoC: meson: Fix event generation for AUI CODEC mux
+    - [s390x] dasd: fix data corruption for ESE devices
+    - [s390x] dasd: prevent double format of tracks for ESE devices
+    - [s390x] dasd: Fix read for ESE with blksize < 4k
+    - [s390x] dasd: Fix read inconsistency for ESE DASD devices
+    - can: isotp: remove re-binding of bound socket
+    - nfc: replace improper check device_is_registered() in netlink related
+      functions
+    - NFC: netlink: fix sleep in atomic bug when firmware download timeout
+    - [arm64,armhf] gpio: pca953x: fix irq_stat not updated when irq is disabled
+      (irq_mask not set)
+    - hwmon: (adt7470) Fix warning on module removal
+    - [armhf] hwmon: (pmbus) disable PEC if not enabled
+    - [arm*] ASoC: dmaengine: Restore NULL prepare_slave_config() callback
+    - [arm64] ASoC: meson: axg-tdm-interface: Fix formatters in trigger"
+    - [arm64] ASoC: meson: axg-card: Fix nonatomic links
+    - ASoC: soc-ops: fix error handling
+    - [amd64] iommu/vt-d: Drop stop marker messages
+    - net/mlx5e: Fix trust state reset in reload
+    - net/mlx5: Fix slab-out-of-bounds while reading resource dump menu
+    - net/mlx5e: Fix wrong source vport matching on tunnel rule
+    - net/mlx5e: Don't match double-vlan packets if cvlan is not set
+    - net/mlx5e: CT: Fix queued up restore put() executing after relevant ft
+      release
+    - net/mlx5e: Fix the calling of update_buffer_lossy() API
+    - net/mlx5: Fix matching on inner TTC
+    - net/mlx5: Avoid double clear or set of sync reset requested
+    - net/mlx5: Fix deadlock in sync reset flow
+    - net/mlx5e: Lag, Fix use-after-free in fib event handler
+    - net/mlx5e: Lag, Fix fib_info pointer assignment
+    - net/mlx5e: Lag, Don't skip fib events on current dst
+    - net/mlx5e: TC, fix decap fallback to uplink when int port not supported
+    - ALSA: hda/realtek: Fix mute led issue on thinkpad with cs35l41 s-codec
+    - SUNRPC release the transport of a relocated task with an assigned
+      transport
+    - RDMA/irdma: Flush iWARP QP if modified to ERR from RTR state
+    - RDMA/irdma: Reduce iWARP QP destroy time
+    - RDMA/irdma: Fix possible crash due to NULL netdev in notifier
+    - NFSv4: Don't invalidate inode attributes on delegation return
+    - [arm64,armhf] net: stmmac: dwmac-sun8i: add missing of_node_put() in
+      sun8i_dwmac_register_mdio_mux()
+    - [armhf] net: cpsw: add missing of_node_put() in cpsw_probe_dt()
+    - net: igmp: respect RCU rules in ip_mc_source() and ip_mc_msfilter()
+    - [arm64] drm/msm/dp: remove fail safe mode related code
+    - hinic: fix bug of wq out of bound access
+    - SUNRPC: Don't leak sockets in xs_local_connect()
+    - mld: respect RCU rules in ip6_mc_source() and ip6_mc_msfilter()
+    - rxrpc: Enable IPv6 checksums on transport socket
+    - dt-bindings: pci: apple,pcie: Drop max-link-speed from example
+    - bnxt_en: Fix possible bnxt_open() failure caused by wrong RFS flag
+    - bnxt_en: Fix unnecessary dropping of RX packets
+    - [arm64,armhf] smsc911x: allow using IRQ0
+    - btrfs: always log symlinks in full mode
+    - [arm*] gpio: mvebu: drop pwm base assignment
+    - net: rds: acquire refcount on TCP sockets
+    - [x86] kvm: x86/cpuid: Only provide CPUID leaf 0xA if host has
+      architectural PMU
+    - fbdev: Make fb_release() return -ENODEV if fbdev was unregistered
+    - [x86] KVM: SEV: Mark nested locking of vcpu->lock
+    - [x86] KVM: VMX: Exit to userspace if vCPU has injected exception and
+      invalid state
+    - [x86] kvm: Preserve BSP MSR_KVM_POLL_CONTROL across suspend/resume
+    - [x86] KVM: x86: Do not change ICR on write to APIC_SELF_IPI
+    - [x86] KVM: x86/mmu: avoid NULL-pointer dereference on page freeing bugs
+    - [x86] KVM: LAPIC: Enable timer posted-interrupt only when mwait/hlt is
+      advertised
+    - mmc: rtsx: add 74 Clocks in power on flow
+    - [arm64] PCI: aardvark: Replace custom PCIE_CORE_INT_* macros with
+      PCI_INTERRUPT_*
+    - [arm64] PCI: aardvark: Rewrite IRQ code to chained IRQ handler
+    - [arm64] PCI: aardvark: Check return value of generic_handle_domain_irq()
+      when processing INTx IRQ
+    - [arm64] PCI: aardvark: Make MSI irq_chip structures static driver
+      structures
+    - [arm64] PCI: aardvark: Make msi_domain_info structure a static driver
+      structure
+    - [arm64] PCI: aardvark: Use dev_fwnode() instead of
+      of_node_to_fwnode(dev->of_node)
+    - [arm64] PCI: aardvark: Refactor unmasking summary MSI interrupt
+    - [arm64] PCI: aardvark: Add support for masking MSI interrupts
+    - [arm64] PCI: aardvark: Fix setting MSI address
+    - [arm64] PCI: aardvark: Enable MSI-X support
+    - [arm64] PCI: aardvark: Add support for ERR interrupt on emulated bridge
+    - [arm64] PCI: aardvark: Optimize writing PCI_EXP_RTCTL_PMEIE and
+      PCI_EXP_RTSTA_PME on emulated bridge
+    - [arm64] PCI: aardvark: Add support for PME interrupts
+    - [arm64] PCI: aardvark: Fix support for PME requester on emulated bridge
+    - [arm64] PCI: aardvark: Use separate INTA interrupt for emulated root
+      bridge
+    - [arm64] PCI: aardvark: Remove irq_mask_ack() callback for INTx interrupts
+    - [arm64] PCI: aardvark: Don't mask irq when mapping
+    - [arm64] PCI: aardvark: Drop __maybe_unused from advk_pcie_disable_phy()
+    - [arm64] PCI: aardvark: Update comment about link going down after link-up
 
   [ Vincent Blut ]
   * [x86] sound/soc/amd: Enable SND_SOC_AMD_ACP5x, SND_SOC_AMD_VANGOGH_MACH,
