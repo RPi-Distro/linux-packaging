@@ -30,6 +30,7 @@ linux (5.18~rc6-1~exp1) UNRELEASED; urgency=medium
   * libcpupower1: Update symbols file for 5.18
   * d/copyright: Update filename of extract-cert.c
   * lintian: Add lintian-override to linux-perf for non-issue
+  * d/bin/gencontrol.py, d/templates: Stop using templates for linux-perf
 
  -- Diederik de Haas <didi.debian@cknow.org>  Tue, 10 May 2022 15:03:21 +0200
 
