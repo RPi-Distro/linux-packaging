@@ -4311,6 +4311,7 @@ CONFIG_ZD1211RW=m
 ##
 CONFIG_WWAN=m
 CONFIG_MHI_WWAN_CTRL=m
+CONFIG_MHI_WWAN_MBIM=m
 
 ##
 ## file: drivers/nfc/Kconfig
