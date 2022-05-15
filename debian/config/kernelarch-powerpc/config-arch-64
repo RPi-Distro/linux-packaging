@@ -53,6 +53,11 @@ CONFIG_PPC_SPLPAR=y
 CONFIG_AIX_PARTITION=y
 
 ##
+## file: crypto/Kconfig
+##
+CONFIG_CRYPTO_CRC32C_VPMSUM=m
+
+##
 ## file: drivers/ata/Kconfig
 ##
 CONFIG_PATA_AMD=m
