@@ -1,4 +1,4 @@
-linux (5.17.7-1) UNRELEASED; urgency=medium
+linux (5.17.8-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.17.7
@@ -129,6 +129,20 @@ linux (5.17.7-1) UNRELEASED; urgency=medium
     - [arm64] PCI: aardvark: Don't mask irq when mapping
     - [arm64] PCI: aardvark: Drop __maybe_unused from advk_pcie_disable_phy()
     - [arm64] PCI: aardvark: Update comment about link going down after link-up
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.17.8
+    - Bluetooth: Fix the creation of hdev->name
+    - rfkill: uapi: fix RFKILL_IOCTL_MAX_SIZE ioctl request definition
+    - udf: Avoid using stale lengthOfImpUse
+    - mm: fix missing cache flush for all tail pages of compound page
+    - mm: hugetlb: fix missing cache flush in copy_huge_page_from_user()
+    - mm: hugetlb: fix missing cache flush in hugetlb_mcopy_atomic_pte()
+    - mm: shmem: fix missing cache flush in shmem_mfill_atomic_pte()
+    - mm: userfaultfd: fix missing cache flush in mcopy_atomic_pte() and
+      __mcopy_atomic()
+    - mm/hwpoison: fix error page recovered but reported "not recovered"
+    - mm/mlock: fix potential imbalanced rlimit ucounts adjustment
+    - mm,migrate: fix establishing demotion target
+    - mm: fix invalid page pointer returned with FOLL_PIN gups
 
   [ Vincent Blut ]
   * [x86] sound/soc/amd: Enable SND_SOC_AMD_ACP5x, SND_SOC_AMD_VANGOGH_MACH,
