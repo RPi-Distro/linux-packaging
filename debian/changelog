@@ -1,4 +1,4 @@
-linux (5.17.8-1) UNRELEASED; urgency=medium
+linux (5.17.9-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.17.7
@@ -143,6 +143,119 @@ linux (5.17.8-1) UNRELEASED; urgency=medium
     - mm/mlock: fix potential imbalanced rlimit ucounts adjustment
     - mm,migrate: fix establishing demotion target
     - mm: fix invalid page pointer returned with FOLL_PIN gups
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.17.9
+    - batman-adv: Don't skb_split skbuffs with frag_list
+    - iwlwifi: iwl-dbg: Use del_timer_sync() before freeing
+    - hwmon: (tmp401) Add OF device ID table
+    - mac80211: Reset MBSSID parameters upon connection
+    - net: rds: use maybe_get_net() when acquiring refcount on TCP sockets
+    - net: Fix features skip in for_each_netdev_feature()
+    - [arm64] net: mscc: ocelot: fix last VCAP IS1/IS2 filter persisting in
+      hardware when deleted
+    - [arm64] net: mscc: ocelot: fix VCAP IS2 filters matching on both lookups
+    - [arm64] net: mscc: ocelot: restrict tc-trap actions to VCAP IS2 lookup 0
+    - [arm64] net: mscc: ocelot: avoid corrupting hardware counters when moving
+      VCAP filters
+    - [arm*] fbdev: simplefb: Cleanup fb_info in .fb_destroy rather than .remove
+    - fbdev: efifb: Cleanup fb_info in .fb_destroy rather than .remove
+    - [x86] fbdev: vesafb: Cleanup fb_info in .fb_destroy rather than .remove
+    - [x86] platform/surface: aggregator: Fix initialization order when
+      compiling as builtin module
+    - ice: Fix race during aux device (un)plugging
+    - ice: clear stale Tx queue settings before configuring
+    - ice: fix PTP stale Tx timestamps cleanup
+    - ipv4: drop dst in multicast routing path
+    - drm/nouveau: Fix a potential theorical leak in
+      nouveau_get_backlight_name()
+    - netlink: do not reset transport header in netlink_recvmsg()
+    - net: chelsio: cxgb4: Avoid potential negative array offset
+    - fbdev: efifb: Fix a use-after-free due early fb_info cleanup
+    - net: sfc: fix memory leak due to ptp channel
+    - fanotify: do not allow setting dirent events in mask of non-dir
+    - mac80211_hwsim: call ieee80211_tx_prepare_skb under RCU protection
+    - nfs: fix broken handling of the softreval mount option
+    - dim: initialize all struct fields
+    - procfs: prevent unprivileged processes accessing fdinfo dir
+    - [arm64,armhf] net: dsa: flush switchdev workqueue on bridge join error
+      path
+    - [arm64] vdso: fix makefile dependency on vdso.so
+    - virtio: fix virtio transitional ids
+    - [s390x] ctcm: fix variable dereferenced before check
+    - [s390x] ctcm: fix potential memory leak
+    - [s390x] lcs: fix variable dereferenced before check
+    - net/sched: act_pedit: really ensure the skb is writable
+    - [arm64] net: bcmgenet: Check for Wake-on-LAN interrupt probe deferral
+    - [arm*] drm/vc4: hdmi: Fix build error for implicit function declaration
+    - [armhf] net: dsa: bcm_sf2: Fix Wake-on-LAN with mac_link_down()
+    - net/smc: non blocking recvmsg() return -EAGAIN when no data and
+      signal_pending
+    - net: sfc: ef10: fix memory leak in efx_ef10_mtd_probe()
+    - tls: Fix context leak on tls_device_down
+    - drm/vmwgfx: Fix fencing on SVGAv3
+    - gfs2: Fix filesystem block deallocation for short writes
+    - hwmon: (f71882fg) Fix negative temperature
+    - RDMA/irdma: Fix deadlock in irdma_cleanup_cm_core()
+    - [arm64,armhf] iommu: arm-smmu: disable large page mappings for Nvidia
+      arm-smmu
+    - ASoC: max98090: Reject invalid values in custom control put()
+    - ASoC: max98090: Generate notifications on changes for custom control
+    - ASoC: ops: Validate input values in snd_soc_put_volsw_range()
+    - [s390x] disable -Warray-bounds
+    - [x86] ASoC: SOF: Fix NULL pointer exception in sof_pci_probe callback
+    - io_uring: assign non-fixed early for async work
+    - net: sfp: Add tx-fault workaround for Huawei MA5671A SFP ONT
+    - secure_seq: use the 64 bits of the siphash for port offset calculation
+      (CVE-2022-1012)
+    - tcp: use different parts of the port_offset for index and offset
+      (CVE-2022-1012)
+    - tcp: resalt the secret every 10 seconds (CVE-2022-1012)
+    - tcp: add small random increments to the source port (CVE-2022-1012)
+    - tcp: dynamically allocate the perturb table used by source ports
+      (CVE-2022-1012)
+    - tcp: increase source port perturb table to 2^16 (CVE-2022-1012)
+    - tcp: drop the hash_32() part from the index calculation (CVE-2022-1012)
+    - block: Do not call folio_next() on an unreferenced folio
+    - [arm64,armhf] interconnect: Restore sync state by ignoring ipa-virt in
+      provider count
+    - firmware_loader: use kernel credentials when reading firmware
+    - [x86] mm: Fix marking of unused sub-pmd ranges
+    - tty: n_gsm: fix buffer over-read in gsm_dlci_data()
+    - tty: n_gsm: fix mux activation issues in gsm_config()
+    - tty: n_gsm: fix invalid gsmtty_write_room() result
+    - usb: gadget: uvc: allow for application to cleanly shutdown
+    - usb: cdc-wdm: fix reading stuck on device close
+    - [arm64] usb: typec: tcpci: Don't skip cleanup in .remove() on error
+    - USB: serial: pl2303: add device id for HP LM930 Display
+    - USB: serial: qcserial: add support for Sierra Wireless EM7590
+    - USB: serial: option: add Fibocom L610 modem
+    - USB: serial: option: add Fibocom MA510 modem
+    - [arm64] fsl_lpuart: Don't enable interrupts too early
+    - genirq: Remove WARN_ON_ONCE() in generic_handle_domain_irq()
+    - ceph: fix setting of xattrs on async created inodes
+    - Revert "mm/memory-failure.c: skip huge_zero_page in memory_failure()"
+    - mm/huge_memory: do not overkill when splitting huge_zero_page
+    - mm: mremap: fix sign for EFAULT error return value
+    - drm/vmwgfx: Disable command buffers on svga3 without gbobjects
+    - drm/nouveau/tegra: Stop using iommu_present()
+    - i40e: i40e_main: fix a missing check on list iterator
+    - net: atlantic: always deep reset on pm op, fixing up my null deref
+      regression
+    - net: phy: Fix race condition on link status change
+    - writeback: Avoid skipping inode writeback
+    - cgroup/cpuset: Remove cpus_allowed/mems_allowed setup in cpuset_init_smp()
+    - ping: fix address binding wrt vrf
+    - ath11k: reduce the wait time of 11d scan and hw scan while add interface
+    - [arm*] arm[64]/memremap: don't abuse pfn_valid() to ensure presence of
+      linear map
+    - net: phy: micrel: Do not use kszphy_suspend/resume for KSZ8061
+    - net: phy: micrel: Pass .probe for KS8737
+    - SUNRPC: Ensure that the gssproxy client can start in a connected state
+    - drm/vmwgfx: Initialize drm_mode_fb_cmd2
+    - Revert "drm/amd/pm: keep the BACO feature enabled for suspend"
+    - dma-buf: call dma_buf_stats_setup after dmabuf is in valid list
+    - mm/hwpoison: use pr_err() instead of dump_page() in get_any_page()
+    - net: phy: micrel: Fix incorrect variable type in micrel
+    - mm/kfence: reset PG_slab and memcg_data before freeing __kfence_pool
 
   [ Vincent Blut ]
   * [x86] sound/soc/amd: Enable SND_SOC_AMD_ACP5x, SND_SOC_AMD_VANGOGH_MACH,
