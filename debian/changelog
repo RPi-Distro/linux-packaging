@@ -264,6 +264,9 @@ linux (5.17.9-1) UNRELEASED; urgency=medium
   [ Alejandro R. Sedeño ]
   * drivers/net/wwan: Enable MHI_WWAN_MBIM as module
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 3
+
  -- Vincent Blut <vincent.debian@free.fr>  Wed, 11 May 2022 20:06:31 +0200
 
 linux (5.17.6-1) unstable; urgency=medium
