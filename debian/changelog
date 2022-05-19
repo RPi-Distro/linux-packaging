@@ -266,6 +266,7 @@ linux (5.17.9-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 3
+  * sign-file: Convert API usage to support OpenSSL v3
 
  -- Vincent Blut <vincent.debian@free.fr>  Wed, 11 May 2022 20:06:31 +0200
 
