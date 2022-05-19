@@ -1,3 +1,39 @@
+linux (5.18~rc6-1~exp1) UNRELEASED; urgency=medium
+
+  [ Diederik de Haas ]
+  * New upstream release candidate
+  * Rebase patches:
+    - Update patches
+      - debian/dfsg/vs6624-disable.patch (9958d30f38)
+      - debian/version.patch (b8321ed4a4, 03248addad)
+  * Change patches:
+    - debian/android-enable-building-ashmem-and-binder-as-modules.patch
+      Upstream removed ashmem support in 721412ed3d saying
+      "The mainline replacement for ashmem is memfd, so remove the legacy code
+      from drivers/staging/"
+      This seems to partially revert #901492, but there is no anbox-modules in
+      the archive, even though the ITP bug was closed.
+
+  [ Ben Hutchings ]
+  * Rewrite "module: Avoid ABI changes when debug info is disabled" for 5.18
+  * In "firmware: Remove redundant log messages from drivers", adjust some
+    filenames
+  * In "x86: Make x32 syscall support conditional on a kernel parameter",
+    update dependency from X86_X32 to X86_X32_ABI
+  * Drop "bpftool: Fix version string in recursive builds" as redundant
+  * bpftool: Prepend program version to the package version
+  * [rt] Update to 5.18-rc6-rt7
+  * [s390x] Enable MARCH_Z10 instead of MARCH_Z900, since support for z9 has
+    been removed upstream
+  * d/config: Update with the help of kconfigeditor2
+  * udeb: Move crc64 to crc-modules and make scsi-core-modules depend on that
+  * libcpupower1: Update symbols file for 5.18
+  * d/copyright: Update filename of extract-cert.c
+  * lintian: Add lintian-override to linux-perf for non-issue
+  * d/bin/gencontrol.py, d/templates: Stop using templates for linux-perf
+
+ -- Diederik de Haas <didi.debian@cknow.org>  Tue, 10 May 2022 15:03:21 +0200
+
 linux (5.17.6-1) unstable; urgency=medium
 
   * New upstream stable update:

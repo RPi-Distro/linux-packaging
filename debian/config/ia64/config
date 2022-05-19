@@ -284,8 +284,8 @@ CONFIG_ISDN=y
 ##
 ## file: drivers/media/radio/Kconfig
 ##
-CONFIG_USB_DSBR=m
 CONFIG_RADIO_MAXIRADIO=m
+CONFIG_USB_DSBR=m
 
 ##
 ## file: drivers/mmc/Kconfig

@@ -679,7 +679,7 @@ CONFIG_QCOM_APCS_IPC=m
 CONFIG_XGENE_SLIMPRO_MBOX=m
 
 ##
-## file: drivers/media/platform/Kconfig
+## file: drivers/media/platform/qcom/venus/Kconfig
 ##
 CONFIG_VIDEO_QCOM_VENUS=m
 
@@ -1664,8 +1664,6 @@ CONFIG_ENERGY_MODEL=y
 ## file: lib/Kconfig.debug
 ##
 CONFIG_DEBUG_INFO_BTF=y
-#. In case debug info is disabled
-CONFIG_DEBUG_INFO_BTF_MODULES_NOOP=y
 
 ##
 ## file: mm/Kconfig

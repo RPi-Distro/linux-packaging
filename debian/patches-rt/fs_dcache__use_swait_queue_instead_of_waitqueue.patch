@@ -1,7 +1,7 @@
 Subject: fs/dcache: use swait_queue instead of waitqueue
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed Sep 14 14:35:49 2016 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.17/older/patches-5.17.1-rt17.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rc6-rt7.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
@@ -51,7 +51,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 --- a/fs/dcache.c
 +++ b/fs/dcache.c
-@@ -2578,21 +2578,24 @@ static inline void end_dir_add(struct in
+@@ -2579,21 +2579,24 @@ static inline void end_dir_add(struct in
  
  static void d_wait_lookup(struct dentry *dentry)
  {
@@ -87,7 +87,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  {
  	unsigned int hash = name->hash;
  	struct hlist_bl_head *b = in_lookup_hash(parent, hash);
-@@ -2707,7 +2710,7 @@ void __d_lookup_done(struct dentry *dent
+@@ -2708,7 +2711,7 @@ void __d_lookup_done(struct dentry *dent
  	hlist_bl_lock(b);
  	dentry->d_flags &= ~DCACHE_PAR_LOOKUP;
  	__hlist_bl_del(&dentry->d_u.d_in_lookup_hash);
@@ -129,7 +129,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  		return ERR_PTR(-ENOENT);
 --- a/fs/nfs/dir.c
 +++ b/fs/nfs/dir.c
-@@ -641,7 +641,7 @@ void nfs_prime_dcache(struct dentry *par
+@@ -721,7 +721,7 @@ void nfs_prime_dcache(struct dentry *par
  		unsigned long dir_verifier)
  {
  	struct qstr filename = QSTR_INIT(entry->name, entry->len);
@@ -138,7 +138,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	struct dentry *dentry;
  	struct dentry *alias;
  	struct inode *inode;
-@@ -1895,7 +1895,7 @@ int nfs_atomic_open(struct inode *dir, s
+@@ -2020,7 +2020,7 @@ int nfs_atomic_open(struct inode *dir, s
  		    struct file *file, unsigned open_flags,
  		    umode_t mode)
  {
@@ -169,7 +169,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	spin_lock(&dentry->d_lock);
 --- a/fs/proc/base.c
 +++ b/fs/proc/base.c
-@@ -96,6 +96,7 @@
+@@ -95,6 +95,7 @@
  #include <linux/posix-timers.h>
  #include <linux/time_namespace.h>
  #include <linux/resctrl.h>
@@ -177,7 +177,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #include <linux/cn_proc.h>
  #include <trace/events/oom.h>
  #include "internal.h"
-@@ -2045,7 +2046,7 @@ bool proc_fill_cache(struct file *file,
+@@ -2044,7 +2045,7 @@ bool proc_fill_cache(struct file *file,
  
  	child = d_hash_and_lookup(dir, &qname);
  	if (!child) {
@@ -219,7 +219,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  extern struct dentry * d_exact_alias(struct dentry *, struct inode *);
 --- a/include/linux/nfs_xdr.h
 +++ b/include/linux/nfs_xdr.h
-@@ -1686,7 +1686,7 @@ struct nfs_unlinkdata {
+@@ -1685,7 +1685,7 @@ struct nfs_unlinkdata {
  	struct nfs_removeargs args;
  	struct nfs_removeres res;
  	struct dentry *dentry;
@@ -230,7 +230,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	long timeout;
 --- a/kernel/sched/swait.c
 +++ b/kernel/sched/swait.c
-@@ -64,6 +64,7 @@ void swake_up_all(struct swait_queue_hea
+@@ -63,6 +63,7 @@ void swake_up_all(struct swait_queue_hea
  	struct swait_queue *curr;
  	LIST_HEAD(tmp);
  
