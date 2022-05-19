@@ -22,7 +22,6 @@ linux (5.18~rc7-1~exp1) UNRELEASED; urgency=medium
     update dependency from X86_X32 to X86_X32_ABI
   * Drop "bpftool: Fix version string in recursive builds" as redundant
   * bpftool: Prepend program version to the package version
-  * [rt] Update to 5.18-rc6-rt7
   * [s390x] Enable MARCH_Z10 instead of MARCH_Z900, since support for z9 has
     been removed upstream
   * d/config: Update with the help of kconfigeditor2
@@ -31,6 +30,7 @@ linux (5.18~rc7-1~exp1) UNRELEASED; urgency=medium
   * d/copyright: Update filename of extract-cert.c
   * lintian: Add lintian-override to linux-perf for non-issue
   * d/bin/gencontrol.py, d/templates: Stop using templates for linux-perf
+  * [rt] Update to 5.18-rc7-rt9
 
  -- Diederik de Haas <didi.debian@cknow.org>  Tue, 10 May 2022 15:03:21 +0200
 

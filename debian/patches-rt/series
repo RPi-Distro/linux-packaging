@@ -77,10 +77,10 @@ sched-Consider-task_struct-saved_state-in-wait_task_.patch
 softirq__Check_preemption_after_reenabling_interrupts.patch
 
 ###########################################################################
-# fs: The namespace part needs a proper fix
+# fs:
 ###########################################################################
-fs_dcache__use_swait_queue_instead_of_waitqueue.patch
 fs_dcache__disable_preemption_on_i_dir_seqs_write_side.patch
+fs-dcache-Delay-dentry-d_lock-outside-of-the-locked-.patch
 
 ###########################################################################
 # X86:
