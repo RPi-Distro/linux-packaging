@@ -262,7 +262,7 @@ linux (5.17.9-1) UNRELEASED; urgency=medium
     SND_SOC_AMD_ACP6x and SND_SOC_AMD_YC_MACH as modules (Closes: #1010580)
 
   [ Alejandro R. Sedeño ]
-  * drivers/net/wwan: Enable MHI_WWAN_MBIM as module
+  * drivers/net/wwan: Enable MHI_WWAN_MBIM as module (Closes: #1011395)
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 3
