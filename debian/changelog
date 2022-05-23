@@ -1,4 +1,4 @@
-linux (5.18-1~exp1) UNRELEASED; urgency=medium
+linux (5.18-1~exp1) experimental; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_5.18
 
@@ -33,7 +33,7 @@ linux (5.18-1~exp1) UNRELEASED; urgency=medium
   * d/bin/gencontrol.py, d/templates: Stop using templates for linux-perf
   * [rt] Update to 5.18-rt10
 
- -- Diederik de Haas <didi.debian@cknow.org>  Tue, 10 May 2022 15:03:21 +0200
+ -- Ben Hutchings <benh@debian.org>  Mon, 23 May 2022 12:21:44 +0200
 
 linux (5.17.6-1) unstable; urgency=medium
 
