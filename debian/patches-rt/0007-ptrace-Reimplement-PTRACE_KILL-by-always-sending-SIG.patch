@@ -2,7 +2,7 @@ From: "Eric W. Biederman" <ebiederm@xmission.com>
 Date: Thu, 5 May 2022 13:26:40 -0500
 Subject: [PATCH 07/12] ptrace: Reimplement PTRACE_KILL by always sending
  SIGKILL
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rc7-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
 
 The current implementation of PTRACE_KILL is buggy and has been for
 many years as it assumes it's target has stopped in ptrace_stop.  At a

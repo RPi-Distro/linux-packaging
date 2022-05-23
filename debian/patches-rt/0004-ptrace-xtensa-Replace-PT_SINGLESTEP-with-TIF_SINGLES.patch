@@ -2,7 +2,7 @@ From: "Eric W. Biederman" <ebiederm@xmission.com>
 Date: Thu, 5 May 2022 13:26:37 -0500
 Subject: [PATCH 04/12] ptrace/xtensa: Replace PT_SINGLESTEP with
  TIF_SINGLESTEP
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rc7-rt9.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
 
 xtensa is the last user of the PT_SINGLESTEP flag.  Changing tsk->ptrace in
 user_enable_single_step and user_disable_single_step without locking could
