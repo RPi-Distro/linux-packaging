@@ -613,6 +613,7 @@ CONFIG_INFINIBAND_HNS_HIP08=y
 ##
 CONFIG_KEYBOARD_ADC=m
 CONFIG_KEYBOARD_GPIO=m
+CONFIG_KEYBOARD_GPIO_POLLED=m
 CONFIG_KEYBOARD_SNVS_PWRKEY=m
 CONFIG_KEYBOARD_TEGRA=m
 CONFIG_KEYBOARD_CROS_EC=m
@@ -700,13 +701,35 @@ CONFIG_QCOM_APCS_IPC=m
 CONFIG_XGENE_SLIMPRO_MBOX=m
 
 ##
+## file: drivers/media/cec/platform/Kconfig
+##
+CONFIG_CEC_MESON_AO=m
+CONFIG_CEC_MESON_G12A_AO=m
+
+##
+## file: drivers/media/platform/amlogic/meson-ge2d/Kconfig
+##
+CONFIG_VIDEO_MESON_GE2D=m
+
+##
 ## file: drivers/media/platform/qcom/venus/Kconfig
 ##
 CONFIG_VIDEO_QCOM_VENUS=m
 
 ##
+## file: drivers/media/platform/rockchip/rga/Kconfig
+##
+CONFIG_VIDEO_ROCKCHIP_RGA=m
+
+##
+## file: drivers/media/platform/rockchip/rkisp1/Kconfig
+##
+CONFIG_VIDEO_ROCKCHIP_ISP1=m
+
+##
 ## file: drivers/media/rc/Kconfig
 ##
+CONFIG_IR_GPIO_CIR=m
 CONFIG_IR_MESON=m
 
 ##
@@ -1185,6 +1208,7 @@ CONFIG_PHY_QCOM_USB_HSIC=m
 ## file: drivers/phy/rockchip/Kconfig
 ##
 CONFIG_PHY_ROCKCHIP_DP=m
+CONFIG_PHY_ROCKCHIP_DPHY_RX0=m
 CONFIG_PHY_ROCKCHIP_EMMC=m
 CONFIG_PHY_ROCKCHIP_INNO_HDMI=m
 CONFIG_PHY_ROCKCHIP_INNO_USB2=m
@@ -1329,6 +1353,7 @@ CONFIG_RPMSG_QCOM_SMD=m
 ## file: drivers/rtc/Kconfig
 ##
 CONFIG_RTC_DRV_DS1307=y
+CONFIG_RTC_DRV_HYM8563=m
 CONFIG_RTC_DRV_MAX77686=y
 CONFIG_RTC_DRV_RK808=y
 CONFIG_RTC_DRV_PCF8523=m
@@ -1440,6 +1465,11 @@ CONFIG_STAGING_MEDIA=y
 ## file: drivers/staging/media/hantro/Kconfig
 ##
 CONFIG_VIDEO_HANTRO=m
+
+##
+## file: drivers/staging/media/meson/vdec/Kconfig
+##
+CONFIG_VIDEO_MESON_VDEC=m
 
 ##
 ## file: drivers/staging/media/rkvdec/Kconfig
