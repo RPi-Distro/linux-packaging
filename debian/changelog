@@ -260,6 +260,7 @@ linux (5.17.9-1) UNRELEASED; urgency=medium
   [ Vincent Blut ]
   * [x86] sound/soc/amd: Enable SND_SOC_AMD_ACP5x, SND_SOC_AMD_VANGOGH_MACH,
     SND_SOC_AMD_ACP6x and SND_SOC_AMD_YC_MACH as modules (Closes: #1010580)
+  * [ppc64*] crypto: Enable CRYPTO_CRC32C_VPMSUM as module (Closes: #1010293)
 
   [ Alejandro R. Sedeño ]
   * drivers/net/wwan: Enable MHI_WWAN_MBIM as module (Closes: #1011395)
