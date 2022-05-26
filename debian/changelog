@@ -1,4 +1,4 @@
-linux (5.17.10-1) UNRELEASED; urgency=medium
+linux (5.17.11-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.17.7
@@ -389,6 +389,8 @@ linux (5.17.10-1) UNRELEASED; urgency=medium
     - [arm64] Enable repeat tlbi workaround on KRYO4XX gold CPUs
     - dt-bindings: pinctrl: aspeed-g6: remove FWQSPID group
     - afs: Fix afs_getattr() to refetch file status if callback break occurred
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.17.11
+    - mptcp: Do TCP fallback on early DSS checksum failure
 
   [ Vincent Blut ]
   * [x86] sound/soc/amd: Enable SND_SOC_AMD_ACP5x, SND_SOC_AMD_VANGOGH_MACH,
