@@ -403,6 +403,8 @@ linux (5.17.11-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Bump ABI to 3
   * sign-file: Convert API usage to support OpenSSL v3
+  * [x86] KVM: x86/mmu: fix NULL pointer dereference on guest INVPCID
+    (CVE-2022-1789)
 
  -- Vincent Blut <vincent.debian@free.fr>  Wed, 11 May 2022 20:06:31 +0200
 
