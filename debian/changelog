@@ -1,4 +1,4 @@
-linux (5.17.11-1) UNRELEASED; urgency=medium
+linux (5.17.11-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.17.7
@@ -406,7 +406,7 @@ linux (5.17.11-1) UNRELEASED; urgency=medium
   * [x86] KVM: x86/mmu: fix NULL pointer dereference on guest INVPCID
     (CVE-2022-1789)
 
- -- Vincent Blut <vincent.debian@free.fr>  Wed, 11 May 2022 20:06:31 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 26 May 2022 21:42:32 +0200
 
 linux (5.17.6-1) unstable; urgency=medium
 
