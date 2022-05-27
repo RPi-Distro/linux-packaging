@@ -1,3 +1,10 @@
+linux (5.18-1~exp2) UNRELEASED; urgency=medium
+
+  [ Zhang Ning ]
+  * [arm64] Enable COMMON_CLK_PWM which is needed for some Amlogic SBCs
+
+ -- Uwe Kleine-König <ukleinek@debian.org>  Fri, 27 May 2022 17:12:43 +0200
+
 linux (5.18-1~exp1) experimental; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_5.18
