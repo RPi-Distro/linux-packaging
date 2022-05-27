@@ -416,11 +416,6 @@ CONFIG_MTD_OF_PARTS=m
 # CONFIG_MTD_REDBOOT_PARTS is not set
 
 ##
-## file: drivers/mtd/spi-nor/Kconfig
-##
-CONFIG_MTD_SPI_NOR=m
-
-##
 ## file: drivers/net/arcnet/Kconfig
 ##
 # CONFIG_ARCNET is not set

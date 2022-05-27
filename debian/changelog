@@ -1,5 +1,9 @@
 linux (5.18-1~exp2) UNRELEASED; urgency=medium
 
+  [ Diederik de Haas ]
+  * [arm64,armel.marvell] Remove duplicate MTD_SPI_NOR config option
+  * [arm64] Remove duplicate CAN_MCP251X config option
+
   [ Michal Simek ]
   * [arm64] Enable Xilinx PHY driver and SI5341 clock driver
 
