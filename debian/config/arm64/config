@@ -234,6 +234,7 @@ CONFIG_ARM_RASPBERRYPI_CPUFREQ=m
 ## file: drivers/cpuidle/Kconfig.arm
 ##
 CONFIG_ARM_CPUIDLE=y
+CONFIG_ARM_PSCI_CPUIDLE=y
 
 ##
 ## file: drivers/crypto/Kconfig
