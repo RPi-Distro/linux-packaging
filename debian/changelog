@@ -1,5 +1,8 @@
 linux (5.18-1~exp2) UNRELEASED; urgency=medium
 
+  [ Michal Simek ]
+  * [arm64] Enable Xilinx PHY driver and SI5341 clock driver
+
   [ Zhang Ning ]
   * [arm64] Enable COMMON_CLK_PWM which is needed for some Amlogic SBCs
 
