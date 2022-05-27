@@ -14,6 +14,9 @@ linux (5.18-1~exp2) UNRELEASED; urgency=medium
 
   [ Zhang Ning ]
   * [arm64] Enable COMMON_CLK_PWM which is needed for some Amlogic SBCs
+  * [arm64] Enable Khadas MCU and fan
+  * [arm64] cpufreq: Enable SCPI cpufreq driver
+  * [arm64] cpuidle: Enable CONFIG_ARM_PSCI_CPUIDLE
 
   [ Ben Hutchings ]
   * drivers/firmware: Build ISCSI_IBFT as module on all architectures with
