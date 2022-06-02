@@ -28,6 +28,9 @@ linux (5.18.1-1~exp1) UNRELEASED; urgency=medium
   * drivers/firmware: Build ISCSI_IBFT as module on all architectures with
     ACPI. Thanks to Eric Mackay. (Closes: #1008933).
 
+  [ Bastian Blank ]
+  * [amd64] Enable X86_SGX.
+
  -- Uwe Kleine-König <ukleinek@debian.org>  Fri, 27 May 2022 17:12:43 +0200
 
 linux (5.18-1~exp1) experimental; urgency=medium
