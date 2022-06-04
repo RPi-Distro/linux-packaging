@@ -29,6 +29,8 @@ linux (5.18.1-1~exp1) UNRELEASED; urgency=medium
     ACPI. Thanks to Eric Mackay. (Closes: #1008933).
   * intel-iommu: Correct matching of the "intgpu_off" option value.
     Thanks to Markus Kolb.
+  * random: Enable RANDOM_TRUST_BOOTLOADER. This can be reverted using the
+    kernel parameter: random.trust_bootloader=off
 
   [ Bastian Blank ]
   * [amd64] Enable X86_SGX.
