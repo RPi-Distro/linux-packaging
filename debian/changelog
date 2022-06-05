@@ -38,6 +38,7 @@ linux (5.18.1-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * [x86] fpu: KVM: Set the base guest FPU uABI size to sizeof(struct kvm_xsave)
     (Closes: #1011168)
+  * block, loop: support partitions without scanning (Closes: #1012298)
 
  -- Uwe Kleine-König <ukleinek@debian.org>  Fri, 27 May 2022 17:12:43 +0200
 
