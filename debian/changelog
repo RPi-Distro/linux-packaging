@@ -47,6 +47,10 @@ linux (5.18.2-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * block, loop: support partitions without scanning (Closes: #1012298)
 
+  [ Johannes Schauer Marin Rodrigues ]
+  * [arm64] Add pwm-imx27, nwl-dsi, ti-sn65dsi86, imx-dcss, mxsfb, mux-mmio
+    and imx8mq-interconnect to fb-modules udeb for the MNT Reform 2.
+
  -- Uwe Kleine-König <ukleinek@debian.org>  Fri, 27 May 2022 17:12:43 +0200
 
 linux (5.18-1~exp1) experimental; urgency=medium
