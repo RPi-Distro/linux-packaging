@@ -196,7 +196,6 @@ class Gencontrol(Base):
         if self.config.merge('packages').get('tools-unversioned', True):
             packages.extend(self.process_packages(
                 self.templates["control.tools-unversioned"], vars))
-            self.substitute_debhelper_config('perf', vars, 'linux-perf')
         if self.config.merge('packages').get('tools-versioned', True):
             packages.extend(self.process_packages(
                 self.templates["control.tools-versioned"], vars))

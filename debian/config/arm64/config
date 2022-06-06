@@ -167,10 +167,13 @@ CONFIG_TCG_TIS_I2C_INFINEON=m
 ##
 CONFIG_COMMON_CLK_RK808=y
 CONFIG_COMMON_CLK_HI655X=y
+CONFIG_COMMON_CLK_SCPI=m
+CONFIG_COMMON_CLK_SI5341=y
 CONFIG_COMMON_CLK_FSL_SAI=y
 CONFIG_CLK_QORIQ=y
 CONFIG_CLK_LS1028A_PLLDIG=y
 CONFIG_COMMON_CLK_XGENE=y
+CONFIG_COMMON_CLK_PWM=m
 
 ##
 ## file: drivers/clk/bcm/Kconfig
@@ -225,6 +228,7 @@ CONFIG_QORIQ_CPUFREQ=m
 ##
 CONFIG_ACPI_CPPC_CPUFREQ=m
 CONFIG_ARM_ARMADA_37XX_CPUFREQ=m
+CONFIG_ARM_SCPI_CPUFREQ=m
 CONFIG_ARM_IMX_CPUFREQ_DT=m
 CONFIG_ARM_RASPBERRYPI_CPUFREQ=m
 
@@ -232,6 +236,7 @@ CONFIG_ARM_RASPBERRYPI_CPUFREQ=m
 ## file: drivers/cpuidle/Kconfig.arm
 ##
 CONFIG_ARM_CPUIDLE=y
+CONFIG_ARM_PSCI_CPUIDLE=y
 
 ##
 ## file: drivers/crypto/Kconfig
@@ -679,7 +684,7 @@ CONFIG_QCOM_APCS_IPC=m
 CONFIG_XGENE_SLIMPRO_MBOX=m
 
 ##
-## file: drivers/media/platform/Kconfig
+## file: drivers/media/platform/qcom/venus/Kconfig
 ##
 CONFIG_VIDEO_QCOM_VENUS=m
 
@@ -707,6 +712,7 @@ CONFIG_MFD_RK808=y
 CONFIG_MFD_SL28CPLD=y
 CONFIG_MFD_WM8994=m
 CONFIG_MFD_ROHM_BD718XX=m
+CONFIG_MFD_KHADAS_MCU=m
 
 ##
 ## file: drivers/misc/Kconfig
@@ -748,11 +754,6 @@ CONFIG_MMC_BCM2835=m
 CONFIG_MMC_SDHCI_XENON=m
 
 ##
-## file: drivers/mtd/spi-nor/Kconfig
-##
-CONFIG_MTD_SPI_NOR=m
-
-##
 ## file: drivers/mtd/spi-nor/controllers/Kconfig
 ##
 CONFIG_SPI_HISI_SFC=m
@@ -772,11 +773,6 @@ CONFIG_VMXNET3=m
 ## file: drivers/net/can/Kconfig
 ##
 CONFIG_CAN_FLEXCAN=m
-
-##
-## file: drivers/net/can/spi/Kconfig
-##
-CONFIG_CAN_MCP251X=m
 
 ##
 ## file: drivers/net/dsa/Kconfig
@@ -1186,6 +1182,11 @@ CONFIG_PHY_ROCKCHIP_USB=m
 CONFIG_PHY_TEGRA_XUSB=m
 
 ##
+## file: drivers/phy/xilinx/Kconfig
+##
+CONFIG_PHY_XILINX_ZYNQMP=m
+
+##
 ## file: drivers/pinctrl/Kconfig
 ##
 CONFIG_PINCTRL_AMD=y
@@ -1458,6 +1459,7 @@ CONFIG_QORIQ_THERMAL=m
 CONFIG_SUN8I_THERMAL=m
 CONFIG_ROCKCHIP_THERMAL=m
 CONFIG_ARMADA_THERMAL=m
+CONFIG_KHADAS_MCU_FAN_THERMAL=m
 
 ##
 ## file: drivers/thermal/broadcom/Kconfig
@@ -1664,8 +1666,6 @@ CONFIG_ENERGY_MODEL=y
 ## file: lib/Kconfig.debug
 ##
 CONFIG_DEBUG_INFO_BTF=y
-#. In case debug info is disabled
-CONFIG_DEBUG_INFO_BTF_MODULES_NOOP=y
 
 ##
 ## file: mm/Kconfig

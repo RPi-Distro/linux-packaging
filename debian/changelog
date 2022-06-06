@@ -1,9 +1,91 @@
-linux (5.17.11-2) UNRELEASED; urgency=medium
+linux (5.18.2-1~exp1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.1
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.2
+    - netfilter: nf_tables: disallow non-stateful expression in sets earlier
+      (CVE-2022-1966)
+    - pipe: Fix missing lock in pipe_resize_ring() (ZDI-CAN-17291)
+    - netfilter: nf_tables: sanitize nft_set_desc_concat_parse() (CVE-2022-1972)
+    - [x86] fpu: KVM: Set the base guest FPU uABI size to sizeof(struct
+      kvm_xsave) (Closes: #1011168)
+    - KVM: x86: avoid calling x86 emulator without a decoded instruction
+      (CVE-2022-1852)
 
   [ Diederik de Haas ]
+  * [arm64,armel.marvell] Remove duplicate MTD_SPI_NOR config option
+  * [arm64] Remove duplicate CAN_MCP251X config option
   * drivers/net/can/spi: Enable CAN_HI311X as module (Closes: #927252)
 
- -- Diederik de Haas <didi.debian@cknow.org>  Fri, 27 May 2022 13:35:59 +0200
+  [ Henning Schild ]
+  * [x86] drivers/platform/x86: Enable SIEMENS_SIMATIC_IPC as module
+  * [x86] drivers/leds: Enable LEDS_SIEMENS_SIMATIC_IPC as module
+  * [x86] drivers/wdt: Enable SIEMENS_SIMATIC_IPC_WDT as module
+
+  [ Lubomir Rintel ]
+  * [x86] Enable X86_ANDROID_TABLETS as a module
+
+  [ Michal Simek ]
+  * [arm64] Enable Xilinx PHY driver and SI5341 clock driver
+
+  [ Zhang Ning ]
+  * [arm64] Enable COMMON_CLK_PWM which is needed for some Amlogic SBCs
+  * [arm64] Enable Khadas MCU and fan
+  * [arm64] cpufreq: Enable SCPI cpufreq driver
+  * [arm64] cpuidle: Enable CONFIG_ARM_PSCI_CPUIDLE
+
+  [ Ben Hutchings ]
+  * drivers/firmware: Build ISCSI_IBFT as module on all architectures with
+    ACPI. Thanks to Eric Mackay. (Closes: #1008933).
+  * intel-iommu: Correct matching of the "intgpu_off" option value.
+    Thanks to Markus Kolb.
+  * random: Enable RANDOM_TRUST_BOOTLOADER. This can be reverted using the
+    kernel parameter: random.trust_bootloader=off
+
+  [ Bastian Blank ]
+  * [amd64] Enable X86_SGX.
+
+  [ Salvatore Bonaccorso ]
+  * block, loop: support partitions without scanning (Closes: #1012298)
+
+ -- Uwe Kleine-König <ukleinek@debian.org>  Fri, 27 May 2022 17:12:43 +0200
+
+linux (5.18-1~exp1) experimental; urgency=medium
+
+  * New upstream release: https://kernelnewbies.org/Linux_5.18
+
+  [ Diederik de Haas ]
+  * Rebase patches:
+    - Update patches
+      - debian/dfsg/vs6624-disable.patch (9958d30f38)
+      - debian/version.patch (b8321ed4a4, 03248addad)
+  * Change patches:
+    - debian/android-enable-building-ashmem-and-binder-as-modules.patch
+      Upstream removed ashmem support in 721412ed3d saying
+      "The mainline replacement for ashmem is memfd, so remove the legacy code
+      from drivers/staging/"
+      This seems to partially revert #901492, but there is no anbox-modules in
+      the archive, even though the ITP bug was closed.
+
+  [ Ben Hutchings ]
+  * Rewrite "module: Avoid ABI changes when debug info is disabled" for 5.18
+  * In "firmware: Remove redundant log messages from drivers", adjust some
+    filenames
+  * In "x86: Make x32 syscall support conditional on a kernel parameter",
+    update dependency from X86_X32 to X86_X32_ABI
+  * Drop "bpftool: Fix version string in recursive builds" as redundant
+  * bpftool: Prepend program version to the package version
+  * [s390x] Enable MARCH_Z10 instead of MARCH_Z900, since support for z9 has
+    been removed upstream
+  * d/config: Update with the help of kconfigeditor2
+  * udeb: Move crc64 to crc-modules and make scsi-core-modules depend on that
+  * libcpupower1: Update symbols file for 5.18
+  * d/copyright: Update filename of extract-cert.c
+  * lintian: Add lintian-override to linux-perf for non-issue
+  * d/bin/gencontrol.py, d/templates: Stop using templates for linux-perf
+  * [rt] Update to 5.18-rt10
+
+ -- Ben Hutchings <benh@debian.org>  Mon, 23 May 2022 12:21:44 +0200
 
 linux (5.17.11-1) unstable; urgency=medium
 
