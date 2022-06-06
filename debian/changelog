@@ -1,7 +1,16 @@
-linux (5.18.1-1~exp1) UNRELEASED; urgency=medium
+linux (5.18.2-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.1
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.2
+    - netfilter: nf_tables: disallow non-stateful expression in sets earlier
+      (CVE-2022-1966)
+    - pipe: Fix missing lock in pipe_resize_ring() (ZDI-CAN-17291)
+    - netfilter: nf_tables: sanitize nft_set_desc_concat_parse() (CVE-2022-1972)
+    - [x86] fpu: KVM: Set the base guest FPU uABI size to sizeof(struct
+      kvm_xsave) (Closes: #1011168)
+    - KVM: x86: avoid calling x86 emulator without a decoded instruction
+      (CVE-2022-1852)
 
   [ Diederik de Haas ]
   * [arm64,armel.marvell] Remove duplicate MTD_SPI_NOR config option
@@ -36,8 +45,6 @@ linux (5.18.1-1~exp1) UNRELEASED; urgency=medium
   * [amd64] Enable X86_SGX.
 
   [ Salvatore Bonaccorso ]
-  * [x86] fpu: KVM: Set the base guest FPU uABI size to sizeof(struct kvm_xsave)
-    (Closes: #1011168)
   * block, loop: support partitions without scanning (Closes: #1012298)
 
  -- Uwe Kleine-König <ukleinek@debian.org>  Fri, 27 May 2022 17:12:43 +0200
