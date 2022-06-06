@@ -1,4 +1,4 @@
-linux (5.18.2-1~exp1) UNRELEASED; urgency=medium
+linux (5.18.2-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.1
@@ -47,6 +47,7 @@ linux (5.18.2-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * block, loop: support partitions without scanning (Closes: #1012298)
+  * Set ABI to 1
 
  -- Uwe Kleine-König <ukleinek@debian.org>  Fri, 27 May 2022 17:12:43 +0200
 
