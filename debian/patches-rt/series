@@ -5,9 +5,7 @@
 ###########################################################################
 0001-printk-rename-cpulock-functions.patch
 0002-printk-cpu-sync-always-disable-interrupts.patch
-0003-printk-add-missing-memory-barrier-to-wake_up_klogd.patch
 0004-printk-wake-up-all-waiters.patch
-0005-printk-wake-waiters-for-safe-and-NMI-contexts.patch
 0006-printk-get-caller_id-timestamp-after-migration-disab.patch
 0007-printk-call-boot_delay_msec-in-printk_delay.patch
 0008-printk-add-con_printk-macro-for-console-details.patch
@@ -53,11 +51,8 @@ genirq-Provide-generic_handle_domain_irq_safe.patch
 # Eric's ptrace, v4
 0001-signal-Rename-send_signal-send_signal_locked.patch
 0002-signal-Replace-__group_send_sig_info-with-send_signa.patch
-0003-ptrace-um-Replace-PT_DTRACE-with-TIF_SINGLESTEP.patch
-0004-ptrace-xtensa-Replace-PT_SINGLESTEP-with-TIF_SINGLES.patch
 0005-ptrace-Remove-arch_ptrace_attach.patch
 0006-signal-Use-lockdep_assert_held-instead-of-assert_spi.patch
-0007-ptrace-Reimplement-PTRACE_KILL-by-always-sending-SIG.patch
 0008-ptrace-Document-that-wait_task_inactive-can-t-fail.patch
 0009-ptrace-Admit-ptrace_stop-can-generate-spuriuos-SIGTR.patch
 0010-ptrace-Don-t-change-__state.patch
@@ -98,7 +93,6 @@ tpm_tis__fix_stall_after_iowrites.patch
 drivers_block_zram__Replace_bit_spinlocks_with_rtmutex_for_-rt.patch
 generic-softirq-Disable-softirq-stacks-on-PREEMPT_RT.patch
 softirq-Disable-softirq-stacks-on-PREEMPT_RT.patch
-crypto-cryptd-Protect-per-CPU-resource-by-disabling-.patch
 iio-adc-stm32-adc-Use-generic_handle_domain_irq.patch
 locking-lockdep-Remove-lockdep_init_map_crosslock.patch
 
