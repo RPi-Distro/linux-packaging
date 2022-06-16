@@ -1,4 +1,4 @@
-linux (5.18.4-1) UNRELEASED; urgency=medium
+linux (5.18.5-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.3
@@ -1303,6 +1303,18 @@ linux (5.18.4-1) UNRELEASED; urgency=medium
     - dmaengine: idxd: add missing callback function to support DMA_INTERRUPT
     - tcp: fix tcp_mtup_probe_success vs wrong snd_cwnd
     - net/mlx5: E-Switch, pair only capable devices
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.5
+    - Documentation: Add documentation for Processor MMIO Stale Data
+    - x86/speculation/mmio: Enumerate Processor MMIO Stale Data bug
+    - x86/speculation: Add a common function for MD_CLEAR mitigation update
+    - x86/speculation/mmio: Add mitigation for Processor MMIO Stale Data
+    - x86/bugs: Group MDS, TAA & Processor MMIO Stale Data mitigations
+    - x86/speculation/mmio: Enable CPU Fill buffer clearing on idle
+    - x86/speculation/mmio: Add sysfs reporting for Processor MMIO Stale Data
+    - x86/speculation/srbds: Update SRBDS mitigation selection
+    - x86/speculation/mmio: Reuse SRBDS mitigation for SBDS
+    - KVM: x86/speculation: Disable Fill buffer clear within guests
+    - x86/speculation/mmio: Print SMT warning
 
   [ Ben Hutchings ]
   * d/rules: Fix maintainerclean rule to not remove linux-perf files
