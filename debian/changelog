@@ -1330,6 +1330,7 @@ linux (5.18.5-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Bump ABI to 2
   * Drop "sign-file: Convert API usage to support OpenSSL v3"
+  * io_uring: reinstate the inflight tracking (CVE-2022-1976)
 
  -- Ben Hutchings <benh@debian.org>  Mon, 13 Jun 2022 17:45:21 +0100
 
