@@ -1,4 +1,4 @@
-linux (5.18.5-1) UNRELEASED; urgency=medium
+linux (5.18.5-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.3
@@ -1332,7 +1332,7 @@ linux (5.18.5-1) UNRELEASED; urgency=medium
   * Drop "sign-file: Convert API usage to support OpenSSL v3"
   * io_uring: reinstate the inflight tracking (CVE-2022-1976)
 
- -- Ben Hutchings <benh@debian.org>  Mon, 13 Jun 2022 17:45:21 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 16 Jun 2022 23:40:32 +0200
 
 linux (5.18.2-1) unstable; urgency=medium
 
