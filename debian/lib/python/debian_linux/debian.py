@@ -750,9 +750,8 @@ class _ControlFileDict(dict):
             yield self[i]
 
 
-class Package(_ControlFileDict):
+class SourcePackage(_ControlFileDict):
     _fields = collections.OrderedDict((
-        ('Package', str),
         ('Source', str),
         ('Architecture', PackageArchitecture),
         ('Section', str),
@@ -760,6 +759,21 @@ class Package(_ControlFileDict):
         ('Maintainer', str),
         ('Uploaders', str),
         ('Standards-Version', str),
+        ('Build-Depends', PackageRelation),
+        ('Build-Depends-Arch', PackageRelation),
+        ('Build-Depends-Indep', PackageRelation),
+    ))
+
+
+class BinaryPackage(_ControlFileDict):
+    _fields = collections.OrderedDict((
+        ('Package', str),
+        ('Architecture', PackageArchitecture),
+        ('Section', str),
+        ('Priority', str),
+        # Build-Depends* fields aren't allowed for binary packages in
+        # the real control file, but we move them to the source
+        # package
         ('Build-Depends', PackageRelation),
         ('Build-Depends-Arch', PackageRelation),
         ('Build-Depends-Indep', PackageRelation),

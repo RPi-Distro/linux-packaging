@@ -24,6 +24,8 @@ class Templates(object):
                 if os.path.exists(filename):
                     with open(filename, 'r', encoding='utf-8') as f:
                         mode = os.stat(f.fileno()).st_mode
+                        if name == 'control.source':
+                            return (read_control_source(f), mode)
                         if prefix == 'control':
                             return (read_control(f), mode)
                         if prefix == 'tests-control':
@@ -50,9 +52,14 @@ class Templates(object):
         return value[1]
 
 
+def read_control_source(f):
+    from .debian import SourcePackage
+    return _read_rfc822(f, SourcePackage)
+
+
 def read_control(f):
-    from .debian import Package
-    return _read_rfc822(f, Package)
+    from .debian import BinaryPackage
+    return _read_rfc822(f, BinaryPackage)
 
 
 def read_tests_control(f):
