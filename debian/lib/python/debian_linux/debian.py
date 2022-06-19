@@ -762,12 +762,17 @@ class SourcePackage(_ControlFileDict):
         ('Build-Depends', PackageRelation),
         ('Build-Depends-Arch', PackageRelation),
         ('Build-Depends-Indep', PackageRelation),
+        ('Rules-Requires-Root', str),
+        ('Homepage', str),
+        ('Vcs-Browser', str),
+        ('Vcs-Git', str),
     ))
 
 
 class BinaryPackage(_ControlFileDict):
     _fields = collections.OrderedDict((
         ('Package', str),
+        ('Package-Type', str),  # for udeb only
         ('Architecture', PackageArchitecture),
         ('Section', str),
         ('Priority', str),
@@ -777,6 +782,7 @@ class BinaryPackage(_ControlFileDict):
         ('Build-Depends', PackageRelation),
         ('Build-Depends-Arch', PackageRelation),
         ('Build-Depends-Indep', PackageRelation),
+        ('Build-Profiles', PackageBuildRestrictFormula),
         ('Provides', PackageRelation),
         ('Pre-Depends', PackageRelation),
         ('Depends', PackageRelation),
@@ -785,8 +791,9 @@ class BinaryPackage(_ControlFileDict):
         ('Replaces', PackageRelation),
         ('Breaks', PackageRelation),
         ('Conflicts', PackageRelation),
+        ('Multi-Arch', str),
+        ('Kernel-Version', str),  # for udeb only
         ('Description', PackageDescription),
-        ('Build-Profiles', PackageBuildRestrictFormula),
     ))
 
 
