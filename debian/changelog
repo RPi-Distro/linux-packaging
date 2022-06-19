@@ -9,6 +9,7 @@ linux (5.18.5-2~exp1) UNRELEASED; urgency=medium
   * d/bin, d/lib/python: Use open() with encoding instead of codecs.open()
   * d/lib/python/debian_linux: Introduce {Source,Binary}Package classes
   * d/lib/python/debian_linux: Add all used fields to {Source,Binary}Package
+  * d/lib/python/debian_linux: Warn about unknown fields in control files
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 06 Jun 2022 21:12:00 +0200
 

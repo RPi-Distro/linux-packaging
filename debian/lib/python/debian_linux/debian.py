@@ -4,6 +4,7 @@ import functools
 import os.path
 import re
 import unittest
+import warnings
 
 from . import utils
 
@@ -729,6 +730,9 @@ class _ControlFileDict(dict):
             if not isinstance(value, cls):
                 value = cls(value)
         except KeyError:
+            warnings.warn(
+                f'setting unknown field { key } in { type(self).__name__ }',
+                stacklevel=2)
             pass
         super(_ControlFileDict, self).__setitem__(key, value)
 
