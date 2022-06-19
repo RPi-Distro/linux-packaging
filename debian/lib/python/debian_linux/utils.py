@@ -1,4 +1,3 @@
-import codecs
 import os
 import re
 import textwrap
@@ -23,7 +22,7 @@ class Templates(object):
             for dir in self.dirs:
                 filename = "%s/%s%s" % (dir, name, suffix)
                 if os.path.exists(filename):
-                    with codecs.open(filename, 'r', 'utf-8') as f:
+                    with open(filename, 'r', encoding='utf-8') as f:
                         mode = os.stat(f.fileno()).st_mode
                         if prefix == 'control':
                             return (read_control(f), mode)

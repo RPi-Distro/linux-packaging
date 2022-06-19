@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-import codecs
 import hashlib
 import json
 import os.path
@@ -277,8 +276,8 @@ class Gencontrol(Base):
             re.sub(r'\+b(\d+)$', r'.b\1',
                    re.sub(r'-', r'+', vars['imagebinaryversion']))
 
-        with codecs.open(self.template_debian_dir + '/changelog', 'w',
-                         'utf-8') as f:
+        with open(self.template_debian_dir + '/changelog', 'w',
+                  encoding='utf-8') as f:
             f.write(self.substitute('''\
 linux-signed@source_suffix@-@arch@ (@signedsourceversion@) @distribution@; urgency=@urgency@
 
@@ -287,7 +286,8 @@ linux-signed@source_suffix@-@arch@ (@signedsourceversion@) @distribution@; urgen
 ''',
                                     vars))
 
-            with codecs.open('debian/changelog', 'r', 'utf-8') as changelog_in:
+            with open('debian/changelog', 'r', encoding='utf-8') \
+                 as changelog_in:
                 # Ignore first two header lines
                 changelog_in.readline()
                 changelog_in.readline()
@@ -356,7 +356,7 @@ linux-signed@source_suffix@-@arch@ (@signedsourceversion@) @distribution@; urgen
                 'files': package_files
             }
 
-        with codecs.open(self.template_top_dir + '/files.json', 'w') as f:
+        with open(self.template_top_dir + '/files.json', 'w') as f:
             json.dump(all_files, f)
 
     def write_source_lintian_overrides(self):
