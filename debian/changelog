@@ -1,4 +1,6 @@
-linux (5.18.5-2~exp1) UNRELEASED; urgency=medium
+linux (5.19~rc3-1~exp1) UNRELEASED; urgency=medium
+
+  * New upstream release candidate
 
   [ Johannes Schauer Marin Rodrigues ]
   * [arm64] Add pwm-imx27, nwl-dsi, ti-sn65dsi86, imx-dcss, mxsfb, mux-mmio
@@ -25,6 +27,9 @@ linux (5.18.5-2~exp1) UNRELEASED; urgency=medium
   * [arm64] phy: enable Rk3399 Mipi phy which is needed by RK3399 ISP1
   * [arm64] enable GPIO ir receirer which is needed by Khadas edge SBC
   * [arm64] enable HYM8563 RTC driver which is needed by Khadas SBCs
+
+  [ Ben Hutchings ]
+  * Refresh our patches for 5.19
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 06 Jun 2022 21:12:00 +0200
 
