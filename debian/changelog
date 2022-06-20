@@ -19,6 +19,13 @@ linux (5.18.5-2~exp1) UNRELEASED; urgency=medium
   * [armel/rpi] drivers/char/hw_random: Enable HW_RANDOM_BCM2835 as module
   * [armel/rpi] drivers/rtc: Enable RTC_DRV_DS1307 as module (Closes: #958904)
 
+  [ Zhang Ning ]
+  * [arm64] enable gpio polled keyboard which is needed for Khadas SBCs
+  * [arm64] media: enable Amlogic CEC, GE2D, vdec, and Rockchip RGA, ISP1
+  * [arm64] phy: enable Rk3399 Mipi phy which is needed by RK3399 ISP1
+  * [arm64] enable GPIO ir receirer which is needed by Khadas edge SBC
+  * [arm64] enable HYM8563 RTC driver which is needed by Khadas SBCs
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 06 Jun 2022 21:12:00 +0200
 
 linux (5.18.5-1) unstable; urgency=medium
