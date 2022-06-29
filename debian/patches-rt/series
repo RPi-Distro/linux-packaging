@@ -1,9 +1,9 @@
 # Applied upstream
-mm-kfence-select-random-number-before-taking-raw-loc.patch
 
 ###########################################################################
 # John's printk queue
 ###########################################################################
+printk-reinstate-deferred-printing-with-kthreads.patch
 0016-printk-add-infrastucture-for-atomic-consoles.patch
 0017-serial-8250-implement-write_atomic.patch
 0018-printk-avoid-preempt_disable-for-PREEMPT_RT.patch
@@ -13,7 +13,6 @@ mm-kfence-select-random-number-before-taking-raw-loc.patch
 ###########################################################################
 arch-Disable-softirq-stacks-on-PREEMPT_RT.patch
 blk-mq-Don-t-disable-preemption-around-__blk_mq_run_.patch
-mm-slub-Move-the-stackdepot-related-allocation-out-o.patch
 
 # signal_x86__Delay_calling_signals_in_atomic.patch
 

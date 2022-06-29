@@ -1,4 +1,4 @@
-linux (5.19~rc3-1~exp1) UNRELEASED; urgency=medium
+linux (5.19~rc4-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream release candidate
 
@@ -33,6 +33,7 @@ linux (5.19~rc3-1~exp1) UNRELEASED; urgency=medium
   * [rt] Update to 5.19-rc3-rt5
   * Update config for 5.19
   * virtio: disable notification hardening by default (regression in 5.19-rc1)
+  * [rt] printk: Reinstate deferred printing with kthreads
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 06 Jun 2022 21:12:00 +0200
 
