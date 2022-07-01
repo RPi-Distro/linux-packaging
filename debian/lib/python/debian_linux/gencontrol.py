@@ -1,4 +1,3 @@
-import codecs
 import os
 import re
 from collections import OrderedDict
@@ -401,7 +400,7 @@ class Gencontrol(object):
         self.write_makefile(makefile)
 
     def write_control(self, list, name='debian/control'):
-        self.write_rfc822(codecs.open(name, 'w', 'utf-8'), list)
+        self.write_rfc822(open(name, 'w', encoding='utf-8'), list)
 
     def write_makefile(self, makefile, name='debian/rules.gen'):
         f = open(name, 'w')

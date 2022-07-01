@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-import codecs
 import io
 import os
 import os.path
@@ -99,12 +98,12 @@ def main(source, version=None):
                 ['gpgv', '--status-fd', '1',
                  '--keyring', 'debian/upstream/rt-signing-key.pgp',
                  '--ignore-time-conflict', source_sig, '-'],
-                stdin=unxz_proc.stdout)
+                stdin=unxz_proc.stdout,
+                text=True)
             if unxz_proc.wait() or \
                not re.search(r'^\[GNUPG:\]\s+VALIDSIG\s',
-                             codecs.decode(verify_output),
-                             re.MULTILINE):
-                os.write(2, verify_output)  # bytes not str!
+                             verify_output, re.MULTILINE):
+                sys.stderr.write(verify_output)
                 raise RuntimeError("GPG signature verification failed")
 
             temp_dir = tempfile.mkdtemp(prefix='rt-genpatch', dir='debian')
