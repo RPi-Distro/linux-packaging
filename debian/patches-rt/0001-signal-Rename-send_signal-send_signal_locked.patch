@@ -1,7 +1,7 @@
 From: "Eric W. Biederman" <ebiederm@xmission.com>
 Date: Thu, 5 May 2022 13:26:34 -0500
 Subject: [PATCH 01/12] signal: Rename send_signal send_signal_locked
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 Rename send_signal and __send_signal to send_signal_locked and
 __send_signal_locked to make send_signal usable outside of

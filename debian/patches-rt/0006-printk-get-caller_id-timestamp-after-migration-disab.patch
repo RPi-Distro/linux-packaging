@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Wed, 20 Apr 2022 01:52:28 +0206
 Subject: [PATCH 06/18] printk: get caller_id/timestamp after migration disable
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 Currently the local CPU timestamp and caller_id for the record are
 collected while migration is enabled. Since this information is

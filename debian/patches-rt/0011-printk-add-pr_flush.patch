@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Wed, 20 Apr 2022 01:52:33 +0206
 Subject: [PATCH 11/18] printk: add pr_flush()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 Provide a might-sleep function to allow waiting for console printers
 to catch up to the latest logged message.

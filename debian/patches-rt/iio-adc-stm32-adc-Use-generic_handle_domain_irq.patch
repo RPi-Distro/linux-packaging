@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 11 May 2022 13:06:09 +0200
 Subject: [PATCH] iio: adc: stm32-adc: Use generic_handle_domain_irq()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 The call chain
 	generic_handle_irq(irq_find_mapping(domain, x));

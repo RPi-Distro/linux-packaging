@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 13 May 2022 15:19:41 +0200
 Subject: [PATCH] fs/dcache: Delay dentry::d_lock outside of the locked
  section.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 __d_add() and __d_move() invoke __d_lookup_done() with disabled
 preemption (due to the critical section started in start_dir_add()).

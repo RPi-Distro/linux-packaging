@@ -1,7 +1,7 @@
 Subject: fs/dcache: disable preemption on i_dir_seq's write side
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri Oct 20 11:29:53 2017 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 

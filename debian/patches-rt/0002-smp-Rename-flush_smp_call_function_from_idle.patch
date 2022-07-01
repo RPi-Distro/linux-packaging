@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 13 Apr 2022 15:31:03 +0200
 Subject: [PATCH 2/3] smp: Rename flush_smp_call_function_from_idle()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 This is invoked from the stopper thread too, which is definitely not idle.
 Rename it to flush_smp_call_function_queue() and fixup the callers.

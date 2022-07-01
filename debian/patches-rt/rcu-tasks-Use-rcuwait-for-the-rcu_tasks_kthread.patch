@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 4 Mar 2022 09:22:46 +0100
 Subject: [PATCH] rcu-tasks: Use rcuwait for the rcu_tasks_kthread().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 The waitqueue used by rcu_tasks_kthread() has always only one waiter.
 With a guaranteed only one waiter, this can be replaced with rcuwait

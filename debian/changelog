@@ -6,6 +6,8 @@ linux (5.18.5-2) UNRELEASED; urgency=medium
   [ Ben Hutchings ]
   * [arm64] pinctrl: Re-enable PINCTRL_MSM (regression in 5.14)
   * lintian: Update overrides for lintian 2.115
+  * [rt] Update to 5.18-rt11:
+    - Revert "softirq: Check preemption after reenabling interrupts"
 
   [ Salvatore Bonaccorso ]
   * io_uring: reinstate the inflight tracking (CVE-2022-1976)

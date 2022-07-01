@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 29 Jul 2021 10:36:30 +0200
 Subject: [PATCH] arm64/sve: Make kernel FPU protection RT friendly
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 Non RT kernels need to protect FPU against preemption and bottom half
 processing. This is achieved by disabling bottom halves via

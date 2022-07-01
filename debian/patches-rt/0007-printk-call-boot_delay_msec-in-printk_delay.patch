@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Wed, 20 Apr 2022 01:52:29 +0206
 Subject: [PATCH 07/18] printk: call boot_delay_msec() in printk_delay()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 boot_delay_msec() is always called immediately before printk_delay()
 so just call it from within printk_delay().

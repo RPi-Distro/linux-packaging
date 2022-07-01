@@ -1,7 +1,7 @@
 From: "Eric W. Biederman" <ebiederm@xmission.com>
 Date: Thu, 5 May 2022 13:26:44 -0500
 Subject: [PATCH 11/12] ptrace: Always take siglock in ptrace_resume
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 Make code analysis simpler and future changes easier by
 always taking siglock in ptrace_resume.

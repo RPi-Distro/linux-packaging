@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Sun, 10 Apr 2022 14:49:36 +0200
 Subject: [PATCH] lib/irq_poll: Prevent softirq pending leak in
  irq_poll_cpu_dead()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 irq_poll_cpu_dead() pulls the blk_cpu_iopoll backlog from the dead CPU and
 raises the POLL softirq with __raise_softirq_irqoff() on the CPU it is

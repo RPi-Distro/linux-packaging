@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Wed, 20 Apr 2022 01:52:35 +0206
 Subject: [PATCH 13/18] printk: add kthread console printers
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 Create a kthread for each console to perform console printing. During
 normal operation (@system_state == SYSTEM_RUNNING), the kthread

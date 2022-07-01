@@ -1,7 +1,7 @@
 Subject: signal: Revert ptrace preempt magic
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed Sep 21 19:57:12 2011 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 

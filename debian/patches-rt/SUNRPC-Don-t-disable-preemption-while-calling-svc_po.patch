@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 4 May 2022 19:24:10 +0200
 Subject: [PATCH] SUNRPC: Don't disable preemption while calling
  svc_pool_for_cpu().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 svc_xprt_enqueue() disables preemption via get_cpu() and then asks for a
 pool of a specific CPU (current) via svc_pool_for_cpu().

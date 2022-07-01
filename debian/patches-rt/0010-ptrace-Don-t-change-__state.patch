@@ -1,7 +1,7 @@
 From: "Eric W. Biederman" <ebiederm@xmission.com>
 Date: Thu, 5 May 2022 13:26:43 -0500
 Subject: [PATCH 10/12] ptrace: Don't change __state
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 Stop playing with tsk->__state to remove TASK_WAKEKILL while a ptrace
 command is executing.

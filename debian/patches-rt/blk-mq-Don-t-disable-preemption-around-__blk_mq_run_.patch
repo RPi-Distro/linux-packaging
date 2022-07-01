@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 5 May 2022 19:21:47 +0200
 Subject: [PATCH] blk-mq: Don't disable preemption around
  __blk_mq_run_hw_queue().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 __blk_mq_delay_run_hw_queue() disables preemption to get a stable
 current CPU number and then invokes __blk_mq_run_hw_queue() if the CPU

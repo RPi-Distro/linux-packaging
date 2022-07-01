@@ -2,7 +2,7 @@ From: Davidlohr Bueso <dave@stgolabs.net>
 Date: Fri, 6 May 2022 12:57:57 +0200
 Subject: [PATCH 3/4] scsi: libfc: Remove get_cpu() semantics in
  fc_exch_em_alloc()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 The get_cpu() in fc_exch_em_alloc() was introduced in:
 

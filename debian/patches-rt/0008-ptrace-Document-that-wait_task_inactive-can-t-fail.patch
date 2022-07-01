@@ -1,7 +1,7 @@
 From: "Eric W. Biederman" <ebiederm@xmission.com>
 Date: Thu, 5 May 2022 13:26:41 -0500
 Subject: [PATCH 08/12] ptrace: Document that wait_task_inactive can't fail
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 After ptrace_freeze_traced succeeds it is known that the the tracee
 has a __state value of __TASK_TRACED and that no __ptrace_unlink will

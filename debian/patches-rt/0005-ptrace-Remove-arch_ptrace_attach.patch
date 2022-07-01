@@ -1,7 +1,7 @@
 From: "Eric W. Biederman" <ebiederm@xmission.com>
 Date: Thu, 5 May 2022 13:26:38 -0500
 Subject: [PATCH 05/12] ptrace: Remove arch_ptrace_attach
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 The last remaining implementation of arch_ptrace_attach is ia64's
 ptrace_attach_sync_user_rbs which was added at the end of 2007 in

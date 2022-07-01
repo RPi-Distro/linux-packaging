@@ -2,7 +2,7 @@ From: "Eric W. Biederman" <ebiederm@xmission.com>
 Date: Thu, 5 May 2022 13:26:35 -0500
 Subject: [PATCH 02/12] signal: Replace __group_send_sig_info with
  send_signal_locked
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 The function __group_send_sig_info is just a light wrapper around
 send_signal_locked with one parameter fixed to a constant value.  As

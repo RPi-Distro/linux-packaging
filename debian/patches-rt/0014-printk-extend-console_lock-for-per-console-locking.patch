@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Mon, 25 Apr 2022 23:04:28 +0206
 Subject: [PATCH 14/18] printk: extend console_lock for per-console locking
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 Currently threaded console printers synchronize against each
 other using console_lock(). However, different console drivers

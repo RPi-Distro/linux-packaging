@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Wed, 20 Apr 2022 01:52:24 +0206
 Subject: [PATCH 02/18] printk: cpu sync always disable interrupts
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 The CPU sync functions are a NOP for !CONFIG_SMP. But for
 !CONFIG_SMP they still need to disable interrupts in order to

@@ -2,7 +2,7 @@ From: "Eric W. Biederman" <ebiederm@xmission.com>
 Date: Thu, 5 May 2022 13:26:42 -0500
 Subject: [PATCH 09/12] ptrace: Admit ptrace_stop can generate spuriuos
  SIGTRAPs
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 Long ago and far away there was a BUG_ON at the start of ptrace_stop
 that did "BUG_ON(!(current->ptrace & PT_PTRACED));" [1].  The BUG_ON

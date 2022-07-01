@@ -5,7 +5,7 @@ Subject: [PATCH] genirq/irq_sim: Make the irq_work always run in hard irq
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 The IRQ simulator uses irq_work to trigger an interrupt. Without the
 IRQ_WORK_HARD_IRQ flag the irq_work will be performed in thread context

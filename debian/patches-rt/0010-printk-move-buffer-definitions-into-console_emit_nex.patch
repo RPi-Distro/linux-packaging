@@ -2,7 +2,7 @@ From: John Ogness <john.ogness@linutronix.de>
 Date: Wed, 20 Apr 2022 01:52:32 +0206
 Subject: [PATCH 10/18] printk: move buffer definitions into
  console_emit_next_record() caller
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 Extended consoles print extended messages and do not print messages about
 dropped records.

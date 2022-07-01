@@ -1,7 +1,7 @@
 Subject: drivers/block/zram: Replace bit spinlocks with rtmutex for -rt
 From: Mike Galbraith <umgwanakikbuti@gmail.com>
 Date: Thu Mar 31 04:08:28 2016 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.18/older/patches-5.18-rt11.tar.xz
 
 From: Mike Galbraith <umgwanakikbuti@gmail.com>
 
