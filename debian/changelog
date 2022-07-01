@@ -39,6 +39,7 @@ linux (5.19~rc4-1~exp1) UNRELEASED; urgency=medium
   * d/lib/python/debian_linux: Introduce {Source,Binary}Package classes
   * d/lib/python/debian_linux: Add all used fields to {Source,Binary}Package
   * d/lib/python/debian_linux: Warn about unknown fields in control files
+  * firmware_loader: Enable FW_LOADER_COMPRESS, FW_LOADER_COMPRESS_XZ
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 06 Jun 2022 21:12:00 +0200
 
