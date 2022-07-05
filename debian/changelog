@@ -290,6 +290,8 @@ linux (5.18.8-1) UNRELEASED; urgency=medium
   * Bump ABI to 3
   * Disable SECURITY_LOCKDOWN_LSM and MODULE_SIG where we don't sign code
     (Closes: #825141)
+  * tools/bpf, tools/perf: Update for init_disassemble_info() API change in
+    binutils 2.38.50
 
  -- Ben Hutchings <benh@debian.org>  Mon, 20 Jun 2022 12:48:13 +0200
 
