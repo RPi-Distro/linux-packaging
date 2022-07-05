@@ -288,6 +288,8 @@ linux (5.18.8-1) UNRELEASED; urgency=medium
   * [rt] Update to 5.18-rt11:
     - Revert "softirq: Check preemption after reenabling interrupts"
   * Bump ABI to 3
+  * Disable SECURITY_LOCKDOWN_LSM and MODULE_SIG where we don't sign code
+    (Closes: #825141)
 
  -- Ben Hutchings <benh@debian.org>  Mon, 20 Jun 2022 12:48:13 +0200
 
