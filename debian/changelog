@@ -292,6 +292,8 @@ linux (5.18.8-1) UNRELEASED; urgency=medium
     (Closes: #825141)
   * tools/bpf, tools/perf: Update for init_disassemble_info() API change in
     binutils 2.38.50
+  * tools/perf: Fix "unused parameter" warning introduced by "tools/perf:
+    pmu-events: Fix reproducibility"
 
  -- Ben Hutchings <benh@debian.org>  Mon, 20 Jun 2022 12:48:13 +0200
 
