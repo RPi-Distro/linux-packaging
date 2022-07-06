@@ -286,6 +286,11 @@ CONFIG_CRYPTO_DEV_OMAP_AES=m
 CONFIG_CRYPTO_DEV_SUN4I_SS=m
 
 ##
+## file: drivers/crypto/caam/Kconfig
+##
+CONFIG_CRYPTO_DEV_FSL_CAAM=m
+
+##
 ## file: drivers/crypto/marvell/Kconfig
 ##
 CONFIG_CRYPTO_DEV_MARVELL_CESA=m

@@ -291,6 +291,10 @@ linux (5.18.8-1) UNRELEASED; urgency=medium
   * Disable SECURITY_LOCKDOWN_LSM and MODULE_SIG where we don't sign code
     (Closes: #825141)
 
+  [ Vincent Blut ]
+  * [armhf] drivers/crypto/caam: Enable CRYPTO_DEV_FSL_CAAM as module
+    (Closes: #1013255)
+
  -- Ben Hutchings <benh@debian.org>  Mon, 20 Jun 2022 12:48:13 +0200
 
 linux (5.18.5-1) unstable; urgency=medium
