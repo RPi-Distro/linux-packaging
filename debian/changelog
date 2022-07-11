@@ -2,6 +2,9 @@ linux (5.19~rc5-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream release candidate
 
+  [ Ben Hutchings ]
+  * [mips64el/mips64r2el] Fix package description
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 09 Jul 2022 16:38:19 +0200
 
 linux (5.19~rc4-1~exp1) experimental; urgency=medium
