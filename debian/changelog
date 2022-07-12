@@ -1,4 +1,4 @@
-linux (5.19~rc6-1~exp1) UNRELEASED; urgency=medium
+linux (5.19~rc6-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
 
@@ -64,7 +64,7 @@ linux (5.19~rc6-1~exp1) UNRELEASED; urgency=medium
     - x86/static_call: Serialize __static_call_fixup() properly
   * [amd64] Enable SLS mitigation
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 09 Jul 2022 16:38:19 +0200
+ -- Ben Hutchings <benh@debian.org>  Wed, 13 Jul 2022 01:20:17 +0200
 
 linux (5.19~rc4-1~exp1) experimental; urgency=medium
 
