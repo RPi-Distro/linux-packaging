@@ -62,6 +62,7 @@ linux (5.19~rc6-1~exp1) UNRELEASED; urgency=medium
     - x86/kexec: Disable RET on kexec
     - x86/speculation: Disable RRSBA behavior
     - x86/static_call: Serialize __static_call_fixup() properly
+  * [amd64] Enable SLS mitigation
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 09 Jul 2022 16:38:19 +0200
 
