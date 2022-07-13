@@ -297,6 +297,8 @@ linux (5.18.8-1) UNRELEASED; urgency=medium
   * [amd64,arm64,armhf] wireguard: Clear keys after suspend despite
     CONFIG_ANDROID=y
   * d/salsa-ci.yml: Sync build-script with upstream
+  * d/salsa-ci.yml: Handle APT sources in debian.sources as well as
+    sources.list
 
   [ Vincent Blut ]
   * [armhf] drivers/crypto/caam: Enable CRYPTO_DEV_FSL_CAAM as module

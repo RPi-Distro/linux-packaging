@@ -65,7 +65,14 @@ stages:
   - test -z "${HOST_ARCH}" || dpkg --add-architecture ${HOST_ARCH}
 
   # Add deb-src entries
-  - sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list > /etc/apt/sources.list.d/deb-src.list
+  - |
+    if [ -f /etc/apt/sources.list ]; then
+      sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list > /etc/apt/sources.list.d/deb-src.list
+    fi
+  - |
+    if [ -f /etc/apt/sources.list.d/debian.sources ]; then
+      sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/debian.sources
+    fi
 
   - |
     apt-get update && eatmydata apt-get install --no-install-recommends -y \
