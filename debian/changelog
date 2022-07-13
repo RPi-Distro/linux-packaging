@@ -296,6 +296,7 @@ linux (5.18.8-1) UNRELEASED; urgency=medium
     pmu-events: Fix reproducibility"
   * [amd64,arm64,armhf] wireguard: Clear keys after suspend despite
     CONFIG_ANDROID=y
+  * d/salsa-ci.yml: Sync build-script with upstream
 
   [ Vincent Blut ]
   * [armhf] drivers/crypto/caam: Enable CRYPTO_DEV_FSL_CAAM as module
