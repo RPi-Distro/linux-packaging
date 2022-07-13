@@ -300,6 +300,7 @@ linux (5.18.8-1) UNRELEASED; urgency=medium
   * d/salsa-ci.yml: Handle APT sources in debian.sources as well as
     sources.list
   * [amd64] ata: Enable PATA_LEGACY (Closes: #910010)
+  * udeb: Add essiv to crypto-modules (Closes: #973378)
 
   [ Vincent Blut ]
   * [armhf] drivers/crypto/caam: Enable CRYPTO_DEV_FSL_CAAM as module
