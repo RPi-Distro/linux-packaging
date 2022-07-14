@@ -153,6 +153,7 @@ bugfix/x86/retbleed/0052-x86-bugs-Do-not-enable-IBPB-on-entry-when-IBPB-is-no.pa
 bugfix/x86/retbleed/0053-x86-kexec-Disable-RET-on-kexec.patch
 bugfix/x86/retbleed/0054-x86-speculation-Disable-RRSBA-behavior.patch
 bugfix/x86/retbleed/0055-x86-static_call-Serialize-__static_call_fixup-proper.patch
+bugfix/x86/retbleed/0056-x86-asm-32-fix-annotate_unret_safe-use-on-32-bit.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
