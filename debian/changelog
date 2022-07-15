@@ -302,6 +302,9 @@ linux (5.18.8-1) UNRELEASED; urgency=medium
   * d/tests: Remove obsolete dependencies of python test
   * d/tests: Add kbuild test that builds a trivial OOT module
   * linux-kbuild: Add missing pahole-version.sh script
+  * [amd64] ata: Enable PATA_LEGACY (Closes: #910010)
+  * udeb: Add essiv to crypto-modules (Closes: #973378)
+  * udeb: Add SCSI device handlers to multipath-modules (Closes: #989079)
 
   [ Vincent Blut ]
   * [armhf] drivers/crypto/caam: Enable CRYPTO_DEV_FSL_CAAM as module
