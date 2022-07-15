@@ -103,6 +103,7 @@ class Gencontrol(Base):
         self.tests_control = self.process_packages(
             self.templates['tests-control.main'], vars)
         self.tests_control_image = None
+        self.tests_control_headers = None
 
         self.installer_packages = {}
 
@@ -567,6 +568,19 @@ class Gencontrol(Base):
         else:
             self.tests_control_image = tests_control
             self.tests_control.append(tests_control)
+
+        if flavour == self.quick_flavour:
+            tests_control = self.process_package(
+                self.templates['tests-control.headers'][0], vars)
+            tests_control['Depends'].append(
+                PackageRelationGroup(package_headers['Package'],
+                                     override_arches=(arch,)))
+            if self.tests_control_headers:
+                self.tests_control_headers['Depends'].extend(
+                    tests_control['Depends'])
+            else:
+                self.tests_control_headers = tests_control
+                self.tests_control.append(tests_control)
 
         def get_config(*entry_name):
             entry_real = ('image',) + entry_name
