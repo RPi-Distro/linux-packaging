@@ -103,6 +103,7 @@ CONFIG_CRYPTO_PCBC=m
 CONFIG_CRYPTO_XTS=m
 CONFIG_CRYPTO_KEYWRAP=m
 CONFIG_CRYPTO_ADIANTUM=m
+CONFIG_CRYPTO_ESSIV=m
 CONFIG_CRYPTO_CMAC=m
 CONFIG_CRYPTO_HMAC=m
 CONFIG_CRYPTO_XCBC=m
@@ -7781,7 +7782,8 @@ CONFIG_SECURITY_LANDLOCK=y
 ##
 ## file: security/lockdown/Kconfig
 ##
-CONFIG_SECURITY_LOCKDOWN_LSM=y
+#. This is overridden if the [build]signed-code setting is enabled
+# CONFIG_SECURITY_LOCKDOWN_LSM is not set
 ## choice: Kernel default lockdown mode
 CONFIG_LOCK_DOWN_KERNEL_FORCE_NONE=y
 ## end choice

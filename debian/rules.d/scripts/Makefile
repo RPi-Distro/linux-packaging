@@ -29,6 +29,7 @@ SCRIPTS =  \
 	modules-check.sh \
 	namespace.pl \
 	pahole-flags.sh \
+	pahole-version.sh \
 	patch-kernel \
 	recordmcount.pl \
 	setlocalversion \
