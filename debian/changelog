@@ -1,4 +1,4 @@
-linux (5.18.8-1) UNRELEASED; urgency=medium
+linux (5.18.12-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.6
@@ -157,8 +157,6 @@ linux (5.18.8-1) UNRELEASED; urgency=medium
       remove
     - mmc: sdhci-pci-o2micro: Fix card detect by dealing with debouncing
     - xen/gntdev: Avoid blocking in unmap_grant_pages()
-    - [armhf] mtd: rawnand: gpmi: Fix setting busy timeout setting
-      (regression in 5.18)
     - dm era: commit metadata in postsuspend after worker stops
     - dm: do not return early from dm_io_complete if BLK_STS_AGAIN without
       polling (regression in 5.18)
@@ -278,6 +276,208 @@ linux (5.18.8-1) UNRELEASED; urgency=medium
     - dma-direct: use the correct size for dma_set_encrypted() (regression in
       5.17)
     - [powerpc*] pseries: wire up rng during setup_arch()
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.9
+    - bcache: memset on stack variables in bch_btree_check() and
+      bch_sectors_dirty_init()
+    - hinic: Replace memcpy() with direct assignment
+    - [powerpc*] ftrace: Remove ftrace init tramp once kernel init is complete
+    - io_uring: fix not locked access to fixed buf table
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.10
+    - drm/amdgpu: fix adev variable used in amdgpu_device_gpu_recover()
+      (regression in 5.17)
+    - Revert "drm/amdgpu/display: set vblank_disable_immediate for DC"
+      (regression in 5.17)
+    - drm/amdgpu: To flush tlb for MMHUB of RAVEN series
+    - ksmbd: set the range of bytes to zero without extending file size in
+      FSCTL_ZERO_DATA
+    - ksmbd: check invalid FileOffset and BeyondFinalZero in FSCTL_ZERO_DATA
+    - ksmbd: use vfs_llseek instead of dereferencing NULL
+    - ipv6: take care of disable_policy when restoring routes
+    - net: phy: Don't trigger state machine while in suspend
+    - [s390x] archrandom: simplify back to earlier design and initialize
+      earlier
+    - nvme-pci: add NVME_QUIRK_BOGUS_NID for ADATA XPG SX6000LNP (AKA SPECTRIX
+      S40G)
+    - nvme-pci: add NVME_QUIRK_BOGUS_NID for ADATA IM2P33F8ABR1
+    - nvdimm: Fix badblocks clear off-by-one error
+    - ceph: wait on async create before checking caps for syncfs
+      (regression in 5.18)
+    - [hppa] Fix vDSO signal breakage on 32-bit kernel (regression in 5.18)
+    - [hppa] unaligned: Fix emulate_ldw() breakage (regression in 5.18)
+    - [powerpc*] prom_init: Fix kernel config grep
+    - [powerpc*] bpf: Fix use of user_pt_regs in uapi
+    - cpufreq: amd-pstate: Add resume and suspend callbacks
+    - dm raid: fix accesses beyond end of raid member array
+    - dm raid: fix KASAN warning in raid5_add_disks
+    - SUNRPC: Fix READ_PLUS crasher
+    - net: rose: fix UAF bugs caused by timer handler (CVE-2022-2318)
+    - net: usb: ax88179_178a: Fix packet receiving (regression in 5.17)
+    - virtio-net: fix race between ndo_open() and virtio_device_ready()
+    - [armhf] net: dsa: bcm_sf2: force pause link settings
+    - net: tun: unlink NAPI from device on destruction
+    - net: tun: stop NAPI when detaching queues
+    - net: fix IFF_TX_SKB_NO_LINEAR definition
+    - net: dp83822: disable false carrier interrupt
+    - net: dp83822: disable rx error interrupt
+    - RDMA/qedr: Fix reporting QP timeout attribute
+    - RDMA/cm: Fix memory leak in ib_cm_insert_listen
+    - linux/dim: Fix divide by 0 in RDMA DIM
+    - net: usb: asix: do not force pause frames support
+    - usbnet: fix memory allocation in helpers
+    - mptcp: fix race on unaccepted mptcp sockets (regression in 5.17)
+    - mptcp: fix conflict with <netinet/in.h> (regression in 5.16)
+    - [armhf] hwmon: (occ) Prevent power cap command overwriting poll response
+    - NFS: restore module put when manager exits. (regression in 5.18)
+    - NFSD: restore EINVAL error translation in nfsd_commit() (regression in
+      5.17)
+    - NFSv4: Add an fattr allocation to _nfs4_discover_trunking()
+      (regression in 5.18.3)
+    - vfs: fix copy_file_range() regression in cross-fs copies
+    - caif_virtio: fix race between virtio_device_ready() and ndo_open()
+    - io_uring: ensure that send/sendmsg and recv/recvmsg check sqe->ioprio
+    - PM / devfreq: exynos-ppmu: Fix refcount leak in of_get_devfreq_events
+    - lib/sbitmap: Fix invalid loop in __sbitmap_queue_get_batch()
+    - vdpa/mlx5: Update Control VQ callback information
+    - netfilter: nft_dynset: restore set element counter when failing to update
+    - net/sched: act_api: Notify user space if any actions were flushed before
+      error
+    - net: asix: fix "can't send until first packet is send" issue
+    - net: bonding: fix possible NULL deref in rlb code
+    - net: phy: ax88772a: fix lost pause advertisement configuration
+    - net: bonding: fix use-after-free after 802.3ad slave unbind
+    - [arm64] net: dsa: felix: fix race between reading PSFP stats and port
+      stats
+    - [powerpc] memhotplug: Add add_pages override for PPC (regression in 5.18)
+    - [x86] platform/x86: thinkpad_acpi: Fix a memory leak of EFCH MMIO
+      resource (regression in 5.18)
+    - [x86] platform/x86: ideapad-laptop: Add Ideapad 5 15ITL05 to
+      ideapad_dytc_v4_allow_table[]
+    - tipc: move bc link creation back to tipc_node_create
+    - epic100: fix use after free on rmmod
+    - tcp: add a missing nf_reset_ct() in 3WHS handling
+    - nvmet-tcp: fix regression in data_digest calculation (regression in 5.12)
+    - ACPI: video: Change how we determine if brightness key-presses are handled
+    - tunnels: do not assume mac header is set in skb_tunnel_check_pmtu()
+    - fanotify: refine the validation checks on non-dir inode mask (regression
+      in 5.18)
+    - nvmet: add a clear_ids attribute for passthru targets
+    - ipv6/sit: fix ipip6_tunnel_get_prl return value
+    - ipv6: fix lockdep splat in in6_dump_addrs() (regression in 5.13)
+    - net: tun: avoid disabling NAPI twice
+    - [arm64] drm/msm/dpu: Increment vsync_cnt before waking up userspace
+      (regression in 5.16)
+    - [x86] platform/x86: ideapad-laptop: Add allow_v4_dytc module parameter
+    - [x86] drm/i915/gem: add missing else
+    - [x86] drm/i915/dgfx: Disable d3cold at gfx root port
+    - [arm64] drm/msm/gem: Fix error return on fence id alloc fail (regression
+      in 5.15)
+    - [x86] platform/x86: panasonic-laptop: revert "Resolve hotkey double
+      trigger bug"
+    - [x86] platform/x86: panasonic-laptop: don't report duplicate brightness
+      key-presses
+    - [x86] platform/x86: panasonic-laptop: filter out duplicate volume up/down
+      /mute keypresses
+    - drm/fourcc: fix integer type usage in uapi header
+    - hwmon: (ibmaem) don't call platform_device_del() if platform_device_add()
+      fails
+    - xen/blkfront: fix leaking data in shared pages (CVE-2022-26365)
+    - xen/netfront: fix leaking data in shared pages (CVE-2022-33740)
+    - xen/netfront: force data bouncing when backend is untrusted
+      (CVE-2022-33741)
+    - xen/blkfront: force data bouncing when backend is untrusted
+      (CVE-2022-33742)
+    - xen-netfront: restore __skb_queue_tail() positioning in
+      xennet_get_responses() (CVE-2022-33743)
+    - [arm64,armhf] xen/arm: Fix race in RB-tree based P2M accounting
+      (CVE-2022-33744)
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.11
+    - io_uring: fix provided buffer import (regression in 5.18)
+    - ALSA: usb-audio: Workarounds for Behringer UMC 204/404 HD
+    - [x86] ALSA: hda/realtek: Add quirk for Clevo L140PU
+    - can: bcm: use call_rcu() instead of costly synchronize_rcu()
+    - can: gs_usb: gs_usb_open/close(): fix memory leak
+    - can: kvaser_usb: replace run-time checks with struct
+      kvaser_usb_driver_info
+    - can: kvaser_usb: kvaser_usb_leaf: fix CAN clock frequency regression
+      (regression in 5.16)
+    - can: kvaser_usb: kvaser_usb_leaf: fix bittiming limits
+    - bpf: Fix incorrect verifier simulation around jmp32's jeq/jne
+    - bpf: Fix insufficient bounds propagation from adjust_scalar_min_max_vals
+    - usbnet: fix memory leak in error case
+    - net: rose: fix UAF bug caused by rose_t0timer_expiry
+    - netfilter: nft_set_pipapo: release elements in clone from abort path
+    - netfilter: nf_tables: stricter validation of element data
+      (CVE-2022-34918)
+    - [x86] iommu/vt-d: Fix PCI bus rescan device hot add
+    - [x86] iommu/vt-d: Fix RID2PASID setup/teardown failure
+    - fbdev: Fix potential buffer overflow with silly screen sizes
+      (CVE-2021-33655):
+      + fbmem: Check virtual screen sizes in fb_set_var()
+      + fbcon: Disallow setting font bigger than screen size
+      + fbcon: Prevent that screen size is smaller than font size
+    - PM: runtime: Redefine pm_runtime_release_supplier()
+    - PM: runtime: Fix supplier device management during consumer probe
+    - memregion: Fix memregion_free() fallback definition
+    - fscache: Fix invalidation/lookup race (regression in 5.17)
+    - fscache: Fix if condition in fscache_wait_on_volume_collision()
+    - [powerpc*] powernv: delay rng platform device creation until later in
+      boot
+    - [armhf] pinctrl: sunxi: a83t: Fix NAND function name for some pins
+    - srcu: Tighten cleanup_srcu_struct() GP checks
+    - ASoC: rt711: Add endianness flag in snd_soc_component_driver
+    - ASoC: rt711-sdca: Add endianness flag in snd_soc_component_driver
+    - ASoC: codecs: rt700/rt711/rt711-sdca: resume bus/codec in .set_jack_detect
+    - ASoC: SOF: ipc3-topology: Move and correct size checks in
+      sof_ipc3_control_load_bytes()
+    - [x86] ASoC: SOF: Intel: hda: Fix compressed stream position tracking
+    - [arm64] dts: qcom: sm8450: fix interconnects property of UFS node
+    - [arm64] dts: qcom: msm8994: Fix CPU6/7 reg values
+    - [arm64] dts: qcom: sdm845: use dispcc AHB clock for mdss node
+    - [arm64] dts: imx8mp-evk: correct mmc pad settings
+    - [arm64] dts: imx8mp-evk: correct the uart2 pinctl value
+    - [arm64] dts: imx8mp-evk: correct gpio-led pad settings
+    - [arm64] dts: imx8mp-evk: correct vbus pad settings
+    - [arm64] dts: imx8mp-evk: correct eqos pad settings
+    - [arm64] dts: imx8mp-evk: correct I2C5 pad settings
+    - [arm64] dts: imx8mp-evk: correct I2C1 pad settings
+    - [arm64] dts: imx8mp-evk: correct I2C3 pad settings
+    - [arm64] dts: imx8mp-phyboard-pollux-rdk: correct uart pad settings
+    - [arm64] dts: imx8mp-phyboard-pollux-rdk: correct eqos pad settings
+    - [arm64] dts: imx8mp-phyboard-pollux-rdk: correct i2c2 & mmc settings
+    - [arm64,armhf] pinctrl: sunxi: sunxi_pconf_set: use correct offset
+    - [arm64] dts: qcom: msm8992-*: Fix vdd_lvs1_2-supply typo
+    - xsk: Clear page contiguity bit when unmapping pool
+    - i2c: piix4: Fix a memory leak in the EFCH MMIO support
+    - i40e: Fix dropped jumbo frames statistics
+    - i40e: Fix VF's MAC Address change on VM
+    - [armhf] dts: stm32: add missing usbh clock and fix clk order on stm32mp15
+    - ACPI: CPPC: Check _OSC for flexible address space
+    - ACPI: bus: Set CPPC _OSC bits for all and when CPPC_LIB is supported
+    - ACPI: CPPC: Only probe for _CPC if CPPC v2 is acked (regressions in
+      5.13, 5.18)
+    - ACPI: CPPC: Don't require _OSC if X86_FEATURE_CPPC is supported
+    - net/mlx5e: Fix matchall police parameters validation
+    - mptcp: Avoid acquiring PM lock for subflow priority changes
+    - mptcp: Acquire the subflow socket lock before modifying MP_PRIO flags
+    - mptcp: fix local endpoint accounting
+    - r8169: fix accessing unset transport header
+    - net/sched: act_api: Add extack to offload_act_setup() callback
+    - net/sched: act_police: Add extack messages for offload failure
+    - net/sched: act_police: allow 'continue' action offload
+    - [arm64] dmaengine: imx-sdma: Allow imx8m for imx7 FW revs
+    - [arm64,armhf] dmaengine: imx-sdma: only restart cyclic channel when
+      enabled (regression in 5.18)
+    - misc: rtsx_usb: fix use of dma mapped buffer for usb bulk transfer
+      (Closes: #1015240, regression in 5.18)
+    - misc: rtsx_usb: use separate command and response buffers
+    - misc: rtsx_usb: set return value in rsp_buf alloc err path
+    - ida: don't use BUG_ON() for debugging
+    - [arm64,armhf] dmaengine: pl330: Fix lockdep warning about non-static key
+    - [armhf] dmaengine: ti: Fix refcount leak in ti_dra7_xbar_route_allocate
+    - [arm64] dmaengine: qcom: bam_dma: fix runtime PM underflow
+    - [armhf] dmaengine: ti: Add missing put_device in
+      ti_dra7_xbar_route_allocate
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.12
 
   [ John Paul Adrian Glaubitz ]
   * [ia64] Disable CONFIG_HARDENED_USERCOPY which is currently broken
