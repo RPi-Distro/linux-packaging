@@ -305,6 +305,8 @@ linux (5.18.8-1) UNRELEASED; urgency=medium
   * [amd64] ata: Enable PATA_LEGACY (Closes: #910010)
   * udeb: Add essiv to crypto-modules (Closes: #973378)
   * udeb: Add SCSI device handlers to multipath-modules (Closes: #989079)
+  * linux-source: Update Recommends to include all dependencies for deb-pkg
+    target
 
   [ Vincent Blut ]
   * [armhf] drivers/crypto/caam: Enable CRYPTO_DEV_FSL_CAAM as module
