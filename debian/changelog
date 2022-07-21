@@ -511,6 +511,8 @@ linux (5.18.12-1) UNRELEASED; urgency=medium
   [ Vincent Blut ]
   * [armhf] drivers/crypto/caam: Enable CRYPTO_DEV_FSL_CAAM as module
     (Closes: #1013255)
+  * drivers/net/wireless/mediatek/mt76/mt7921: Enable MT7921U as module
+    (Closes: #1015808)
 
  -- Ben Hutchings <benh@debian.org>  Mon, 20 Jun 2022 12:48:13 +0200
 
