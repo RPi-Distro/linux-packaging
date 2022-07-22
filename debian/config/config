@@ -4181,6 +4181,7 @@ CONFIG_MT7915E=m
 ## file: drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
 ##
 CONFIG_MT7921E=m
+CONFIG_MT7921U=m
 
 ##
 ## file: drivers/net/wireless/mediatek/mt7601u/Kconfig
