@@ -306,7 +306,7 @@ linux (5.18.13-1) UNRELEASED; urgency=medium
     - [hppa] unaligned: Fix emulate_ldw() breakage (regression in 5.18)
     - [powerpc*] prom_init: Fix kernel config grep
     - [powerpc*] bpf: Fix use of user_pt_regs in uapi
-    - cpufreq: amd-pstate: Add resume and suspend callbacks
+    - [x86] cpufreq: amd-pstate: Add resume and suspend callbacks
     - dm raid: fix accesses beyond end of raid member array
     - dm raid: fix KASAN warning in raid5_add_disks
     - SUNRPC: Fix READ_PLUS crasher
@@ -455,7 +455,7 @@ linux (5.18.13-1) UNRELEASED; urgency=medium
     - ACPI: bus: Set CPPC _OSC bits for all and when CPPC_LIB is supported
     - ACPI: CPPC: Only probe for _CPC if CPPC v2 is acked (regressions in
       5.13, 5.18)
-    - ACPI: CPPC: Don't require _OSC if X86_FEATURE_CPPC is supported
+    - [x86] ACPI: CPPC: Don't require _OSC if X86_FEATURE_CPPC is supported
     - net/mlx5e: Fix matchall police parameters validation
     - mptcp: Avoid acquiring PM lock for subflow priority changes
     - mptcp: Acquire the subflow socket lock before modifying MP_PRIO flags
