@@ -1,4 +1,4 @@
-linux (5.18.13-1) UNRELEASED; urgency=medium
+linux (5.18.14-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.6
@@ -690,6 +690,81 @@ linux (5.18.13-1) UNRELEASED; urgency=medium
     - [x86] pat: Fix x86_has_pat_wp()
     - [i386] drm/i915/ttm: fix 32b build
     - drm/aperture: Run fbdev removal before internal helpers
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.14
+    - [amd64] Preparation for mitigating RETbleed:
+      + x86/traps: Use pt_regs directly in fixup_bad_iret()
+      + x86/entry: Switch the stack after error_entry() returns
+      + x86/entry: Move PUSH_AND_CLEAR_REGS out of error_entry()
+      + x86/entry: Don't call error_entry() for XENPV
+      + x86/entry: Remove skip_r11rcx
+    - [amd64] Add mitigations for RETbleed on AMD/Hygon (CVE-2022-29900) and
+      Intel (CVE-2022-29901) processors:
+      + x86/kvm/vmx: Make noinstr clean
+      + x86/cpufeatures: Move RETPOLINE flags to word 11
+      + x86/retpoline: Cleanup some #ifdefery
+      + x86/retpoline: Swizzle retpoline thunk
+      + x86/retpoline: Use -mfunction-return
+      + x86: Undo return-thunk damage
+      + x86,objtool: Create .return_sites
+      + objtool: skip non-text sections when adding return-thunk sites
+      + x86,static_call: Use alternative RET encoding
+      + x86/ftrace: Use alternative RET encoding
+      + x86/bpf: Use alternative RET encoding
+      + x86/kvm: Fix SETcc emulation for return thunks
+      + x86/vsyscall_emu/64: Don't use RET in vsyscall emulation
+      + x86/sev: Avoid using __x86_return_thunk
+      + x86: Use return-thunk in asm code
+      + x86/entry: Avoid very early RET
+      + objtool: Treat .text.__x86.* as noinstr
+      + x86: Add magic AMD return-thunk
+      + x86/bugs: Report AMD retbleed vulnerability
+      + x86/bugs: Add AMD retbleed= boot parameter
+      + x86/bugs: Enable STIBP for JMP2RET
+      + x86/bugs: Keep a per-CPU IA32_SPEC_CTRL value
+      + x86/entry: Add kernel IBRS implementation
+      + x86/bugs: Optimize SPEC_CTRL MSR writes
+      + x86/speculation: Add spectre_v2=ibrs option to support Kernel IBRS
+      + x86/bugs: Split spectre_v2_select_mitigation() and
+        spectre_v2_user_select_mitigation()
+      + x86/bugs: Report Intel retbleed vulnerability
+      + intel_idle: Disable IBRS during long idle
+      + objtool: Update Retpoline validation
+      + x86/xen: Rename SYS* entry points
+      + x86/xen: Add UNTRAIN_RET
+      + x86/bugs: Add retbleed=ibpb
+      + x86/bugs: Do IBPB fallback check only once
+      + objtool: Add entry UNRET validation
+      + x86/cpu/amd: Add Spectral Chicken
+      + x86/speculation: Fix RSB filling with CONFIG_RETPOLINE=n
+      + x86/speculation: Fix firmware entry SPEC_CTRL handling
+      + x86/speculation: Fix SPEC_CTRL write on SMT state change
+      + x86/speculation: Use cached host SPEC_CTRL value for guest entry/exit
+      + x86/speculation: Remove x86_spec_ctrl_mask
+      + objtool: Re-add UNWIND_HINT_{SAVE_RESTORE}
+      + KVM: VMX: Flatten __vmx_vcpu_run()
+      + KVM: VMX: Convert launched argument to flags
+      + KVM: VMX: Prevent guest RSB poisoning attacks with eIBRS
+      + KVM: VMX: Fix IBRS handling after vmexit
+      + x86/speculation: Fill RSB on vmexit for IBRS
+      + KVM: VMX: Prevent RSB underflow before vmenter
+      + x86/common: Stamp out the stepping madness
+      + x86/cpu/amd: Enumerate BTC_NO
+      + x86/retbleed: Add fine grained Kconfig knobs
+      + x86/bugs: Add Cannon lake to RETBleed affected CPU list
+      + x86/entry: Move PUSH_AND_CLEAR_REGS() back into error_entry
+      + x86/bugs: Do not enable IBPB-on-entry when IBPB is not supported
+      + x86/kexec: Disable RET on kexec
+      + x86/speculation: Disable RRSBA behavior
+      + x86/static_call: Serialize __static_call_fixup() properly
+      + x86/asm/32: Fix ANNOTATE_UNRET_SAFE use on 32-bit
+      + x86/speculation: Use DECLARE_PER_CPU for x86_spec_ctrl_current
+      + efi/x86: use naked RET on mixed mode call wrapper
+      + x86/kvm: fix FASTOP_SIZE when return thunks are enabled
+      + KVM: emulate: do not adjust size of fastop and setcc subroutines
+      + tools arch x86: Sync the msr-index.h copy with the kernel sources
+      + tools headers cpufeatures: Sync with the kernel sources
+      + x86/bugs: Remove apostrophe typo
+      + um: Add missing apply_returns()
 
   [ John Paul Adrian Glaubitz ]
   * [ia64] Disable CONFIG_HARDENED_USERCOPY which is currently broken
