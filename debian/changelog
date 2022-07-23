@@ -794,6 +794,7 @@ linux (5.18.14-1) UNRELEASED; urgency=medium
   * udeb: Add SCSI device handlers to multipath-modules (Closes: #989079)
   * linux-source: Update Recommends to include all dependencies for deb-pkg
     target
+  * [x86] speculation: Make all RETbleed mitigations depend on X86_64
 
   [ Vincent Blut ]
   * [armhf] drivers/crypto/caam: Enable CRYPTO_DEV_FSL_CAAM as module
