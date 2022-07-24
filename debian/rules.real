@@ -71,7 +71,8 @@ build-arch-arch: \
 	$(call if_package, bpftool,                      build-bpftool) \
 	$(call if_package, usbip,                        build-usbip) \
 	$(call if_package, linux-cpupower,               build-cpupower) \
-	$(call if_package, hyperv-daemons,               build-hyperv-daemons)
+	$(call if_package, hyperv-daemons,               build-hyperv-daemons) \
+	$(call if_package, rtla,                         build-rtla)
 binary-arch-arch: \
 	$(call if_package, $(SOURCE_BASENAME)-config-$(VERSION), install-config_$(ARCH)) \
 	$(call if_package, linux-libc-dev,               install-libc-dev_$(ARCH)) \
