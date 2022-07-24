@@ -20,16 +20,16 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -2469,7 +2469,7 @@ config RETPOLINE
- config RETHUNK
+@@ -2473,7 +2473,7 @@ config RETHUNK
  	bool "Enable return-thunks"
  	depends on RETPOLINE && CC_HAS_RETURN_THUNK
+ 	select OBJTOOL if HAVE_OBJTOOL
 -	default y
 +	default y if X86_64
  	help
  	  Compile the kernel with the return-thunks compiler option to guard
  	  against kernel-to-user data leaks by avoiding return speculation.
-@@ -2478,21 +2478,21 @@ config RETHUNK
+@@ -2482,21 +2482,21 @@ config RETHUNK
  
  config CPU_UNRET_ENTRY
  	bool "Enable UNRET on kernel entry"
