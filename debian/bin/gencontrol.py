@@ -569,7 +569,7 @@ class Gencontrol(Base):
             self.tests_control_image = tests_control
             self.tests_control.append(tests_control)
 
-        if flavour == self.quick_flavour:
+        if flavour == (self.quick_flavour or self.default_flavour):
             tests_control = self.process_package(
                 self.templates['tests-control.headers'][0], vars)
             tests_control['Depends'].append(

@@ -24,7 +24,7 @@ obj-m += foo.o
 EOF
 
 arch="$(dpkg --print-architecture)"
-release="$(debian/bin/getconfig.py version abiname)-$(debian/bin/getconfig.py base $arch none quick-flavour)"
+release="$(debian/bin/getconfig.py version abiname)-$(debian/bin/getconfig.py base $arch none quick-flavour || debian/bin/getconfig.py base $arch none default-flavour)"
 
 echo "I: Build for $release"
 # There are some warnings sent to stderr that we need to suppress,

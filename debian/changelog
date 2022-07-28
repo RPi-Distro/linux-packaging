@@ -1,6 +1,7 @@
 linux (5.18.14-2) UNRELEASED; urgency=medium
 
   * d/tests: kbuild test case depends on python3
+  * d/tests: Run kbuild test with default flavour if quick flavour not defined
 
  -- Ben Hutchings <benh@debian.org>  Fri, 29 Jul 2022 00:43:54 +0200
 
