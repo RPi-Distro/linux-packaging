@@ -17,6 +17,10 @@ linux (5.19-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * [rt] Update to 5.19-rc8-rt9
 
+  [ Vincent Blut ]
+  * [amd64] crypto: Enable CRYPTO_NHPOLY1305_SSE2 and CRYPTO_NHPOLY1305_AVX2
+    as modules (Closes: #1013870)
+
  -- Ben Hutchings <benh@debian.org>  Thu, 14 Jul 2022 12:52:40 +0200
 
 linux (5.19~rc6-1~exp1) experimental; urgency=medium
