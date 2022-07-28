@@ -780,6 +780,7 @@ class TestsControl(_ControlFileDict):
     _fields = collections.OrderedDict((
         ('Tests', str),
         ('Test-Command', str),
+        ('Architecture', PackageArchitecture),
         ('Restrictions', str),
         ('Features', str),
         ('Depends', PackageRelation),
