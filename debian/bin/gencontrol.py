@@ -570,17 +570,14 @@ class Gencontrol(Base):
             self.tests_control.append(tests_control)
 
         if flavour == (self.quick_flavour or self.default_flavour):
-            tests_control = self.process_package(
-                self.templates['tests-control.headers'][0], vars)
-            tests_control['Depends'].append(
+            if not self.tests_control_headers:
+                self.tests_control_headers = self.process_package(
+                    self.templates['tests-control.headers'][0], vars)
+                self.tests_control.append(self.tests_control_headers)
+            self.tests_control_headers['Architecture'].add(arch)
+            self.tests_control_headers['Depends'].append(
                 PackageRelationGroup(package_headers['Package'],
                                      override_arches=(arch,)))
-            if self.tests_control_headers:
-                self.tests_control_headers['Depends'].extend(
-                    tests_control['Depends'])
-            else:
-                self.tests_control_headers = tests_control
-                self.tests_control.append(tests_control)
 
         def get_config(*entry_name):
             entry_real = ('image',) + entry_name
