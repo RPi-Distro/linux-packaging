@@ -7709,7 +7709,7 @@ CONFIG_FORTIFY_SOURCE=y
 ## choice: First legacy 'major LSM' to be initialized
 CONFIG_DEFAULT_SECURITY_APPARMOR=y
 ## end choice
-CONFIG_LSM="lockdown,yama,loadpin,safesetid,integrity,apparmor,selinux,smack,tomoyo"
+CONFIG_LSM="landlock,lockdown,yama,loadpin,safesetid,integrity,apparmor,selinux,smack,tomoyo,bpf"
 
 ##
 ## file: security/Kconfig.hardening
