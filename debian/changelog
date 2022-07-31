@@ -1,4 +1,4 @@
-linux (5.19~rc7-1~exp1) UNRELEASED; urgency=medium
+linux (5.19~rc8-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream release candidate
     - [i386] x86/asm/32: Fix ANNOTATE_UNRET_SAFE use on 32-bit (fixes FTBFS)
