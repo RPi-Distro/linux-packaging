@@ -5,7 +5,7 @@ linux (5.18.14-2) UNRELEASED; urgency=medium
   * d/lib/python/debian_linux/debian.py: Add Architecture field to TestsControl
   * d/tests: Restrict kbuild tests to architectures with default or quick
     flavour
-  * security: Add landlock and bpf to enabled LSM list
+  * security: Add landlock and bpf to enabled LSM list (Closes: #999551)
 
  -- Ben Hutchings <benh@debian.org>  Fri, 29 Jul 2022 00:43:54 +0200
 
