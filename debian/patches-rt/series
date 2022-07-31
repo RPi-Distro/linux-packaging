@@ -1,14 +1,6 @@
 # Applied upstream
 
 ###########################################################################
-# John's printk queue
-###########################################################################
-printk-reinstate-deferred-printing-with-kthreads.patch
-0016-printk-add-infrastucture-for-atomic-consoles.patch
-0017-serial-8250-implement-write_atomic.patch
-0018-printk-avoid-preempt_disable-for-PREEMPT_RT.patch
-
-###########################################################################
 # Posted and applied
 ###########################################################################
 arch-Disable-softirq-stacks-on-PREEMPT_RT.patch
@@ -20,22 +12,25 @@ blk-mq-Don-t-disable-preemption-around-__blk_mq_run_.patch
 # Posted
 ###########################################################################
 genirq-Provide-generic_handle_domain_irq_safe.patch
+printk-Skip-console-drivers-on-PREEMPT_RT.patch
+0001-lib-vsprintf-Remove-static_branch_likely-from-__ptr_.patch
+0002-lib-vsprintf-Initialize-vsprintf-s-pointer-hash-once.patch
 
 # Hacks to get ptrace to work.
 signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
 sched-Consider-task_struct-saved_state-in-wait_task_.patch
 
 ###########################################################################
-# Post
-###########################################################################
-
-###########################################################################
 # fs:
 ###########################################################################
-0001-fs-dcache-Disable-preemption-on-i_dir_seq-write-side.patch
-0002-fs-dcache-Split-__d_lookup_done.patch
-0003-fs-dcache-Use-__d_lookup_unhash-in-__d_add-move.patch
+0001-fs-dcache-d_add_ci-needs-to-complete-parallel-lookup.patch
+0002-fs-dcache-Disable-preemption-on-i_dir_seq-write-side.patch
+0003-fs-dcache-Move-the-wakeup-from-__d_lookup_done-to-th.patch
 0004-fs-dcache-Move-wakeup-out-of-i_seq_dir-write-held-re.patch
+
+###########################################################################
+# Post
+###########################################################################
 
 ###########################################################################
 # X86:
@@ -53,6 +48,15 @@ tpm_tis__fix_stall_after_iowrites.patch
 drivers_block_zram__Replace_bit_spinlocks_with_rtmutex_for_-rt.patch
 iio-adc-stm32-adc-Use-generic_handle_domain_irq.patch
 locking-lockdep-Remove-lockdep_init_map_crosslock.patch
+
+###########################################################################
+# John's printk queue
+###########################################################################
+printk-Bring-back-the-RT-bits.patch
+0016-printk-add-infrastucture-for-atomic-consoles.patch
+0017-serial-8250-implement-write_atomic.patch
+0018-printk-avoid-preempt_disable-for-PREEMPT_RT.patch
+Revert-printk-Skip-console-drivers-on-PREEMPT_RT.patch
 
 ###########################################################################
 # DRM:

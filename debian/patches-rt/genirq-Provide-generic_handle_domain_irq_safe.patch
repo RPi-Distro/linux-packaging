@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Mon, 9 May 2022 16:04:08 +0200
 Subject: [PATCH] genirq: Provide generic_handle_domain_irq_safe().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.19/older/patches-5.19-rc3-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/5.19/older/patches-5.19-rc8-rt9.tar.xz
 
 Provide generic_handle_domain_irq_safe() which can used from any context.
 This similar to commit
