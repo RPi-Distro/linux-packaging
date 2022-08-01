@@ -1,3 +1,4 @@
 Tests: kbuild
-Depends:
+Architecture:
+Depends: python3
 Restrictions: superficial
