@@ -4,3 +4,6 @@
 # these as the "wrong" architecture rather than mandating multiarch.
 [mips mipsel] @package@: binary-from-other-architecture *boot/vmlinu*
 [hppa mips mipsel powerpc] @package@: binary-from-other-architecture *lib/modules/*
+
+# vmlinux needs extra sections that would normally be stripped.
+[mips64el mipsel ppc64el] @package@: unstripped-binary-or-object *boot/vmlinu*
