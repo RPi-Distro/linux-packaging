@@ -6,6 +6,7 @@ linux (5.19-1~exp2) UNRELEASED; urgency=medium
   * d/{signing_templates/,}rules.real: Run dh_lintian for all packages
   * [hppa,mips,mipsel,powerpc] lintian: Override error for 64-bit kernels
   * [mips64el,mipsel,ppc64el] lintian: Override error for unstripped vmlinux
+  * [arm64] lintian: Override errors for vdso32.so in linux-image-*-dbg
 
  -- Ben Hutchings <benh@debian.org>  Tue, 02 Aug 2022 19:18:50 +0200
 
