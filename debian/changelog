@@ -1,4 +1,4 @@
-linux (5.19-1~exp1) UNRELEASED; urgency=medium
+linux (5.19-1~exp1) experimental; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_5.19
     - [i386] x86/asm/32: Fix ANNOTATE_UNRET_SAFE use on 32-bit (fixes FTBFS)
@@ -21,7 +21,7 @@ linux (5.19-1~exp1) UNRELEASED; urgency=medium
   * [amd64] crypto: Enable CRYPTO_NHPOLY1305_SSE2 and CRYPTO_NHPOLY1305_AVX2
     as modules (Closes: #1013870)
 
- -- Ben Hutchings <benh@debian.org>  Thu, 14 Jul 2022 12:52:40 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 02 Aug 2022 16:04:51 +0200
 
 linux (5.19~rc6-1~exp1) experimental; urgency=medium
 
