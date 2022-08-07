@@ -1,5 +1,6 @@
 linux (5.19-1~exp2) UNRELEASED; urgency=medium
 
+  [ Ben Hutchings ]
   * d/lib/python/debian_linux, d/templates: Use variable for binary package
     name
   * lintian: Update overrides in linux-image-*-dbg for lintian 2.115
@@ -7,6 +8,10 @@ linux (5.19-1~exp2) UNRELEASED; urgency=medium
   * [hppa,mips,mipsel,powerpc] lintian: Override error for 64-bit kernels
   * [mips64el,mipsel,ppc64el] lintian: Override error for unstripped vmlinux
   * [arm64] lintian: Override errors for vdso32.so in linux-image-*-dbg
+
+  [ Vincent Blut ]
+  * [x86] drivers/hwmon: Enable SENSORS_ASUS_WMI and SENSORS_ASUS_EC as
+    modules
 
  -- Ben Hutchings <benh@debian.org>  Tue, 02 Aug 2022 19:18:50 +0200
 
