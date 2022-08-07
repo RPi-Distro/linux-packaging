@@ -26,7 +26,7 @@ CONFIG_MQ_IOSCHED_DEADLINE=m
 ##
 ## file: drivers/android/Kconfig
 ##
-# CONFIG_ANDROID is not set
+# CONFIG_ANDROID_BINDER_IPC is not set
 
 ##
 ## file: drivers/ata/Kconfig

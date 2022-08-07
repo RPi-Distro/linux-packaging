@@ -219,9 +219,7 @@ CONFIG_ACPI_HMAT=y
 ##
 ## file: drivers/android/Kconfig
 ##
-# CONFIG_ANDROID is not set
-CONFIG_ANDROID_BINDER_IPC=m
-#. This configuration should support Anbox
+# CONFIG_ANDROID_BINDER_IPC is not set
 CONFIG_ANDROID_BINDER_DEVICES="binder"
 # CONFIG_ANDROID_BINDER_IPC_SELFTEST is not set
 

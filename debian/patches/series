@@ -79,7 +79,8 @@ features/x86/x86-make-x32-syscall-support-conditional.patch
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
-bugfix/all/wireguard-ignore-config_android.patch
+bugfix/all/pm-sleep-add-pm_userspace_autosleep-kconfig.patch
+bugfix/all/remove-config_android.patch
 
 # Miscellaneous features
 

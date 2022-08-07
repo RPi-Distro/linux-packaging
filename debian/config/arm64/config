@@ -103,7 +103,7 @@ CONFIG_ACPI_NUMA=y
 ##
 ## file: drivers/android/Kconfig
 ##
-CONFIG_ANDROID=y
+CONFIG_ANDROID_BINDER_IPC=m
 
 ##
 ## file: drivers/ata/Kconfig
