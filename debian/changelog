@@ -145,6 +145,9 @@ linux (5.18.15-1) UNRELEASED; urgency=medium
     flavour
   * security: Add landlock and bpf to enabled LSM list (Closes: #999551)
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 4
+
  -- Ben Hutchings <benh@debian.org>  Fri, 29 Jul 2022 00:43:54 +0200
 
 linux (5.18.14-1) unstable; urgency=medium
