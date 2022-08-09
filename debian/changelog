@@ -238,6 +238,8 @@ linux (5.18.16-1) UNRELEASED; urgency=medium
   * netfilter: nf_tables: do not allow CHAIN_ID to refer to another table
   * netfilter: nf_tables: do not allow RULE_ID to refer to another chain
   * net_sched: cls_route: remove from list when handle is 0 (CVE-2022-2588)
+  * Revert "mm/shmem: unconditionally set pte dirty in mfill_atomic_install_pte"
+    (CVE-2022-2590)
 
  -- Ben Hutchings <benh@debian.org>  Fri, 29 Jul 2022 00:43:54 +0200
 
