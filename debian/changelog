@@ -235,6 +235,7 @@ linux (5.18.16-1) UNRELEASED; urgency=medium
     (CVE-2022-2585)
   * netfilter: nf_tables: do not allow SET_ID to refer to another table
     (CVE-2022-2586)
+  * netfilter: nf_tables: do not allow CHAIN_ID to refer to another table
 
  -- Ben Hutchings <benh@debian.org>  Fri, 29 Jul 2022 00:43:54 +0200
 
