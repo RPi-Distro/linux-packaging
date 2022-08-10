@@ -1,4 +1,4 @@
-linux (5.18.16-1) UNRELEASED; urgency=medium
+linux (5.18.16-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.18.15
@@ -241,7 +241,7 @@ linux (5.18.16-1) UNRELEASED; urgency=medium
   * Revert "mm/shmem: unconditionally set pte dirty in mfill_atomic_install_pte"
     (CVE-2022-2590)
 
- -- Ben Hutchings <benh@debian.org>  Fri, 29 Jul 2022 00:43:54 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 10 Aug 2022 20:11:48 +0200
 
 linux (5.18.14-1) unstable; urgency=medium
 
