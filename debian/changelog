@@ -24,6 +24,9 @@ linux (5.19.1-1~exp1) UNRELEASED; urgency=medium
   [ Diederik de Haas ]
   * [arm64] drivers/gpu/drm/rockchip: Explicitly enable ROCKCHIP_VOP
 
+  [ Helge Deller ]
+  * [hppa] Drop CONFIG_PATA_LEGACY for hppa architecture
+
  -- Ben Hutchings <benh@debian.org>  Tue, 02 Aug 2022 19:18:50 +0200
 
 linux (5.19-1~exp1) experimental; urgency=medium

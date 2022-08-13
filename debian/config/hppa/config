@@ -27,7 +27,6 @@ CONFIG_CRYPTO_MANAGER_DISABLE_TESTS=y
 ## file: drivers/ata/Kconfig
 ##
 CONFIG_PATA_NS87415=m
-CONFIG_PATA_LEGACY=m
 
 ##
 ## file: drivers/block/Kconfig
