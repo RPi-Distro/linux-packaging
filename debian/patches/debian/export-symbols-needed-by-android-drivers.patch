@@ -32,14 +32,14 @@ Export the currently un-exported symbols they depend on.
  /**
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -7010,6 +7010,7 @@ int can_nice(const struct task_struct *p
- 	return (nice_rlim <= task_rlimit(p, RLIMIT_NICE) ||
- 		capable(CAP_SYS_NICE));
+@@ -7026,6 +7026,7 @@ static bool is_nice_reduction(const stru
+ 
+ 	return (nice_rlim <= task_rlimit(p, RLIMIT_NICE));
  }
 +EXPORT_SYMBOL_GPL(can_nice);
  
- #ifdef __ARCH_WANT_SYS_NICE
- 
+ /*
+  * can_nice - check if a task can reduce its nice value
 --- a/kernel/sched/wait.c
 +++ b/kernel/sched/wait.c
 @@ -243,6 +243,7 @@ void __wake_up_pollfree(struct wait_queu
@@ -72,7 +72,7 @@ Export the currently un-exported symbols they depend on.
   * zap_page_range_single - remove user pages in a given range
 --- a/mm/shmem.c
 +++ b/mm/shmem.c
-@@ -4175,6 +4175,7 @@ int shmem_zero_setup(struct vm_area_stru
+@@ -4172,6 +4172,7 @@ int shmem_zero_setup(struct vm_area_stru
  
  	return 0;
  }
