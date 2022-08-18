@@ -24,7 +24,18 @@ obj-m += foo.o
 EOF
 
 arch="$(dpkg --print-architecture)"
-release="$(debian/bin/getconfig.py version abiname)-$(debian/bin/getconfig.py base $arch none quick-flavour || debian/bin/getconfig.py base $arch none default-flavour || debian/bin/getconfig.py base $arch default-flavour)"
+abiname="$(debian/bin/getconfig.py version abiname)"
+if flavour="$(debian/bin/getconfig.py base $arch none quick-flavour)"; then
+    echo "I: Found quick flavour $flavour"
+elif flavour="$(debian/bin/getconfig.py base $arch none default-flavour)"; then
+    echo "I: Found default flavour $flavour"
+elif flavour="$(debian/bin/getconfig.py base $arch default-flavour)"; then
+    echo "I: Found default flavour $flavour"
+else
+    echo >&2 "E: Failed to find quick or default flavour"
+    exit 1
+fi
+release="$abiname-$flavour"
 
 echo "I: Build for $release"
 # There are some warnings sent to stderr that we need to suppress,

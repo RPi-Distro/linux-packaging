@@ -1,6 +1,7 @@
 linux (5.18.16-2) UNRELEASED; urgency=medium
 
   * d/tests/kbuild: Fix default-flavour lookup for arches with no featuresets
+  * d/tests/kbuild: Make flavour lookup verbose
 
  -- Ben Hutchings <benh@debian.org>  Thu, 18 Aug 2022 20:56:33 +0200
 
