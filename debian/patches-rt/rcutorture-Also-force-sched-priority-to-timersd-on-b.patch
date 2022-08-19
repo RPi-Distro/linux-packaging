@@ -45,19 +45,19 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
 --- a/kernel/rcu/rcutorture.c
 +++ b/kernel/rcu/rcutorture.c
-@@ -3342,6 +3342,12 @@ rcu_torture_init(void)
- 				WARN_ON_ONCE(!t);
- 				sp.sched_priority = 2;
- 				sched_setscheduler_nocheck(t, SCHED_FIFO, &sp);
+@@ -2157,6 +2157,12 @@ static int rcutorture_booster_init(unsig
+ 		WARN_ON_ONCE(!t);
+ 		sp.sched_priority = 2;
+ 		sched_setscheduler_nocheck(t, SCHED_FIFO, &sp);
 +#ifdef CONFIG_PREEMPT_RT
-+				t = per_cpu(timersd, cpu);
-+				WARN_ON_ONCE(!t);
-+				sp.sched_priority = 2;
-+				sched_setscheduler_nocheck(t, SCHED_FIFO, &sp);
++		t = per_cpu(timersd, cpu);
++		WARN_ON_ONCE(!t);
++		sp.sched_priority = 2;
++		sched_setscheduler_nocheck(t, SCHED_FIFO, &sp);
 +#endif
- 			}
- 		}
  	}
+ 
+ 	/* Don't allow time recalculation while creating a new task. */
 --- a/kernel/softirq.c
 +++ b/kernel/softirq.c
 @@ -637,7 +637,7 @@ static inline void tick_irq_exit(void)

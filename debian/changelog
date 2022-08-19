@@ -28,6 +28,10 @@ linux (5.19.2-1~exp1) UNRELEASED; urgency=medium
   [ Helge Deller ]
   * [hppa] Drop CONFIG_PATA_LEGACY for hppa architecture
 
+  [ Salvatore Bonaccorso ]
+  * [rt] Refresh "rcutorture: Also force sched priority to timersd on boosting
+    test."
+
  -- Ben Hutchings <benh@debian.org>  Tue, 02 Aug 2022 19:18:50 +0200
 
 linux (5.19-1~exp1) experimental; urgency=medium
