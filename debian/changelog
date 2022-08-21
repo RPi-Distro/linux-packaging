@@ -33,6 +33,7 @@ linux (5.19.2-1~exp1) UNRELEASED; urgency=medium
     test."
   * Drop setting of CRYPTO_BLAKE2S
     crypto: blake2s shash module was removed upstream.
+  * [arm] arch/arm/crypto: Enable CRYPTO_BLAKE2S_ARM
 
  -- Ben Hutchings <benh@debian.org>  Tue, 02 Aug 2022 19:18:50 +0200
 
