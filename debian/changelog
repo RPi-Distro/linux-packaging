@@ -1,8 +1,9 @@
-linux (5.19.2-1~exp1) UNRELEASED; urgency=medium
+linux (5.19.3-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.1
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.2
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.3
 
   [ Ben Hutchings ]
   * d/lib/python/debian_linux, d/templates: Use variable for binary package
