@@ -22,6 +22,8 @@ linux (5.19.3-1~exp1) UNRELEASED; urgency=medium
   [ Vincent Blut ]
   * [x86] drivers/hwmon: Enable SENSORS_ASUS_WMI and SENSORS_ASUS_EC as
     modules
+  * [x86] drivers/platform/x86: Enable NVIDIA_WMI_EC_BACKLIGHT as module
+    (Closes: #1017972)
 
   [ Diederik de Haas ]
   * [arm64] drivers/gpu/drm/rockchip: Explicitly enable ROCKCHIP_VOP
