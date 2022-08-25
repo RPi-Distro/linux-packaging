@@ -124,6 +124,5 @@ bugfix/all/tools-bpf_jit_disasm-fix-compilation-error-with-new-binutils.patch
 bugfix/all/tools-bpftool-fix-compilation-error-with-new-binutils.patch
 bugfix/all/tools-perf-fix-build-without-libbfd.patch
 bugfix/all/tools-rtla-build-with-extra-c-ld-flags.patch
-bugfix/all/tools-rtla-fix-command-symlinks.patch
 
 # ABI maintenance
