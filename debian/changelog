@@ -24,6 +24,8 @@ linux (5.19.3-1~exp1) UNRELEASED; urgency=medium
     modules
   * [x86] drivers/platform/x86: Enable NVIDIA_WMI_EC_BACKLIGHT as module
     (Closes: #1017972)
+  * [arm64] drivers/spi: Enable SPI_GPIO and SPI_SUN6I as modules
+    (Closes: #1016807)
 
   [ Diederik de Haas ]
   * [arm64] drivers/gpu/drm/rockchip: Explicitly enable ROCKCHIP_VOP
