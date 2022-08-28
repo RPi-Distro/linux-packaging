@@ -3,6 +3,7 @@ linux (5.19.4-1~exp1) UNRELEASED; urgency=medium
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.1
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.2
+    - Revert "net: usb: ax88179_178a needs FLAG_SEND_ZLP" (Closes: #1017894)
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.3
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.4
 
