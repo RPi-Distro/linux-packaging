@@ -46,6 +46,8 @@ linux (5.19.5-1~exp1) UNRELEASED; urgency=medium
   * [x86] nospec: Fix i386 RSB stuffing (Closes: #1017425)
   * certs: Rotate to use the "Debian Secure Boot Signer 2022 - linux"
     certificate (Closes: #1018752)
+  * mm/gup: fix FOLL_FORCE COW security issue and remove FOLL_COW
+    (CVE-2022-2590)
 
  -- Ben Hutchings <benh@debian.org>  Tue, 02 Aug 2022 19:18:50 +0200
 
