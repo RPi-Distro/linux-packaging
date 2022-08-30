@@ -44,6 +44,8 @@ linux (5.19.5-1~exp1) UNRELEASED; urgency=medium
   * [arm] arch/arm/crypto: Enable CRYPTO_BLAKE2S_ARM
   * [x86] nospec: Unwreck the RSB stuffing
   * [x86] nospec: Fix i386 RSB stuffing (Closes: #1017425)
+  * certs: Rotate to use the "Debian Secure Boot Signer 2022 - linux"
+    certificate (Closes: #1018752)
 
  -- Ben Hutchings <benh@debian.org>  Tue, 02 Aug 2022 19:18:50 +0200
 
