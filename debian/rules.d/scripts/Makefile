@@ -14,6 +14,7 @@ DATA = \
 
 SCRIPTS =  \
 	checkincludes.pl \
+	check-local-export \
 	checkstack.pl \
 	checkversion.pl \
 	depmod.sh \
