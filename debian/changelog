@@ -1,4 +1,4 @@
-linux (5.19.6-1~exp1) UNRELEASED; urgency=medium
+linux (5.19.6-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.1
@@ -53,6 +53,7 @@ linux (5.19.6-1~exp1) UNRELEASED; urgency=medium
   * [arm] arch/arm/crypto: Enable CRYPTO_BLAKE2S_ARM
   * certs: Rotate to use the "Debian Secure Boot Signer 2022 - linux"
     certificate (Closes: #1018752)
+  * Set ABI to 1
 
  -- Ben Hutchings <benh@debian.org>  Tue, 02 Aug 2022 19:18:50 +0200
 
