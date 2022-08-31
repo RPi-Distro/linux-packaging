@@ -1,4 +1,4 @@
-linux (5.19.5-1~exp1) UNRELEASED; urgency=medium
+linux (5.19.6-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.1
@@ -7,6 +7,13 @@ linux (5.19.5-1~exp1) UNRELEASED; urgency=medium
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.3
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.4
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.5
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.6
+    - mm/gup: fix FOLL_FORCE COW security issue and remove FOLL_COW
+      (CVE-2022-2590)
+    - [x86] nospec: Unwreck the RSB stuffing
+    - [x86] nospec: Fix i386 RSB stuffing (Closes: #1017425)
+    - bpf: Don't use tnum_range on array range checking for poke descriptors
+      (CVE-2022-2905)
 
   [ Ben Hutchings ]
   * d/lib/python/debian_linux, d/templates: Use variable for binary package
@@ -42,12 +49,8 @@ linux (5.19.5-1~exp1) UNRELEASED; urgency=medium
   * Drop setting of CRYPTO_BLAKE2S
     crypto: blake2s shash module was removed upstream.
   * [arm] arch/arm/crypto: Enable CRYPTO_BLAKE2S_ARM
-  * [x86] nospec: Unwreck the RSB stuffing
-  * [x86] nospec: Fix i386 RSB stuffing (Closes: #1017425)
   * certs: Rotate to use the "Debian Secure Boot Signer 2022 - linux"
     certificate (Closes: #1018752)
-  * mm/gup: fix FOLL_FORCE COW security issue and remove FOLL_COW
-    (CVE-2022-2590)
 
  -- Ben Hutchings <benh@debian.org>  Tue, 02 Aug 2022 19:18:50 +0200
 
