@@ -5,7 +5,6 @@
 # CONFIG_PA7000 is not set
 CONFIG_PA8X00=y
 ## end choice
-CONFIG_64BIT=y
 CONFIG_SMP=y
 CONFIG_NR_CPUS=8
 

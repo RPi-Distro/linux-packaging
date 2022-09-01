@@ -55,6 +55,7 @@ linux (5.19.6-1) UNRELEASED; urgency=medium
   * certs: Rotate to use the "Debian Secure Boot Signer 2022 - linux"
     certificate (Closes: #1018752)
   * Set ABI to 1
+  * [hppa/parisc64] Drop explicit setting of 64BIT
 
  -- Ben Hutchings <benh@debian.org>  Tue, 02 Aug 2022 19:18:50 +0200
 
