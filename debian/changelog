@@ -52,6 +52,10 @@ linux (5.19.6-1~exp1) UNRELEASED; urgency=medium
   * certs: Rotate to use the "Debian Secure Boot Signer 2022 - linux"
     certificate (Closes: #1018752)
 
+  [ Didier Raboud ]
+  * d/lib/python/debian_linux: Add two more known fields to
+    {Source,Binary}Package
+
  -- Ben Hutchings <benh@debian.org>  Tue, 02 Aug 2022 19:18:50 +0200
 
 linux (5.19-1~exp1) experimental; urgency=medium
