@@ -8,6 +8,7 @@ linux (6.0~rc4-1~exp1) UNRELEASED; urgency=medium
   * [rt] Update to 6.0-rc4-rt6
   * Build-depend on python3-setuptools for linux-perf
   * udeb: Move ledtrig-audio from sound-modules to kernel-image
+  * d/bin/gencontrol_signed.py: Fix source package name in Built-Using field
 
  -- Ben Hutchings <ben@decadent.org.uk>  Tue, 06 Sep 2022 21:46:07 +0200
 
