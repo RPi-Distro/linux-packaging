@@ -79,8 +79,6 @@ features/x86/x86-make-x32-syscall-support-conditional.patch
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
-bugfix/all/pm-sleep-add-pm_userspace_autosleep-kconfig.patch
-bugfix/all/remove-config_android.patch
 
 # Miscellaneous features
 
@@ -117,12 +115,5 @@ bugfix/all/tools-perf-pmu-events-fix-reproducibility.patch
 bugfix/all/tools-include-uapi-fix-errno.h.patch
 bugfix/all/libapi-define-_fortify_source-as-2-not-empty.patch
 bugfix/all/tools-perf-fix-missing-ldflags-for-some-programs.patch
-bugfix/all/tools-build-add-feature-test-for-init_disassemble_info-api-changes.patch
-bugfix/all/tools-include-add-dis-asm-compat.h-to-handle-version-differences.patch
-bugfix/all/tools-perf-fix-compilation-error-with-new-binutils.patch
-bugfix/all/tools-bpf_jit_disasm-fix-compilation-error-with-new-binutils.patch
-bugfix/all/tools-bpftool-fix-compilation-error-with-new-binutils.patch
-bugfix/all/tools-perf-fix-build-without-libbfd.patch
-bugfix/all/tools-rtla-build-with-extra-c-ld-flags.patch
 
 # ABI maintenance
