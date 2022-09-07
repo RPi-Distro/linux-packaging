@@ -749,11 +749,6 @@ CONFIG_IR_GPIO_CIR=m
 CONFIG_IR_SUNXI=m
 
 ##
-## file: drivers/media/v4l2-core/Kconfig
-##
-CONFIG_VIDEO_V4L2_SUBDEV_API=y
-
-##
 ## file: drivers/memory/Kconfig
 ##
 CONFIG_TI_EMIF=m
