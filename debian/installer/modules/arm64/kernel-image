@@ -36,3 +36,6 @@ rockchip-io-domain ?
 
 # Pin controllers
 drivers/pinctrl/**
+
+# EFUSE/OTP drivers
+nvmem-imx-ocotp ?
