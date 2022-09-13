@@ -1,8 +1,10 @@
 import collections
 import collections.abc
+import functools
 import os.path
 import re
 import unittest
+import warnings
 
 from . import utils
 
@@ -546,7 +548,7 @@ class PackageRelationEntry(object):
     __slots__ = "name", "operator", "version", "arches", "restrictions"
 
     _re = re.compile(r'^(\S+)(?: \((<<|<=|=|!=|>=|>>)\s*([^)]+)\))?'
-                     r'(?: \[([^]]+)\])?(?: <([^>]+)>)?$')
+                     r'(?: \[([^]]+)\])?((?: <[^>]+>)*)$')
 
     class _operator(object):
         OP_LT = 1
@@ -607,7 +609,7 @@ class PackageRelationEntry(object):
         if self.arches:
             ret.extend((' [', ' '.join(self.arches), ']'))
         if self.restrictions:
-            ret.extend((' <', ' '.join(self.restrictions), '>'))
+            ret.extend((' ', str(self.restrictions)))
         return ''.join(ret)
 
     def parse(self, value):
@@ -625,10 +627,100 @@ class PackageRelationEntry(object):
             self.arches = re.split(r'\s+', match[3])
         else:
             self.arches = []
-        if match[4] is not None:
-            self.restrictions = re.split(r'\s+', match[4])
+        self.restrictions = PackageBuildRestrictFormula(match[4])
+
+
+class PackageBuildRestrictFormula(set):
+    _re = re.compile(r' *<([^>]+)>(?: +|$)')
+
+    def __init__(self, value=None):
+        if value:
+            self.update(value)
+
+    def __str__(self):
+        return ' '.join(f'<{i}>' for i in sorted(self))
+
+    def add(self, value):
+        if isinstance(value, str):
+            value = PackageBuildRestrictList(value)
+        elif not isinstance(value, PackageBuildRestrictList):
+            raise ValueError("got %s" % type(value))
+        super(PackageBuildRestrictFormula, self).add(value)
+
+    def update(self, value):
+        if isinstance(value, str):
+            pos = 0
+            for match in self._re.finditer(value):
+                if match.start() != pos:
+                    break
+                pos = match.end()
+            if pos != len(value):
+                raise ValueError(f'invalid restriction formula "{value}"')
+            value = (match.group(1) for match in self._re.finditer(value))
+        for i in value:
+            self.add(i)
+
+    # TODO: union etc.
+
+
+class PackageBuildRestrictList(frozenset):
+    # values are established in frozenset.__new__ not __init__, so we
+    # implement __new__ as well
+    def __new__(cls, value=()):
+        if isinstance(value, str):
+            if not re.fullmatch(r'[^()\[\]<>,]+', value):
+                raise ValueError(f'invalid restriction list "{value}"')
+            value = (PackageBuildRestrictTerm(i) for i in value.split())
         else:
-            self.restrictions = []
+            for i in value:
+                if not isinstance(i, PackageBuildRestrictTerm):
+                    raise ValueError
+        return super(PackageBuildRestrictList, cls).__new__(cls, value)
+
+    def __str__(self):
+        return ' '.join(str(i) for i in sorted(self))
+
+    # TODO: union etc.
+
+
+@functools.total_ordering
+class PackageBuildRestrictTerm(object):
+    def __init__(self, value):
+        if not isinstance(value, str):
+            raise ValueError
+        match = re.fullmatch(r'(!?)([^()\[\]<>,!\s]+)', value)
+        if not match:
+            raise ValueError(f'invalid restriction term "{value}"')
+        self.negated = bool(match.group(1))
+        self.profile = match.group(2)
+
+    def __str__(self):
+        return ('!' if self.negated else '') + self.profile
+
+    def __eq__(self, other):
+        return (self.negated == other.negated
+                and self.profile == other.profile)
+
+    def __lt__(self, other):
+        return (self.profile < other.profile
+                or (self.profile == other.profile
+                    and not self.negated and other.negated))
+
+    def __hash__(self):
+        return hash(self.profile) ^ int(self.negated)
+
+
+def restriction_requires_profile(form, profile):
+    # An empty restriction formula does not require any profile.
+    # Otherwise, a profile is required if each restriction list
+    # includes it without negation.
+    if len(form) == 0:
+        return False
+    term = PackageBuildRestrictTerm(profile)
+    for lst in form:
+        if term not in lst:
+            return False
+    return True
 
 
 class _ControlFileDict(dict):
@@ -638,6 +730,9 @@ class _ControlFileDict(dict):
             if not isinstance(value, cls):
                 value = cls(value)
         except KeyError:
+            warnings.warn(
+                f'setting unknown field { key } in { type(self).__name__ }',
+                stacklevel=2)
             pass
         super(_ControlFileDict, self).__setitem__(key, value)
 
@@ -659,9 +754,8 @@ class _ControlFileDict(dict):
             yield self[i]
 
 
-class Package(_ControlFileDict):
+class SourcePackage(_ControlFileDict):
     _fields = collections.OrderedDict((
-        ('Package', str),
         ('Source', str),
         ('Architecture', PackageArchitecture),
         ('Section', str),
@@ -672,6 +766,27 @@ class Package(_ControlFileDict):
         ('Build-Depends', PackageRelation),
         ('Build-Depends-Arch', PackageRelation),
         ('Build-Depends-Indep', PackageRelation),
+        ('Rules-Requires-Root', str),
+        ('Homepage', str),
+        ('Vcs-Browser', str),
+        ('Vcs-Git', str),
+    ))
+
+
+class BinaryPackage(_ControlFileDict):
+    _fields = collections.OrderedDict((
+        ('Package', str),
+        ('Package-Type', str),  # for udeb only
+        ('Architecture', PackageArchitecture),
+        ('Section', str),
+        ('Priority', str),
+        # Build-Depends* fields aren't allowed for binary packages in
+        # the real control file, but we move them to the source
+        # package
+        ('Build-Depends', PackageRelation),
+        ('Build-Depends-Arch', PackageRelation),
+        ('Build-Depends-Indep', PackageRelation),
+        ('Build-Profiles', PackageBuildRestrictFormula),
         ('Provides', PackageRelation),
         ('Pre-Depends', PackageRelation),
         ('Depends', PackageRelation),
@@ -680,6 +795,8 @@ class Package(_ControlFileDict):
         ('Replaces', PackageRelation),
         ('Breaks', PackageRelation),
         ('Conflicts', PackageRelation),
+        ('Multi-Arch', str),
+        ('Kernel-Version', str),  # for udeb only
         ('Description', PackageDescription),
     ))
 
@@ -688,6 +805,7 @@ class TestsControl(_ControlFileDict):
     _fields = collections.OrderedDict((
         ('Tests', str),
         ('Test-Command', str),
+        ('Architecture', PackageArchitecture),
         ('Restrictions', str),
         ('Features', str),
         ('Depends', PackageRelation),

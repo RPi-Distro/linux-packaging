@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
-import codecs
 import hashlib
-import io
 import json
 import os.path
 import re
@@ -34,7 +32,6 @@ class Gencontrol(Base):
 
         self.abiname = config_entry['abiname']
         self.vars = {
-            'template': 'linux-image-%s-signed-template' % arch,
             'upstreamversion': self.version.linux_upstream,
             'version': self.version.linux_version,
             'source_basename': re.sub(r'-[\d.]+$', '',
@@ -47,6 +44,8 @@ class Gencontrol(Base):
         }
         self.vars['source_suffix'] = \
             self.changelog[0].source[len(self.vars['source_basename']):]
+        self.vars['template'] = \
+            'linux-image%(source_suffix)s-%(arch)s-signed-template' % self.vars
 
         self.package_dir = 'debian/%(template)s' % self.vars
         self.template_top_dir = (self.package_dir
@@ -85,12 +84,9 @@ class Gencontrol(Base):
             kw_proc = subprocess.Popen(
                 ['kernel-wedge', 'gen-control', vars['abiname']],
                 stdout=subprocess.PIPE,
+                text=True,
                 env=kw_env)
-            if not isinstance(kw_proc.stdout, io.IOBase):
-                udeb_packages = read_control(io.open(kw_proc.stdout.fileno(),
-                                                     closefd=False))
-            else:
-                udeb_packages = read_control(io.TextIOWrapper(kw_proc.stdout))
+            udeb_packages = read_control(kw_proc.stdout)
             kw_proc.wait()
             if kw_proc.returncode != 0:
                 raise RuntimeError('kernel-wedge exited with code %d' %
@@ -156,6 +152,9 @@ class Gencontrol(Base):
                 raise RuntimeError("default-flavour %s for %s %s does not exist"
                                    % (self.default_flavour, arch, featureset))
 
+        self.quick_flavour = self.config.merge('base', arch, featureset) \
+                                        .get('quick-flavour')
+
     def do_flavour_setup(self, vars, makeflags, arch, featureset, flavour,
                          extra):
         super(Gencontrol, self).do_flavour_setup(vars, makeflags, arch,
@@ -175,8 +174,14 @@ class Gencontrol(Base):
 
     def do_flavour_packages(self, packages, makefile, arch, featureset,
                             flavour, vars, makeflags, extra):
-        if not (self.config.merge('build', arch, featureset, flavour)
-                .get('signed-code', False)):
+        config_build = self.config.merge('build', arch, featureset, flavour)
+        if not config_build.get('signed-code', False):
+            return
+
+        # In a quick build, only build the quick flavour (if any).
+        if 'pkg.linux.quick' in \
+           os.environ.get('DEB_BUILD_PROFILES', '').split() \
+           and flavour != self.quick_flavour:
             return
 
         image_suffix = '%(abiname)s%(localversion)s' % vars
@@ -189,19 +194,7 @@ class Gencontrol(Base):
             kconfig = f.readlines()
         assert 'CONFIG_EFI_STUB=y\n' in kconfig
         assert 'CONFIG_LOCK_DOWN_IN_EFI_SECURE_BOOT=y\n' in kconfig
-        cert_re = re.compile(r'CONFIG_SYSTEM_TRUSTED_KEYS="(.*)"$')
-        cert_file_name = None
-        for line in kconfig:
-            match = cert_re.match(line)
-            if match:
-                cert_file_name = match.group(1)
-                break
-        assert cert_file_name
-        if featureset != "none":
-            cert_file_name = os.path.join('debian/build/source_%s' %
-                                          featureset,
-                                          cert_file_name)
-
+        cert_file_name = config_build['trusted-certs']
         self.image_packages.append((image_suffix, image_package_name,
                                     cert_file_name))
 
@@ -269,6 +262,7 @@ class Gencontrol(Base):
         self.write_makefile(makefile,
                             name=(self.template_debian_dir + '/rules.gen'))
         self.write_files_json()
+        self.write_source_lintian_overrides()
 
     def write_changelog(self):
         # Copy the linux changelog, but:
@@ -282,17 +276,18 @@ class Gencontrol(Base):
             re.sub(r'\+b(\d+)$', r'.b\1',
                    re.sub(r'-', r'+', vars['imagebinaryversion']))
 
-        with codecs.open(self.template_debian_dir + '/changelog', 'w',
-                         'utf-8') as f:
+        with open(self.template_debian_dir + '/changelog', 'w',
+                  encoding='utf-8') as f:
             f.write(self.substitute('''\
-linux-signed-@arch@ (@signedsourceversion@) @distribution@; urgency=@urgency@
+linux-signed@source_suffix@-@arch@ (@signedsourceversion@) @distribution@; urgency=@urgency@
 
   * Sign kernel from @source@ @imagebinaryversion@
 
 ''',
                                     vars))
 
-            with codecs.open('debian/changelog', 'r', 'utf-8') as changelog_in:
+            with open('debian/changelog', 'r', encoding='utf-8') \
+                 as changelog_in:
                 # Ignore first two header lines
                 changelog_in.readline()
                 changelog_in.readline()
@@ -361,8 +356,16 @@ linux-signed-@arch@ (@signedsourceversion@) @distribution@; urgency=@urgency@
                 'files': package_files
             }
 
-        with codecs.open(self.template_top_dir + '/files.json', 'w') as f:
+        with open(self.template_top_dir + '/files.json', 'w') as f:
             json.dump(all_files, f)
+
+    def write_source_lintian_overrides(self):
+        os.makedirs(os.path.join(self.template_debian_dir, 'source'),
+                    exist_ok=True)
+        with open(os.path.join(self.template_debian_dir,
+                               'source/lintian-overrides'), 'w') as f:
+            f.write(self.substitute(self.templates['source.lintian-overrides'],
+                                    self.vars))
 
 
 if __name__ == '__main__':

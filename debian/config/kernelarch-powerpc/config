@@ -39,6 +39,12 @@ CONFIG_TAU=y
 # CONFIG_TAU_AVERAGE is not set
 
 ##
+## file: arch/powerpc/platforms/Kconfig.cputype
+##
+CONFIG_PPC_KUEP=y
+CONFIG_PPC_KUAP=y
+
+##
 ## file: arch/powerpc/platforms/52xx/Kconfig
 ##
 # CONFIG_PPC_LITE5200 is not set
@@ -57,12 +63,6 @@ CONFIG_TAU=y
 ## file: arch/powerpc/platforms/86xx/Kconfig
 ##
 # CONFIG_PPC_86xx is not set
-
-##
-## file: arch/powerpc/platforms/Kconfig.cputype
-##
-CONFIG_PPC_KUEP=y
-CONFIG_PPC_KUAP=y
 
 ##
 ## file: arch/powerpc/platforms/powermac/Kconfig
@@ -107,19 +107,12 @@ CONFIG_ATM_LANAI=m
 CONFIG_ATM_ENI=m
 # CONFIG_ATM_ENI_DEBUG is not set
 # CONFIG_ATM_ENI_TUNE_BURST is not set
-CONFIG_ATM_FIRESTREAM=m
-CONFIG_ATM_ZATM=m
-CONFIG_ATM_ZATM_DEBUG=y
 CONFIG_ATM_NICSTAR=m
 CONFIG_ATM_NICSTAR_USE_SUNI=y
 CONFIG_ATM_NICSTAR_USE_IDT77105=y
 CONFIG_ATM_IDT77252=m
 # CONFIG_ATM_IDT77252_DEBUG is not set
 # CONFIG_ATM_IDT77252_RCV_ALL is not set
-CONFIG_ATM_AMBASSADOR=m
-# CONFIG_ATM_AMBASSADOR_DEBUG is not set
-CONFIG_ATM_HORIZON=m
-# CONFIG_ATM_HORIZON_DEBUG is not set
 CONFIG_ATM_IA=m
 # CONFIG_ATM_IA_DEBUG is not set
 CONFIG_ATM_FORE200E_USE_TASKLET=y
@@ -132,7 +125,6 @@ CONFIG_ATM_HE=m
 ## file: drivers/block/Kconfig
 ##
 CONFIG_BLK_DEV_FD=m
-CONFIG_BLK_DEV_UMEM=m
 CONFIG_BLK_DEV_SX8=m
 CONFIG_CDROM_PKTCDVD=m
 CONFIG_CDROM_PKTCDVD_BUFFERS=8
@@ -365,8 +357,8 @@ CONFIG_PMAC_RACKMETER=m
 ##
 ## file: drivers/media/radio/Kconfig
 ##
-CONFIG_USB_DSBR=m
 CONFIG_RADIO_MAXIRADIO=m
+CONFIG_USB_DSBR=m
 
 ##
 ## file: drivers/misc/Kconfig
@@ -556,12 +548,9 @@ CONFIG_HIPPI=y
 ## file: drivers/net/wan/Kconfig
 ##
 CONFIG_WAN=y
-CONFIG_LANMEDIA=m
 CONFIG_PCI200SYN=m
 CONFIG_WANXL=m
 CONFIG_FARSYNC=m
-CONFIG_DLCI=m
-CONFIG_DLCI_MAX=8
 
 ##
 ## file: drivers/net/wireless/Kconfig
@@ -654,7 +643,6 @@ CONFIG_SCSI_BUSLOGIC=m
 CONFIG_SCSI_MYRB=m
 CONFIG_SCSI_MYRS=m
 CONFIG_SCSI_DMX3191D=m
-# CONFIG_SCSI_GDTH is not set
 CONFIG_SCSI_IPS=m
 # CONFIG_SCSI_INITIO is not set
 CONFIG_SCSI_INIA100=m
@@ -911,4 +899,3 @@ CONFIG_SND_HDA_INTEL=m
 ##
 CONFIG_SND_POWERMAC=m
 CONFIG_SND_POWERMAC_AUTO_DRC=y
-

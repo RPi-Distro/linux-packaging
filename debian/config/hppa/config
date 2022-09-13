@@ -27,13 +27,11 @@ CONFIG_CRYPTO_MANAGER_DISABLE_TESTS=y
 ## file: drivers/ata/Kconfig
 ##
 CONFIG_PATA_NS87415=m
-CONFIG_PATA_LEGACY=m
 
 ##
 ## file: drivers/block/Kconfig
 ##
 # CONFIG_BLK_DEV_FD is not set
-# CONFIG_BLK_DEV_UMEM is not set
 # CONFIG_BLK_DEV_SX8 is not set
 CONFIG_CDROM_PKTCDVD=m
 CONFIG_CDROM_PKTCDVD_BUFFERS=8
@@ -149,11 +147,6 @@ CONFIG_SERIO_RAW=m
 # CONFIG_INPUT_TOUCHSCREEN is not set
 
 ##
-## file: drivers/mfd/Kconfig
-##
-# CONFIG_AB3100_CORE is not set
-
-##
 ## file: drivers/mmc/Kconfig
 ##
 # CONFIG_MMC is not set
@@ -205,7 +198,6 @@ CONFIG_ADAPTEC_STARFIRE=m
 CONFIG_AMD8111_ETH=m
 # CONFIG_LANCE is not set
 CONFIG_PCMCIA_NMCLAN=m
-# CONFIG_NI65 is not set
 
 ##
 ## file: drivers/net/ethernet/broadcom/Kconfig
@@ -215,7 +207,7 @@ CONFIG_B44=m
 ##
 ## file: drivers/net/ethernet/cirrus/Kconfig
 ##
-CONFIG_CS89x0=m
+CONFIG_CS89x0_ISA=m
 
 ##
 ## file: drivers/net/ethernet/dec/tulip/Kconfig
@@ -414,7 +406,6 @@ CONFIG_RTC_DRV_GENERIC=y
 # CONFIG_SCSI_MYRB is not set
 # CONFIG_SCSI_MYRS is not set
 # CONFIG_SCSI_DMX3191D is not set
-# CONFIG_SCSI_GDTH is not set
 # CONFIG_SCSI_GENERIC_NCR5380 is not set
 # CONFIG_SCSI_IPS is not set
 CONFIG_SCSI_INITIO=m
@@ -544,6 +535,11 @@ CONFIG_SYSFS_SYSCALL=y
 ##
 ## file: lib/Kconfig.debug
 ##
+## choice: Debug information
+#. temporarily disable debug info: Required disk size exceeds our hppa buildd machines.
+CONFIG_DEBUG_INFO_NONE=y
+# CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT is not set
+## end choice
 CONFIG_DEBUG_STACKOVERFLOW=y
 # CONFIG_SOFTLOCKUP_DETECTOR is not set
 # CONFIG_HARDLOCKUP_DETECTOR is not set
@@ -553,7 +549,6 @@ CONFIG_DEBUG_STACKOVERFLOW=y
 ##
 ## choice: Memory model
 CONFIG_FLATMEM_MANUAL=y
-# CONFIG_DISCONTIGMEM_MANUAL is not set
 # CONFIG_SPARSEMEM_MANUAL is not set
 ## end choice
 
@@ -670,4 +665,3 @@ CONFIG_SND_HARMONY=m
 ## file: sound/pci/hda/Kconfig
 ##
 # CONFIG_SND_HDA_INTEL is not set
-

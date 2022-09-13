@@ -37,6 +37,22 @@ CONFIG_KERNEL_MODE_NEON=y
 # CONFIG_DEBUG_LL is not set
 
 ##
+## file: arch/arm/crypto/Kconfig
+##
+CONFIG_CRYPTO_SHA1_ARM_NEON=m
+CONFIG_CRYPTO_SHA1_ARM_CE=m
+CONFIG_CRYPTO_SHA2_ARM_CE=m
+CONFIG_CRYPTO_BLAKE2B_NEON=m
+CONFIG_CRYPTO_AES_ARM_BS=m
+CONFIG_CRYPTO_AES_ARM_CE=m
+CONFIG_CRYPTO_GHASH_ARM_CE=m
+CONFIG_CRYPTO_CRCT10DIF_ARM_CE=m
+CONFIG_CRYPTO_CRC32_ARM_CE=m
+CONFIG_CRYPTO_CHACHA20_NEON=m
+CONFIG_CRYPTO_NHPOLY1305_NEON=m
+CONFIG_CRYPTO_CURVE25519_NEON=m
+
+##
 ## file: arch/arm/mach-aspeed/Kconfig
 ##
 CONFIG_ARCH_ASPEED=y
@@ -83,6 +99,7 @@ CONFIG_ARCH_MESON=y
 ##
 CONFIG_ARCH_MMP=y
 CONFIG_MACH_MMP2_DT=y
+CONFIG_MACH_MMP3_DT=y
 
 ##
 ## file: arch/arm/mach-mvebu/Kconfig
@@ -101,6 +118,10 @@ CONFIG_MACH_DOVE=y
 CONFIG_OMAP_MUX=y
 # CONFIG_OMAP_MUX_DEBUG is not set
 CONFIG_OMAP_MUX_WARNINGS=y
+CONFIG_OMAP_32K_TIMER=y
+# CONFIG_OMAP_MPU_TIMER is not set
+CONFIG_OMAP_SERIAL_WAKE=y
+CONFIG_OMAP_RESET_CLOCKS=y
 
 ##
 ## file: arch/arm/mach-omap2/Kconfig
@@ -112,6 +133,9 @@ CONFIG_SOC_OMAP5=y
 CONFIG_SOC_AM33XX=y
 CONFIG_SOC_DRA7XX=y
 CONFIG_ARCH_OMAP2PLUS_TYPICAL=y
+CONFIG_POWER_AVS_OMAP=y
+CONFIG_POWER_AVS_OMAP_CLASS3=y
+# CONFIG_OMAP3_L2_AUX_SECURE_SAVE_RESTORE is not set
 CONFIG_SOC_OMAP3430=y
 CONFIG_SOC_TI81XX=y
 
@@ -123,7 +147,7 @@ CONFIG_ARCH_ROCKCHIP=y
 ##
 ## file: arch/arm/mach-socfpga/Kconfig
 ##
-CONFIG_ARCH_SOCFPGA=y
+CONFIG_ARCH_INTEL_SOCFPGA=y
 
 ##
 ## file: arch/arm/mach-stm32/Kconfig
@@ -141,7 +165,7 @@ CONFIG_ARCH_SUNXI=y
 CONFIG_ARCH_TEGRA=y
 
 ##
-## file: arch/arm/mach-vexpress/Kconfig
+## file: arch/arm/mach-versatile/Kconfig
 ##
 CONFIG_ARCH_VEXPRESS=y
 CONFIG_ARCH_VEXPRESS_CORTEX_A5_A9_ERRATA=y
@@ -158,20 +182,9 @@ CONFIG_ARM_THUMBEE=y
 CONFIG_CACHE_TAUROS2=y
 
 ##
-## file: arch/arm/plat-omap/Kconfig
-##
-CONFIG_POWER_AVS_OMAP=y
-CONFIG_POWER_AVS_OMAP_CLASS3=y
-CONFIG_OMAP_RESET_CLOCKS=y
-# CONFIG_OMAP_MPU_TIMER is not set
-CONFIG_OMAP_32K_TIMER=y
-# CONFIG_OMAP3_L2_AUX_SECURE_SAVE_RESTORE is not set
-CONFIG_OMAP_SERIAL_WAKE=y
-
-##
 ## file: drivers/android/Kconfig
 ##
-CONFIG_ANDROID=y
+CONFIG_ANDROID_BINDER_IPC=m
 
 ##
 ## file: drivers/ata/Kconfig
@@ -190,6 +203,11 @@ CONFIG_PATA_OF_PLATFORM=m
 ## file: drivers/auxdisplay/Kconfig
 ##
 CONFIG_ARM_CHARLCD=y
+
+##
+## file: drivers/bluetooth/Kconfig
+##
+CONFIG_BT_HCIUART=m
 
 ##
 ## file: drivers/bus/Kconfig
@@ -219,6 +237,7 @@ CONFIG_COMMON_CLK_SI5351=m
 CONFIG_COMMON_CLK_ASPEED=y
 CONFIG_COMMON_CLK_S2MPS11=m
 CONFIG_CLK_TWL6040=m
+CONFIG_COMMON_CLK_MMP2_AUDIO=m
 
 ##
 ## file: drivers/clk/bcm/Kconfig
@@ -255,6 +274,7 @@ CONFIG_ARM_EXYNOS_CPUIDLE=y
 ##
 ## file: drivers/crypto/Kconfig
 ##
+CONFIG_CRYPTO_DEV_OMAP=m
 CONFIG_CRYPTO_DEV_OMAP_SHAM=m
 CONFIG_CRYPTO_DEV_OMAP_AES=m
 
@@ -262,6 +282,11 @@ CONFIG_CRYPTO_DEV_OMAP_AES=m
 ## file: drivers/crypto/allwinner/Kconfig
 ##
 CONFIG_CRYPTO_DEV_SUN4I_SS=m
+
+##
+## file: drivers/crypto/caam/Kconfig
+##
+CONFIG_CRYPTO_DEV_FSL_CAAM=m
 
 ##
 ## file: drivers/crypto/marvell/Kconfig
@@ -336,6 +361,7 @@ CONFIG_FSI_OCC=m
 CONFIG_GPIOLIB=y
 CONFIG_GPIO_ASPEED=m
 CONFIG_GPIO_GENERIC_PLATFORM=m
+CONFIG_GPIO_MXC=m
 CONFIG_GPIO_PCA953X=m
 CONFIG_GPIO_PCA953X_IRQ=y
 CONFIG_GPIO_PCF857X=m
@@ -370,6 +396,7 @@ CONFIG_DRM_TI_TPD12S015=m
 ## file: drivers/gpu/drm/bridge/synopsys/Kconfig
 ##
 CONFIG_DRM_DW_HDMI_AHB_AUDIO=m
+CONFIG_DRM_DW_HDMI_I2S_AUDIO=m
 CONFIG_DRM_DW_HDMI_CEC=m
 
 ##
@@ -414,11 +441,6 @@ CONFIG_NOUVEAU_PLATFORM_DRIVER=y
 ## file: drivers/gpu/drm/omapdrm/Kconfig
 ##
 CONFIG_DRM_OMAP=m
-
-##
-## file: drivers/gpu/drm/omapdrm/dss/Kconfig
-##
-CONFIG_OMAP2_DSS=m
 CONFIG_OMAP2_DSS_VENC=y
 CONFIG_OMAP4_DSS_HDMI=y
 CONFIG_OMAP5_DSS_HDMI=y
@@ -429,6 +451,7 @@ CONFIG_OMAP2_DSS_DSI=y
 ## file: drivers/gpu/drm/panel/Kconfig
 ##
 CONFIG_DRM_PANEL_SIMPLE=m
+CONFIG_DRM_PANEL_EDP=m
 CONFIG_DRM_PANEL_ORISETECH_OTM8009A=m
 CONFIG_DRM_PANEL_RASPBERRYPI_TOUCHSCREEN=m
 CONFIG_DRM_PANEL_SONY_ACX565AKM=m
@@ -570,6 +593,15 @@ CONFIG_I2C_MUX_PINCTRL=m
 CONFIG_IIO=m
 
 ##
+## file: drivers/iio/adc/Kconfig
+##
+CONFIG_ASPEED_ADC=m
+CONFIG_EXYNOS_ADC=m
+CONFIG_ROCKCHIP_SARADC=m
+CONFIG_TI_AM335X_ADC=m
+CONFIG_TWL4030_MADC=m
+
+##
 ## file: drivers/input/keyboard/Kconfig
 ##
 CONFIG_KEYBOARD_GPIO=y
@@ -584,10 +616,12 @@ CONFIG_KEYBOARD_CROS_EC=m
 ## file: drivers/input/misc/Kconfig
 ##
 CONFIG_INPUT_MMA8450=m
+CONFIG_INPUT_TPS65218_PWRBUTTON=m
 CONFIG_INPUT_AXP20X_PEK=m
 CONFIG_INPUT_TWL4030_PWRBUTTON=m
 CONFIG_INPUT_TWL4030_VIBRA=m
 CONFIG_INPUT_TWL6040_VIBRA=m
+CONFIG_INPUT_RK805_PWRKEY=m
 CONFIG_INPUT_STPMIC1_ONKEY=m
 
 ##
@@ -627,7 +661,9 @@ CONFIG_TEGRA_IOMMU_SMMU=y
 ## file: drivers/leds/Kconfig
 ##
 CONFIG_LEDS_CLASS=y
+CONFIG_LEDS_ARIEL=m
 CONFIG_LEDS_LP5523=m
+CONFIG_LEDS_PCA963X=m
 CONFIG_LEDS_DA9052=m
 CONFIG_LEDS_PWM=m
 CONFIG_LEDS_TCA6507=m
@@ -648,27 +684,47 @@ CONFIG_BCM2835_MBOX=y
 ##
 ## file: drivers/media/Kconfig
 ##
-CONFIG_MEDIA_SUPPORT=y
 CONFIG_MEDIA_CONTROLLER=y
 
 ##
 ## file: drivers/media/platform/Kconfig
 ##
-CONFIG_VIDEO_ASPEED=m
-CONFIG_VIDEO_OMAP3=m
-CONFIG_VIDEO_CODA=m
-CONFIG_VIDEO_IMX_PXP=m
-CONFIG_VIDEO_TI_VPE=m
+CONFIG_VIDEO_MUX=m
 
 ##
-## file: drivers/media/platform/marvell-ccic/Kconfig
+## file: drivers/media/platform/aspeed/Kconfig
+##
+CONFIG_VIDEO_ASPEED=m
+
+##
+## file: drivers/media/platform/chips-media/Kconfig
+##
+CONFIG_VIDEO_CODA=m
+
+##
+## file: drivers/media/platform/marvell/Kconfig
 ##
 CONFIG_VIDEO_MMP_CAMERA=m
 
 ##
-## file: drivers/media/platform/omap/Kconfig
+## file: drivers/media/platform/nxp/Kconfig
+##
+CONFIG_VIDEO_IMX_PXP=m
+
+##
+## file: drivers/media/platform/ti/Kconfig
+##
+CONFIG_VIDEO_TI_VPE=m
+
+##
+## file: drivers/media/platform/ti/omap/Kconfig
 ##
 CONFIG_VIDEO_OMAP2_VOUT=m
+
+##
+## file: drivers/media/platform/ti/omap3isp/Kconfig
+##
+CONFIG_VIDEO_OMAP3=m
 
 ##
 ## file: drivers/media/radio/Kconfig
@@ -718,6 +774,7 @@ CONFIG_MFD_AXP20X_RSB=y
 # CONFIG_MFD_CROS_EC_DEV is not set
 CONFIG_MFD_DA9052_SPI=y
 CONFIG_MFD_DA9052_I2C=y
+CONFIG_MFD_ENE_KB3930=m
 CONFIG_MFD_MC13XXX_SPI=m
 CONFIG_MFD_MC13XXX_I2C=m
 CONFIG_MFD_MAX77686=y
@@ -797,9 +854,9 @@ CONFIG_MTD_NAND_SUNXI=m
 CONFIG_MTD_NAND_STM32_FMC2=m
 
 ##
-## file: drivers/mtd/spi-nor/controllers/Kconfig
+## file: drivers/mux/Kconfig
 ##
-CONFIG_SPI_ASPEED_SMC=m
+CONFIG_MUX_MMIO=m
 
 ##
 ## file: drivers/net/can/Kconfig
@@ -890,6 +947,11 @@ CONFIG_SUNDANCE=m
 ## file: drivers/net/ethernet/faraday/Kconfig
 ##
 CONFIG_FTGMAC100=m
+
+##
+## file: drivers/net/ethernet/freescale/Kconfig
+##
+CONFIG_FEC=m
 
 ##
 ## file: drivers/net/ethernet/intel/Kconfig
@@ -1034,6 +1096,7 @@ CONFIG_PHY_SUN9I_USB=m
 ##
 CONFIG_PHY_MVEBU_A38X_COMPHY=m
 CONFIG_PHY_PXA_USB=m
+CONFIG_PHY_MMP3_USB=m
 
 ##
 ## file: drivers/phy/rockchip/Kconfig
@@ -1076,8 +1139,9 @@ CONFIG_TWL4030_USB=m
 CONFIG_PINCTRL_AS3722=y
 CONFIG_PINCTRL_AXP209=m
 CONFIG_PINCTRL_MCP23S08=m
-CONFIG_PINCTRL_SINGLE=y
 CONFIG_PINCTRL_PALMAS=y
+CONFIG_PINCTRL_RK805=y
+CONFIG_PINCTRL_SINGLE=y
 
 ##
 ## file: drivers/pinctrl/aspeed/Kconfig
@@ -1254,6 +1318,7 @@ CONFIG_ARCH_TEGRA_124_SOC=y
 ## file: drivers/spi/Kconfig
 ##
 CONFIG_SPI=y
+CONFIG_SPI_ASPEED_SMC=m
 CONFIG_SPI_BCM2835=m
 CONFIG_SPI_BCM2835AUX=m
 CONFIG_SPI_GPIO=y
@@ -1280,6 +1345,12 @@ CONFIG_SPI_SLAVE=y
 CONFIG_STAGING_MEDIA=y
 
 ##
+## file: drivers/staging/media/imx/Kconfig
+##
+CONFIG_VIDEO_IMX_MEDIA=m
+CONFIG_VIDEO_IMX_CSI=m
+
+##
 ## file: drivers/staging/media/sunxi/Kconfig
 ##
 CONFIG_VIDEO_SUNXI=y
@@ -1303,6 +1374,7 @@ CONFIG_VIDEO_BCM2835=m
 ## file: drivers/thermal/Kconfig
 ##
 CONFIG_IMX_THERMAL=m
+CONFIG_SUN8I_THERMAL=m
 CONFIG_ROCKCHIP_THERMAL=m
 CONFIG_DOVE_THERMAL=m
 CONFIG_ARMADA_THERMAL=y
@@ -1418,7 +1490,6 @@ CONFIG_USB_ASPEED_VHUB=m
 CONFIG_USB_XHCI_MVEBU=m
 CONFIG_USB_XHCI_TEGRA=m
 CONFIG_USB_EHCI_HCD=m
-CONFIG_USB_EHCI_MXC=m
 CONFIG_USB_EHCI_HCD_OMAP=y
 CONFIG_USB_EHCI_TEGRA=m
 CONFIG_USB_EHCI_EXYNOS=m
@@ -1570,7 +1641,6 @@ CONFIG_SND_SOC_EUKREA_TLV320=m
 CONFIG_SND_SOC_IMX_ES8328=m
 CONFIG_SND_SOC_IMX_SGTL5000=m
 CONFIG_SND_SOC_IMX_SPDIF=m
-CONFIG_SND_SOC_IMX_MC13783=m
 
 ##
 ## file: sound/soc/generic/Kconfig
@@ -1584,6 +1654,16 @@ CONFIG_SND_AUDIO_GRAPH_CARD=m
 CONFIG_SND_KIRKWOOD_SOC=m
 
 ##
+## file: sound/soc/meson/Kconfig
+##
+CONFIG_SND_MESON_GX_SOUND_CARD=m
+
+##
+## file: sound/soc/pxa/Kconfig
+##
+CONFIG_SND_MMP_SOC_SSPA=m
+
+##
 ## file: sound/soc/rockchip/Kconfig
 ##
 CONFIG_SND_SOC_ROCKCHIP=m
@@ -1591,6 +1671,7 @@ CONFIG_SND_SOC_ROCKCHIP_I2S=m
 CONFIG_SND_SOC_ROCKCHIP_SPDIF=m
 CONFIG_SND_SOC_ROCKCHIP_MAX98090=m
 CONFIG_SND_SOC_ROCKCHIP_RT5645=m
+CONFIG_SND_SOC_RK3288_HDMI_ANALOG=m
 
 ##
 ## file: sound/soc/stm/Kconfig
@@ -1606,6 +1687,7 @@ CONFIG_SND_SOC_STM32_DFSDM=m
 CONFIG_SND_SUN4I_CODEC=m
 CONFIG_SND_SUN8I_CODEC=m
 CONFIG_SND_SUN8I_CODEC_ANALOG=m
+CONFIG_SND_SUN4I_I2S=m
 CONFIG_SND_SUN4I_SPDIF=m
 
 ##
@@ -1628,4 +1710,3 @@ CONFIG_SND_SOC_NOKIA_RX51=m
 CONFIG_SND_SOC_OMAP3_PANDORA=m
 CONFIG_SND_SOC_OMAP3_TWL4030=m
 CONFIG_SND_SOC_OMAP_ABE_TWL6040=m
-

@@ -23,7 +23,7 @@ Cc: linux-mtd@lists.infradead.org
 
 --- a/drivers/mtd/devices/phram.c
 +++ b/drivers/mtd/devices/phram.c
-@@ -294,7 +294,11 @@ static int phram_param_call(const char *
+@@ -364,7 +364,11 @@ static int phram_param_call(const char *
  #endif
  }
  
@@ -33,9 +33,9 @@ Cc: linux-mtd@lists.infradead.org
 +};
 +__module_param_call(MODULE_PARAM_PREFIX, phram, &phram_param_ops, NULL,
 +		    0200, -1, KERNEL_PARAM_FL_HWPARAM | hwparam_iomem);
- MODULE_PARM_DESC(phram, "Memory region to map. \"phram=<name>,<start>,<length>\"");
+ MODULE_PARM_DESC(phram, "Memory region to map. \"phram=<name>,<start>,<length>[,<erasesize>]\"");
  
- 
+ #ifdef CONFIG_OF
 --- a/drivers/mtd/devices/slram.c
 +++ b/drivers/mtd/devices/slram.c
 @@ -43,6 +43,7 @@

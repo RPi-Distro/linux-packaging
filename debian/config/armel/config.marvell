@@ -238,17 +238,13 @@ CONFIG_MV_XOR=y
 # CONFIG_DRM is not set
 
 ##
-## file: drivers/gpu/vga/Kconfig
-##
-# CONFIG_VGA_ARB is not set
-
-##
 ## file: drivers/hwmon/Kconfig
 ##
 CONFIG_HWMON=m
 CONFIG_SENSORS_G760A=m
 CONFIG_SENSORS_G762=m
 CONFIG_SENSORS_GPIO_FAN=m
+CONFIG_SENSORS_LM63=m
 CONFIG_SENSORS_LM75=m
 
 ##
@@ -420,11 +416,6 @@ CONFIG_MTD_OF_PARTS=m
 # CONFIG_MTD_REDBOOT_PARTS is not set
 
 ##
-## file: drivers/mtd/spi-nor/Kconfig
-##
-CONFIG_MTD_SPI_NOR=m
-
-##
 ## file: drivers/net/arcnet/Kconfig
 ##
 # CONFIG_ARCNET is not set
@@ -502,6 +493,7 @@ CONFIG_MWIFIEX_SDIO=m
 ## file: drivers/pci/Kconfig
 ##
 CONFIG_PCI=y
+# CONFIG_VGA_ARB is not set
 
 ##
 ## file: drivers/pci/controller/Kconfig
@@ -726,11 +718,14 @@ CONFIG_NLS=m
 ## choice: Compiler optimization level
 CONFIG_CC_OPTIMIZE_FOR_SIZE=y
 ## end choice
-# CONFIG_USERFAULTFD is not set
-# CONFIG_SLUB_DEBUG is not set
-# CONFIG_SLAB_FREELIST_HARDENED is not set
 # CONFIG_PROFILING is not set
 # CONFIG_MODULE_SIG is not set
+
+##
+## file: kernel/bpf/Kconfig
+##
+#. Saves about 3K
+# CONFIG_BPF_JIT is not set
 
 ##
 ## file: kernel/power/Kconfig
@@ -755,25 +750,25 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
 ##
 ## file: mm/Kconfig
 ##
+# CONFIG_ZSWAP is not set
+# CONFIG_SLAB_FREELIST_HARDENED is not set
 ## choice: Memory model
 CONFIG_FLATMEM_MANUAL=y
-# CONFIG_DISCONTIGMEM_MANUAL is not set
 # CONFIG_SPARSEMEM_MANUAL is not set
 ## end choice
 # CONFIG_KSM is not set
-# CONFIG_ZSWAP is not set
+# CONFIG_USERFAULTFD is not set
 
 ##
 ## file: mm/Kconfig.debug
 ##
 # CONFIG_PAGE_EXTENSION is not set
+# CONFIG_SLUB_DEBUG is not set
 # CONFIG_PAGE_POISONING is not set
 
 ##
 ## file: net/Kconfig
 ##
-#. Saves about 3K
-# CONFIG_BPF_JIT is not set
 # CONFIG_BPF_STREAM_PARSER is not set
 # CONFIG_LWTUNNEL is not set
 
@@ -853,4 +848,3 @@ CONFIG_SND_KIRKWOOD_SOC=m
 # CONFIG_RD_LZMA is not set
 # CONFIG_RD_LZO is not set
 # CONFIG_RD_LZ4 is not set
-

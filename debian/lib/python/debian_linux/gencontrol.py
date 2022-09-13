@@ -1,10 +1,10 @@
-import codecs
 import os
 import re
 from collections import OrderedDict
 
-from .debian import Changelog, PackageArchitecture, PackageDescription, \
-    PackageRelation, Version
+from .debian import Changelog, PackageArchitecture, \
+    PackageBuildRestrictFormula, PackageBuildRestrictList, \
+    PackageBuildRestrictTerm, PackageDescription, PackageRelation, Version
 
 
 class PackagesList(OrderedDict):
@@ -355,6 +355,8 @@ class Gencontrol(object):
     # bug presubj message and lintian overrides
     def substitute_debhelper_config(self, prefix, vars, package_name,
                                     output_dir='debian'):
+        vars = vars.copy()
+        vars['package'] = package_name
         for id in ['bug-presubj', 'lintian-overrides', 'maintscript',
                    'postinst', 'postrm', 'preinst', 'prerm']:
             name = '%s.%s' % (prefix, id)
@@ -386,9 +388,7 @@ class Gencontrol(object):
                     if package["Architecture"] != arch_all and not item.arches:
                         item.arches = sorted(package["Architecture"])
                     if package.get("Build-Profiles") and not item.restrictions:
-                        profiles = package["Build-Profiles"]
-                        assert profiles[0] == "<" and profiles[-1] == ">"
-                        item.restrictions = re.split(r"\s+", profiles[1:-1])
+                        item.restrictions = package["Build-Profiles"]
             if package["Architecture"] == arch_all:
                 dep_type = "Build-Depends-Indep"
             else:
@@ -402,7 +402,7 @@ class Gencontrol(object):
         self.write_makefile(makefile)
 
     def write_control(self, list, name='debian/control'):
-        self.write_rfc822(codecs.open(name, 'w', 'utf-8'), list)
+        self.write_rfc822(open(name, 'w', encoding='utf-8'), list)
 
     def write_makefile(self, makefile, name='debian/rules.gen'):
         f = open(name, 'w')
@@ -435,3 +435,14 @@ def merge_packages(packages, new, arch):
         else:
             new_package['Architecture'] = arch
             packages.append(new_package)
+
+
+def add_package_build_restriction(package, term):
+    if not isinstance(term, PackageBuildRestrictTerm):
+        term = PackageBuildRestrictTerm(term)
+    old_form = package['Build-Profiles']
+    new_form = PackageBuildRestrictFormula()
+    for old_list in old_form:
+        new_list = PackageBuildRestrictList(list(old_list) + [term])
+        new_form.add(new_list)
+    package['Build-Profiles'] = new_form

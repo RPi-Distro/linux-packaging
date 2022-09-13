@@ -166,22 +166,6 @@ CONFIG_CONNECTOR=m
 # CONFIG_I2C is not set
 
 ##
-## file: drivers/ide/Kconfig
-##
-CONFIG_IDE=m
-# CONFIG_BLK_DEV_IDE_SATA is not set
-CONFIG_BLK_DEV_IDECS=m
-CONFIG_BLK_DEV_IDECD=m
-CONFIG_BLK_DEV_IDETAPE=m
-CONFIG_IDE_GENERIC=m
-CONFIG_BLK_DEV_PLATFORM=m
-CONFIG_BLK_DEV_GAYLE=m
-CONFIG_BLK_DEV_BUDDHA=m
-CONFIG_BLK_DEV_FALCON_IDE=m
-CONFIG_BLK_DEV_MAC_IDE=m
-CONFIG_BLK_DEV_Q40IDE=m
-
-##
 ## file: drivers/iio/Kconfig
 ##
 # CONFIG_IIO is not set
@@ -515,11 +499,6 @@ CONFIG_MVME16x_SCSI=m
 CONFIG_BVME6000_SCSI=m
 
 ##
-## file: drivers/scsi/ufs/Kconfig
-##
-# CONFIG_SCSI_UFSHCD is not set
-
-##
 ## file: drivers/spi/Kconfig
 ##
 # CONFIG_SPI is not set
@@ -557,6 +536,11 @@ CONFIG_SERIAL_8250_CS=m
 CONFIG_SERIAL_8250_NR_UARTS=4
 CONFIG_SERIAL_8250_RUNTIME_UARTS=4
 # CONFIG_SERIAL_8250_EXTENDED is not set
+
+##
+## file: drivers/ufs/Kconfig
+##
+# CONFIG_SCSI_UFSHCD is not set
 
 ##
 ## file: drivers/usb/Kconfig
@@ -617,6 +601,12 @@ CONFIG_FB_ATY=y
 CONFIG_ZORRO_NAMES=y
 
 ##
+## file: fs/Kconfig.binfmt
+##
+CONFIG_BINFMT_ELF=y
+CONFIG_BINFMT_MISC=m
+
+##
 ## file: fs/adfs/Kconfig
 ##
 # CONFIG_ADFS_FS is not set
@@ -635,12 +625,6 @@ CONFIG_ZORRO_NAMES=y
 ## file: fs/bfs/Kconfig
 ##
 # CONFIG_BFS_FS is not set
-
-##
-## file: fs/Kconfig.binfmt
-##
-CONFIG_BINFMT_ELF=y
-CONFIG_BINFMT_MISC=m
 
 ##
 ## file: fs/ceph/Kconfig
@@ -715,7 +699,6 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
 ## end choice
 CONFIG_SGETMASK_SYSCALL=y
 CONFIG_SYSFS_SYSCALL=y
-CONFIG_COMPAT_BRK=y
 # CONFIG_MODULE_SIG is not set
 
 ##
@@ -746,6 +729,7 @@ CONFIG_FONT_PEARL_8x8=y
 ##
 ## file: mm/Kconfig
 ##
+CONFIG_COMPAT_BRK=y
 # CONFIG_COMPACTION is not set
 # CONFIG_MIGRATION is not set
 # CONFIG_KSM is not set
@@ -852,11 +836,6 @@ CONFIG_IPV6=m
 # CONFIG_TIPC is not set
 
 ##
-## file: net/wimax/Kconfig
-##
-# CONFIG_WIMAX is not set
-
-##
 ## file: net/wireless/Kconfig
 ##
 # CONFIG_CFG80211 is not set
@@ -878,4 +857,3 @@ CONFIG_IPV6=m
 CONFIG_DMASOUND_ATARI=m
 CONFIG_DMASOUND_PAULA=m
 CONFIG_DMASOUND_Q40=m
-

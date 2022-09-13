@@ -2,7 +2,6 @@
 
 import sys
 import locale
-import io
 import os
 import os.path
 import subprocess
@@ -10,9 +9,10 @@ import re
 
 from debian_linux import config
 from debian_linux.debian import PackageDescription, PackageRelation, \
-    PackageRelationEntry, PackageRelationGroup, VersionLinux
+    PackageRelationEntry, PackageRelationGroup, VersionLinux, \
+    restriction_requires_profile
 from debian_linux.gencontrol import Gencontrol as Base, merge_packages, \
-    iter_featuresets, iter_flavours
+    iter_featuresets, iter_flavours, add_package_build_restriction
 from debian_linux.utils import Templates, read_control
 
 locale.setlocale(locale.LC_CTYPE, "C.UTF-8")
@@ -24,7 +24,6 @@ class Gencontrol(Base):
             'ignore-changes': config.SchemaItemList(),
         },
         'build': {
-            'debug-info': config.SchemaItemBoolean(),
             'signed-code': config.SchemaItemBoolean(),
             'vdso': config.SchemaItemBoolean(),
         },
@@ -59,7 +58,6 @@ class Gencontrol(Base):
     }
 
     env_flags = [
-        ('DEBIAN_KERNEL_DISABLE_DEBUG', 'disable_debug', 'debug infos'),
         ('DEBIAN_KERNEL_DISABLE_INSTALLER', 'disable_installer', 'installer modules'),
         ('DEBIAN_KERNEL_DISABLE_SIGNED', 'disable_signed', 'signed code'),
     ]
@@ -104,6 +102,7 @@ class Gencontrol(Base):
         self.tests_control = self.process_packages(
             self.templates['tests-control.main'], vars)
         self.tests_control_image = None
+        self.tests_control_headers = None
 
         self.installer_packages = {}
 
@@ -115,12 +114,9 @@ class Gencontrol(Base):
             kw_proc = subprocess.Popen(
                 ['kernel-wedge', 'gen-control', vars['abiname']],
                 stdout=subprocess.PIPE,
+                text=True,
                 env=kw_env)
-            if not isinstance(kw_proc.stdout, io.IOBase):
-                udeb_packages = read_control(io.open(kw_proc.stdout.fileno(),
-                                                     closefd=False))
-            else:
-                udeb_packages = read_control(io.TextIOWrapper(kw_proc.stdout))
+            udeb_packages = read_control(kw_proc.stdout)
             kw_proc.wait()
             if kw_proc.returncode != 0:
                 raise RuntimeError('kernel-wedge exited with code %d' %
@@ -200,13 +196,6 @@ class Gencontrol(Base):
         if self.config.merge('packages').get('tools-versioned', True):
             packages.extend(self.process_packages(
                 self.templates["control.tools-versioned"], vars))
-            self.substitute_debhelper_config('perf', vars,
-                                              'linux-perf-%(version)s' % vars)
-            if do_meta:
-                packages.extend(self.process_packages(
-                    self.templates["control.tools-versioned.meta"], vars))
-                self.substitute_debhelper_config('perf.meta', vars,
-                                                  'linux-perf')
         if self.config.merge('packages').get('source', True):
             packages.extend(self.process_packages(
                 self.templates["control.sourcebin"], vars))
@@ -254,16 +243,16 @@ class Gencontrol(Base):
         self._setup_makeflags(self.arch_makeflags, makeflags, config_base)
 
         try:
-            gnu_type_bytes = subprocess.check_output(
+            gnu_type = subprocess.check_output(
                 ['dpkg-architecture', '-f', '-a', arch,
                  '-q', 'DEB_HOST_GNU_TYPE'],
-                stderr=subprocess.DEVNULL)
+                stderr=subprocess.DEVNULL,
+                encoding='utf-8')
         except subprocess.CalledProcessError:
             # This sometimes happens for the newest ports :-/
             print('W: Unable to get GNU type for %s' % arch, file=sys.stderr)
         else:
-            vars['gnu-type-package'] = (
-                gnu_type_bytes.decode('utf-8').strip().replace('_', '-'))
+            vars['gnu-type-package'] = gnu_type.strip().replace('_', '-')
 
     def do_arch_packages(self, packages, makefile, arch, vars, makeflags,
                          extra):
@@ -346,6 +335,9 @@ class Gencontrol(Base):
                 raise RuntimeError("default-flavour %s for %s %s does not exist"
                                    % (self.default_flavour, arch, featureset))
 
+        self.quick_flavour = self.config.merge('base', arch, featureset) \
+                                        .get('quick-flavour')
+
     flavour_makeflags_base = (
         ('compiler', 'COMPILER', False),
         ('compiler-filename', 'COMPILER', True),
@@ -424,8 +416,10 @@ class Gencontrol(Base):
             self.substitute(config_entry_relations.get('headers%' + compiler)
                             or config_entry_relations.get(compiler), vars))
         relations_compiler_headers = PackageRelation(
-            PackageRelationGroup(entry for entry in group
-                                 if 'cross' not in entry.restrictions)
+            PackageRelationGroup(
+                entry for entry in group
+                if not restriction_requires_profile(entry.restrictions,
+                                                    'cross'))
             for group in relations_compiler_headers)
         for group in relations_compiler_headers:
             for entry in group:
@@ -543,21 +537,19 @@ class Gencontrol(Base):
         if config_entry_build.get('vdso', False):
             makeflags['VDSO'] = True
 
-        if not self.disable_debug:
-            build_debug = config_entry_build.get('debug-info')
-        else:
-            build_debug = False
-
-        if build_debug:
-            makeflags['DEBUG'] = True
+        packages_own.extend(self.process_packages(
+            self.templates['control.image-dbg'], vars))
+        if do_meta:
             packages_own.extend(self.process_packages(
-                self.templates['control.image-dbg'], vars))
-            if do_meta:
-                packages_own.extend(self.process_packages(
-                    self.templates["control.image-dbg.meta"], vars))
-                self.substitute_debhelper_config(
-                    'image-dbg.meta', vars,
-                    'linux-image%(localversion)s-dbg' % vars)
+                self.templates["control.image-dbg.meta"], vars))
+            self.substitute_debhelper_config(
+                'image-dbg.meta', vars,
+                'linux-image%(localversion)s-dbg' % vars)
+
+        # In a quick build, only build the quick flavour (if any).
+        if flavour != self.quick_flavour:
+            for package in packages_own:
+                add_package_build_restriction(package, '!pkg.linux.quick')
 
         merge_packages(packages, packages_own, arch)
 
@@ -572,6 +564,16 @@ class Gencontrol(Base):
         else:
             self.tests_control_image = tests_control
             self.tests_control.append(tests_control)
+
+        if flavour == (self.quick_flavour or self.default_flavour):
+            if not self.tests_control_headers:
+                self.tests_control_headers = self.process_package(
+                    self.templates['tests-control.headers'][0], vars)
+                self.tests_control.append(self.tests_control_headers)
+            self.tests_control_headers['Architecture'].add(arch)
+            self.tests_control_headers['Depends'].append(
+                PackageRelationGroup(package_headers['Package'],
+                                     override_arches=(arch,)))
 
         def get_config(*entry_name):
             entry_real = ('image',) + entry_name
@@ -608,9 +610,9 @@ class Gencontrol(Base):
             return check_config_files(configs)
 
         kconfig = check_config('config', True)
-        kconfig.extend(check_config("kernelarch-%s/config" %
-                                    config_entry_base['kernel-arch'],
-                                    False))
+        # XXX: We have no way to override kernelarch-X configs
+        kconfig.extend(check_config_default(False,
+                       "kernelarch-%s/config" % config_entry_base['kernel-arch']))
         kconfig.extend(check_config("%s/config" % arch, True, arch))
         kconfig.extend(check_config("%s/config.%s" % (arch, flavour), False,
                                     arch, None, flavour))
@@ -623,13 +625,14 @@ class Gencontrol(Base):
                                     arch, featureset, flavour))
         makeflags['KCONFIG'] = ' '.join(kconfig)
         makeflags['KCONFIG_OPTIONS'] = ''
-        if build_debug:
-            makeflags['KCONFIG_OPTIONS'] += ' -o DEBUG_INFO=y'
         if build_signed:
-            makeflags['KCONFIG_OPTIONS'] += ' -o MODULE_SIG=y'
+            makeflags['KCONFIG_OPTIONS'] += ' -o SECURITY_LOCKDOWN_LSM=y -o MODULE_SIG=y'
         # Add "salt" to fix #872263
         makeflags['KCONFIG_OPTIONS'] += \
             ' -o "BUILD_SALT=\\"%(abiname)s%(localversion)s\\""' % vars
+        if config_entry_build.get('trusted-certs'):
+            makeflags['KCONFIG_OPTIONS'] += \
+                f' -o "SYSTEM_TRUSTED_KEYS=\\"${{CURDIR}}/{config_entry_build["trusted-certs"]}\\""'
 
         cmds_binary_arch = ["$(MAKE) -f debian/rules.real binary-arch-flavour "
                             "%s" %
@@ -655,10 +658,9 @@ class Gencontrol(Base):
             'headers', vars,
             'linux-headers-%(abiname)s%(localversion)s' % vars)
         self.substitute_debhelper_config('image', vars, image_main['Package'])
-        if build_debug:
-            self.substitute_debhelper_config(
-                'image-dbg', vars,
-                'linux-image-%(abiname)s%(localversion)s-dbg' % vars)
+        self.substitute_debhelper_config(
+            'image-dbg', vars,
+            'linux-image-%(abiname)s%(localversion)s-dbg' % vars)
 
     def process_changelog(self):
         version = self.version = self.changelog[0].version

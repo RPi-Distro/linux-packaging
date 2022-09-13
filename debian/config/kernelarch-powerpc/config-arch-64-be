@@ -1,6 +1,7 @@
 ##
 ## file: arch/powerpc/Kconfig
 ##
+CONFIG_COMPAT=y
 CONFIG_CMDLINE="console=hvsi0 console=hvc0 console=ttyS0,9600 console=tty0"
 
 ##
@@ -108,4 +109,3 @@ CONFIG_SYSFS_SYSCALL=y
 ##
 CONFIG_SND_PS3=m
 CONFIG_SND_PS3_DEFAULT_START_DELAY=2000
-

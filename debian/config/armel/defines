@@ -13,15 +13,15 @@ uncompressed-image-file: arch/arm/boot/Image
 install-stem: vmlinuz
 
 [relations]
-headers%gcc-10: linux-compiler-gcc-10-arm
+headers%gcc-11: linux-compiler-gcc-11-arm
 
 [marvell_description]
 hardware: Marvell Kirkwood/Orion
 hardware-long: Marvell Kirkwood and Orion based systems (https://wiki.debian.org/ArmEabiPort#Supported_hardware)
 
 [rpi_description]
-hardware: Raspberry Pi and Pi Zero
-hardware-long: Raspberry Pi, Raspberry Pi Zero based systems
+hardware: Raspberry Pi Zero, Zero W and 1
+hardware-long: Raspberry Pi Zero, Zero W and 1 based systems
 
 [marvell_image]
 recommends: u-boot-tools

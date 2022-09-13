@@ -7,12 +7,23 @@ CONFIG_SECCOMP=y
 ## file: arch/riscv/Kconfig
 ##
 CONFIG_SMP=y
+CONFIG_NUMA=y
+CONFIG_KEXEC=y
+# CONFIG_COMPAT is not set
 
 ##
 ## file: arch/riscv/Kconfig.socs
 ##
+CONFIG_SOC_MICROCHIP_POLARFIRE=y
 CONFIG_SOC_SIFIVE=y
+CONFIG_SOC_STARFIVE=y
 CONFIG_SOC_VIRT=y
+
+##
+## file: arch/riscv/kvm/Kconfig
+##
+CONFIG_VIRTUALIZATION=y
+CONFIG_KVM=m
 
 ##
 ## file: drivers/ata/Kconfig
@@ -32,6 +43,27 @@ CONFIG_DRM=m
 CONFIG_DRM_RADEON=m
 
 ##
+## file: drivers/hwmon/Kconfig
+##
+CONFIG_SENSORS_LM90=m
+
+##
+## file: drivers/i2c/busses/Kconfig
+##
+CONFIG_I2C_DESIGNWARE_PLATFORM=m
+
+##
+## file: drivers/input/misc/Kconfig
+##
+CONFIG_INPUT_DA9063_ONKEY=m
+
+##
+## file: drivers/mfd/Kconfig
+##
+CONFIG_MFD_DA9063=m
+CONFIG_MFD_TPS65086=m
+
+##
 ## file: drivers/mmc/Kconfig
 ##
 CONFIG_MMC=m
@@ -39,6 +71,8 @@ CONFIG_MMC=m
 ##
 ## file: drivers/mmc/host/Kconfig
 ##
+CONFIG_MMC_SDHCI_PLTFM=m
+CONFIG_MMC_SDHCI_CADENCE=m
 CONFIG_MMC_SPI=m
 
 ##
@@ -56,6 +90,13 @@ CONFIG_PCI=y
 ##
 CONFIG_PCI_HOST_GENERIC=y
 CONFIG_PCIE_XILINX=y
+CONFIG_PCIE_MICROCHIP_HOST=y
+
+##
+## file: drivers/pci/controller/dwc/Kconfig
+##
+CONFIG_PCIE_DW_PLAT_HOST=y
+CONFIG_PCIE_FU740=y
 
 ##
 ## file: drivers/power/reset/Kconfig
@@ -70,6 +111,17 @@ CONFIG_POWER_RESET_RESTART=y
 ##
 CONFIG_PWM=y
 CONFIG_PWM_SIFIVE=m
+
+##
+## file: drivers/regulator/Kconfig
+##
+CONFIG_REGULATOR_DA9063=m
+CONFIG_REGULATOR_TPS65086=m
+
+##
+## file: drivers/rtc/Kconfig
+##
+CONFIG_RTC_DRV_DA9063=m
 
 ##
 ## file: drivers/soc/sifive/Kconfig
@@ -96,6 +148,7 @@ CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
 ##
 CONFIG_SERIAL_8250=y
 CONFIG_SERIAL_8250_CONSOLE=y
+CONFIG_SERIAL_8250_DW=y
 CONFIG_SERIAL_OF_PLATFORM=y
 
 ##
@@ -112,3 +165,7 @@ CONFIG_USB_EHCI_HCD_PLATFORM=m
 CONFIG_USB_OHCI_HCD=m
 CONFIG_USB_OHCI_HCD_PLATFORM=m
 
+##
+## file: drivers/watchdog/Kconfig
+##
+CONFIG_DA9063_WATCHDOG=m

@@ -1,9 +1,11 @@
 [abi]
-abiname: trunk
+abiname: 1
 ignore-changes:
  __cpuhp_*
  __udp_gso_segment
  bpf_analyzer
+ bpf_offload_dev_create
+ bpf_verifier_log_write
  cxl_*
  dax_flush
  ieee80211_nullfunc_get
@@ -22,6 +24,7 @@ ignore-changes:
  module:drivers/gpu/drm/sun4i/*
  module:drivers/iio/**
  module:drivers/misc/cxl/*
+ module:drivers/misc/lis3lv02d/*
  module:drivers/mtd/nand/*
  module:drivers/net/ethernet/**
  module:drivers/net/wireless/**
@@ -40,6 +43,7 @@ ignore-changes:
  module:fs/nfs/**
  module:net/ceph/libceph
  module:net/l2tp/**
+ module:net/openvswitch/**
  module:net/rxrpc/rxrpc
  module:net/sctp/**
  module:sound/core/seq/**
@@ -138,15 +142,15 @@ arches:
  sparc
  sparc64
  x32
-compiler: gcc-10
+compiler: gcc-11
 featuresets:
  none
  rt
 
 [build]
-debug-info: true
 # Disable code signing by default; this can be overridden per-architecture
 signed-code: false
+trusted-certs: debian/certs/debian-uefi-certs.pem
 
 [featureset-rt_base]
 enabled: true
@@ -162,7 +166,7 @@ recommends: apparmor
 
 [relations]
 # compilers
-gcc-10: gcc-10 <!stage1 !cross !pkg.linux.nokernel>, gcc-10-@gnu-type-package@ <!stage1 cross !pkg.linux.nokernel>
+gcc-11: gcc-11 <!stage1 !cross !pkg.linux.nokernel>, gcc-11-@gnu-type-package@ <!stage1 cross !pkg.linux.nokernel>
 
 # initramfs-generators
 initramfs-fallback: linux-initramfs-tool

@@ -3,7 +3,7 @@ include $(top_rulesdir)/Makefile.inc
 MAKE_BPFTOOL := +$(MAKE) -C $(top_srcdir)/$(OUTDIR) O=$(CURDIR)
 MAKE_BPFTOOL += prefix=/usr
 MAKE_BPFTOOL += mandir=/usr/share/man
-MAKE_BPFTOOL += V=$(KBUILD_VERBOSE)
+MAKE_BPFTOOL += V=1
 MAKE_BPFTOOL += ARCH=$(KERNEL_ARCH)
 MAKE_BPFTOOL += EXTRA_CFLAGS='$(CFLAGS) $(CPPFLAGS)'
 MAKE_BPFTOOL += EXTRA_LDFLAGS='$(LDFLAGS)'
@@ -24,8 +24,4 @@ install:
 	$(MAKE_BPFTOOL) install
 ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	$(MAKE_BPFTOOL) doc-install
-# doc-install installs a bpf-helpers.7 that conflicts
-# with the one distributed by the manpages package.
-	rm $(DESTDIR)/usr/share/man/man7/bpf-helpers.7
-	rmdir $(DESTDIR)/usr/share/man/man7/
 endif

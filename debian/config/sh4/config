@@ -47,6 +47,13 @@ CONFIG_SH_CPU_FREQ=y
 # CONFIG_PCIEPORTBUS is not set
 
 ##
+## file: init/Kconfig
+##
+## choice: Compiler optimization level
+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+## end choice
+
+##
 ## file: kernel/Kconfig.hz
 ##
 ## choice: Timer frequency
@@ -57,4 +64,3 @@ CONFIG_HZ_250=y
 ## file: kernel/irq/Kconfig
 ##
 CONFIG_SPARSE_IRQ=y
-
