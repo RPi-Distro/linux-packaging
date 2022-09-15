@@ -13,6 +13,7 @@ linux (5.19.6-2) UNRELEASED; urgency=medium
   * [hppa/parisc64] Build with ARCH=parisc64 (regression in 5.19.6)
   * debian/bin/genpatch-rt: Change argument parsing to use argparse
   * debian/bin/genpatch-rt: Add option to disable signature verification
+  * linux-headers: Skip exact compiler version comparison (Closes: #1019749)
 
   [ Aurelien Jarno ]
   * [arm64] Add support for misalignment fixups for multiword loads from next
