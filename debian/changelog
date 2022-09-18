@@ -10,6 +10,10 @@ linux (6.0~rc4-1~exp1) UNRELEASED; urgency=medium
   * udeb: Move ledtrig-audio from sound-modules to kernel-image
   * d/bin/gencontrol_signed.py: Fix source package name in Built-Using field
 
+  [ Didier Raboud ]
+  * d/lib/python/debian_linux: Add two more known fields to
+    {Source,Binary}Package
+
  -- Ben Hutchings <ben@decadent.org.uk>  Tue, 06 Sep 2022 21:46:07 +0200
 
 linux (5.19.6-1) unstable; urgency=medium
