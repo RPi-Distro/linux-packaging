@@ -12,7 +12,6 @@
 genirq-Provide-generic_handle_domain_irq_safe.patch
 0001-lib-vsprintf-Remove-static_branch_likely-from-__ptr_.patch
 0002-lib-vsprintf-Initialize-vsprintf-s-pointer-hash-once.patch
-asm-generic-Conditionally-enable-do_softirq_own_stac.patch
 locking-Detect-includes-rwlock.h-outside-of-spinlock.patch
 
 # Hacks to get ptrace to work.

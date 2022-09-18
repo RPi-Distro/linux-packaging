@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 25 Aug 2022 16:15:44 +0200
 Subject: [PATCH 2/4] net: Remove the obsolte u64_stats_fetch_*_irq() users (part one).
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rc4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rc5-rt7.tar.xz
 
 Now that the 32bit UP oddity is gone and 32bit uses always a sequence
 count, there is no need for the fetch_irq() variants anymore.
@@ -782,7 +782,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  	*data += size;
 --- a/drivers/net/ethernet/intel/ice/ice_main.c
 +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -6289,10 +6289,10 @@ ice_fetch_u64_stats_per_ring(struct u64_
+@@ -6297,10 +6297,10 @@ ice_fetch_u64_stats_per_ring(struct u64_
  	unsigned int start;
  
  	do {

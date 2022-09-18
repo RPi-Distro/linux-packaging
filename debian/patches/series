@@ -18,7 +18,6 @@ debian/mips-boston-disable-its.patch
 debian/mips-ieee754-relaxed.patch
 debian/arch-sh4-fix-uimage-build.patch
 debian/tools-perf-perf-read-vdso-in-libexec.patch
-debian/tools-perf-install.patch
 debian/tools-perf-install-python-bindings.patch
 debian/wireless-add-debian-wireless-regdb-certificates.patch
 debian/export-symbols-needed-by-android-drivers.patch
@@ -112,7 +111,6 @@ bugfix/all/tools-build-remove-bpf-run-time-check-at-build-time.patch
 bugfix/all/cpupower-bump-soname-version.patch
 bugfix/all/cpupower-fix-checks-for-cpu-existence.patch
 bugfix/all/tools-perf-pmu-events-fix-reproducibility.patch
-bugfix/all/tools-include-uapi-fix-errno.h.patch
 bugfix/all/libapi-define-_fortify_source-as-2-not-empty.patch
 bugfix/all/tools-perf-fix-missing-ldflags-for-some-programs.patch
 
