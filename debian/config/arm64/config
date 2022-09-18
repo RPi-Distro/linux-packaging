@@ -503,6 +503,11 @@ CONFIG_DRM_TEGRA=m
 CONFIG_DRM_TEGRA_STAGING=y
 
 ##
+## file: drivers/gpu/drm/v3d/Kconfig
+##
+CONFIG_DRM_V3D=m
+
+##
 ## file: drivers/gpu/drm/vc4/Kconfig
 ##
 CONFIG_DRM_VC4=m
