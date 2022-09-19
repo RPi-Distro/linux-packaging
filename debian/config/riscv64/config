@@ -40,6 +40,7 @@ CONFIG_GPIO_SIFIVE=y
 ## file: drivers/gpu/drm/Kconfig
 ##
 CONFIG_DRM=m
+CONFIG_DRM_AMDGPU=m
 CONFIG_DRM_RADEON=m
 
 ##
