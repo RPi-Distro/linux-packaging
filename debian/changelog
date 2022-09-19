@@ -23,6 +23,9 @@ linux (6.0~rc6-1~exp1) UNRELEASED; urgency=medium
   * udeb: Also add drivers in subdirectories of drivers/net/phy
   * [arm64] Add i2c-imx to i2c-modules udeb
 
+  [ Bastian Blank ]
+  * Make cross build of signed packages self contained.
+
  -- Ben Hutchings <ben@decadent.org.uk>  Tue, 06 Sep 2022 21:46:07 +0200
 
 linux (5.19.6-1) unstable; urgency=medium
