@@ -4328,6 +4328,12 @@ CONFIG_NFC_PN533_USB=m
 # CONFIG_NFC_ST21NFCA_I2C is not set
 
 ##
+## file: drivers/nfc/nxp-nci/Kconfig
+##
+CONFIG_NFC_NXP_NCI=m
+CONFIG_NFC_NXP_NCI_I2C=m
+
+##
 ## file: drivers/nfc/st95hf/Kconfig
 ##
 # CONFIG_NFC_ST95HF is not set
@@ -7458,7 +7464,7 @@ CONFIG_NFC_DIGITAL=m
 ##
 ## file: net/nfc/nci/Kconfig
 ##
-# CONFIG_NFC_NCI is not set
+CONFIG_NFC_NCI=m
 
 ##
 ## file: net/nsh/Kconfig

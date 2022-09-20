@@ -16,6 +16,8 @@ linux (6.0~rc6-1~exp1) UNRELEASED; urgency=medium
 
   [ Diederik de Haas ]
   * [arm64] drivers/gpu/drm/v3d: Enable DRM_V3D as module (Closes: #977441)
+  * drivers/nfc/nxp-nci: Enable NFC_NXP_NCI and NFC_NXP_NCI_I2C and reenable
+    NFC_NCI as module (Closes: #1020276)
 
   [ Frieder Schrempf ]
   * [arm64] Add nvmem-imx-ocotp driver to kernel-image udeb
