@@ -28,6 +28,7 @@ linux (6.0~rc6-1~exp1) UNRELEASED; urgency=medium
 
   [ Zhang Ning ]
   * [armhf] enable multiple configs for rk3288
+  * [config] enable CONFIG_RTL8723BS for all arch
 
  -- Ben Hutchings <ben@decadent.org.uk>  Tue, 06 Sep 2022 21:46:07 +0200
 
