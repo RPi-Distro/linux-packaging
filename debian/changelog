@@ -1,4 +1,4 @@
-linux (5.19.7-1) UNRELEASED; urgency=medium
+linux (5.19.8-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.7
@@ -68,6 +68,144 @@ linux (5.19.7-1) UNRELEASED; urgency=medium
     - net: neigh: don't call kfree_skb() under spin_lock_irqsave()
     - [arm64] cacheinfo: Fix incorrect assignment of signed error value to
       unsigned fw_level
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.8
+    - [arm64] drm/msm/dp: make eDP panel as the first connected connector
+    - [arm64] drm/msm/dsi: fix the inconsistent indenting
+    - [arm64] drm/msm/dpu: populate wb or intf before reset_intf_cfg
+    - [arm64] drm/msm/dp: delete DP_RECOVERED_CLOCK_OUT_EN to fix tps4
+    - [arm64] drm/msm/dsi: Fix number of regulators for msm8996_dsi_cfg
+    - [arm64] drm/msm/dsi: Fix number of regulators for SDM660
+    - [x86] platform/x86: pmc_atom: Fix SLP_TYPx bitfield mask
+    - [x86] platform/x86: x86-android-tablets: Fix broken touchscreen on Chuwi
+      Hi8 with Windows BIOS
+    - xsk: Fix corrupted packets for XDP_SHARED_UMEM
+    - [arm64] drm/msm/gpu: Drop qos request if devm_devfreq_add_device() fails
+    - iio: adc: mcp3911: make use of the sign bit
+    - skmsg: Fix wrong last sg check in sk_msg_recvmsg()
+    - bpf: Restrict bpf_sys_bpf to CAP_PERFMON
+    - ip_tunnel: Respect tunnel key's "flow_flags" in IP tunnels
+    - bpf, cgroup: Fix kernel BUG in purge_effective_progs
+    - [x86] drm/i915/gvt: Fix Comet Lake
+    - ieee802154/adf7242: defer destroy_workqueue call
+    - bpf: Fix a data-race around bpf_jit_limit.
+    - [x86] drm/i915/ttm: fix CCS handling
+    - [x86] drm/i915/display: avoid warnings when registering dual panel
+      backlight
+    - ALSA: hda: intel-nhlt: Correct the handling of fmt_config flexible array
+    - wifi: cfg80211: debugfs: fix return type in ht40allow_map_read()
+    - xhci: Fix null pointer dereference in remove if xHC has only one roothub
+    - Revert "xhci: turn off port power in shutdown"
+    - bpf: Allow helpers to accept pointers with a fixed size
+    - bpf: Tidy up verifier check_func_arg()
+    - bpf: Do mark_chain_precision for ARG_CONST_ALLOC_SIZE_OR_ZERO
+    - Bluetooth: hci_event: Fix vendor (unknown) opcode status handling
+    - Bluetooth: hci_sync: Fix suspend performance regression
+    - Bluetooth: hci_event: Fix checking conn for le_conn_complete_evt
+    - Bluetooth: hci_sync: hold hdev->lock when cleanup hci_conn
+    - [arm64,armhf] net: smsc911x: Stop and start PHY during suspend and resume
+    - openvswitch: fix memory leak at failed datapath creation
+    - nfp: flower: fix ingress police using matchall filter
+    - [x86] drm/i915: fix null pointer dereference
+    - net: sched: tbf: don't call qdisc_put() while holding tree lock
+    - net/sched: fix netdevice reference leaks in attach_default_qdiscs()
+    - net: phy: micrel: Make the GPIO to be non-exclusive
+    - sch_cake: Return __NET_XMIT_STOLEN when consuming enqueued skb
+    - tcp: annotate data-race around challenge_timestamp
+    - Revert "sch_cake: Return __NET_XMIT_STOLEN when consuming enqueued skb"
+    - net/smc: Remove redundant refcount increase
+    - soundwire: qcom: fix device status array range
+    - mm/slab_common: Deleting kobject in kmem_cache_destroy() without holding
+      slab_mutex/cpu_hotplug_lock
+    - [arm64] serial: fsl_lpuart: RS485 RTS polariy is inverse
+    - staging: rtl8712: fix use after free bugs
+    - staging: r8188eu: Add Rosewill USB-N150 Nano to device tables
+    - staging: r8188eu: add firmware dependency
+    - [powerpc*] rtas: Fix RTAS MSR[HV] handling for Cell
+    - vt: Clear selection before changing the font
+    - [arm64] tty: serial: lpuart: disable flow control while waiting for the
+      transmit engine to complete
+    - Input: iforce - wake up after clearing IFORCE_XMIT_RUNNING flag
+    - iio: ad7292: Prevent regulator double disable
+    - iio: adc: mcp3911: correct "microchip,device-addr" property
+    - iio: adc: mcp3911: use correct formula for AD conversion
+    - firmware_loader: Fix use-after-free during unregister
+    - firmware_loader: Fix memory leak in firmware upload
+    - USB: serial: ftdi_sio: add Omron CS1W-CIF31 device id
+    - landlock: Fix file reparenting without explicit LANDLOCK_ACCESS_FS_REFER
+    - mmc: core: Fix UHS-I SD 1.8V workaround branch
+    - mmc: core: Fix inconsistent sd3_bus_mode at UHS-I SD voltage switch
+      failure
+    - [arm*] binder: fix UAF of ref->proc caused by race condition
+    - [arm*] binder: fix alloc->vma_vm_mm null-ptr dereference
+    - cifs: fix small mempool leak in SMB2_negotiate()
+    - [x86] KVM: VMX: Heed the 'msr' argument in msr_write_intercepted()
+    - [armhf] clk: ti: Fix missing of_node_get() ti_find_clock_provider()
+    - [x86] drm/i915/reg: Fix spelling mistake "Unsupport" -> "Unsupported"
+    - clk: core: Honor CLK_OPS_PARENT_ENABLE for clk gate ops
+    - Revert "clk: core: Honor CLK_OPS_PARENT_ENABLE for clk gate ops"
+    - clk: core: Fix runtime PM sequence in clk_core_unprepare()
+    - [arm64,armhf] Input: rk805-pwrkey - fix module autoloading
+    - [arm*] clk: bcm: rpi: Fix error handling of raspberrypi_fw_get_rate
+    - [arm*] clk: bcm: rpi: Prevent out-of-bounds access
+    - [arm*] clk: bcm: rpi: Add missing newline
+    - [arm*] hwmon: (gpio-fan) Fix array out of bounds access
+    - [arm64,armhf] gpio: pca953x: Add mutex_lock for regcache sync in PM
+    - [x86] KVM: x86: Mask off unsupported and unknown bits of
+      IA32_ARCH_CAPABILITIES
+    - xen/grants: prevent integer overflow in gnttab_dma_alloc_pages()
+    - mm: pagewalk: Fix race between unmap and page walker
+    - xen-blkback: Advertise feature-persistent as user requested
+    - xen-blkfront: Advertise feature-persistent as user requested
+    - xen-blkfront: Cache feature_persistent value before advertisement
+    - [x86] thunderbolt: Use the actual buffer in tb_async_error()
+    - [x86] thunderbolt: Check router generation before connecting xHCI
+    - [arm64] usb: dwc3: pci: Add support for Intel Raptor Lake
+    - media: mceusb: Use new usb_control_msg_*() routines
+    - xhci: Add grace period after xHC start to prevent premature runtime
+      suspend.
+    - [arm64,armhf] usb: dwc3: disable USB core PHY management
+    - [arm64,armhf] usb: dwc3: gadget: Avoid duplicate requests to enable
+      Run/Stop
+    - [arm64,armhf] usb: dwc3: fix PHY disable sequence
+    - USB: serial: ch341: fix lost character on LCR updates
+    - USB: serial: ch341: fix disabled rx timer on older devices
+    - USB: serial: cp210x: add Decagon UCA device id
+    - USB: serial: option: add support for OPPO R11 diag port
+    - USB: serial: option: add Quectel EM060K modem
+    - USB: serial: option: add support for Cinterion MV32-WA/WB RmNet mode
+    - Revert "usb: typec: ucsi: add a common function
+      ucsi_unregister_connectors()"
+    - usb: typec: altmodes/displayport: correct pin assignment for UFP
+      receptacles
+    - usb: typec: tcpm: Return ENOTSUPP for power supply prop writes
+    - [arm*] usb: dwc2: fix wrong order of phy_power_on and phy_init
+    - USB: cdc-acm: Add Icom PMR F3400 support (0c26:0020)
+    - usb-storage: Add ignore-residue quirk for NXP PN7462AU
+    - [s390x] hugetlb: fix prepare_hugepage_range() check for 2 GB hugepages
+    - [s390x] fix nospec table alignments
+    - USB: core: Prevent nested device-reset calls
+    - usb: gadget: f_uac2: fix superspeed transfer
+    - usb: gadget: mass_storage: Fix cdrom data transfers on MAC-OS
+    - USB: gadget: Fix obscure lockdep violation for udc_mutex
+    - dma-buf/dma-resv: check if the new fence is really later
+    - driver core: Don't probe devices after bus_type.match() probe deferral
+    - wifi: mac80211: Don't finalize CSA in IBSS mode if state is disconnected
+    - wifi: mac80211: Fix UAF in ieee80211_scan_rx()
+    - ip: fix triggering of 'icmp redirect'
+    - net: Use u64_stats_fetch_begin_irq() for stats fetch.
+    - net: mac802154: Fix a condition in the receive path
+    - ALSA: memalloc: Revive x86-specific WC page allocations again
+    - ALSA: hda/realtek: Add speaker AMP init for Samsung laptops with ALC298
+    - ALSA: seq: oss: Fix data-race for max_midi_devs access
+    - ALSA: seq: Fix data-race at module auto-loading
+    - [x86] drm/i915/backlight: Disable pps power hook for aux based backlight
+    - [x86] drm/i915/guc: clear stalled request after a reset
+    - [x86] drm/i915/glk: ECS Liva Q2 needs GLK HDMI port timing quirk
+    - [x86] drm/i915: Skip wm/ddb readout for disabled pipes
+    - tty: n_gsm: add sanity check for gsm->receive in gsm_receive_buf()
+    - tty: n_gsm: initialize more members at gsm_alloc_mux()
+    - tty: n_gsm: replace kicktimer with delayed_work
+    - tty: n_gsm: avoid call of sleeping functions from atomic context
 
   [ Vincent Blut ]
   * [armhf] sound/soc/rockchip: Enable SND_SOC_RK3288_HDMI_ANALOG as module
