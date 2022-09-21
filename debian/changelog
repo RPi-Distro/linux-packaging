@@ -1,4 +1,4 @@
-linux (5.19.9-1) UNRELEASED; urgency=medium
+linux (5.19.10-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.7
@@ -356,6 +356,37 @@ linux (5.19.9-1) UNRELEASED; urgency=medium
     - iommu: Fix false ownership failure on AMD systems with PASID activated
     - drm/amd/display: Add SMU logging code
     - drm/amd/display: Removing assert statements for Linux
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.10
+    - [amd64] iommu/vt-d: Fix kdump kernels boot failure with scalable mode
+    - net/mlx5: Introduce ifc bits for using software vhca id
+    - net/mlx5: Use software VHCA id when it's supported
+    - RDMA/mlx5: Rely on RoCE fw cap instead of devlink when setting profile
+    - RDMA/mlx5: Add a umr recovery flow
+    - RDMA/mlx5: Fix UMR cleanup on error flow of driver init
+    - [amd64] ACPI: resource: skip IRQ override on AMD Zen platforms
+    - Input: goodix - add support for GT1158
+    - [x86] platform/surface: aggregator_registry: Add support for Surface
+      Laptop Go 2
+    - [arm64] drm/msm/rd: Fix FIFO-full deadlock
+    - peci: cpu: Fix use-after-free in adev_release()
+    - [x86] kvm: x86: mmu: Always flush TLBs when enabling dirty logging
+    - [amd64] hid: intel-ish-hid: ishtp: Fix ishtp client sending disordered
+      message
+    - Bluetooth: MGMT: Fix Get Device Flags
+    - tg3: Disable tg3 device on system reboot to avoid triggering AER
+    - r8152: add PID for the Lenovo OneLink+ Dock
+    - ieee802154: cc2520: add rc code in cc2520_tx()
+    - Input: iforce - add support for Boeder Force Feedback Wheel
+    - drm/amdgpu: disable FRU access on special SIENNA CICHLID card
+    - drm/amd/pm: use vbios carried pptable for all SMU13.0.7 SKUs
+    - nvme-pci: add NVME_QUIRK_BOGUS_NID for Lexar NM610
+    - nvmet-tcp: fix unhandled tcp states in nvmet_tcp_state_change()
+    - drm/amd/amdgpu: skip ucode loading if ucode_size == 0
+    - [x86] platform/x86: acer-wmi: Acer Aspire One AOD270/Packard Bell Dot
+      keymap fixes
+    - [x86] platform/x86: asus-wmi: Increase FAN_CURVE_BUF_LEN to 32
+    - RDMA/irdma: Use s/g array in post send only when its valid
+    - Input: goodix - add compatible string for GT1158
 
   [ Vincent Blut ]
   * [armhf] sound/soc/rockchip: Enable SND_SOC_RK3288_HDMI_ANALOG as module
