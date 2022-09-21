@@ -366,6 +366,7 @@ linux (5.19.9-1) UNRELEASED; urgency=medium
   * d/b/check-patches.sh: Use grep -(E|F) instead of deprecated (e|f)grep
   * d/templates/image.bug/include-model: Use grep -E instead of deprecated egrep
   * Bump ABI to 2
+  * Refresh "Export symbols needed by Android drivers"
 
   [ Ben Hutchings ]
   * [hppa/parisc64] Build with ARCH=parisc64 (regression in 5.19.6)
