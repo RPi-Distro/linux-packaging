@@ -12,24 +12,14 @@ Export the currently un-exported symbols they depend on.
 
 ---
  fs/file.c           | 1 +
- kernel/fork.c       | 1 +
  kernel/sched/core.c | 1 +
+ kernel/sched/wait.c | 1 +
  kernel/task_work.c  | 1 +
  mm/memory.c         | 1 +
  mm/shmem.c          | 1 +
  security/security.c | 4 ++++
  7 files changed, 10 insertions(+)
 
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1225,6 +1225,7 @@ void mmput_async(struct mm_struct *mm)
- 		schedule_work(&mm->async_put_work);
- 	}
- }
-+EXPORT_SYMBOL_GPL(mmput_async);
- #endif
- 
- /**
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
 @@ -7026,6 +7026,7 @@ static bool is_nice_reduction(const stru
@@ -72,7 +62,7 @@ Export the currently un-exported symbols they depend on.
   * zap_page_range_single - remove user pages in a given range
 --- a/mm/shmem.c
 +++ b/mm/shmem.c
-@@ -4172,6 +4172,7 @@ int shmem_zero_setup(struct vm_area_stru
+@@ -4173,6 +4173,7 @@ int shmem_zero_setup(struct vm_area_stru
  
  	return 0;
  }
