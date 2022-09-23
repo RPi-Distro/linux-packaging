@@ -439,6 +439,7 @@ linux (5.19.11-1) UNRELEASED; urgency=medium
   * d/templates/image.bug/include-model: Use grep -E instead of deprecated egrep
   * Bump ABI to 2
   * Refresh "Export symbols needed by Android drivers"
+  * Revert "[hppa/parisc64] Drop explicit setting of 64BIT"
 
   [ Ben Hutchings ]
   * debian/bin/genpatch-rt: Change argument parsing to use argparse
