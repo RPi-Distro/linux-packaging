@@ -441,7 +441,6 @@ linux (5.19.11-1) UNRELEASED; urgency=medium
   * Refresh "Export symbols needed by Android drivers"
 
   [ Ben Hutchings ]
-  * [hppa/parisc64] Build with ARCH=parisc64 (regression in 5.19.6)
   * debian/bin/genpatch-rt: Change argument parsing to use argparse
   * debian/bin/genpatch-rt: Add option to disable signature verification
 

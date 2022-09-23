@@ -15,7 +15,6 @@ hardware: 32-bit PA-RISC
 hardware-long: HP PA-RISC 32-bit systems with max 4 GB RAM
 
 [parisc64_base]
-kernel-arch: parisc64
 cflags: -fno-cse-follow-jumps
 override-host-type: hppa64-linux-gnu
 
