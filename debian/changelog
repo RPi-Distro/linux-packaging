@@ -1,4 +1,4 @@
-linux (5.19.10-1) UNRELEASED; urgency=medium
+linux (5.19.11-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.7
@@ -387,6 +387,47 @@ linux (5.19.10-1) UNRELEASED; urgency=medium
     - [x86] platform/x86: asus-wmi: Increase FAN_CURVE_BUF_LEN to 32
     - RDMA/irdma: Use s/g array in post send only when its valid
     - Input: goodix - add compatible string for GT1158
+    https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.11
+    - of: fdt: fix off-by-one error in unflatten_dt_nodes()
+    - [arm64,armhf] pinctrl: rockchip: Enhance support for IRQ_TYPE_EDGE_BOTH
+    - [arm64] pinctrl: sunxi: Fix name for A100 R_PIO
+    - SUNRPC: Fix call completion races with call_decode()
+    - NFSv4: Turn off open-by-filehandle and NFS re-export for NFSv4.0
+    - [arm64] gpio: mpc8xxx: Fix support for IRQ_TYPE_LEVEL_LOW flow_type in
+      mpc85xx
+    - NFSv4.2: Update mode bits after ALLOCATE and DEALLOCATE
+    - Revert "SUNRPC: Remove unreachable error condition"
+    - [arm64,armhf] drm/panel-edp: Fix delays for Innolux N116BCA-EA1
+    - [arm64] drm/meson: Correct OSD1 global alpha value
+    - [arm64] drm/meson: Fix OSD1 RGB to YCbCr coefficient
+    - [x86] drm/i915/vdsc: Set VDSC PIC_HEIGHT before using for DP DSC
+    - [x86] drm/i915/guc: Don't update engine busyness stats too frequently
+    - [x86] drm/i915/guc: Cancel GuC engine busyness worker synchronously
+    - block: blk_queue_enter() / __bio_queue_enter() must return -EAGAIN for
+      nowait
+    - [hppa/parisc] ccio-dma: Add missing iounmap in error path in ccio_probe()
+    - of/device: Fix up of_dma_configure_id() stub
+    - io_uring/msg_ring: check file type before putting
+    - cifs: revalidate mapping when doing direct writes
+    - cifs: don't send down the destination address to sendmsg for a SOCK_STREAM
+    - cifs: always initialize struct msghdr smb_msg completely
+    - blk-lib: fix blkdev_issue_secure_erase
+    - [hppa] parisc: Allow CONFIG_64BIT with ARCH=parisc
+    - tools/include/uapi: Fix <asm/errno.h> for parisc and xtensa
+    - [x86] drm/i915/gt: Fix perf limit reasons bit positions
+    - [x86] drm/i915: Set correct domains values at _i915_vma_move_to_active
+    - drm/amdgpu: make sure to init common IP before gmc
+    - drm/amdgpu: Don't enable LTR if not supported
+    - drm/amdgpu: move nbio ih_doorbell_range() into ih code for vega
+    - drm/amdgpu: move nbio sdma_doorbell_range() into sdma code for vega
+    - net: Find dst with sk's xfrm policy not ctl_sk
+    - dt-bindings: apple,aic: Fix required item "apple,fiq-index" in affinity
+      description
+    - cgroup: Add missing cpus_read_lock() to cgroup_attach_task_all()
+    - ALSA: hda/sigmatel: Keep power up while beep is enabled
+    - ALSA: hda/sigmatel: Fix unused variable warning for beep power change
+    - [amd64] Revert "iommu/vt-d: Fix possible recursive locking in
+      intel_iommu_init()"
 
   [ Vincent Blut ]
   * [armhf] sound/soc/rockchip: Enable SND_SOC_RK3288_HDMI_ANALOG as module
