@@ -205,6 +205,7 @@ endif
 ifdef KCFLAGS
 	echo 'KCFLAGS += $(KCFLAGS)' >> '$(DIR)/.kernelvariables'
 endif
+	echo 'DEBIAN_KERNEL_NO_CC_VERSION_CHECK = y' >> '$(DIR)/.kernelvariables'
 	+$(MAKE_CLEAN) -C '$(SOURCE_DIR)' O='$(CURDIR)/$(DIR)' listnewconfig
 	+yes "" | $(MAKE_CLEAN) -C '$(SOURCE_DIR)' O='$(CURDIR)/$(DIR)' oldconfig >/dev/null
 	@$(stamp)
