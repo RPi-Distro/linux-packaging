@@ -1,4 +1,4 @@
-linux (5.19.11-1) UNRELEASED; urgency=medium
+linux (5.19.11-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.19.7
@@ -450,7 +450,7 @@ linux (5.19.11-1) UNRELEASED; urgency=medium
   * [arm64] Add support for misalignment fixups for multiword loads from next
     branch. Enable COMPAT_ALIGNMENT_FIXUPS.
 
- -- Vincent Blut <vincent.debian@free.fr>  Sun, 04 Sep 2022 23:09:55 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 24 Sep 2022 13:05:59 +0200
 
 linux (5.19.6-1) unstable; urgency=medium
 
