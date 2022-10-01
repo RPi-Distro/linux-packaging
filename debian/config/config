@@ -4319,6 +4319,12 @@ CONFIG_NFC_PORT100=m
 # CONFIG_NFC_MICROREAD_MEI is not set
 
 ##
+## file: drivers/nfc/nxp-nci/Kconfig
+##
+CONFIG_NFC_NXP_NCI=m
+CONFIG_NFC_NXP_NCI_I2C=m
+
+##
 ## file: drivers/nfc/pn533/Kconfig
 ##
 CONFIG_NFC_PN533_USB=m
@@ -4328,12 +4334,6 @@ CONFIG_NFC_PN533_USB=m
 ## file: drivers/nfc/st21nfca/Kconfig
 ##
 # CONFIG_NFC_ST21NFCA_I2C is not set
-
-##
-## file: drivers/nfc/nxp-nci/Kconfig
-##
-CONFIG_NFC_NXP_NCI=m
-CONFIG_NFC_NXP_NCI_I2C=m
 
 ##
 ## file: drivers/nfc/st95hf/Kconfig
