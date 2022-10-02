@@ -7,8 +7,6 @@ variables:
   SALSA_CI_DPKG_BUILDPACKAGE_ARGS: '-Ppkg.linux.quick'
   # We have to bump the version in source preparation, not later
   SALSA_CI_DISABLE_VERSION_BUMP: 'true'
-  # Currently triggering falsely (bugs #973313, #1000977)
-  SALSA_CI_LINTIAN_SUPPRESS_TAGS: 'groff-message,elf-error'
   # Currently broken in quick build
   DEBIAN_KERNEL_DISABLE_INSTALLER: 'true'
   # Output is limited to 4 MiB total, so use 'terse'.
