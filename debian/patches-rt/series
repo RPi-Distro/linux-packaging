@@ -13,13 +13,11 @@ genirq-Provide-generic_handle_domain_irq_safe.patch
 0001-lib-vsprintf-Remove-static_branch_likely-from-__ptr_.patch
 0002-lib-vsprintf-Initialize-vsprintf-s-pointer-hash-once.patch
 locking-Detect-includes-rwlock.h-outside-of-spinlock.patch
+vduse-Remove-include-of-rwlock.h.patch
 
 # Hacks to get ptrace to work.
 signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
 sched-Consider-task_struct-saved_state-in-wait_task_.patch
-
-checkpatch-Print-an-error-if-rwlock.h-is-included-di.patch
-vduse-Remove-include-of-rwlock.h.patch
 
 # Vlastimil Babka [PATCH v2 0/5] mm/slub: fix validation races and cleanup locking
 # 20220823170400.26546-1-vbabka@suse.cz
