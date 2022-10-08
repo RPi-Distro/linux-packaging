@@ -11,6 +11,10 @@ linux (6.0-1~exp1) UNRELEASED; urgency=medium
   * [amd64] drivers/dma: Enable INTEL_IDXD as module and INTEL_IDXD_SVM as
     builtin (Closes: #1021337)
 
+  [ Ben Hutchings ]
+  * d/salsa-ci.yml: Use !reference to include scripts from common pipeline
+  * d/salsa-ci.yml: Remove obsolete lintian error suppressions
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 01 Oct 2022 09:17:05 +0200
 
 linux (6.0~rc7-1~exp1) experimental; urgency=medium
