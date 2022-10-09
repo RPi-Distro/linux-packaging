@@ -18,6 +18,10 @@ linux (6.0-1~exp1) UNRELEASED; urgency=medium
   [ Christopher Obbard ]
   * [arm64] drivers/regulator: Enable MP8859 as module
 
+  [ Mateusz Łukasik ]
+  * Compile with gcc-12 on all architectures
+  * d/salsa-ci.yml: Add linux-compiler-* packages to build-signed job artifacts
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 01 Oct 2022 09:17:05 +0200
 
 linux (6.0~rc7-1~exp1) experimental; urgency=medium
