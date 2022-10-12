@@ -22,7 +22,7 @@ class Makefile:
 
     def add_cmds(self, name, cmds):
         rule = self.rules.setdefault(name, MakefileRule(name))
-        rule.add_cmds(cmds)
+        rule.add_cmds(MakefileRuleCmdsSimple(cmds))
 
     def add_deps(self, name, deps):
         rule = self.rules.setdefault(name, MakefileRule(name))
@@ -44,7 +44,6 @@ class MakefileRule:
         self.deps = set()
 
     def add_cmds(self, cmds):
-        assert type(cmds) is list
         self.cmds.append(cmds)
 
     def add_deps(self, deps):
@@ -57,10 +56,18 @@ class MakefileRule:
                 out.write(f'{self.name}::{" ".join(sorted(self.deps))}\n')
             for c in self.cmds:
                 out.write(f'{self.name}::\n')
-                for i in c:
-                    out.write(f'\t{i}\n')
+                c.write(out)
         else:
             out.write(f'{self.name}:{" ".join(sorted(self.deps))}\n')
+
+
+class MakefileRuleCmdsSimple:
+    def __init__(self, cmds):
+        self.cmds = cmds
+
+    def write(self, out):
+        for i in self.cmds:
+            out.write(f'\t{i}\n')
 
 
 class MakeFlags(dict):

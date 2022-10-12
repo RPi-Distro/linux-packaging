@@ -132,7 +132,7 @@ class Gencontrol(Base):
             # per-featureset packages.  Also, this won't work
             # correctly with an empty package list.
             if udeb_packages:
-                makefile.add(
+                makefile.add_cmds(
                     'binary-arch_%s' % arch,
                     cmds=["$(MAKE) -f debian/rules.real install-udeb_%s %s "
                           "PACKAGE_NAMES='%s'" %
@@ -247,8 +247,8 @@ class Gencontrol(Base):
                 output_dir=self.template_debian_dir)
 
         merge_packages(packages, packages_own, arch)
-        makefile.add('binary-arch_%s_%s_%s_real' % (arch, featureset, flavour),
-                     cmds=cmds_binary_arch)
+        makefile.add_cmds('binary-arch_%s_%s_%s_real' % (arch, featureset, flavour),
+                          cmds_binary_arch)
 
         self.substitute_debhelper_config(
             'image', vars,
