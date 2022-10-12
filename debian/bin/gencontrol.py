@@ -163,10 +163,10 @@ class Gencontrol(Base):
             makeflags_featureset['FEATURESET'] = featureset
             cmds_source = ["$(MAKE) -f debian/rules.real source-featureset %s"
                            % makeflags_featureset]
-            makefile.add('source_%s_real' % featureset, cmds=cmds_source)
-            makefile.add('source_%s' % featureset,
-                         ['source_%s_real' % featureset])
-            makefile.add('source', ['source_%s' % featureset])
+            makefile.add_cmds('source_%s_real' % featureset, cmds_source)
+            makefile.add_deps('source_%s' % featureset,
+                              ['source_%s_real' % featureset])
+            makefile.add_deps('source', ['source_%s' % featureset])
 
         makeflags = makeflags.copy()
         makeflags['ALL_FEATURESETS'] = ' '.join(iter_featuresets(self.config))
@@ -230,8 +230,8 @@ class Gencontrol(Base):
         cmds_binary_arch = ["$(MAKE) -f debian/rules.real "
                             "binary-indep-featureset %s" %
                             makeflags]
-        makefile.add('binary-indep_%s_real' % featureset,
-                     cmds=cmds_binary_arch)
+        makefile.add_cmds('binary-indep_%s_real' % featureset,
+                          cmds_binary_arch)
 
     arch_makeflags = (
         ('kernel-arch', 'KERNEL_ARCH', False),
@@ -283,12 +283,12 @@ class Gencontrol(Base):
 
         cmds_build_arch = ["$(MAKE) -f debian/rules.real build-arch-arch %s" %
                            makeflags]
-        makefile.add('build-arch_%s_real' % arch, cmds=cmds_build_arch)
+        makefile.add_cmds('build-arch_%s_real' % arch, cmds_build_arch)
 
         cmds_binary_arch = ["$(MAKE) -f debian/rules.real binary-arch-arch %s"
                             % makeflags]
-        makefile.add('binary-arch_%s_real' % arch, cmds=cmds_binary_arch,
-                     deps=['setup_%s' % arch])
+        makefile.add_deps('binary-arch_%s_real' % arch, ['setup_%s' % arch])
+        makefile.add_cmds('binary-arch_%s_real' % arch, cmds_binary_arch)
 
         udeb_packages = self.installer_packages.get(arch, [])
         if udeb_packages:
@@ -297,7 +297,7 @@ class Gencontrol(Base):
             # These packages must be built after the per-flavour/
             # per-featureset packages.  Also, this won't work
             # correctly with an empty package list.
-            makefile.add(
+            makefile.add_cmds(
                 'binary-arch_%s' % arch,
                 cmds=["$(MAKE) -f debian/rules.real install-udeb_%s %s "
                       "PACKAGE_NAMES='%s' UDEB_UNSIGNED_TEST_BUILD=%s" %
@@ -313,7 +313,7 @@ class Gencontrol(Base):
                                self.templates['control.signed-template'],
                                vars),
                            arch)
-            makefile.add(
+            makefile.add_cmds(
                 'binary-arch_%s' % arch,
                 cmds=["$(MAKE) -f debian/rules.real "
                       "install-signed-template_%s %s" %
@@ -641,17 +641,17 @@ class Gencontrol(Base):
                       makeflags]
         cmds_setup = ["$(MAKE) -f debian/rules.real setup-arch-flavour %s" %
                       makeflags]
-        makefile.add('binary-arch_%s_%s_%s_real' % (arch, featureset, flavour),
-                     cmds=cmds_binary_arch)
-        makefile.add('build-arch_%s_%s_%s_real' % (arch, featureset, flavour),
-                     cmds=cmds_build)
-        makefile.add('setup_%s_%s_%s_real' % (arch, featureset, flavour),
-                     cmds=cmds_setup)
+        makefile.add_cmds('binary-arch_%s_%s_%s_real' % (arch, featureset, flavour),
+                          cmds_binary_arch)
+        makefile.add_cmds('build-arch_%s_%s_%s_real' % (arch, featureset, flavour),
+                          cmds_build)
+        makefile.add_cmds('setup_%s_%s_%s_real' % (arch, featureset, flavour),
+                          cmds_setup)
 
         merged_config = ('debian/build/config.%s_%s_%s' %
                          (arch, featureset, flavour))
-        makefile.add(merged_config,
-                     cmds=["$(MAKE) -f debian/rules.real %s %s" %
+        makefile.add_cmds(merged_config,
+                          ["$(MAKE) -f debian/rules.real %s %s" %
                            (merged_config, makeflags)])
 
         self.substitute_debhelper_config(

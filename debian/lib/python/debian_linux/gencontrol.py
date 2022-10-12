@@ -16,53 +16,51 @@ class PackagesList(OrderedDict):
             self[package['Package']] = package
 
 
-class Makefile(object):
+class Makefile:
     def __init__(self):
         self.rules = {}
-        self.add('.NOTPARALLEL')
 
-    def add(self, name, deps=None, cmds=None):
-        if name in self.rules:
-            self.rules[name].add(deps, cmds)
-        else:
-            self.rules[name] = self.Rule(name, deps, cmds)
-        if deps is not None:
-            for i in deps:
-                if i not in self.rules:
-                    self.rules[i] = self.Rule(i)
+    def add_cmds(self, name, cmds):
+        rule = self.rules.setdefault(name, MakefileRule(name))
+        rule.add_cmds(cmds)
+
+    def add_deps(self, name, deps):
+        rule = self.rules.setdefault(name, MakefileRule(name))
+        rule.add_deps(deps)
+
+        for i in deps:
+            self.rules.setdefault(i, MakefileRule(i))
 
     def write(self, out):
-        for i in sorted(self.rules.keys()):
-            self.rules[i].write(out)
+        out.write('.NOTPARALLEL:\n')
+        for k, rule in sorted(self.rules.items()):
+            rule.write(out)
 
-    class Rule(object):
-        def __init__(self, name, deps=None, cmds=None):
-            self.name = name
-            self.deps, self.cmds = set(), []
-            self.add(deps, cmds)
 
-        def add(self, deps=None, cmds=None):
-            if deps is not None:
-                self.deps.update(deps)
-            if cmds is not None:
-                self.cmds.append(cmds)
+class MakefileRule:
+    def __init__(self, name):
+        self.name = name
+        self.cmds = []
+        self.deps = set()
 
-        def write(self, out):
-            deps_string = ''
+    def add_cmds(self, cmds):
+        assert type(cmds) is list
+        self.cmds.append(cmds)
+
+    def add_deps(self, deps):
+        assert type(deps) is list
+        self.deps.update(deps)
+
+    def write(self, out):
+        if self.cmds:
             if self.deps:
-                deps = list(self.deps)
-                deps.sort()
-                deps_string = ' ' + ' '.join(deps)
-
-            if self.cmds:
-                if deps_string:
-                    out.write('%s::%s\n' % (self.name, deps_string))
-                for c in self.cmds:
-                    out.write('%s::\n' % self.name)
-                    for i in c:
-                        out.write('\t%s\n' % i)
-            else:
-                out.write('%s:%s\n' % (self.name, deps_string))
+                out.write(f'{self.name}::{" ".join(sorted(self.deps))}\n')
+            for c in self.cmds:
+                out.write(f'{self.name}::\n')
+                for i in c:
+                    out.write(f'\t{i}\n')
+        else:
+            out.write(f'{self.name}:{" ".join(sorted(self.deps))}\n')
 
 
 class MakeFlags(dict):
@@ -134,11 +132,11 @@ class Gencontrol(object):
         pass
 
     def do_main_makefile(self, makefile, makeflags, extra):
-        makefile.add('build-indep',
-                     cmds=["$(MAKE) -f debian/rules.real build-indep %s" %
+        makefile.add_cmds('build-indep',
+                          ["$(MAKE) -f debian/rules.real build-indep %s" %
                            makeflags])
-        makefile.add('binary-indep',
-                     cmds=["$(MAKE) -f debian/rules.real binary-indep %s" %
+        makefile.add_cmds('binary-indep',
+                          ["$(MAKE) -f debian/rules.real binary-indep %s" %
                            makeflags])
 
     def do_main_packages(self, packages, vars, makeflags, extra):
@@ -172,9 +170,9 @@ class Gencontrol(object):
                 cmds.append("$(MAKE) -f debian/rules.real install-dummy "
                             "ARCH='%s' DH_OPTIONS='-p%s'" %
                             (arch, i['Package']))
-            makefile.add('binary-arch_%s' % arch,
-                         ['binary-arch_%s_extra' % arch])
-            makefile.add("binary-arch_%s_extra" % arch, cmds=cmds)
+            makefile.add_deps('binary-arch_%s' % arch,
+                              ['binary-arch_%s_extra' % arch])
+            makefile.add_cmds("binary-arch_%s_extra" % arch, cmds)
 
     def do_indep_featureset(self, packages, makefile, featureset, vars,
                             makeflags, extra):
@@ -199,8 +197,8 @@ class Gencontrol(object):
             target1 = i
             target2 = '_'.join((target1, featureset))
             target3 = '_'.join((target2, 'real'))
-            makefile.add(target1, [target2])
-            makefile.add(target2, [target3])
+            makefile.add_deps(target1, [target2])
+            makefile.add_deps(target2, [target3])
 
     def do_indep_featureset_packages(self, packages, makefile, featureset,
                                      vars, makeflags, extra):
@@ -224,8 +222,8 @@ class Gencontrol(object):
             target1 = i
             target2 = '_'.join((target1, arch))
             target3 = '_'.join((target2, 'real'))
-            makefile.add(target1, [target2])
-            makefile.add(target2, [target3])
+            makefile.add_deps(target1, [target2])
+            makefile.add_deps(target2, [target3])
 
     def do_arch_packages(self, packages, makefile, arch, vars, makeflags,
                          extra):
@@ -262,8 +260,8 @@ class Gencontrol(object):
             target1 = '_'.join((i, arch))
             target2 = '_'.join((target1, featureset))
             target3 = '_'.join((target2, 'real'))
-            makefile.add(target1, [target2])
-            makefile.add(target2, [target3])
+            makefile.add_deps(target1, [target2])
+            makefile.add_deps(target2, [target3])
 
     def do_featureset_packages(self, packages, makefile, arch, featureset,
                                vars, makeflags, extra):
@@ -303,8 +301,8 @@ class Gencontrol(object):
             target1 = '_'.join((i, arch, featureset))
             target2 = '_'.join((target1, flavour))
             target3 = '_'.join((target2, 'real'))
-            makefile.add(target1, [target2])
-            makefile.add(target2, [target3])
+            makefile.add_deps(target1, [target2])
+            makefile.add_deps(target2, [target3])
 
     def do_flavour_packages(self, packages, makefile, arch, featureset,
                             flavour, vars, makeflags, extra):
