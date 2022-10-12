@@ -31,6 +31,10 @@ class Makefile:
         for i in deps:
             self.rules.setdefault(i, MakefileRule(i))
 
+    def add_rules(self, name, target, makeflags):
+        rule = self.rules.setdefault(name, MakefileRule(name))
+        rule.add_cmds(MakefileRuleCmdsRules(target, makeflags))
+
     def write(self, out):
         out.write('.NOTPARALLEL:\n')
         for k, rule in sorted(self.rules.items()):
@@ -59,6 +63,15 @@ class MakefileRule:
                 c.write(out)
         else:
             out.write(f'{self.name}:{" ".join(sorted(self.deps))}\n')
+
+
+class MakefileRuleCmdsRules:
+    def __init__(self, target, makeflags):
+        self.target = target
+        self.makeflags = makeflags.copy()
+
+    def write(self, out):
+        out.write(f'\t$(MAKE) -f debian/rules.real {self.target} {self.makeflags}\n')
 
 
 class MakefileRuleCmdsSimple:
@@ -139,12 +152,8 @@ class Gencontrol(object):
         pass
 
     def do_main_makefile(self, makefile, makeflags, extra):
-        makefile.add_cmds('build-indep',
-                          ["$(MAKE) -f debian/rules.real build-indep %s" %
-                           makeflags])
-        makefile.add_cmds('binary-indep',
-                          ["$(MAKE) -f debian/rules.real binary-indep %s" %
-                           makeflags])
+        makefile.add_rules('build-indep', 'build-indep', makeflags)
+        makefile.add_rules('binary-indep', 'binary-indep', makeflags)
 
     def do_main_packages(self, packages, vars, makeflags, extra):
         pass
