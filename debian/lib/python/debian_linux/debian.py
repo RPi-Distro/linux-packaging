@@ -723,7 +723,13 @@ def restriction_requires_profile(form, profile):
     return True
 
 
-class _ControlFileDict(dict):
+class _ControlFileDict(collections.abc.MutableMapping):
+    def __init__(self):
+        self.__data = {}
+
+    def __getitem__(self, key):
+        return self.__data[key]
+
     def __setitem__(self, key, value):
         try:
             cls = self._fields[key]
@@ -733,25 +739,22 @@ class _ControlFileDict(dict):
             warnings.warn(
                 f'setting unknown field { key } in { type(self).__name__ }',
                 stacklevel=2)
-            pass
-        super(_ControlFileDict, self).__setitem__(key, value)
+        self.__data[key] = value
 
-    def keys(self):
-        keys = set(super(_ControlFileDict, self).keys())
-        for i in self._fields.keys():
-            if i in self:
-                keys.remove(i)
-                yield i
-        for i in sorted(list(keys)):
-            yield i
+    def __delitem__(self, key):
+        del self.__data[key]
 
-    def items(self):
-        for i in self.keys():
-            yield (i, self[i])
+    def __iter__(self):
+        keys = set(self.__data.keys())
+        for key in self._fields.keys():
+            if key in self.__data:
+                keys.remove(key)
+                yield key
+        for key in sorted(keys):
+            yield key
 
-    def values(self):
-        for i in self.keys():
-            yield self[i]
+    def __len__(self):
+        return len(self.__data)
 
 
 class SourcePackage(_ControlFileDict):
