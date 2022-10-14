@@ -264,10 +264,6 @@ class Gencontrol(Base):
         else:
             build_signed = False
 
-        if self.config.merge('packages').get('libc-dev', True):
-            libc_dev = self.templates["control.libc-dev"]
-            merge_packages(self.packages, self.process_packages(libc_dev, {}), arch)
-
         if self.config['base', arch].get('featuresets') and \
            self.config.merge('packages').get('source', True):
             merge_packages(self.packages,
@@ -312,6 +308,11 @@ class Gencontrol(Base):
                 cmds=["$(MAKE) -f debian/rules.real "
                       "install-signed-template_%s %s" %
                       (arch, makeflags)])
+
+        if self.config.merge('packages').get('libc-dev', True):
+            self.merge_packages_rules(self.process_packages(
+                    self.templates["control.libc-dev"], vars),
+                f'{arch}_real', makeflags)
 
         if self.config.merge('packages').get('tools-unversioned', True):
             self.merge_packages_rules(self.process_packages(

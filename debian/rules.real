@@ -66,8 +66,7 @@ endef
 
 build-arch-arch:
 binary-arch-arch: \
-	$(call if_package, $(SOURCE_BASENAME)-config-$(VERSION), install-config_$(ARCH)) \
-	$(call if_package, linux-libc-dev,               install-libc-dev_$(ARCH)) \
+	$(call if_package, $(SOURCE_BASENAME)-config-$(VERSION), install-config_$(ARCH))
 
 build-indep: \
 	$(call if_package, $(SOURCE_BASENAME)-doc-$(VERSION), $(STAMPS_DIR)/build-doc)
@@ -356,11 +355,12 @@ install-headers-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR):
 	dh_prep
 	+$(MAKE_SELF) install-base
 
-install-libc-dev_$(ARCH): PACKAGE_NAME = linux-libc-dev
-install-libc-dev_$(ARCH): DH_OPTIONS = -p$(PACKAGE_NAME)
-install-libc-dev_$(ARCH): DIR = $(BUILD_DIR)/build-libc-dev
-install-libc-dev_$(ARCH): OUT_DIR = debian/$(PACKAGE_NAME)/usr
-install-libc-dev_$(ARCH):
+build_libc-dev:
+
+binary_libc-dev: PACKAGE_NAME = linux-libc-dev
+binary_libc-dev: DIR = $(BUILD_DIR)/build-libc-dev
+binary_libc-dev: OUT_DIR = debian/$(PACKAGE_NAME)/usr
+binary_libc-dev:
 	dh_testdir
 	dh_testroot
 	dh_prep
