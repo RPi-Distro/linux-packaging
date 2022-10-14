@@ -1,4 +1,6 @@
 Package: @source_basename@-config-@version@
+Meta-Rules-Target: config
+Architecture: linux-any
 Build-Profiles: <!stage1 !pkg.linux.nosource>
 Multi-Arch: same
 Depends: ${misc:Depends}

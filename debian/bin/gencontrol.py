@@ -264,13 +264,6 @@ class Gencontrol(Base):
         else:
             build_signed = False
 
-        if self.config['base', arch].get('featuresets') and \
-           self.config.merge('packages').get('source', True):
-            merge_packages(self.packages,
-                           self.process_packages(
-                               self.templates["control.config"], vars),
-                           arch)
-
         cmds_build_arch = ["$(MAKE) -f debian/rules.real build-arch-arch %s" %
                            makeflags]
         self.makefile.add_cmds('build-arch_%s_real' % arch, cmds_build_arch)
@@ -312,6 +305,12 @@ class Gencontrol(Base):
         if self.config.merge('packages').get('libc-dev', True):
             self.merge_packages_rules(self.process_packages(
                     self.templates["control.libc-dev"], vars),
+                f'{arch}_real', makeflags)
+
+        if self.config['base', arch].get('featuresets') and \
+           self.config.merge('packages').get('source', True):
+            self.merge_packages_rules(self.process_packages(
+                    self.templates["control.config"], vars),
                 f'{arch}_real', makeflags)
 
         if self.config.merge('packages').get('tools-unversioned', True):

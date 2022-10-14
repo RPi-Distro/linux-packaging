@@ -65,8 +65,7 @@ $(if $(filter $(1),$(DEB_BUILD_PROFILES)),$(2))
 endef
 
 build-arch-arch:
-binary-arch-arch: \
-	$(call if_package, $(SOURCE_BASENAME)-config-$(VERSION), install-config_$(ARCH))
+binary-arch-arch:
 
 build-indep: \
 	$(call if_package, $(SOURCE_BASENAME)-doc-$(VERSION), $(STAMPS_DIR)/build-doc)
@@ -587,10 +586,11 @@ install-source-meta:
 	dh_prep
 	+$(MAKE_SELF) install-base
 
-install-config_$(ARCH): PACKAGE_NAME = $(SOURCE_BASENAME)-config-$(VERSION)
-install-config_$(ARCH): DH_OPTIONS = -p$(PACKAGE_NAME)
-install-config_$(ARCH): TRIPLETS = $(subst $(BUILD_DIR)/build_,,$(wildcard $(BUILD_DIR)/build_$(ARCH)_*_*))
-install-config_$(ARCH):
+build_config:
+
+binary_config: PACKAGE_NAME = $(SOURCE_BASENAME)-config-$(VERSION)
+binary_config: TRIPLETS = $(subst $(BUILD_DIR)/build_,,$(wildcard $(BUILD_DIR)/build_$(ARCH)_*_*))
+binary_config:
 	dh_testdir
 	dh_testroot
 	dh_installdirs /usr/src/linux-config-$(UPSTREAMVERSION)
