@@ -64,26 +64,10 @@ define if_profile
 $(if $(filter $(1),$(DEB_BUILD_PROFILES)),$(2))
 endef
 
-build-arch-arch: \
-	$(call if_package, linux-kbuild-$(VERSION),      build-kbuild) \
-	$(call if_package, linux-perf,                   build-perf) \
-	$(call if_package, linux-bootwrapper-$(ABINAME), build-bootwrapper) \
-	$(call if_package, bpftool,                      build-bpftool) \
-	$(call if_package, usbip,                        build-usbip) \
-	$(call if_package, linux-cpupower,               build-cpupower) \
-	$(call if_package, hyperv-daemons,               build-hyperv-daemons) \
-	$(call if_package, rtla,                         build-rtla)
+build-arch-arch:
 binary-arch-arch: \
 	$(call if_package, $(SOURCE_BASENAME)-config-$(VERSION), install-config_$(ARCH)) \
 	$(call if_package, linux-libc-dev,               install-libc-dev_$(ARCH)) \
-	$(call if_package, linux-kbuild-$(VERSION),      install-kbuild) \
-	$(call if_package, linux-perf,                   install-perf) \
-	$(call if_package, linux-bootwrapper-$(ABINAME), install-bootwrapper) \
-	$(call if_package, bpftool,                      install-bpftool) \
-	$(call if_package, usbip,                        install-usbip) \
-	$(call if_package, linux-cpupower,               install-cpupower) \
-	$(call if_package, hyperv-daemons,               install-hyperv-daemons) \
-	$(call if_package, rtla,                         install-rtla)
 
 build-indep: \
 	$(call if_package, $(SOURCE_BASENAME)-doc-$(VERSION), $(STAMPS_DIR)/build-doc)
@@ -628,13 +612,12 @@ $(STAMPS_DIR)/build-tools-headers:
 		headers_install
 	@$(stamp)
 
-build-bpftool: $(STAMPS_DIR)/build-tools-headers
+build_bpftool: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/bpf/bpftool)
 
-install-bpftool: PACKAGE_NAME = bpftool
-install-bpftool: DH_OPTIONS = -p$(PACKAGE_NAME)
-install-bpftool: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
-install-bpftool: build-bpftool
+binary_bpftool: PACKAGE_NAME = bpftool
+binary_bpftool: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
+binary_bpftool: build_bpftool
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -655,16 +638,15 @@ endif
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-build-kbuild: $(STAMPS_DIR)/build-tools-headers
+build_kbuild: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,certs)
 	$(call make-tools,scripts)
 	$(call make-tools,tools/objtool)
 
-install-kbuild: PACKAGE_NAME = linux-kbuild-$(VERSION)
-install-kbuild: DH_OPTIONS = -p$(PACKAGE_NAME)
-install-kbuild: PREFIX_DIR = /usr/lib/$(PACKAGE_NAME)
-install-kbuild: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
-install-kbuild: build-kbuild
+binary_kbuild: PACKAGE_NAME = linux-kbuild-$(VERSION)
+binary_kbuild: PREFIX_DIR = /usr/lib/$(PACKAGE_NAME)
+binary_kbuild: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
+binary_kbuild: build_kbuild
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -686,15 +668,14 @@ endif
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-build-cpupower: $(STAMPS_DIR)/build-tools-headers
+build_cpupower: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/power/cpupower)
 ifneq ($(filter i386 amd64 x32,$(DEB_HOST_ARCH)),)
 	$(call make-tools,tools/power/x86)
 endif
 
-install-cpupower: DH_OPTIONS = -plinux-cpupower $(addprefix -p,$(filter libcpupower%,$(packages_enabled)))
-install-cpupower: DIR = $(CURDIR)/debian/cpupower-tmp
-install-cpupower: build-cpupower
+binary_cpupower: DIR = $(CURDIR)/debian/cpupower-tmp
+binary_cpupower: build_cpupower
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -727,13 +708,12 @@ endif
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-build-perf: $(STAMPS_DIR)/build-tools-headers
+build_perf: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/perf)
 
-install-perf: PACKAGE_NAME = linux-perf
-install-perf: DH_OPTIONS = -p$(PACKAGE_NAME)
-install-perf: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
-install-perf: build-perf
+binary_perf: PACKAGE_NAME = linux-perf
+binary_perf: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
+binary_perf: build_perf
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -756,12 +736,11 @@ endif
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-build-usbip: $(STAMPS_DIR)/build-tools-headers
+build_usbip: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/usb/usbip)
 
-install-usbip: DH_OPTIONS = -pusbip
-install-usbip: DIR = $(CURDIR)/debian/usbip-tmp
-install-usbip: build-usbip
+binary_usbip: DIR = $(CURDIR)/debian/usbip-tmp
+binary_usbip: build_usbip
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -784,13 +763,12 @@ endif
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-build-hyperv-daemons: $(STAMPS_DIR)/build-tools-headers
+build_hyperv-daemons: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/hv)
 
-install-hyperv-daemons: PACKAGE_NAME = hyperv-daemons
-install-hyperv-daemons: DH_OPTIONS = -p$(PACKAGE_NAME)
-install-hyperv-daemons: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
-install-hyperv-daemons: build-hyperv-daemons
+binary_hyperv-daemons: PACKAGE_NAME = hyperv-daemons
+binary_hyperv-daemons: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
+binary_hyperv-daemons: build_hyperv-daemons
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -817,13 +795,12 @@ endif
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-build-bootwrapper: $(STAMPS_DIR)/build-tools-headers
+build_bootwrapper: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,arch/powerpc/boot)
 
-install-bootwrapper: PACKAGE_NAME = linux-bootwrapper-$(ABINAME)
-install-bootwrapper: DH_OPTIONS = -p$(PACKAGE_NAME)
-install-bootwrapper: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
-install-bootwrapper: build-bootwrapper
+binary_bootwrapper: PACKAGE_NAME = linux-bootwrapper-$(ABINAME)
+binary_bootwrapper: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
+binary_bootwrapper: build_bootwrapper
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -839,13 +816,12 @@ install-bootwrapper: build-bootwrapper
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-build-rtla: $(STAMPS_DIR)/build-tools-headers
+build_rtla: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/tracing/rtla)
 
-install-rtla: PACKAGE_NAME = rtla
-install-rtla: DH_OPTIONS = -p$(PACKAGE_NAME)
-install-rtla: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
-install-rtla: build-rtla
+binary_rtla: PACKAGE_NAME = rtla
+binary_rtla: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
+binary_rtla: build_rtla
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -867,6 +843,6 @@ endif
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-.PHONY: binary-% build-% install-% setup-% source-%
+.PHONY: binary_% build_% binary-% build-% install-% setup-% source-%
 
 # vim: filetype=make

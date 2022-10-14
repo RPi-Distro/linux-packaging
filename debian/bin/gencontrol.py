@@ -190,12 +190,6 @@ class Gencontrol(Base):
                 self.substitute_debhelper_config(
                     'docs.meta', vars,
                     '%(source_basename)s-doc%(source_suffix)s' % vars)
-        if self.config.merge('packages').get('tools-unversioned', True):
-            self.packages.extend(self.process_packages(
-                self.templates["control.tools-unversioned"], vars))
-        if self.config.merge('packages').get('tools-versioned', True):
-            self.packages.extend(self.process_packages(
-                self.templates["control.tools-versioned"], vars))
         if self.config.merge('packages').get('source', True):
             self.packages.extend(self.process_packages(
                 self.templates["control.sourcebin"], vars))
@@ -318,6 +312,16 @@ class Gencontrol(Base):
                 cmds=["$(MAKE) -f debian/rules.real "
                       "install-signed-template_%s %s" %
                       (arch, makeflags)])
+
+        if self.config.merge('packages').get('tools-unversioned', True):
+            self.merge_packages_rules(self.process_packages(
+                    self.templates["control.tools-unversioned"], vars),
+                f'{arch}_real', makeflags)
+
+        if self.config.merge('packages').get('tools-versioned', True):
+            self.merge_packages_rules(self.process_packages(
+                    self.templates["control.tools-versioned"], vars),
+                f'{arch}_real', makeflags)
 
     def do_featureset_setup(self, vars, makeflags, arch, featureset, extra):
         vars['localversion_headers'] = vars['localversion']

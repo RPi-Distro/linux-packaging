@@ -726,11 +726,16 @@ def restriction_requires_profile(form, profile):
 class _ControlFileDict(collections.abc.MutableMapping):
     def __init__(self):
         self.__data = {}
+        self.meta = {}
 
     def __getitem__(self, key):
         return self.__data[key]
 
     def __setitem__(self, key, value):
+        if key.lower().startswith('meta-'):
+            self.meta[key.lower()[5:]] = value
+            return
+
         try:
             cls = self._fields[key]
             if not isinstance(value, cls):

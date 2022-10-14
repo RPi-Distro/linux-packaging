@@ -1,4 +1,5 @@
 Package: linux-kbuild-@version@
+Meta-Rules-Target: kbuild
 Build-Profiles: <!stage1 !pkg.linux.notools>
 Architecture: linux-any
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -7,6 +8,7 @@ Description: Kbuild infrastructure for Linux @version@
  This package provides the kbuild infrastructure for the headers packages for Linux kernel version @version@.
 
 Package: linux-bootwrapper-@abiname@
+Meta-Rules-Target: bootwrapper
 Build-Profiles: <!stage1 !pkg.linux.notools>
 Architecture: powerpc ppc64
 Depends: ${shlibs:Depends}, ${misc:Depends}
