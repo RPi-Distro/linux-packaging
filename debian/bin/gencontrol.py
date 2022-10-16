@@ -219,7 +219,9 @@ class Gencontrol(Base):
     def do_indep_featureset_packages(self, featureset,
                                      vars, makeflags, extra):
         headers_featureset = self.templates["control.headers.featureset"]
-        self.packages.extend(self.process_packages(headers_featureset, vars))
+        self.merge_packages_rules(
+            self.process_packages(headers_featureset, vars),
+            f'{featureset}_real', makeflags)
 
         cmds_binary_arch = ["$(MAKE) -f debian/rules.real "
                             "binary-indep-featureset %s" %
@@ -546,7 +548,10 @@ class Gencontrol(Base):
             for package in packages_own:
                 add_package_build_restriction(package, '!pkg.linux.quick')
 
-        merge_packages(self.packages, packages_own, arch)
+        self.merge_packages_rules(
+            packages_own,
+            f'{arch}_{featureset}_{flavour}_real', makeflags, arch=arch,
+        )
 
         # Make sure signed-template is build after linux
         if build_signed:

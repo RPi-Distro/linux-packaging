@@ -1,4 +1,5 @@
 Package: linux-headers-@abiname@@localversion@
+Meta-Rules-Target: headers
 Build-Profiles: <!stage1 !pkg.linux.nokernel>
 Depends: linux-headers-@abiname@-common@localversion_headers@ (= ${source:Version}), linux-kbuild-@version@ (>= ${source:Version}), ${misc:Depends}
 Description: Header files for Linux @abiname@@localversion@

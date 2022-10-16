@@ -81,12 +81,9 @@ binary-arch-flavour: \
 	$(call if_package, $(IMAGE_PACKAGE_NAME),        install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)) \
 	$(call if_package, linux-image$(SOURCE_SUFFIX)$(LOCALVERSION), install-image-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR)) \
 	$(call if_package, linux-image-$(ABINAME)$(LOCALVERSION)-dbg, install-image-dbg_$(ARCH)_$(FEATURESET)_$(FLAVOUR)) \
-	$(call if_package, linux-image$(SOURCE_SUFFIX)$(LOCALVERSION)-dbg, install-image-dbg-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR)) \
-	$(call if_package, linux-headers-$(ABINAME)$(LOCALVERSION), install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR)) \
-	$(call if_package, linux-headers$(SOURCE_SUFFIX)$(LOCALVERSION), install-headers-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR))
+	$(call if_package, linux-image$(SOURCE_SUFFIX)$(LOCALVERSION)-dbg, install-image-dbg-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR))
 
-binary-indep-featureset: \
-	$(call if_package, linux-headers-$(ABINAME)-common$(LOCALVERSION), install-common-headers_$(FEATURESET))
+binary-indep-featureset:
 
 build-arch-flavour: \
 	$(call if_package, $(IMAGE_PACKAGE_NAME),        $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR))
@@ -277,13 +274,13 @@ install-doc-meta:
 	dh_prep
 	+$(MAKE_SELF) install-base
 
-install-common-headers_$(FEATURESET): PACKAGE_NAME = linux-headers-$(ABINAME)-common$(LOCALVERSION)
-install-common-headers_$(FEATURESET): PACKAGE_NAME_KBUILD = linux-kbuild-$(VERSION)
-install-common-headers_$(FEATURESET): DH_OPTIONS = -p$(PACKAGE_NAME)
-install-common-headers_$(FEATURESET): BASE_DIR = /usr/src/$(PACKAGE_NAME)
-install-common-headers_$(FEATURESET): SOURCE_DIR = $(BUILD_DIR)/source_$(FEATURESET)
-install-common-headers_$(FEATURESET): DIR = debian/$(PACKAGE_NAME)/$(BASE_DIR)
-install-common-headers_$(FEATURESET): $(STAMPS_DIR)/source_$(FEATURESET)
+build_headers-common:
+
+binary_headers-common: PACKAGE_NAME_KBUILD = linux-kbuild-$(VERSION)
+binary_headers-common: BASE_DIR = /usr/src/$(PACKAGE_NAME)
+binary_headers-common: SOURCE_DIR = $(BUILD_DIR)/source_$(FEATURESET)
+binary_headers-common: DIR = $(DESTDIR)/$(BASE_DIR)
+binary_headers-common: $(STAMPS_DIR)/source_$(FEATURESET)
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -300,25 +297,24 @@ install-common-headers_$(FEATURESET): $(STAMPS_DIR)/source_$(FEATURESET)
 		find include -print; \
 	) \
 	| \
-	cpio -pd --preserve-modification-time '$(CURDIR)/$(DIR)'
+	cpio -pd --preserve-modification-time '$(DIR)'
 
 	dh_link /usr/lib/$(PACKAGE_NAME_KBUILD)/scripts $(BASE_DIR)/scripts
 	dh_link /usr/lib/$(PACKAGE_NAME_KBUILD)/tools $(BASE_DIR)/tools
 
 	+$(MAKE_SELF) install-base
 
-install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): REAL_VERSION = $(ABINAME)$(LOCALVERSION)
-install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): PACKAGE_NAME = linux-headers-$(REAL_VERSION)
-install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): PACKAGE_NAME_COMMON = linux-headers-$(ABINAME)-common$(LOCALVERSION_HEADERS)
-install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): PACKAGE_NAME_KBUILD = linux-kbuild-$(VERSION)
-install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DH_OPTIONS = -p$(PACKAGE_NAME)
-install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): BASE_DIR = /usr/src/$(PACKAGE_NAME)
-install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): BASE_DIR_COMMON = /usr/src/$(PACKAGE_NAME_COMMON)
-install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): SOURCE_DIR = $(BUILD_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
-install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): REF_DIR = $(BUILD_DIR)/source_$(FEATURESET)
-install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): PACKAGE_DIR = debian/$(PACKAGE_NAME)
-install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DIR = $(PACKAGE_DIR)/$(BASE_DIR)
-install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
+build_headers:
+
+binary_headers: REAL_VERSION = $(ABINAME)$(LOCALVERSION)
+binary_headers: PACKAGE_NAME_COMMON = linux-headers-$(ABINAME)-common$(LOCALVERSION_HEADERS)
+binary_headers: PACKAGE_NAME_KBUILD = linux-kbuild-$(VERSION)
+binary_headers: BASE_DIR = /usr/src/$(PACKAGE_NAME)
+binary_headers: BASE_DIR_COMMON = /usr/src/$(PACKAGE_NAME_COMMON)
+binary_headers: SOURCE_DIR = $(BUILD_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
+binary_headers: REF_DIR = $(BUILD_DIR)/source_$(FEATURESET)
+binary_headers: DIR = $(DESTDIR)/$(BASE_DIR)
+binary_headers: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -340,16 +336,16 @@ install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): $(STAMPS_DIR)/build_$(ARCH)_$(
 	dh_link /usr/lib/$(PACKAGE_NAME_KBUILD)/scripts $(BASE_DIR)/scripts
 	dh_link /usr/lib/$(PACKAGE_NAME_KBUILD)/tools $(BASE_DIR)/tools
 
-	mkdir -p $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)
-	ln -s /usr/src/$(PACKAGE_NAME) $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/build
-	ln -s /usr/src/$(PACKAGE_NAME_COMMON) $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/source
+	mkdir -p $(DESTDIR)/lib/modules/$(REAL_VERSION)
+	ln -s /usr/src/$(PACKAGE_NAME) $(DESTDIR)/lib/modules/$(REAL_VERSION)/build
+	ln -s /usr/src/$(PACKAGE_NAME_COMMON) $(DESTDIR)/lib/modules/$(REAL_VERSION)/source
 
 	+$(MAKE_SELF) install-base
 
-install-headers-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR): PACKAGE_NAME = linux-headers$(SOURCE_SUFFIX)$(LOCALVERSION)
-install-headers-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DH_OPTIONS = -p$(PACKAGE_NAME)
-install-headers-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR): LINK_DOC_PACKAGE = linux-headers-$(ABINAME)$(LOCALVERSION)
-install-headers-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR):
+build_headers-meta:
+
+binary_headers-meta: LINK_DOC_PACKAGE = linux-headers-$(ABINAME)$(LOCALVERSION)
+binary_headers-meta:
 	dh_testdir
 	dh_prep
 	+$(MAKE_SELF) install-base
