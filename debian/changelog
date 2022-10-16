@@ -1,4 +1,4 @@
-linux (6.0.2-1) UNRELEASED; urgency=high
+linux (6.0.2-1) experimental; urgency=high
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.0.1
@@ -63,7 +63,7 @@ linux (6.0.2-1) UNRELEASED; urgency=high
   [ Bastian Blank]
   * [cloud] Enable INTEGRITY.
 
- -- Bastian Blank <waldi@debian.org>  Sun, 16 Oct 2022 16:53:26 +0200
+ -- Bastian Blank <waldi@debian.org>  Sun, 16 Oct 2022 18:25:05 +0200
 
 linux (6.0-1~exp1) experimental; urgency=medium
 
