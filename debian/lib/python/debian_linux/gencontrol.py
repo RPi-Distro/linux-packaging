@@ -374,20 +374,27 @@ class Gencontrol(object):
     def process_packages(self, entries, vars, rule=None, makeflags=None):
         return [self.process_package(i, vars, rule, makeflags) for i in entries]
 
-    def merge_packages_rules(self, packages, rule, makeflags):
+    def merge_packages_rules(self, packages, rule, makeflags, *, arch=None):
         for package in packages:
             package = self.packages.setdefault(package)
             package.meta.setdefault('rules-rules', {})[rule] = makeflags
+            if arch:
+                package.meta.setdefault('architectures', PackageArchitecture()).add(arch)
 
     def extract_makefile(self):
         targets = {}
 
         for name, package in self.packages.items():
-            arch = package.get('Architecture')
             target_name = package.meta.get('rules-target')
             rules = package.meta.get('rules-rules')
 
             if rules:
+                arches = package.meta.get('architectures')
+                if arches:
+                    package['Architecture'] = arches
+                else:
+                    arches = package.get('Architecture')
+
                 if target_name:
                     for rule, makeflags in rules.items():
                         target = targets.setdefault((target_name, rule), {})

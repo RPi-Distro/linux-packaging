@@ -522,12 +522,10 @@ install-image-dbg-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR):
 	dh_prep
 	+$(MAKE_SELF) install-base
 
-install-signed-template_$(ARCH): PACKAGE_NAME = linux-image$(SOURCE_SUFFIX)-$(ARCH)-signed-template
-install-signed-template_$(ARCH): DH_OPTIONS = -p$(PACKAGE_NAME)
-install-signed-template_$(ARCH): PACKAGE_DIR = debian/$(PACKAGE_NAME)
-install-signed-template_$(ARCH): CODE_SIGNING_DIR = $(PACKAGE_DIR)/usr/share/code-signing/$(PACKAGE_NAME)
-install-signed-template_$(ARCH):
-ifneq (,$(filter linux-image$(SOURCE_SUFFIX)-$(ARCH)-signed-template,$(packages_enabled)))
+build_signed-template:
+
+binary_signed-template: CODE_SIGNING_DIR = $(DESTDIR)/usr/share/code-signing/$(PACKAGE_NAME)
+binary_signed-template:
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -543,7 +541,6 @@ ifneq (,$(filter linux-image$(SOURCE_SUFFIX)-$(ARCH)-signed-template,$(packages_
 		debian/signing_templates/source \
 		$(CODE_SIGNING_DIR)/source-template/debian/
 	+$(MAKE_SELF) install-base
-endif  # enabled
 
 install-udeb_$(ARCH): export KW_DEFCONFIG_DIR=debian/installer
 install-udeb_$(ARCH): export KW_CONFIG_DIR=debian/installer

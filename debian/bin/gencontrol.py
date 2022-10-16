@@ -288,19 +288,10 @@ class Gencontrol(Base):
                        ' '.join(p['Package'] for p in udeb_packages),
                        build_signed)])
 
-        # This also needs to be built after the per-flavour/per-featureset
-        # packages.
         if build_signed:
-            merge_packages(self.packages,
-                           self.process_packages(
-                               self.templates['control.signed-template'],
-                               vars),
-                           arch)
-            self.makefile.add_cmds(
-                'binary-arch_%s' % arch,
-                cmds=["$(MAKE) -f debian/rules.real "
-                      "install-signed-template_%s %s" %
-                      (arch, makeflags)])
+            self.merge_packages_rules(self.process_packages(
+                    self.templates['control.signed-template'], vars),
+                f'{arch}_real', makeflags, arch=arch)
 
         if self.config.merge('packages').get('libc-dev', True):
             self.merge_packages_rules(self.process_packages(
@@ -556,6 +547,13 @@ class Gencontrol(Base):
                 add_package_build_restriction(package, '!pkg.linux.quick')
 
         merge_packages(self.packages, packages_own, arch)
+
+        # Make sure signed-template is build after linux
+        if build_signed:
+            self.makefile.add_deps(f'build-arch_{arch}_real_signed-template',
+                                   [f'build-arch_{arch}_{featureset}_{flavour}_real'])
+            self.makefile.add_deps(f'binary-arch_{arch}_real_signed-template',
+                                   [f'binary-arch_{arch}_{featureset}_{flavour}_real'])
 
         tests_control = self.process_package(
             self.templates['tests-control.image'][0], vars)
