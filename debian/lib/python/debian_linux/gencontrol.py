@@ -82,7 +82,11 @@ class MakefileRuleCmdsRules:
 
         if packages:
             if len(packages) == 1:
-                self.makeflags['PACKAGE_NAME'] = list(packages)[0]
+                package_name = list(packages)[0]
+                self.makeflags['PACKAGE_NAME'] = package_name
+                self.makeflags['DESTDIR'] = f'$(CURDIR)/debian/{package_name}'
+            else:
+                self.makeflags['DESTDIR'] = '$(CURDIR)/debian/tmp'
 
             self.makeflags['DH_OPTIONS'] = ' '.join(f'-p{i}' for i in packages)
 

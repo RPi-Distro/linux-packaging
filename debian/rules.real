@@ -613,12 +613,11 @@ $(STAMPS_DIR)/build-tools-headers:
 build_bpftool: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/bpf/bpftool)
 
-binary_bpftool: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 binary_bpftool: build_bpftool
 	dh_testdir
 	dh_testroot
 	dh_prep
-	$(call make-tools,tools/bpf/bpftool) install DESTDIR=$(DIR)
+	$(call make-tools,tools/bpf/bpftool) install
 	dh_installchangelogs
 ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	dh_installdocs
@@ -641,14 +640,13 @@ build_kbuild: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/objtool)
 
 binary_kbuild: PREFIX_DIR = /usr/lib/$(PACKAGE_NAME)
-binary_kbuild: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 binary_kbuild: build_kbuild
 	dh_testdir
 	dh_testroot
 	dh_prep
-	$(call make-tools,certs) install DESTDIR=$(DIR) prefix=$(PREFIX_DIR)
-	$(call make-tools,scripts) install DESTDIR=$(DIR) prefix=$(PREFIX_DIR)
-	$(call make-tools,tools/objtool) install DESTDIR=$(DIR) prefix=$(PREFIX_DIR)
+	$(call make-tools,certs) install prefix=$(PREFIX_DIR)
+	$(call make-tools,scripts) install prefix=$(PREFIX_DIR)
+	$(call make-tools,tools/objtool) install prefix=$(PREFIX_DIR)
 	dh_link $(PREFIX_DIR) /usr/src/$(PACKAGE_NAME)
 	dh_installchangelogs
 ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
@@ -707,12 +705,11 @@ endif
 build_perf: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/perf)
 
-binary_perf: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 binary_perf: build_perf
 	dh_testdir
 	dh_testroot
 	dh_prep
-	$(call make-tools,tools/perf) install DESTDIR=$(DIR)
+	$(call make-tools,tools/perf) install
 	# do not ship python2 script
 	rm -f $(DIR)/usr/lib/perf-core/scripts/python/call-graph-from-sql.py
 	dh_perl /usr/lib/perf-core/scripts/perl/Perf-Trace-Util/lib/
@@ -761,12 +758,11 @@ endif
 build_hyperv-daemons: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/hv)
 
-binary_hyperv-daemons: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 binary_hyperv-daemons: build_hyperv-daemons
 	dh_testdir
 	dh_testroot
 	dh_prep
-	$(call make-tools,tools/hv) install DESTDIR=$(DIR)
+	$(call make-tools,tools/hv) install
 	dh_install
 	dh_installchangelogs
 ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
@@ -792,12 +788,11 @@ endif
 build_bootwrapper: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,arch/powerpc/boot)
 
-binary_bootwrapper: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 binary_bootwrapper: build_bootwrapper
 	dh_testdir
 	dh_testroot
 	dh_prep
-	$(call make-tools,arch/powerpc/boot) install DESTDIR=$(DIR) installdir=/usr/lib/$(PACKAGE_NAME)
+	$(call make-tools,arch/powerpc/boot) install installdir=/usr/lib/$(PACKAGE_NAME)
 	dh_installchangelogs
 	dh_lintian
 	dh_strip
@@ -812,12 +807,11 @@ binary_bootwrapper: build_bootwrapper
 build_rtla: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/tracing/rtla)
 
-binary_rtla: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 binary_rtla: build_rtla
 	dh_testdir
 	dh_testroot
 	dh_prep
-	$(call make-tools,tools/tracing/rtla) install DESTDIR=$(DIR)
+	$(call make-tools,tools/tracing/rtla) install
 	dh_install
 	dh_link
 	dh_installchangelogs
