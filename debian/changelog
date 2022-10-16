@@ -60,6 +60,9 @@ linux (6.0.2-1~exp1) UNRELEASED; urgency=medium
     - misc: pci_endpoint_test: Aggregate params checking for xfer
     - misc: pci_endpoint_test: Fix pci_endpoint_test_{copy,write,read}() panic
 
+  [ Bastian Blank]
+  * [cloud] Enable INTEGRITY.
+
  -- Bastian Blank <waldi@debian.org>  Sun, 16 Oct 2022 16:53:26 +0200
 
 linux (6.0-1~exp1) experimental; urgency=medium

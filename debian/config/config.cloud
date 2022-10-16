@@ -1685,11 +1685,6 @@ CONFIG_NET_MPLS_GSO=m
 CONFIG_SECURITY_INFINIBAND=y
 
 ##
-## file: security/integrity/Kconfig
-##
-# CONFIG_INTEGRITY is not set
-
-##
 ## file: sound/Kconfig
 ##
 # CONFIG_SOUND is not set
