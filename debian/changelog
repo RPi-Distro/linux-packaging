@@ -1,4 +1,4 @@
-linux (6.0.2-1~exp1) UNRELEASED; urgency=medium
+linux (6.0.2-1) UNRELEASED; urgency=high
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.0.1
