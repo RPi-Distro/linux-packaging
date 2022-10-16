@@ -356,7 +356,6 @@ install-headers-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR):
 
 build_libc-dev:
 
-binary_libc-dev: PACKAGE_NAME = linux-libc-dev
 binary_libc-dev: DIR = $(BUILD_DIR)/build-libc-dev
 binary_libc-dev: OUT_DIR = debian/$(PACKAGE_NAME)/usr
 binary_libc-dev:
@@ -588,7 +587,6 @@ install-source-meta:
 
 build_config:
 
-binary_config: PACKAGE_NAME = $(SOURCE_BASENAME)-config-$(VERSION)
 binary_config: TRIPLETS = $(subst $(BUILD_DIR)/build_,,$(wildcard $(BUILD_DIR)/build_$(ARCH)_*_*))
 binary_config:
 	dh_testdir
@@ -615,7 +613,6 @@ $(STAMPS_DIR)/build-tools-headers:
 build_bpftool: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/bpf/bpftool)
 
-binary_bpftool: PACKAGE_NAME = bpftool
 binary_bpftool: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 binary_bpftool: build_bpftool
 	dh_testdir
@@ -643,7 +640,6 @@ build_kbuild: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,scripts)
 	$(call make-tools,tools/objtool)
 
-binary_kbuild: PACKAGE_NAME = linux-kbuild-$(VERSION)
 binary_kbuild: PREFIX_DIR = /usr/lib/$(PACKAGE_NAME)
 binary_kbuild: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 binary_kbuild: build_kbuild
@@ -711,7 +707,6 @@ endif
 build_perf: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/perf)
 
-binary_perf: PACKAGE_NAME = linux-perf
 binary_perf: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 binary_perf: build_perf
 	dh_testdir
@@ -766,7 +761,6 @@ endif
 build_hyperv-daemons: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/hv)
 
-binary_hyperv-daemons: PACKAGE_NAME = hyperv-daemons
 binary_hyperv-daemons: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 binary_hyperv-daemons: build_hyperv-daemons
 	dh_testdir
@@ -798,7 +792,6 @@ endif
 build_bootwrapper: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,arch/powerpc/boot)
 
-binary_bootwrapper: PACKAGE_NAME = linux-bootwrapper-$(ABINAME)
 binary_bootwrapper: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 binary_bootwrapper: build_bootwrapper
 	dh_testdir
@@ -819,7 +812,6 @@ binary_bootwrapper: build_bootwrapper
 build_rtla: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/tracing/rtla)
 
-binary_rtla: PACKAGE_NAME = rtla
 binary_rtla: DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
 binary_rtla: build_rtla
 	dh_testdir

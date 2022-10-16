@@ -79,7 +79,11 @@ class MakefileRuleCmdsRules:
         self.target = target
         self.makeflags = makeflags.copy()
         self.packages = packages
+
         if packages:
+            if len(packages) == 1:
+                self.makeflags['PACKAGE_NAME'] = list(packages)[0]
+
             self.makeflags['DH_OPTIONS'] = ' '.join(f'-p{i}' for i in packages)
 
     def write(self, out):
