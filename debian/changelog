@@ -8,6 +8,7 @@ linux (6.1~rc1-1~exp1) UNRELEASED; urgency=medium
 
   [ Luca Boccassi ]
   * verity: enable DM_VERITY_VERIFY_ROOTHASH_SIG_SECONDARY_KEYRING
+  * ima: enable ARCH_POLICY to let IMA check the status of SecureBoot
 
  -- Bastian Blank <waldi@debian.org>  Fri, 21 Oct 2022 22:29:38 +0200
 
