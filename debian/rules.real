@@ -520,25 +520,27 @@ binary_signed-template:
 		$(CODE_SIGNING_DIR)/source-template/debian/
 	+$(MAKE_SELF) install-base
 
-install-udeb_$(ARCH): export KW_DEFCONFIG_DIR=debian/installer
-install-udeb_$(ARCH): export KW_CONFIG_DIR=debian/installer
-install-udeb_$(ARCH): DH_OPTIONS=$(PACKAGE_NAMES:%=-p%)
-ifeq ($(UDEB_UNSIGNED_TEST_BUILD),True)
-install-udeb_$(ARCH): export DEB_BUILD_PROFILES=pkg.linux.udeb-unsigned-test-build
-endif
-install-udeb_$(ARCH):
-# Logically we should check for %-di here, but that would break test builds
-ifneq (,$(filter linux-image-%,$(packages_enabled)))
+build_udeb:
+build_udeb_test:
+
+binary_udeb binary_udeb_test: export KW_DEFCONFIG_DIR=debian/installer
+binary_udeb binary_udeb_test: export KW_CONFIG_DIR=debian/installer
+
+binary_udeb:
 	dh_testdir
 	dh_prep
 	kernel-wedge install-files $(ABINAME)
 	kernel-wedge check $(PACKAGE_NAMES)
 	dh_fixperms
-ifeq ($(UDEB_UNSIGNED_TEST_BUILD),False)
 	dh_gencontrol
 	dh_builddeb -- $(BUILDDEB_ARGS)
-endif
-endif  # enabled
+
+binary_udeb_test: export DEB_BUILD_PROFILES=pkg.linux.udeb-unsigned-test-build
+binary_udeb_test:
+	dh_testdir
+	dh_prep
+	kernel-wedge install-files $(ABINAME)
+	kernel-wedge check $(PACKAGE_NAMES)
 
 build_source:
 

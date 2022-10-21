@@ -34,9 +34,9 @@ class Makefile:
         for i in deps:
             self.rules.setdefault(i, MakefileRule(i))
 
-    def add_rules(self, name, target, makeflags, packages=[]):
+    def add_rules(self, name, target, makeflags, packages=set(), packages_extra=set()):
         rule = self.rules.setdefault(name, MakefileRule(name))
-        rule.add_cmds(MakefileRuleCmdsRules(target, makeflags, packages))
+        rule.add_cmds(MakefileRuleCmdsRules(target, makeflags, packages, packages_extra))
 
     def write(self, out):
         out.write('''\
@@ -74,20 +74,23 @@ class MakefileRule:
 
 
 class MakefileRuleCmdsRules:
-    def __init__(self, target, makeflags, packages):
+    def __init__(self, target, makeflags, packages, packages_extra):
         self.target = target
         self.makeflags = makeflags.copy()
         self.packages = packages
+        self.packages_extra = packages_extra
 
-        if packages:
-            if len(packages) == 1:
-                package_name = list(packages)[0]
+        packages_all = packages | packages_extra
+
+        if packages_all:
+            if len(packages_all) == 1:
+                package_name = list(packages_all)[0]
                 self.makeflags['PACKAGE_NAME'] = package_name
                 self.makeflags['DESTDIR'] = f'$(CURDIR)/debian/{package_name}'
             else:
                 self.makeflags['DESTDIR'] = '$(CURDIR)/debian/tmp'
 
-            self.makeflags['DH_OPTIONS'] = ' '.join(f'-p{i}' for i in packages)
+            self.makeflags['DH_OPTIONS'] = ' '.join(f'-p{i}' for i in packages_all)
 
     def write(self, out):
         cmd = f'$(MAKE) -f debian/rules.real {self.target} {self.makeflags}'
@@ -375,12 +378,13 @@ class Gencontrol(object):
     def process_packages(self, entries, vars, rule=None, makeflags=None):
         return [self.process_package(i, vars, rule, makeflags) for i in entries]
 
-    def merge_packages_rules(self, packages, rule, makeflags, *, arch=None):
+    def merge_packages_rules(self, packages, rule, makeflags, *, arch=None, check_packages=True):
         for package in packages:
             package = self.packages.setdefault(package)
             package.meta.setdefault('rules-rules', {})[rule] = makeflags
             if arch:
                 package.meta.setdefault('architectures', PackageArchitecture()).add(arch)
+            package.meta['rules-check-packages'] = check_packages
 
     def extract_makefile(self):
         targets = {}
@@ -399,16 +403,20 @@ class Gencontrol(object):
                 if target_name:
                     for rule, makeflags in rules.items():
                         target = targets.setdefault((target_name, rule), {})
-                        target.setdefault('packages', set()).add(name)
+                        if package.meta['rules-check-packages']:
+                            target.setdefault('packages', set()).add(name)
+                        else:
+                            target.setdefault('packages_extra', set()).add(name)
                         target['makeflags'] = makeflags
 
-                        if arch == set(['all']):
+                        if arches == set(['all']):
                             target['type'] = 'indep'
                         else:
                             target['type'] = 'arch'
 
         for (name, rule), target in targets.items():
-            packages = target['packages']
+            packages = target.get('packages', set())
+            packages_extra = target.get('packages_extra', set())
             makeflags = target['makeflags']
             ttype = target['type']
             self.makefile.add_deps(f'build-{ttype}_{rule}',
@@ -416,9 +424,9 @@ class Gencontrol(object):
             self.makefile.add_deps(f'binary-{ttype}_{rule}',
                                    [f'binary-{ttype}_{rule}_{name}'])
             self.makefile.add_rules(f'build-{ttype}_{rule}_{name}',
-                                    f'build_{name}', makeflags, packages)
+                                    f'build_{name}', makeflags, packages, packages_extra)
             self.makefile.add_rules(f'binary-{ttype}_{rule}_{name}',
-                                    f'binary_{name}', makeflags, packages)
+                                    f'binary_{name}', makeflags, packages, packages_extra)
 
     def substitute(self, s, vars):
         if isinstance(s, (list, tuple)):

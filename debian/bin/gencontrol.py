@@ -11,7 +11,7 @@ from debian_linux import config
 from debian_linux.debian import PackageDescription, PackageRelation, \
     PackageRelationEntry, PackageRelationGroup, VersionLinux, \
     restriction_requires_profile
-from debian_linux.gencontrol import Gencontrol as Base, merge_packages, \
+from debian_linux.gencontrol import Gencontrol as Base, \
     iter_featuresets, iter_flavours, add_package_build_restriction
 from debian_linux.utils import Templates, read_control
 
@@ -282,18 +282,17 @@ class Gencontrol(Base):
 
         udeb_packages = self.installer_packages.get(arch, [])
         if udeb_packages:
-            merge_packages(self.packages, udeb_packages, arch)
+            makeflags_local = makeflags.copy()
+            makeflags_local['PACKAGE_NAMES'] = ' '.join(p['Package'] for p in udeb_packages)
 
-            # These packages must be built after the per-flavour/
-            # per-featureset packages.  Also, this won't work
-            # correctly with an empty package list.
-            self.makefile.add_cmds(
-                'binary-arch_%s' % arch,
-                cmds=["$(MAKE) -f debian/rules.real install-udeb_%s %s "
-                      "PACKAGE_NAMES='%s' UDEB_UNSIGNED_TEST_BUILD=%s" %
-                      (arch, makeflags,
-                       ' '.join(p['Package'] for p in udeb_packages),
-                       build_signed)])
+            for package in udeb_packages:
+                package.meta['rules-target'] = build_signed and 'udeb_test' or 'udeb'
+
+            self.merge_packages_rules(
+                udeb_packages,
+                f'{arch}_real',
+                makeflags_local, arch=arch, check_packages=not build_signed,
+            )
 
         if build_signed:
             self.merge_packages_rules(self.process_packages(
@@ -564,6 +563,12 @@ class Gencontrol(Base):
                                    [f'build-arch_{arch}_{featureset}_{flavour}_real'])
             self.makefile.add_deps(f'binary-arch_{arch}_real_signed-template',
                                    [f'binary-arch_{arch}_{featureset}_{flavour}_real'])
+
+        # Make sure udeb is build after linux
+        self.makefile.add_deps(f'build-arch_{arch}_real_udeb',
+                               [f'build-arch_{arch}_{featureset}_{flavour}_real'])
+        self.makefile.add_deps(f'binary-arch_{arch}_real_udeb',
+                               [f'binary-arch_{arch}_{featureset}_{flavour}_real'])
 
         tests_control = self.process_package(
             self.templates['tests-control.image'][0], vars)
