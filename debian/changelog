@@ -1,3 +1,9 @@
+linux (6.1~rc1-1~exp1) UNRELEASED; urgency=medium
+
+  * New upstream release candidate.
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 21 Oct 2022 22:29:38 +0200
+
 linux (6.0.2-1) unstable; urgency=high
 
   * New upstream stable update:
