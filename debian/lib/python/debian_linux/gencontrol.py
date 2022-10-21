@@ -41,6 +41,7 @@ class Makefile:
     def write(self, out):
         out.write('''\
 .NOTPARALLEL:
+.PHONY:
 packages_enabled := $(shell dh_listpackages)
 define if_package
 $(if $(filter $(1),$(packages_enabled)),$(2))
@@ -65,10 +66,8 @@ class MakefileRule:
 
     def write(self, out):
         if self.cmds:
-            if self.deps:
-                out.write(f'{self.name}::{" ".join(sorted(self.deps))}\n')
+            out.write(f'{self.name}:{" ".join(sorted(self.deps))}\n')
             for c in self.cmds:
-                out.write(f'{self.name}::\n')
                 c.write(out)
         else:
             out.write(f'{self.name}:{" ".join(sorted(self.deps))}\n')
