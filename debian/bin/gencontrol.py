@@ -183,11 +183,13 @@ class Gencontrol(Base):
             and vars['source_suffix'] != '-' + vars['version']
 
         if self.config.merge('packages').get('docs', True):
-            self.packages.extend(self.process_packages(
-                self.templates["control.docs"], vars))
+            self.merge_packages_rules(self.process_packages(
+                    self.templates["control.docs"], vars),
+                'real', makeflags)
             if do_meta:
-                self.packages.extend(self.process_packages(
-                    self.templates["control.docs.meta"], vars))
+                self.merge_packages_rules(self.process_packages(
+                        self.templates["control.docs.meta"], vars),
+                    'real', makeflags)
                 self.substitute_debhelper_config(
                     'docs.meta', vars,
                     '%(source_basename)s-doc%(source_suffix)s' % vars)

@@ -236,8 +236,10 @@ class Gencontrol(object):
             target1 = i
             target2 = '_'.join((target1, featureset))
             target3 = '_'.join((target2, 'real'))
+            target4 = '_'.join((target1, 'real'))
             self.makefile.add_deps(target1, [target2])
             self.makefile.add_deps(target2, [target3])
+            self.makefile.add_deps(target1, [target4])
 
     def do_indep_featureset_packages(self, featureset, vars, makeflags, extra):
         pass

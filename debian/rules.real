@@ -67,13 +67,10 @@ endef
 build-arch-arch:
 binary-arch-arch:
 
-build-indep: \
-	$(call if_package, $(SOURCE_BASENAME)-doc-$(VERSION), $(STAMPS_DIR)/build-doc)
+build-indep:
 binary-indep: \
-	$(call if_package, $(SOURCE_BASENAME)-doc-$(VERSION), install-doc) \
 	$(call if_package, $(SOURCE_BASENAME)-source-$(VERSION), install-source) \
 	$(if $(filter-out x-$(VERSION),x$(SOURCE_SUFFIX)), \
-	  $(call if_package, $(SOURCE_BASENAME)-doc$(SOURCE_SUFFIX), install-doc-meta) \
 	  $(call if_package, $(SOURCE_BASENAME)-source$(SOURCE_SUFFIX), install-source-meta)) \
 
 binary-arch-flavour:
@@ -224,12 +221,11 @@ install-dummy:
 	dh_prep
 	+$(MAKE_SELF) install-base
 
-install-doc: PACKAGE_NAME = $(SOURCE_BASENAME)-doc-$(VERSION)
-install-doc: DIR = $(BUILD_DIR)/build-doc
-install-doc: PACKAGE_DIR = debian/$(PACKAGE_NAME)
-install-doc: OUT_DIR = $(PACKAGE_DIR)/usr/share/doc/$(PACKAGE_NAME)
-install-doc: DH_OPTIONS = -p$(PACKAGE_NAME)
-install-doc: $(STAMPS_DIR)/build-doc
+build_doc: $(STAMPS_DIR)/build-doc
+
+binary_doc: DIR = $(BUILD_DIR)/build-doc
+binary_doc: OUT_DIR = $(DESTDIR)/usr/share/doc/$(PACKAGE_NAME)
+binary_doc: $(STAMPS_DIR)/build-doc
 	dh_prep
 ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	mkdir -p $(OUT_DIR)
@@ -240,12 +236,12 @@ ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 		-path Documentation/sphinx -prune -o \
 		-name 'Makefile*' -prune -o \
 		-print | \
-	cpio -pd --preserve-modification-time '$(CURDIR)/$(OUT_DIR)'
+	cpio -pd --preserve-modification-time '$(OUT_DIR)'
 	set -o pipefail; \
 	cd $(DIR)/Documentation/output; \
 	find * -name '*.rst' -prune -o -name objects.inv -prune \
 		-o -name xml -prune -o -print | \
-	cpio -pd --preserve-modification-time '$(CURDIR)/$(OUT_DIR)/html'
+	cpio -pd --preserve-modification-time '$(OUT_DIR)/html'
 	find $(OUT_DIR)/Documentation -type f | xargs gzip -9n
 # Fix up symlinks to gzipped docs
 	cd $(OUT_DIR)/Documentation; \
@@ -259,11 +255,10 @@ ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 endif
 	+$(MAKE_SELF) install-base
 
-install-doc-meta: PACKAGE_NAME = $(SOURCE_BASENAME)-doc$(SOURCE_SUFFIX)
-install-doc-meta: PACKAGE_DIR = debian/$(PACKAGE_NAME)
-install-doc-meta: DH_OPTIONS = -p$(PACKAGE_NAME)
-install-doc-meta: LINK_DOC_PACKAGE = $(SOURCE_BASENAME)-doc-$(VERSION)
-install-doc-meta:
+build_doc-meta:
+
+binary_doc-meta: LINK_DOC_PACKAGE = $(SOURCE_BASENAME)-doc-$(VERSION)
+binary_doc-meta:
 	dh_testdir
 	dh_prep
 	+$(MAKE_SELF) install-base
