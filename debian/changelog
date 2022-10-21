@@ -881,6 +881,9 @@ linux (6.0.3-1) UNRELEASED; urgency=high
   [ Zhang Ning ]
   * [arm64] disable CONFIG_ARM_CPUIDLE, it's arm only
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 2
+
  -- Vagrant Cascadian <vagrant@debian.org>  Sun, 16 Oct 2022 16:11:57 -0700
 
 linux (6.0.2-1) unstable; urgency=high
