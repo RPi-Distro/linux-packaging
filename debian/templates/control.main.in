@@ -1,4 +1,5 @@
 Package: @source_basename@-support-@abiname@
+Meta-Rules-Target: support
 Build-Profiles: <!stage1>
 Architecture: all
 Section: devel

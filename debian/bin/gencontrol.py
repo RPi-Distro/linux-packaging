@@ -173,8 +173,9 @@ class Gencontrol(Base):
         super().do_main_makefile(makeflags, extra)
 
     def do_main_packages(self, vars, makeflags, extra):
-        self.packages.extend(self.process_packages(
-            self.templates["control.main"], vars))
+        self.merge_packages_rules(self.process_packages(
+                self.templates["control.main"], vars),
+            'real', makeflags)
 
         # Only build the metapackages if their names won't exactly match
         # the packages they depend on

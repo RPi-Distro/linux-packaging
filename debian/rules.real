@@ -75,7 +75,6 @@ binary-indep: \
 	$(if $(filter-out x-$(VERSION),x$(SOURCE_SUFFIX)), \
 	  $(call if_package, $(SOURCE_BASENAME)-doc$(SOURCE_SUFFIX), install-doc-meta) \
 	  $(call if_package, $(SOURCE_BASENAME)-source$(SOURCE_SUFFIX), install-source-meta)) \
-	$(call if_package, $(SOURCE_BASENAME)-support-$(ABINAME), install-support) \
 
 binary-arch-flavour: \
 	$(call if_package, $(IMAGE_PACKAGE_NAME),        install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)) \
@@ -373,18 +372,17 @@ binary_libc-dev:
 
 	+$(MAKE_SELF) install-base
 
-install-support: PACKAGE_NAME = $(SOURCE_BASENAME)-support-$(ABINAME)
-install-support: DH_OPTIONS = -p$(PACKAGE_NAME)
-install-support: PACKAGE_DIR = debian/$(PACKAGE_NAME)
-install-support: PACKAGE_ROOT = /usr/share/$(PACKAGE_NAME)
-install-support:
+build_support:
+
+binary_support: PACKAGE_ROOT = /usr/share/$(PACKAGE_NAME)
+binary_support:
 	dh_testdir
 	dh_testroot
 	dh_prep
 	dh_installdirs $(PACKAGE_ROOT)/lib/python/debian_linux $(PACKAGE_ROOT)/modules
-	cp debian/config.defines.dump $(PACKAGE_DIR)$(PACKAGE_ROOT)
-	cp -R debian/installer $(PACKAGE_DIR)$(PACKAGE_ROOT)/installer
-	cp debian/lib/python/debian_linux/*.py $(PACKAGE_DIR)$(PACKAGE_ROOT)/lib/python/debian_linux
+	cp debian/config.defines.dump $(DESTDIR)$(PACKAGE_ROOT)
+	cp -R debian/installer $(DESTDIR)$(PACKAGE_ROOT)/installer
+	cp debian/lib/python/debian_linux/*.py $(DESTDIR)$(PACKAGE_ROOT)/lib/python/debian_linux
 	dh_python3
 	dh_link $(PACKAGE_ROOT) /usr/src/$(PACKAGE_NAME)
 	+$(MAKE_SELF) install-base
