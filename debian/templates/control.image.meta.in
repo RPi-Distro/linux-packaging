@@ -1,4 +1,5 @@
 Package: linux-image@source_suffix@@localversion@
+Meta-Rules-Target: image-meta
 Build-Profiles: <!stage1 !pkg.linux.nokernel !pkg.linux.nometa>
 Depends: linux-image-@abiname@@localversion@ (= ${binary:Version}), ${misc:Depends}
 Provides: linux-latest-modules-@abiname@@localversion@, wireguard-modules (= 1.0.0), virtualbox-guest-modules [amd64 i386]

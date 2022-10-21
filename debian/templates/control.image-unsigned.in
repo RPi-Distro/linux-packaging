@@ -1,4 +1,5 @@
 Package: linux-image-@abiname@@localversion@-unsigned
+Meta-Rules-Target: image
 Build-Profiles: <!stage1 !pkg.linux.nokernel>
 Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}
 Recommends: firmware-linux-free

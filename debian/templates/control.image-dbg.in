@@ -1,4 +1,5 @@
 Package: linux-image-@abiname@@localversion@-dbg
+Meta-Rules-Target: image-dbg
 Build-Profiles: <!stage1 !pkg.linux.nokernel !pkg.linux.nokerneldbg !pkg.linux.quick>
 Depends: ${misc:Depends}
 Section: debug

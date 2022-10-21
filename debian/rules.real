@@ -76,16 +76,11 @@ binary-indep: \
 	  $(call if_package, $(SOURCE_BASENAME)-doc$(SOURCE_SUFFIX), install-doc-meta) \
 	  $(call if_package, $(SOURCE_BASENAME)-source$(SOURCE_SUFFIX), install-source-meta)) \
 
-binary-arch-flavour: \
-	$(call if_package, $(IMAGE_PACKAGE_NAME),        install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)) \
-	$(call if_package, linux-image$(SOURCE_SUFFIX)$(LOCALVERSION), install-image-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR)) \
-	$(call if_package, linux-image-$(ABINAME)$(LOCALVERSION)-dbg, install-image-dbg_$(ARCH)_$(FEATURESET)_$(FLAVOUR)) \
-	$(call if_package, linux-image$(SOURCE_SUFFIX)$(LOCALVERSION)-dbg, install-image-dbg-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR))
+binary-arch-flavour:
 
 binary-indep-featureset:
 
-build-arch-flavour: \
-	$(call if_package, $(IMAGE_PACKAGE_NAME),        $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR))
+build-arch-flavour:
 
 setup-arch-flavour: \
 	$(call if_package, $(IMAGE_PACKAGE_NAME),        $(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR))
@@ -387,15 +382,13 @@ binary_support:
 	dh_link $(PACKAGE_ROOT) /usr/src/$(PACKAGE_NAME)
 	+$(MAKE_SELF) install-base
 
-install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR): REAL_VERSION = $(ABINAME)$(LOCALVERSION)
-install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR): PACKAGE_NAME = $(IMAGE_PACKAGE_NAME)
-install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR): PACKAGE_DIR = debian/$(PACKAGE_NAME)
-install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR): INSTALL_DIR = $(PACKAGE_DIR)/boot
-install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DIR = $(BUILD_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
-install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DH_OPTIONS = -p$(PACKAGE_NAME)
-install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR): $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
+build_image: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 
-install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR):
+binary_image: REAL_VERSION = $(ABINAME)$(LOCALVERSION)
+binary_image: INSTALL_DIR = $(DESTDIR)/boot
+binary_image: DIR = $(BUILD_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
+binary_image: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
+binary_image:
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -407,36 +400,36 @@ else
 	install -m644 '$(DIR)/$(IMAGE_FILE)' $(INSTALL_DIR)/$(IMAGE_INSTALL_STEM)-$(REAL_VERSION)
 endif
 	+$(MAKE_SELF) \
-	  install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)_dt \
-	  DIR='$(DIR)' PACKAGE_DIR='$(PACKAGE_DIR)' REAL_VERSION='$(REAL_VERSION)'
-	+$(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH='$(CURDIR)'/$(PACKAGE_DIR) INSTALL_MOD_STRIP=1
+	  binary_image_dt \
+	  DIR='$(DIR)' DESTDIR='$(DESTDIR)' REAL_VERSION='$(REAL_VERSION)'
+	+$(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH=$(DESTDIR) INSTALL_MOD_STRIP=1
 ifeq ($(call if_package,linux-image-$(ABINAME)$(LOCALVERSION)-dbg,y),y)
 # We are building debug info, so add debug links
 	set -o pipefail; \
-	find $(PACKAGE_DIR) -name '*.ko' | sed 's|$(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/kernel/||' | while read module ; do \
-	  $(CROSS_COMPILE)objcopy --add-gnu-debuglink=$(DIR)/$$module $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/kernel/$$module || exit; \
+	find $(DESTDIR) -name '*.ko' | sed 's|$(DESTDIR)/lib/modules/$(REAL_VERSION)/kernel/||' | while read module ; do \
+	  $(CROSS_COMPILE)objcopy --add-gnu-debuglink=$(DIR)/$$module $(DESTDIR)/lib/modules/$(REAL_VERSION)/kernel/$$module || exit; \
 	done
 # stripping the modules removes signatures as well - if automated signing is enabled with
 # an ephemeral key, re-do the sign step
 	+if grep -qs '^CONFIG_MODULE_SIG_ALL=y' $(DIR)/.config; then \
-		$(MAKE_CLEAN) -C $(DIR) modules_sign INSTALL_MOD_PATH='$(CURDIR)'/$(PACKAGE_DIR); \
+		$(MAKE_CLEAN) -C $(DIR) modules_sign INSTALL_MOD_PATH=$(DESTDIR); \
 	fi
 endif
-	sed '/CONFIG_\(MODULE_SIG_\(ALL\|KEY\)\|SYSTEM_TRUSTED_KEYS\|BUILD_SALT\)[ =]/d' $(DIR)/.config > $(PACKAGE_DIR)/boot/config-$(REAL_VERSION)
+	sed '/CONFIG_\(MODULE_SIG_\(ALL\|KEY\)\|SYSTEM_TRUSTED_KEYS\|BUILD_SALT\)[ =]/d' $(DIR)/.config > $(DESTDIR)/boot/config-$(REAL_VERSION)
 	echo "ffffffffffffffff B The real System.map is in the linux-image-<version>-dbg package" \
-		> $(PACKAGE_DIR)/boot/System.map-$(REAL_VERSION)
-	rm -f $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/build
-	rm -f $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/source
-	rm $(PACKAGE_DIR)/lib/firmware -rf
+		> $(DESTDIR)/boot/System.map-$(REAL_VERSION)
+	rm -f $(DESTDIR)/lib/modules/$(REAL_VERSION)/build
+	rm -f $(DESTDIR)/lib/modules/$(REAL_VERSION)/source
+	rm $(DESTDIR)/lib/firmware -rf
 	+$(MAKE_SELF) \
-	  install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)_bug \
-	  PACKAGE_DIR='$(PACKAGE_DIR)' PACKAGE_NAME='$(PACKAGE_NAME)' REAL_VERSION='$(REAL_VERSION)'
+	  binary_image_bug \
+	  DESTDIR='$(DESTDIR)' PACKAGE_NAME='$(PACKAGE_NAME)' REAL_VERSION='$(REAL_VERSION)'
 	dh_strip --no-automatic-dbgsym -Xvmlinux -Xvmlinuz
 	ln -sf linux-image.NEWS debian/$(PACKAGE_NAME).NEWS
 	+$(MAKE_SELF) install-base
 
-install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)_dt: DT_INSTALL_DIR = $(PACKAGE_DIR)/usr/lib/linux-image-$(REAL_VERSION)
-install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)_dt:
+binary_image_dt: DT_INSTALL_DIR = $(DESTDIR)/usr/lib/linux-image-$(REAL_VERSION)
+binary_image_dt:
 ifneq ($(filter arm64 armel armhf mipsr6 mipsr6el mips64r6 mips64r6el riscv64,$(ARCH)),)
 	+$(MAKE_CLEAN) -C $(DIR) dtbs
 	+$(MAKE_CLEAN) -C $(DIR) dtbs_install INSTALL_DTBS_PATH=$(CURDIR)/$(DT_INSTALL_DIR)
@@ -458,39 +451,38 @@ ifneq ($(filter powerpc ppc64,$(ARCH)),)
 	done
 endif
 
-install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)_bug:
+binary_image_bug:
 	dh_installdirs usr/share/bug/$(PACKAGE_NAME)
 	dh_install debian/templates/image.bug/* usr/share/bug/$(PACKAGE_NAME)
-	chmod 755 $(PACKAGE_DIR)/usr/share/bug/$(PACKAGE_NAME)/script
-	printf "RELEASE='$(REAL_VERSION)'\nDISTRIBUTOR='$(DISTRIBUTOR)'\nSOURCEVERSION='$(SOURCEVERSION)'\nPACKAGE_NAME='$(PACKAGE_NAME)'\nPACKAGE_VERSION='$(SOURCEVERSION)'" > $(PACKAGE_DIR)/usr/share/bug/$(PACKAGE_NAME)/info
+	chmod 755 $(DESTDIR)/usr/share/bug/$(PACKAGE_NAME)/script
+	printf "RELEASE='$(REAL_VERSION)'\nDISTRIBUTOR='$(DISTRIBUTOR)'\nSOURCEVERSION='$(SOURCEVERSION)'\nPACKAGE_NAME='$(PACKAGE_NAME)'\nPACKAGE_VERSION='$(SOURCEVERSION)'" > $(DESTDIR)/usr/share/bug/$(PACKAGE_NAME)/info
 
-install-image-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR): PACKAGE_NAME = linux-image$(SOURCE_SUFFIX)$(LOCALVERSION)
-install-image-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DH_OPTIONS = -p$(PACKAGE_NAME)
-install-image-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR): LINK_DOC_PACKAGE = linux-image-$(ABINAME)$(LOCALVERSION)
-install-image-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR):
+build_image-meta:
+
+binary_image-meta: LINK_DOC_PACKAGE = linux-image-$(ABINAME)$(LOCALVERSION)
+binary_image-meta:
 	dh_testdir
 	dh_prep
 	dh_bugfiles
 	+$(MAKE_SELF) install-base
 
-install-image-dbg_$(ARCH)_$(FEATURESET)_$(FLAVOUR): REAL_VERSION = $(ABINAME)$(LOCALVERSION)
-install-image-dbg_$(ARCH)_$(FEATURESET)_$(FLAVOUR): PACKAGE_NAME = linux-image-$(REAL_VERSION)-dbg
-install-image-dbg_$(ARCH)_$(FEATURESET)_$(FLAVOUR): PACKAGE_DIR = debian/$(PACKAGE_NAME)
-install-image-dbg_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DEBUG_DIR = $(PACKAGE_DIR)/usr/lib/debug
-install-image-dbg_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DIR = $(BUILD_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
-install-image-dbg_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DH_OPTIONS = -p$(PACKAGE_NAME)
-install-image-dbg_$(ARCH)_$(FEATURESET)_$(FLAVOUR): $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
+build_image-dbg: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
+
+binary_image-dbg: REAL_VERSION = $(ABINAME)$(LOCALVERSION)
+binary_image-dbg: DEBUG_DIR = $(DESTDIR)/usr/lib/debug
+binary_image-dbg: DIR = $(BUILD_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
+binary_image-dbg: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 	dh_testdir
 	dh_testroot
 	dh_prep
 	dh_installdirs usr/lib/debug usr/lib/debug/boot usr/share/lintian/overrides/
 	install -m644 $(DIR)/vmlinux $(DEBUG_DIR)/boot/vmlinux-$(REAL_VERSION)
 	install -m644 $(DIR)/System.map $(DEBUG_DIR)/boot/System.map-$(REAL_VERSION)
-	+$(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH='$(CURDIR)'/$(DEBUG_DIR)
+	+$(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH=$(DEBUG_DIR)
 	find $(DEBUG_DIR)/lib/modules/$(REAL_VERSION)/ -mindepth 1 -maxdepth 1 \! -name kernel -exec rm {} \+
 	rm $(DEBUG_DIR)/lib/firmware -rf
 ifeq ($(VDSO),True)
-	+$(MAKE_CLEAN) -C $(DIR) vdso_install INSTALL_MOD_PATH='$(CURDIR)'/$(DEBUG_DIR)
+	+$(MAKE_CLEAN) -C $(DIR) vdso_install INSTALL_MOD_PATH=$(DEBUG_DIR)
 # Create .build-id links.  Some architectures already do so, but in the
 # wrong place, so delete those first.
 	rm -rf $(DEBUG_DIR)/lib/modules/$(REAL_VERSION)/vdso/.build-id
@@ -508,10 +500,10 @@ endif
 	ln -s ../../../boot/vmlinux-$(REAL_VERSION) $(DEBUG_DIR)/lib/modules/$(REAL_VERSION)/vmlinux
 	+$(MAKE_SELF) install-base
 
-install-image-dbg-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR): PACKAGE_NAME = linux-image$(SOURCE_SUFFIX)$(LOCALVERSION)-dbg
-install-image-dbg-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DH_OPTIONS = -p$(PACKAGE_NAME)
-install-image-dbg-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR): LINK_DOC_PACKAGE = linux-image-$(ABINAME)$(LOCALVERSION)-dbg
-install-image-dbg-meta_$(ARCH)_$(FEATURESET)_$(FLAVOUR):
+build_image-dbg-meta:
+
+binary_image-dbg-meta: LINK_DOC_PACKAGE = linux-image-$(ABINAME)$(LOCALVERSION)-dbg
+binary_image-dbg-meta:
 	dh_testdir
 	dh_prep
 	+$(MAKE_SELF) install-base
