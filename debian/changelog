@@ -883,6 +883,7 @@ linux (6.0.3-1) UNRELEASED; urgency=high
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 2
+  * [rt] Refresh "serial: 8250: implement write_atomic"
 
  -- Vagrant Cascadian <vagrant@debian.org>  Sun, 16 Oct 2022 16:11:57 -0700
 
