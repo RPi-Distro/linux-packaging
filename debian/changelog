@@ -5,6 +5,9 @@ linux (6.1~rc1-1~exp1) UNRELEASED; urgency=medium
   [ Bastian Blank ]
   * [arm64] Enable ARCH_NXP.
 
+  [ Diederik de Haas ]
+  * [arm64] Enable ARCH_BCM to re-enable various RPi options
+
  -- Bastian Blank <waldi@debian.org>  Fri, 21 Oct 2022 22:29:38 +0200
 
 linux (6.0.3-1) unstable; urgency=medium
