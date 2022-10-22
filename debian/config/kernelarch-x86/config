@@ -96,6 +96,14 @@ CONFIG_IO_DELAY_0X80=y
 # CONFIG_PUNIT_ATOM_DEBUG is not set
 
 ##
+## file: arch/x86/crypto/Kconfig
+##
+CONFIG_CRYPTO_AES_NI_INTEL=m
+CONFIG_CRYPTO_GHASH_CLMUL_NI_INTEL=m
+CONFIG_CRYPTO_CRC32C_INTEL=m
+CONFIG_CRYPTO_CRC32_PCLMUL=m
+
+##
 ## file: arch/x86/events/Kconfig
 ##
 CONFIG_PERF_EVENTS_INTEL_UNCORE=m
@@ -145,14 +153,6 @@ CONFIG_LDM_PARTITION=y
 CONFIG_SGI_PARTITION=y
 CONFIG_ULTRIX_PARTITION=y
 CONFIG_SUN_PARTITION=y
-
-##
-## file: crypto/Kconfig
-##
-CONFIG_CRYPTO_CRC32C_INTEL=m
-CONFIG_CRYPTO_CRC32_PCLMUL=m
-CONFIG_CRYPTO_GHASH_CLMUL_NI_INTEL=m
-CONFIG_CRYPTO_AES_NI_INTEL=m
 
 ##
 ## file: drivers/acpi/Kconfig
@@ -937,13 +937,6 @@ CONFIG_DVB_AS102=m
 # CONFIG_VIDEO_GO7007 is not set
 
 ##
-## file: drivers/media/usb/tm6000/Kconfig
-##
-CONFIG_VIDEO_TM6000=m
-CONFIG_VIDEO_TM6000_ALSA=m
-CONFIG_VIDEO_TM6000_DVB=m
-
-##
 ## file: drivers/mfd/Kconfig
 ##
 CONFIG_MFD_AXP20X_I2C=m
@@ -1638,6 +1631,13 @@ CONFIG_PCMCIA_SYM53C500=m
 CONFIG_STAGING_MEDIA=y
 
 ##
+## file: drivers/staging/media/deprecated/tm6000/Kconfig
+##
+CONFIG_VIDEO_TM6000=m
+CONFIG_VIDEO_TM6000_ALSA=m
+CONFIG_VIDEO_TM6000_DVB=m
+
+##
 ## file: drivers/staging/rtl8192e/Kconfig
 ##
 CONFIG_RTLLIB=m
@@ -1970,17 +1970,6 @@ CONFIG_ZONE_DMA=y
 ## file: mm/Kconfig.debug
 ##
 CONFIG_DEBUG_WX=y
-
-##
-## file: net/decnet/Kconfig
-##
-CONFIG_DECNET=m
-# CONFIG_DECNET_ROUTER is not set
-
-##
-## file: net/decnet/netfilter/Kconfig
-##
-CONFIG_DECNET_NF_GRABULATOR=m
 
 ##
 ## file: net/lapb/Kconfig
