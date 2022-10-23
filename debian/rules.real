@@ -50,7 +50,7 @@ MAKE_CLEAN = $(setup_env) $(MAKE) KCFLAGS=-fdebug-prefix-map=$(CURDIR)/= KBUILD_
 MAKE_SELF := $(MAKE) -f debian/rules.real $(MAKEOVERRIDES)
 MAKEOVERRIDES =
 
-BUILDDEB_ARGS := $(if $(filter pkg.linux.quick,$(DEB_BUILD_PROFILES)),-Zgzip,-Zxz)
+BUILDDEB_ARGS := -Zxz $(if $(filter pkg.linux.quick,$(DEB_BUILD_PROFILES)),-z0)
 
 #
 # Targets
@@ -548,11 +548,7 @@ binary_source: $(BUILD_DIR)/$(SOURCE_BASENAME)-source-$(UPSTREAMVERSION).tar.xz 
 	dh_testdir
 	dh_testroot
 	dh_install $^ /usr/src
-# We don't want to recompress, but -Znone is not compatible with older
-# tools and is currently rejected by dak.  -Zgzip -z0 (uncompressed
-# data.tar.gz!) makes dpkg and dak happy, but is incomaptible with
-# other things (#725492).  So use the fastest real gzip mode.
-	+$(MAKE_SELF) install-base BUILDDEB_ARGS='-Zgzip -z1'
+	+$(MAKE_SELF) install-base BUILDDEB_ARGS='-Zxz -z0'
 
 build_source-meta:
 
