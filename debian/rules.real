@@ -104,7 +104,7 @@ $(BUILD_DIR)/$(SOURCE_BASENAME)-source-$(UPSTREAMVERSION).tar.xz: $(STAMPS_DIR)/
 		-print0 | \
 		sort -z | \
 		tar --owner=root --group=root --numeric-owner \
-			--no-recursion --null -T - -caf '$(SOURCE_BASENAME)-source-$(UPSTREAMVERSION).tar.xz'
+			--no-recursion --null -T - -c | xz -T0 > '$(SOURCE_BASENAME)-source-$(UPSTREAMVERSION).tar.xz'
 	rm -rf '$(DIR)'
 
 $(BUILD_DIR)/linux-patch-$(UPSTREAMVERSION)-%.patch.xz: $(STAMPS_DIR)/source_none $(STAMPS_DIR)/source_%
