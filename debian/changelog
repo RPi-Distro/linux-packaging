@@ -6,6 +6,13 @@ linux (6.1~rc1-1~exp1) UNRELEASED; urgency=medium
   * [arm64] Enable ARCH_NXP.
   * Generate the lists of packages to build.
 
+  [ Luca Boccassi ]
+  * verity: enable DM_VERITY_VERIFY_ROOTHASH_SIG_SECONDARY_KEYRING
+  * ima: enable ARCH_POLICY to let IMA check the status of SecureBoot
+  * Enable CONFIG_INTEGRITY_MACHINE_KEYRING to load keys from MoK into
+    the new machine keyring, trust by default and link into trusted and
+    secondary keyrings. Refresh/drop obsolete out-of-tree patches.
+
  -- Bastian Blank <waldi@debian.org>  Fri, 21 Oct 2022 22:29:38 +0200
 
 linux (6.0.3-1) unstable; urgency=medium
