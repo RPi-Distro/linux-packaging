@@ -1,4 +1,5 @@
 Package: linux-headers@source_suffix@@localversion@
+Meta-Rules-Target: headers-meta
 Build-Profiles: <!stage1 !pkg.linux.nokernel !pkg.linux.nometa>
 Depends: linux-headers-@abiname@@localversion@ (= ${binary:Version}), ${misc:Depends}
 Description: Header files for Linux @flavour@ configuration (meta-package)

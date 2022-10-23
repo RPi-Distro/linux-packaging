@@ -99,17 +99,17 @@ class Gencontrol(Base):
                         self.installer_packages.setdefault(arch, []) \
                                                .append(package)
 
-    def do_main_packages(self, packages, vars, makeflags, extra):
+    def do_main_packages(self, vars, makeflags, extra):
         # Assume that arch:all packages do not get binNMU'd
-        packages['source']['Build-Depends'].append(
+        self.packages['source']['Build-Depends'].append(
             'linux-support-%(abiname)s (= %(imagesourceversion)s)' % vars)
 
-    def do_main_recurse(self, packages, makefile, vars, makeflags, extra):
+    def do_main_recurse(self, vars, makeflags, extra):
         # Each signed source package only covers a single architecture
-        self.do_arch(packages, makefile, vars['arch'], vars.copy(),
+        self.do_arch(vars['arch'], vars.copy(),
                      makeflags.copy(), extra)
 
-    def do_extra(self, packages, makefile):
+    def do_extra(self):
         pass
 
     def do_arch_setup(self, vars, makeflags, arch, extra):
@@ -122,17 +122,16 @@ class Gencontrol(Base):
         makeflags['ABINAME'] = vars['abiname'] = \
             self.config['version', ]['abiname_base'] + abiname_part
 
-    def do_arch_packages(self, packages, makefile, arch, vars, makeflags,
-                         extra):
+    def do_arch_packages(self, arch, vars, makeflags, extra):
         udeb_packages = self.installer_packages.get(arch, [])
         if udeb_packages:
-            merge_packages(packages, udeb_packages, arch)
+            merge_packages(self.packages, udeb_packages, arch)
 
             # These packages must be built after the per-flavour/
             # per-featureset packages.  Also, this won't work
             # correctly with an empty package list.
             if udeb_packages:
-                makefile.add(
+                self.makefile.add_cmds(
                     'binary-arch_%s' % arch,
                     cmds=["$(MAKE) -f debian/rules.real install-udeb_%s %s "
                           "PACKAGE_NAMES='%s'" %
@@ -172,7 +171,7 @@ class Gencontrol(Base):
         vars['image-stem'] = config_image.get('install-stem')
         makeflags['IMAGE_INSTALL_STEM'] = vars['image-stem']
 
-    def do_flavour_packages(self, packages, makefile, arch, featureset,
+    def do_flavour_packages(self, arch, featureset,
                             flavour, vars, makeflags, extra):
         config_build = self.config.merge('build', arch, featureset, flavour)
         if not config_build.get('signed-code', False):
@@ -198,7 +197,7 @@ class Gencontrol(Base):
         self.image_packages.append((image_suffix, image_package_name,
                                     cert_file_name))
 
-        packages['source']['Build-Depends'].append(
+        self.packages['source']['Build-Depends'].append(
             image_package_name
             + ' (= %(imagebinaryversion)s) [%(arch)s]' % vars)
 
@@ -246,21 +245,19 @@ class Gencontrol(Base):
                 'linux-headers%(localversion)s' % vars,
                 output_dir=self.template_debian_dir)
 
-        merge_packages(packages, packages_own, arch)
-        makefile.add('binary-arch_%s_%s_%s_real' % (arch, featureset, flavour),
-                     cmds=cmds_binary_arch)
+        merge_packages(self.packages, packages_own, arch)
+        self.makefile.add_cmds('binary-arch_%s_%s_%s_real' % (arch, featureset, flavour),
+                               cmds_binary_arch)
 
         self.substitute_debhelper_config(
             'image', vars,
             'linux-image-%(abiname)s%(localversion)s' % vars,
             output_dir=self.template_debian_dir)
 
-    def write(self, packages, makefile):
+    def write(self):
         self.write_changelog()
-        self.write_control(packages.values(),
-                           name=(self.template_debian_dir + '/control'))
-        self.write_makefile(makefile,
-                            name=(self.template_debian_dir + '/rules.gen'))
+        self.write_control(name=(self.template_debian_dir + '/control'))
+        self.write_makefile(name=(self.template_debian_dir + '/rules.gen'))
         self.write_files_json()
         self.write_source_lintian_overrides()
 

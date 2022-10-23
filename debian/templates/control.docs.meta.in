@@ -1,4 +1,5 @@
 Package: @source_basename@-doc@source_suffix@
+Meta-Rules-Target: doc-meta
 Build-Profiles: <!stage1 !nodoc !pkg.linux.nometa !pkg.linux.quick>
 Section: doc
 Architecture: all

@@ -1,4 +1,5 @@
 Package: @source_basename@-source@source_suffix@
+Meta-Rules-Target: source-meta
 Build-Profiles: <!stage1 !pkg.linux.nosource !pkg.linux.nometa !pkg.linux.quick>
 Architecture: all
 Depends: @source_basename@-source-@version@ (= ${binary:Version}), ${misc:Depends}

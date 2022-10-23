@@ -4,6 +4,7 @@ linux (6.1~rc1-1~exp1) UNRELEASED; urgency=medium
 
   [ Bastian Blank ]
   * [arm64] Enable ARCH_NXP.
+  * Generate the lists of packages to build.
 
  -- Bastian Blank <waldi@debian.org>  Fri, 21 Oct 2022 22:29:38 +0200
 
