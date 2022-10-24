@@ -10,7 +10,7 @@ import sys
 
 from debian_linux.config import ConfigCoreDump
 from debian_linux.debian import PackageRelation, VersionLinux
-from debian_linux.gencontrol import Gencontrol as Base, merge_packages, \
+from debian_linux.gencontrol import Gencontrol as Base, \
     iter_flavours
 from debian_linux.utils import Templates, read_control
 
@@ -124,19 +124,19 @@ class Gencontrol(Base):
 
     def do_arch_packages(self, arch, vars, makeflags, extra):
         udeb_packages = self.installer_packages.get(arch, [])
-        if udeb_packages:
-            merge_packages(self.packages, udeb_packages, arch)
 
-            # These packages must be built after the per-flavour/
-            # per-featureset packages.  Also, this won't work
-            # correctly with an empty package list.
-            if udeb_packages:
-                self.makefile.add_cmds(
-                    'binary-arch_%s' % arch,
-                    cmds=["$(MAKE) -f debian/rules.real install-udeb_%s %s "
-                          "PACKAGE_NAMES='%s'" %
-                          (arch, makeflags,
-                           ' '.join(p['Package'] for p in udeb_packages))])
+        if udeb_packages:
+            makeflags_local = makeflags.copy()
+            makeflags_local['PACKAGE_NAMES'] = ' '.join(p['Package'] for p in udeb_packages)
+
+            for package in udeb_packages:
+                package.meta['rules-target'] = 'udeb'
+
+            self.merge_packages_rules(
+                udeb_packages,
+                f'{arch}_real',
+                makeflags_local, arch=arch,
+            )
 
     def do_featureset_setup(self, vars, makeflags, arch, featureset, extra):
         self.default_flavour = self.config.merge('base', arch, featureset) \
