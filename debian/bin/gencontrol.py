@@ -149,9 +149,10 @@ class Gencontrol(Base):
                     # convince debhelper and kernel-wedge to go
                     # part way to building them.
                     package['Build-Profiles'] = (
-                        '<pkg.linux.udeb-unsigned-test-build>')
+                        '<pkg.linux.udeb-unsigned-test-build !pkg.linux.quick>')
                 else:
-                    package['Build-Profiles'] = '<!stage1 !pkg.linux.nokernel>'
+                    package['Build-Profiles'] = (
+                        '<!stage1 !pkg.linux.nokernel !pkg.linux.quick>')
 
                 for arch in package['Architecture']:
                     self.installer_packages.setdefault(arch, []) \
@@ -291,7 +292,7 @@ class Gencontrol(Base):
             self.merge_packages_rules(
                 udeb_packages,
                 f'{arch}_real',
-                makeflags_local, arch=arch, check_packages=not build_signed,
+                makeflags_local, arch=arch,
             )
 
         if build_signed:
