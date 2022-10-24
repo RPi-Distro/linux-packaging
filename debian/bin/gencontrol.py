@@ -292,7 +292,7 @@ class Gencontrol(Base):
             self.merge_packages_rules(
                 udeb_packages,
                 f'{arch}_real',
-                makeflags_local, arch=arch,
+                makeflags_local, arch=arch, check_packages=not build_signed,
             )
 
         if build_signed:
