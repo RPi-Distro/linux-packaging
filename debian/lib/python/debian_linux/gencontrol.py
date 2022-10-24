@@ -1,5 +1,7 @@
 import os
+import pathlib
 import re
+import typing
 from collections import OrderedDict
 
 from .debian import Changelog, PackageArchitecture, \
@@ -117,6 +119,144 @@ class MakeFlags(dict):
         return self.__class__(super(MakeFlags, self).copy())
 
 
+class PackagesBundle:
+    name: typing.Optional[str]
+    makefile: Makefile
+    packages: PackagesList
+
+    def __init__(self, name: typing.Optional[str]) -> None:
+        self.name = name
+        self.makefile = Makefile()
+        self.packages = PackagesList()
+
+    def add(
+            self,
+            packages: PackagesList,
+            ruleid: tuple[str],
+            makeflags: MakeFlags,
+            *,
+            arch: str = None,
+            check_packages: bool = True,
+    ) -> None:
+        for package in packages:
+            package = self.packages.setdefault(package)
+            package.meta.setdefault('rules-ruleids', {})[ruleid] = makeflags
+            if arch:
+                package.meta.setdefault('architectures', PackageArchitecture()).add(arch)
+            package.meta['rules-check-packages'] = check_packages
+
+    @property
+    def path_control(self) -> pathlib.Path:
+        if self.name:
+            return pathlib.Path(f'debian/control.{self.name}')
+        return pathlib.Path('debian/control')
+
+    @property
+    def path_makefile(self) -> pathlib.Path:
+        if self.name:
+            return pathlib.Path(f'debian/rules.gen.{self.name}')
+        return pathlib.Path('debian/rules.gen')
+
+    @staticmethod
+    def __ruleid_deps(ruleid: tuple[str]) -> typing.Iterator[tuple[str, str]]:
+        for i in range(2, len(ruleid), 2):
+            yield ('_'.join(ruleid[:i - 1]), '_'.join(ruleid[:i]))
+
+    def extract_makefile(self) -> None:
+        targets = {}
+
+        for name, package in self.packages.items():
+            target_name = package.meta.get('rules-target')
+            ruleids = package.meta.get('rules-ruleids')
+
+            if ruleids:
+                arches = package.meta.get('architectures')
+                if arches:
+                    package['Architecture'] = arches
+                else:
+                    arches = package.get('Architecture')
+
+                if target_name:
+                    for ruleid, makeflags in ruleids.items():
+                        target = targets.setdefault((target_name, ruleid), {})
+                        if package.meta['rules-check-packages']:
+                            target.setdefault('packages', set()).add(name)
+                        else:
+                            target.setdefault('packages_extra', set()).add(name)
+                        target['makeflags'] = makeflags
+
+                        if arches == set(['all']):
+                            target['type'] = 'indep'
+                        else:
+                            target['type'] = 'arch'
+
+        for (name, ruleid), target in targets.items():
+            packages = target.get('packages', set())
+            packages_extra = target.get('packages_extra', set())
+            makeflags = target['makeflags']
+            ttype = target['type']
+
+            rule = '_'.join(ruleid)
+            self.makefile.add_rules(f'build-{ttype}_{rule}_{name}',
+                                    f'build_{name}', makeflags, packages, packages_extra)
+            self.makefile.add_rules(f'binary-{ttype}_{rule}_{name}',
+                                    f'binary_{name}', makeflags, packages, packages_extra)
+            self.makefile.add_deps(f'build-{ttype}_{rule}',
+                                   [f'build-{ttype}_{rule}_{name}'])
+            self.makefile.add_deps(f'binary-{ttype}_{rule}',
+                                   [f'binary-{ttype}_{rule}_{name}'])
+
+            for i, j in self.__ruleid_deps(ruleid):
+                self.makefile.add_deps(f'build-{ttype}_{i}',
+                                       [f'build-{ttype}_{j}'])
+                self.makefile.add_deps(f'binary-{ttype}_{i}',
+                                       [f'binary-{ttype}_{j}'])
+
+    def merge_build_depends(self):
+        # Merge Build-Depends pseudo-fields from binary packages into the
+        # source package
+        source = self.packages["source"]
+        arch_all = PackageArchitecture("all")
+        for name, package in self.packages.items():
+            if name == "source":
+                continue
+            dep = package.get("Build-Depends")
+            if not dep:
+                continue
+            del package["Build-Depends"]
+            for group in dep:
+                for item in group:
+                    if package["Architecture"] != arch_all and not item.arches:
+                        item.arches = sorted(package["Architecture"])
+                    if package.get("Build-Profiles") and not item.restrictions:
+                        item.restrictions = package["Build-Profiles"]
+            if package["Architecture"] == arch_all:
+                dep_type = "Build-Depends-Indep"
+            else:
+                dep_type = "Build-Depends-Arch"
+            if dep_type not in source:
+                source[dep_type] = PackageRelation()
+            source[dep_type].extend(dep)
+
+    def write(self) -> None:
+        self.write_control()
+        self.write_makefile()
+
+    def write_control(self) -> None:
+        with self.path_control.open('w', encoding='utf-8') as f:
+            self.write_rfc822(f, self.packages.values())
+
+    def write_makefile(self) -> None:
+        with self.path_makefile.open('w', encoding='utf-8') as f:
+            self.makefile.write(f)
+
+    def write_rfc822(self, f: typing.TextIO, entries: typing.Iterable) -> None:
+        for entry in entries:
+            for key, value in entry.items():
+                f.write(u"%s: %s\n" % (key, value))
+            f.write('\n')
+
+
 def iter_featuresets(config):
     for featureset in config['base', ]['featuresets']:
         if config.merge('base', None, featureset).get('enabled', True):
@@ -145,16 +285,20 @@ class Gencontrol(object):
         self.config, self.templates = config, templates
         self.changelog = Changelog(version=version)
         self.vars = {}
-        self.packages = PackagesList()
-        self.makefile = Makefile()
+        self.bundles = {None: PackagesBundle(None)}
+        # TODO: Remove after all references are gone
+        self.packages = self.bundle.packages
+        self.makefile = self.bundle.makefile
+
+    @property
+    def bundle(self) -> PackagesBundle:
+        return self.bundles[None]
 
     def __call__(self):
         self.do_source()
         self.do_main()
         self.do_extra()
 
-        self.merge_build_depends()
-        self.extract_makefile()
         self.write()
 
     def do_source(self):
@@ -379,54 +523,13 @@ class Gencontrol(object):
         return [self.process_package(i, vars, rule, makeflags) for i in entries]
 
     def merge_packages_rules(self, packages, rule, makeflags, *, arch=None, check_packages=True):
-        for package in packages:
-            package = self.packages.setdefault(package)
-            package.meta.setdefault('rules-rules', {})[rule] = makeflags
-            if arch:
-                package.meta.setdefault('architectures', PackageArchitecture()).add(arch)
-            package.meta['rules-check-packages'] = check_packages
-
-    def extract_makefile(self):
-        targets = {}
-
-        for name, package in self.packages.items():
-            target_name = package.meta.get('rules-target')
-            rules = package.meta.get('rules-rules')
-
-            if rules:
-                arches = package.meta.get('architectures')
-                if arches:
-                    package['Architecture'] = arches
-                else:
-                    arches = package.get('Architecture')
-
-                if target_name:
-                    for rule, makeflags in rules.items():
-                        target = targets.setdefault((target_name, rule), {})
-                        if package.meta['rules-check-packages']:
-                            target.setdefault('packages', set()).add(name)
-                        else:
-                            target.setdefault('packages_extra', set()).add(name)
-                        target['makeflags'] = makeflags
-
-                        if arches == set(['all']):
-                            target['type'] = 'indep'
-                        else:
-                            target['type'] = 'arch'
-
-        for (name, rule), target in targets.items():
-            packages = target.get('packages', set())
-            packages_extra = target.get('packages_extra', set())
-            makeflags = target['makeflags']
-            ttype = target['type']
-            self.makefile.add_deps(f'build-{ttype}_{rule}',
-                                   [f'build-{ttype}_{rule}_{name}'])
-            self.makefile.add_deps(f'binary-{ttype}_{rule}',
-                                   [f'binary-{ttype}_{rule}_{name}'])
-            self.makefile.add_rules(f'build-{ttype}_{rule}_{name}',
-                                    f'build_{name}', makeflags, packages, packages_extra)
-            self.makefile.add_rules(f'binary-{ttype}_{rule}_{name}',
-                                    f'binary_{name}', makeflags, packages, packages_extra)
+        self.bundles[None].add(
+            packages,
+            tuple(rule.split('_')),
+            makeflags,
+            arch=arch,
+            check_packages=check_packages,
+        )
 
     def substitute(self, s, vars):
         if isinstance(s, (list, tuple)):
@@ -457,44 +560,23 @@ class Gencontrol(object):
                     os.chmod(f.fileno(),
                              self.templates.get_mode(name) & 0o777)
 
-    def merge_build_depends(self):
-        # Merge Build-Depends pseudo-fields from binary packages into the
-        # source package
-        source = self.packages["source"]
-        arch_all = PackageArchitecture("all")
-        for name, package in self.packages.items():
-            if name == "source":
-                continue
-            dep = package.get("Build-Depends")
-            if not dep:
-                continue
-            del package["Build-Depends"]
-            for group in dep:
-                for item in group:
-                    if package["Architecture"] != arch_all and not item.arches:
-                        item.arches = sorted(package["Architecture"])
-                    if package.get("Build-Profiles") and not item.restrictions:
-                        item.restrictions = package["Build-Profiles"]
-            if package["Architecture"] == arch_all:
-                dep_type = "Build-Depends-Indep"
-            else:
-                dep_type = "Build-Depends-Arch"
-            if dep_type not in source:
-                source[dep_type] = PackageRelation()
-            source[dep_type].extend(dep)
-
     def write(self):
-        self.write_control()
-        self.write_makefile()
+        for bundle in self.bundles.values():
+            bundle.merge_build_depends()
+            bundle.extract_makefile()
+            bundle.write()
 
+    # TODO: Remove
     def write_control(self, name='debian/control'):
         self.write_rfc822(open(name, 'w', encoding='utf-8'), self.packages.values())
 
+    # TODO: Remove
     def write_makefile(self, name='debian/rules.gen'):
         f = open(name, 'w')
         self.makefile.write(f)
         f.close()
 
+    # TODO: Remove
     def write_rfc822(self, f, list):
         for entry in list:
             for key, value in entry.items():
