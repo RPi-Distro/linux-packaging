@@ -16,6 +16,20 @@ linux (6.1~rc1-1~exp1) UNRELEASED; urgency=medium
   [ Diederik de Haas ]
   * [arm64] Enable ARCH_BCM to re-enable various RPi options
 
+  [ Aurelien Jarno ]
+  * [arm64] Enable support for Rockchip rk356x devices (Rock 3A, Quartz64,
+    Odroid M1, etc.):
+    - Enable ARM_SCMI_PROTOCOL, COMMON_CLK_SCMI, RESET_SCMI.
+    - Enable CHARGER_RK817.
+    - Enable MMC_SDHCI_OF_DWCMSHC.
+    - Enable MOTORCOMM_PHY.
+    - Enable PCIE_ROCKCHIP_DW_HOST, PHY_ROCKCHIP_SNPS_PCIE3.
+    - Enable PHY_ROCKCHIP_INNO_CSIDPHY, PHY_ROCKCHIP_INNO_DSIDPHY,
+      PHY_ROCKCHIP_NANENG_COMBO_PHY.
+    - Enable ROCKCHIP_VOP2.
+    - Enable SND_SOC_RK817, SND_SOC_ROCKCHIP_I2S_TDM.
+    - Enable SPI_ROCKCHIP_SFC.
+
  -- Bastian Blank <waldi@debian.org>  Fri, 21 Oct 2022 22:29:38 +0200
 
 linux (6.0.3-1) unstable; urgency=medium
