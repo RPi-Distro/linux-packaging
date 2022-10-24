@@ -92,12 +92,12 @@ class MakefileRuleCmdsRules:
             else:
                 self.makeflags['DESTDIR'] = '$(CURDIR)/debian/tmp'
 
-            self.makeflags['DH_OPTIONS'] = ' '.join(f'-p{i}' for i in packages_all)
+            self.makeflags['DH_OPTIONS'] = ' '.join(f'-p{i}' for i in sorted(packages_all))
 
     def write(self, out):
         cmd = f'$(MAKE) -f debian/rules.real {self.target} {self.makeflags}'
         if self.packages:
-            out.write(f'\t$(call if_package, {" ".join(self.packages)}, {cmd})\n')
+            out.write(f'\t$(call if_package, {" ".join(sorted(self.packages))}, {cmd})\n')
         else:
             out.write(f'\t{cmd}\n')
 
