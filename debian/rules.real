@@ -38,7 +38,6 @@ export DEB_HOST_ARCH DEB_HOST_GNU_TYPE DEB_BUILD_ARCH
 export DEB_BUILD_PATH = $(CURDIR)  # for dpkg-buildflags
 export LC_ALL = C.UTF-8
 undefine LANGUAGE
-export LINK_DOC_PACKAGE
 
 stamp = [ -d $(dir $@) ] || mkdir $(dir $@); touch $@
 
@@ -201,9 +200,10 @@ endif
 
 install-base:
 ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
-	dh_installdocs $(if $(LINK_DOC_PACKAGE),--link-doc=$(LINK_DOC_PACKAGE))
+	dh_installdocs $(if $(INSTALLDOCS_LINK_DOC),--link-doc=$(INSTALLDOCS_LINK_DOC))
 endif
 	dh_installchangelogs
+	dh_bugfiles
 	dh_lintian
 	dh_compress
 	dh_fixperms
@@ -212,7 +212,9 @@ endif
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-install-dummy:
+build_meta:
+
+binary_meta install-dummy:
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -250,14 +252,6 @@ ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 		fi; \
 	done
 endif
-	+$(MAKE_SELF) install-base
-
-build_doc-meta:
-
-binary_doc-meta: LINK_DOC_PACKAGE = $(SOURCE_BASENAME)-doc-$(VERSION)
-binary_doc-meta:
-	dh_testdir
-	dh_prep
 	+$(MAKE_SELF) install-base
 
 build_headers-common:
@@ -326,14 +320,6 @@ binary_headers: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 	ln -s /usr/src/$(PACKAGE_NAME) $(DESTDIR)/lib/modules/$(REAL_VERSION)/build
 	ln -s /usr/src/$(PACKAGE_NAME_COMMON) $(DESTDIR)/lib/modules/$(REAL_VERSION)/source
 
-	+$(MAKE_SELF) install-base
-
-build_headers-meta:
-
-binary_headers-meta: LINK_DOC_PACKAGE = linux-headers-$(ABINAME)$(LOCALVERSION)
-binary_headers-meta:
-	dh_testdir
-	dh_prep
 	+$(MAKE_SELF) install-base
 
 build_libc-dev:
@@ -449,15 +435,6 @@ binary_image_bug:
 	chmod 755 $(DESTDIR)/usr/share/bug/$(PACKAGE_NAME)/script
 	printf "RELEASE='$(REAL_VERSION)'\nDISTRIBUTOR='$(DISTRIBUTOR)'\nSOURCEVERSION='$(SOURCEVERSION)'\nPACKAGE_NAME='$(PACKAGE_NAME)'\nPACKAGE_VERSION='$(SOURCEVERSION)'" > $(DESTDIR)/usr/share/bug/$(PACKAGE_NAME)/info
 
-build_image-meta:
-
-binary_image-meta: LINK_DOC_PACKAGE = linux-image-$(ABINAME)$(LOCALVERSION)
-binary_image-meta:
-	dh_testdir
-	dh_prep
-	dh_bugfiles
-	+$(MAKE_SELF) install-base
-
 build_image-dbg: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 
 binary_image-dbg: REAL_VERSION = $(ABINAME)$(LOCALVERSION)
@@ -490,14 +467,6 @@ endif
 	ln -s boot/vmlinux-$(REAL_VERSION) $(DEBUG_DIR)/
 	mkdir -p $(DEBUG_DIR)/lib/modules/$(REAL_VERSION)
 	ln -s ../../../boot/vmlinux-$(REAL_VERSION) $(DEBUG_DIR)/lib/modules/$(REAL_VERSION)/vmlinux
-	+$(MAKE_SELF) install-base
-
-build_image-dbg-meta:
-
-binary_image-dbg-meta: LINK_DOC_PACKAGE = linux-image-$(ABINAME)$(LOCALVERSION)-dbg
-binary_image-dbg-meta:
-	dh_testdir
-	dh_prep
 	+$(MAKE_SELF) install-base
 
 build_signed-template:
@@ -550,14 +519,6 @@ binary_source: $(BUILD_DIR)/$(SOURCE_BASENAME)-source-$(UPSTREAMVERSION).tar.xz 
 	dh_testroot
 	dh_install $^ /usr/src
 	+$(MAKE_SELF) install-base BUILDDEB_ARGS='-Zxz -z0'
-
-build_source-meta:
-
-binary_source-meta: LINK_DOC_PACKAGE = $(SOURCE_BASENAME)-source-$(VERSION)
-binary_source-meta:
-	dh_testdir
-	dh_prep
-	+$(MAKE_SELF) install-base
 
 build_config:
 
