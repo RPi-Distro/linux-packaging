@@ -165,7 +165,7 @@ class PackagesBundle:
     def extract_makefile(self) -> None:
         targets = {}
 
-        for name, package in self.packages.items():
+        for package_name, package in self.packages.items():
             target_name = package.meta.get('rules-target')
             ruleids = package.meta.get('rules-ruleids')
 
@@ -178,11 +178,19 @@ class PackagesBundle:
 
                 if target_name:
                     for ruleid, makeflags in ruleids.items():
-                        target = targets.setdefault((target_name, ruleid), {})
+                        target_key = frozenset((target_name, ruleid))
+                        target = targets.setdefault(
+                            target_key,
+                            {
+                                'name': target_name,
+                                'ruleid': ruleid,
+                            },
+                        )
+
                         if package.meta['rules-check-packages']:
-                            target.setdefault('packages', set()).add(name)
+                            target.setdefault('packages', set()).add(package_name)
                         else:
-                            target.setdefault('packages_extra', set()).add(name)
+                            target.setdefault('packages_extra', set()).add(package_name)
                         target['makeflags'] = makeflags
 
                         if arches == set(['all']):
@@ -190,7 +198,9 @@ class PackagesBundle:
                         else:
                             target['type'] = 'arch'
 
-        for (name, ruleid), target in targets.items():
+        for target in targets.values():
+            name = target['name']
+            ruleid = target['ruleid']
             packages = target.get('packages', set())
             packages_extra = target.get('packages_extra', set())
             makeflags = target['makeflags']
