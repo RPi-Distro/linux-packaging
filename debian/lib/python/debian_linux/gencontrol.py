@@ -168,6 +168,11 @@ class PackagesBundle:
         for package_name, package in self.packages.items():
             target_name = package.meta.get('rules-target')
             ruleids = package.meta.get('rules-ruleids')
+            makeflags = MakeFlags({
+                # Requires Python 3.9+
+                k.removeprefix('rules-makeflags-').upper(): v
+                for (k, v) in package.meta.items() if k.startswith('rules-makeflags-')
+            })
 
             if ruleids:
                 arches = package.meta.get('architectures')
@@ -177,8 +182,11 @@ class PackagesBundle:
                     arches = package.get('Architecture')
 
                 if target_name:
-                    for ruleid, makeflags in ruleids.items():
-                        target_key = frozenset((target_name, ruleid))
+                    for ruleid, makeflags_package in ruleids.items():
+                        target_key = frozenset(
+                            [target_name, ruleid]
+                            + [f'{k}_{v}' for (k, v) in makeflags.items()]
+                        )
                         target = targets.setdefault(
                             target_key,
                             {
@@ -191,7 +199,9 @@ class PackagesBundle:
                             target.setdefault('packages', set()).add(package_name)
                         else:
                             target.setdefault('packages_extra', set()).add(package_name)
-                        target['makeflags'] = makeflags
+                        makeflags_package = makeflags_package.copy()
+                        makeflags_package.update(makeflags)
+                        target['makeflags'] = makeflags_package
 
                         if arches == set(['all']):
                             target['type'] = 'indep'
@@ -518,7 +528,6 @@ class Gencontrol(object):
 
     def process_package(self, in_entry, vars={}, rule=None, makeflags=None):
         entry = in_entry.__class__()
-        entry.meta = in_entry.meta.copy()
         for key, value in in_entry.items():
             if isinstance(value, PackageRelation):
                 value = self.process_relation(value, vars)
@@ -527,6 +536,8 @@ class Gencontrol(object):
             else:
                 value = self.substitute(value, vars)
             entry[key] = value
+        for key, value in in_entry.meta.items():
+            entry.meta[key] = self.substitute(value, vars)
         return entry
 
     def process_packages(self, entries, vars, rule=None, makeflags=None):
