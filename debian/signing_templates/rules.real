@@ -6,12 +6,14 @@ BUILDDEB_ARGS := -Zxz $(if $(filter pkg.linux.quick,$(DEB_BUILD_PROFILES)),-z0)
 
 build-indep:
 
-install-signed: DH_OPTIONS = -p$(PACKAGE_NAME)
-install-signed: KERNEL_VERSION = $(ABINAME)$(LOCALVERSION)
-install-signed: IMAGE_PACKAGE_NAME = linux-image-$(KERNEL_VERSION)-unsigned
-install-signed: PACKAGE_DIR = debian/$(PACKAGE_NAME)
-install-signed: SIGNATURE_DIR = debian/signatures/$(IMAGE_PACKAGE_NAME)
-install-signed:
+build_image:
+
+binary_image: DH_OPTIONS = -p$(PACKAGE_NAME)
+binary_image: KERNEL_VERSION = $(ABINAME)$(LOCALVERSION)
+binary_image: IMAGE_PACKAGE_NAME = linux-image-$(KERNEL_VERSION)-unsigned
+binary_image: PACKAGE_DIR = debian/$(PACKAGE_NAME)
+binary_image: SIGNATURE_DIR = debian/signatures/$(IMAGE_PACKAGE_NAME)
+binary_image:
 	mkdir -p $(PACKAGE_DIR)/boot
 	rsync -a $(patsubst %,/boot/%-$(KERNEL_VERSION),config System.map $(IMAGE_INSTALL_STEM)) \
 		$(PACKAGE_DIR)/boot/
@@ -61,12 +63,13 @@ install-signed:
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-install-meta: DH_OPTIONS = -p$(PACKAGE_NAME)
-install-meta:
+build_meta:
+
+binary_meta:
 	dh_testdir
 	dh_prep
 	dh_bugfiles
-	dh_installdocs --link-doc=$(LINK_DOC_PACKAGE_NAME)
+	dh_installdocs --link-doc=$(INSTALLDOCS_LINK_DOC)
 	dh_lintian
 	dh_compress
 	dh_fixperms
@@ -86,3 +89,5 @@ install-udeb_$(ARCH):
 	dh_fixperms
 	dh_gencontrol -- $(GENCONTROL_ARGS)
 	dh_builddeb -- $(BUILDDEB_ARGS)
+
+.PHONY: build_% binary_%
