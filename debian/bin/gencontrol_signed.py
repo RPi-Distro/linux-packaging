@@ -10,7 +10,7 @@ import sys
 
 from debian_linux.config import ConfigCoreDump
 from debian_linux.debian import PackageRelation, VersionLinux
-from debian_linux.gencontrol import Gencontrol as Base, merge_packages, \
+from debian_linux.gencontrol import Gencontrol as Base, \
     iter_flavours
 from debian_linux.utils import Templates, read_control
 
@@ -124,19 +124,19 @@ class Gencontrol(Base):
 
     def do_arch_packages(self, arch, vars, makeflags, extra):
         udeb_packages = self.installer_packages.get(arch, [])
-        if udeb_packages:
-            merge_packages(self.packages, udeb_packages, arch)
 
-            # These packages must be built after the per-flavour/
-            # per-featureset packages.  Also, this won't work
-            # correctly with an empty package list.
-            if udeb_packages:
-                self.makefile.add_cmds(
-                    'binary-arch_%s' % arch,
-                    cmds=["$(MAKE) -f debian/rules.real install-udeb_%s %s "
-                          "PACKAGE_NAMES='%s'" %
-                          (arch, makeflags,
-                           ' '.join(p['Package'] for p in udeb_packages))])
+        if udeb_packages:
+            makeflags_local = makeflags.copy()
+            makeflags_local['PACKAGE_NAMES'] = ' '.join(p['Package'] for p in udeb_packages)
+
+            for package in udeb_packages:
+                package.meta['rules-target'] = 'udeb'
+
+            self.merge_packages_rules(
+                udeb_packages,
+                f'{arch}_real',
+                makeflags_local, arch=arch,
+            )
 
     def do_featureset_setup(self, vars, makeflags, arch, featureset, extra):
         self.default_flavour = self.config.merge('base', arch, featureset) \
@@ -204,9 +204,6 @@ class Gencontrol(Base):
         packages_own = self.process_packages(
             self.templates['control.image'], vars)
         assert len(packages_own) == 1
-        cmds_binary_arch = ["$(MAKE) -f debian/rules.real install-signed "
-                            "PACKAGE_NAME='%s' %s" %
-                            (packages_own[0]['Package'], makeflags)]
 
         if self.config.merge('packages').get('meta', True):
             packages_meta = self.process_packages(
@@ -229,13 +226,6 @@ class Gencontrol(Base):
 
             packages_own.extend(packages_meta)
 
-            cmds_binary_arch += [
-                "$(MAKE) -f debian/rules.real install-meta "
-                "PACKAGE_NAME='%s' LINK_DOC_PACKAGE_NAME='%s' %s" %
-                (package['Package'], package['Depends'][0][0].name, makeflags)
-                for package in packages_meta
-            ]
-
             self.substitute_debhelper_config(
                 'image.meta', vars,
                 'linux-image%(localversion)s' % vars,
@@ -245,9 +235,10 @@ class Gencontrol(Base):
                 'linux-headers%(localversion)s' % vars,
                 output_dir=self.template_debian_dir)
 
-        merge_packages(self.packages, packages_own, arch)
-        self.makefile.add_cmds('binary-arch_%s_%s_%s_real' % (arch, featureset, flavour),
-                               cmds_binary_arch)
+        self.merge_packages_rules(
+            packages_own,
+            f'{arch}_{featureset}_{flavour}_real', makeflags, arch=arch,
+        )
 
         self.substitute_debhelper_config(
             'image', vars,
@@ -255,6 +246,7 @@ class Gencontrol(Base):
             output_dir=self.template_debian_dir)
 
     def write(self):
+        self.bundle.extract_makefile()
         self.write_changelog()
         self.write_control(name=(self.template_debian_dir + '/control'))
         self.write_makefile(name=(self.template_debian_dir + '/rules.gen'))

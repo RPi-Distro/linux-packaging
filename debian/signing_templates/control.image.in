@@ -1,4 +1,5 @@
 Package: linux-image-@abiname@@localversion@
+Meta-Rules-Target: image
 Depends: ${unsigned:Depends}, ${misc:Depends}
 Recommends: ${unsigned:Recommends}
 Suggests: ${unsigned:Suggests}
