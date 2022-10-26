@@ -100,6 +100,11 @@ CONFIG_AGP=y
 CONFIG_AGP_AMD64=y
 
 ##
+## file: drivers/cxl/Kconfig
+##
+CONFIG_CXL_BUS=y
+
+##
 ## file: drivers/dma/Kconfig
 ##
 CONFIG_INTEL_IDXD=m

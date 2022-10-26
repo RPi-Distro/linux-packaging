@@ -288,6 +288,11 @@ CONFIG_CRYPTO_DEV_NITROX_CNN55XX=m
 CONFIG_CRYPTO_DEV_MARVELL_CESA=m
 
 ##
+## file: drivers/cxl/Kconfig
+##
+CONFIG_CXL_BUS=y
+
+##
 ## file: drivers/devfreq/Kconfig
 ##
 CONFIG_ARM_IMX_BUS_DEVFREQ=m
