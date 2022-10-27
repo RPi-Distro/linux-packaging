@@ -30,6 +30,8 @@ linux (6.0.5-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 6.0.5-rt14
+  * Ignore ABI changes doe to removed check_var_size, check_var_size_nonblocking
+    and remove_conflicting_pci_framebuffers
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 27 Oct 2022 21:18:07 +0200
 
