@@ -1,7 +1,7 @@
 From: Vlastimil Babka <vbabka@suse.cz>
 Date: Tue, 23 Aug 2022 19:03:59 +0200
 Subject: [PATCH 4/5] mm/slub: convert object_map_lock to non-raw spinlock
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 The only remaining user of object_map_lock is list_slab_objects().
 Obtaining the lock there used to happen under slab_lock() which implied

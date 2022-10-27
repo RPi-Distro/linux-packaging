@@ -28,6 +28,9 @@ linux (6.0.5-1) UNRELEASED; urgency=medium
     - Revert "btrfs: call __btrfs_remove_free_space_cache_locked on cache load
       failure" (Closes: #1022848)
 
+  [ Salvatore Bonaccorso ]
+  * [rt] Update to 6.0.5-rt14
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 27 Oct 2022 21:18:07 +0200
 
 linux (6.0.3-1) unstable; urgency=medium

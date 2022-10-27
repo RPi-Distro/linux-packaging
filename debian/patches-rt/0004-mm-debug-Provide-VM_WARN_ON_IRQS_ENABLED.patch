@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 25 Aug 2022 18:41:27 +0200
 Subject: [PATCH 4/8] mm/debug: Provide VM_WARN_ON_IRQS_ENABLED()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 Some places in the VM code expect interrupts disabled, which is a valid
 expectation on non-PREEMPT_RT kernels, but does not hold on RT kernels in

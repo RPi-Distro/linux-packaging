@@ -2,7 +2,7 @@ From: Vlastimil Babka <vbabka@suse.cz>
 Date: Tue, 23 Aug 2022 19:03:57 +0200
 Subject: [PATCH 2/5] mm/slub: restrict sysfs validation to debug caches and
  make it safe
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 Rongwei Wang reports [1] that cache validation triggered by writing to
 /sys/kernel/slab/<cache>/validate is racy against normal cache

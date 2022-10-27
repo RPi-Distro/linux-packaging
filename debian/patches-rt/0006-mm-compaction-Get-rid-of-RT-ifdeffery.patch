@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 25 Aug 2022 18:41:29 +0200
 Subject: [PATCH 6/8] mm/compaction: Get rid of RT ifdeffery
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 Move the RT dependency for the initial value of
 sysctl_compact_unevictable_allowed into Kconfig.

@@ -41,8 +41,8 @@ sched-Consider-task_struct-saved_state-in-wait_task_.patch
 0008-u64_stats-Streamline-the-implementation.patch
 # Wait until after the previous patch is upstream.
 0001-spi-Remove-the-obsolte-u64_stats_fetch_-_irq-users.patch
-0002-net-Remove-the-obsolte-u64_stats_fetch_-_irq-users.patch
-0003-net-Remove-the-obsolte-u64_stats_fetch_-_irq-users.patch
+0002-net-Remove-the-obsolte-u64_stats_fetch_-_irq-users-d.patch
+0003-net-Remove-the-obsolte-u64_stats_fetch_-_irq-users-n.patch
 0004-bpf-Remove-the-obsolte-u64_stats_fetch_-_irq-users.patch
 # Wait until previous four are upstream.
 u64_stat-Remove-the-obsolete-fetch_irq-variants.patch

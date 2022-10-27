@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 25 Aug 2022 18:41:26 +0200
 Subject: [PATCH 3/8] mm/vmstat: Use preempt_[dis|en]able_nested()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 Replace the open coded CONFIG_PREEMPT_RT conditional
 preempt_enable/disable() pairs with the new helper functions which hide
