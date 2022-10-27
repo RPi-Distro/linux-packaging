@@ -1,4 +1,4 @@
-linux (6.0.4-1) UNRELEASED; urgency=medium
+linux (6.0.5-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.0.4
@@ -23,6 +23,10 @@ linux (6.0.4-1) UNRELEASED; urgency=medium
     - io-wq: Fix memory leak in worker creation
     - fbdev/core: Remove remove_conflicting_pci_framebuffers()
     - Revert "ALSA: hda: Fix page fault in snd_hda_codec_shutdown()"
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.0.5
+    - [arm64,armhf] clk: tegra: Fix Tegra PWM parent clock
+    - Revert "btrfs: call __btrfs_remove_free_space_cache_locked on cache load
+      failure" (Closes: #1022848)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 27 Oct 2022 21:18:07 +0200
 
