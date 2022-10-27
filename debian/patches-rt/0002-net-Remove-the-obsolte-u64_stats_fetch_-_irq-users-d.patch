@@ -1,7 +1,8 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 25 Aug 2022 16:15:44 +0200
-Subject: [PATCH 2/4] net: Remove the obsolte u64_stats_fetch_*_irq() users (part one).
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Subject: [PATCH 2/4] net: Remove the obsolte u64_stats_fetch_*_irq() users
+ (drivers).
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 Now that the 32bit UP oddity is gone and 32bit uses always a sequence
 count, there is no need for the fetch_irq() variants anymore.
@@ -58,6 +59,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  drivers/net/ethernet/ti/am65-cpsw-nuss.c             |    4 +-
  drivers/net/ethernet/ti/netcp_core.c                 |    8 ++--
  drivers/net/ethernet/via/via-rhine.c                 |    8 ++--
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c    |    8 ++--
  drivers/net/hyperv/netvsc_drv.c                      |   32 +++++++++----------
  drivers/net/ifb.c                                    |   12 +++----
  drivers/net/ipvlan/ipvlan_main.c                     |    4 +-
@@ -74,7 +76,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  drivers/net/vxlan/vxlan_vnifilter.c                  |    4 +-
  drivers/net/wwan/mhi_wwan_mbim.c                     |    8 ++--
  drivers/net/xen-netfront.c                           |    8 ++--
- 62 files changed, 270 insertions(+), 270 deletions(-)
+ 63 files changed, 274 insertions(+), 274 deletions(-)
 
 --- a/drivers/net/ethernet/alacritech/slic.h
 +++ b/drivers/net/ethernet/alacritech/slic.h
@@ -1496,6 +1498,29 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  }
  
  static void rhine_set_rx_mode(struct net_device *dev)
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -1305,16 +1305,16 @@ axienet_get_stats64(struct net_device *d
+ 	netdev_stats_to_stats64(stats, &dev->stats);
+ 
+ 	do {
+-		start = u64_stats_fetch_begin_irq(&lp->rx_stat_sync);
++		start = u64_stats_fetch_begin(&lp->rx_stat_sync);
+ 		stats->rx_packets = u64_stats_read(&lp->rx_packets);
+ 		stats->rx_bytes = u64_stats_read(&lp->rx_bytes);
+-	} while (u64_stats_fetch_retry_irq(&lp->rx_stat_sync, start));
++	} while (u64_stats_fetch_retry(&lp->rx_stat_sync, start));
+ 
+ 	do {
+-		start = u64_stats_fetch_begin_irq(&lp->tx_stat_sync);
++		start = u64_stats_fetch_begin(&lp->tx_stat_sync);
+ 		stats->tx_packets = u64_stats_read(&lp->tx_packets);
+ 		stats->tx_bytes = u64_stats_read(&lp->tx_bytes);
+-	} while (u64_stats_fetch_retry_irq(&lp->tx_stat_sync, start));
++	} while (u64_stats_fetch_retry(&lp->tx_stat_sync, start));
+ }
+ 
+ static const struct net_device_ops axienet_netdev_ops = {
 --- a/drivers/net/hyperv/netvsc_drv.c
 +++ b/drivers/net/hyperv/netvsc_drv.c
 @@ -1264,12 +1264,12 @@ static void netvsc_get_vf_stats(struct n

@@ -1,7 +1,7 @@
 From: Vlastimil Babka <vbabka@suse.cz>
 Date: Tue, 23 Aug 2022 19:03:58 +0200
 Subject: [PATCH 3/5] mm/slub: remove slab_lock() usage for debug operations
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 All alloc and free operations on debug caches are now serialized by
 n->list_lock, so we can remove slab_lock() usage in validate_slab()

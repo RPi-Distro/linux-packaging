@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 25 Aug 2022 18:41:30 +0200
 Subject: [PATCH 7/8] flex_proportions: Disable preemption entering the write
  section.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 The seqcount fprop_global::sequence is not associated with a lock. The
 write section (fprop_new_period()) is invoked from a timer and since the

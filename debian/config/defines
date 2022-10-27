@@ -106,6 +106,10 @@ ignore-changes:
  uv_info
 # Not used in OOT
  xhci_init_driver
+# Removed, not used in OOT (can be dropped on 6.0.0-3 ABI bump)
+ check_var_size
+ check_var_size_nonblocking
+ remove_conflicting_pci_framebuffers
 
 [base]
 arches:
