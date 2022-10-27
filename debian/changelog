@@ -1,3 +1,31 @@
+linux (6.0.4-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.0.4
+    - [x86] drm/i915/bios: Validate fp_timing terminator presence
+    - [x86] drm/i915/bios: Use hardcoded fp_timing size for generating LFP data
+      pointers
+    - pinctrl: amd: change dev_warn to dev_dbg for additional feature support
+    - [x86] thermal: intel_powerclamp: Use first online CPU as control_cpu
+    - io_uring/net: fail zc send when unsupported by socket
+    - HID: playstation: stop DualSense output work on remove.
+    - HID: playstation: add initial DualSense Edge controller support
+    - net: flag sockets supporting msghdr originated zerocopy
+    - drm/amd/pm: fulfill SMU13.0.7 cstate control interface
+    - drm/amd/pm: add SMU IP v13.0.4 IF version define to V7
+    - drm/amd/pm: disable cstate feature for gpu reset scenario
+    - drm/amd/pm: fulfill SMU13.0.0 cstate control interface
+    - drm/amd/pm: update SMU IP v13.0.4 driver interface version
+    - dm clone: Fix typo in block_device format specifier
+    - efi: efivars: Fix variable writes without query_variable_store()
+    - efi: ssdt: Don't free memory if ACPI table was loaded successfully
+    - gcov: support GCC 12.1 and newer compilers
+    - io-wq: Fix memory leak in worker creation
+    - fbdev/core: Remove remove_conflicting_pci_framebuffers()
+    - Revert "ALSA: hda: Fix page fault in snd_hda_codec_shutdown()"
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 27 Oct 2022 21:18:07 +0200
+
 linux (6.0.3-1) unstable; urgency=medium
 
   * New upstream stable update:
