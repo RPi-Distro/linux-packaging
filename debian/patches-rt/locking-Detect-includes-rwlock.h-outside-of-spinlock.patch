@@ -1,7 +1,7 @@
 From: Michael S. Tsirkin <mst@redhat.com>
 Date: Thu, 25 Aug 2022 17:30:49 +0200
 Subject: [PATCH] locking: Detect includes rwlock.h outside of spinlock.h
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 The check for __LINUX_SPINLOCK_H within rwlock.h (and other files)
 detects the direct include of the header file if it is at the very

@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 25 Aug 2022 18:41:28 +0200
 Subject: [PATCH 5/8] mm/memcontrol: Replace the PREEMPT_RT conditionals
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 Use VM_WARN_ON_IRQS_ENABLED() and preempt_disable/enable_nested() to
 replace the CONFIG_PREEMPT_RT #ifdeffery.

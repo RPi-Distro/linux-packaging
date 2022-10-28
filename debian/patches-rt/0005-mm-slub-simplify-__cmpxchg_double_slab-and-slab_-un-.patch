@@ -2,7 +2,7 @@ From: Vlastimil Babka <vbabka@suse.cz>
 Date: Tue, 23 Aug 2022 19:04:00 +0200
 Subject: [PATCH 5/5] mm/slub: simplify __cmpxchg_double_slab() and
  slab_[un]lock()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 The PREEMPT_RT specific disabling of irqs in __cmpxchg_double_slab()
 (through slab_[un]lock()) is unnecessary as bit_spin_lock() disables

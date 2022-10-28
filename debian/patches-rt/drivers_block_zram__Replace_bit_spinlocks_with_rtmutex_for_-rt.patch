@@ -1,7 +1,7 @@
 Subject: zram: Replace bit spinlocks with spinlock_t for PREEMPT_RT.
 From: Mike Galbraith <umgwanakikbuti@gmail.com>
 Date: Thu Mar 31 04:08:28 2016 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 From: Mike Galbraith <umgwanakikbuti@gmail.com>
 

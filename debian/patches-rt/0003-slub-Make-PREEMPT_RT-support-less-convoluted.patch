@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 17 Aug 2022 18:26:55 +0200
 Subject: [PATCH 03/12] slub: Make PREEMPT_RT support less convoluted
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0-rt11.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
 
 The slub code already has a few helpers depending on PREEMPT_RT. Add a few
 more and get rid of the CONFIG_PREEMPT_RT conditionals all over the place.
