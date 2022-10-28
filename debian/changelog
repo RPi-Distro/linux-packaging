@@ -1,4 +1,4 @@
-linux (6.0.5-1) UNRELEASED; urgency=medium
+linux (6.0.5-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.0.4
@@ -34,7 +34,7 @@ linux (6.0.5-1) UNRELEASED; urgency=medium
   * Ignore ABI changes doe to removed check_var_size, check_var_size_nonblocking
     and remove_conflicting_pci_framebuffers
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 27 Oct 2022 21:18:07 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 28 Oct 2022 08:53:43 +0200
 
 linux (6.0.3-1) unstable; urgency=medium
 
