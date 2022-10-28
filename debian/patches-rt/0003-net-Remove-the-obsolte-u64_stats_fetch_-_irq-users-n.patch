@@ -2,7 +2,7 @@ From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 25 Aug 2022 16:17:37 +0200
 Subject: [PATCH 3/4] net: Remove the obsolte u64_stats_fetch_*_irq() users
  (net).
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1-rc2-rt1.tar.xz
 
 Now that the 32bit UP oddity is gone and 32bit uses always a sequence
 count, there is no need for the fetch_irq() variants anymore.
@@ -82,7 +82,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		u64_stats_add(&stats->rx_bytes, rxbytes);
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -10492,12 +10492,12 @@ void dev_fetch_sw_netstats(struct rtnl_l
+@@ -10477,12 +10477,12 @@ void dev_fetch_sw_netstats(struct rtnl_l
  
  		stats = per_cpu_ptr(netstats, cpu);
  		do {
@@ -99,7 +99,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		s->rx_bytes   += rx_bytes;
 --- a/net/core/devlink.c
 +++ b/net/core/devlink.c
-@@ -8268,10 +8268,10 @@ static void devlink_trap_stats_read(stru
+@@ -8304,10 +8304,10 @@ static void devlink_trap_stats_read(stru
  
  		cpu_stats = per_cpu_ptr(trap_stats, i);
  		do {
@@ -194,7 +194,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  static int
 --- a/net/dsa/slave.c
 +++ b/net/dsa/slave.c
-@@ -934,12 +934,12 @@ static void dsa_slave_get_ethtool_stats(
+@@ -976,12 +976,12 @@ static void dsa_slave_get_ethtool_stats(
  
  		s = per_cpu_ptr(dev->tstats, i);
  		do {
@@ -211,7 +211,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		data[2] += rx_packets;
 --- a/net/ipv4/af_inet.c
 +++ b/net/ipv4/af_inet.c
-@@ -1684,9 +1684,9 @@ u64 snmp_get_cpu_field64(void __percpu *
+@@ -1706,9 +1706,9 @@ u64 snmp_get_cpu_field64(void __percpu *
  	bhptr = per_cpu_ptr(mib, cpu);
  	syncp = (struct u64_stats_sync *)(bhptr + syncp_offset);
  	do {
@@ -225,7 +225,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  }
 --- a/net/ipv6/seg6_local.c
 +++ b/net/ipv6/seg6_local.c
-@@ -1508,13 +1508,13 @@ static int put_nla_counters(struct sk_bu
+@@ -1644,13 +1644,13 @@ static int put_nla_counters(struct sk_bu
  
  		pcounters = per_cpu_ptr(slwt->pcpu_counters, i);
  		do {
@@ -243,7 +243,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		counters.bytes += bytes;
 --- a/net/mac80211/sta_info.c
 +++ b/net/mac80211/sta_info.c
-@@ -2316,9 +2316,9 @@ static inline u64 sta_get_tidstats_msdu(
+@@ -2396,9 +2396,9 @@ static inline u64 sta_get_tidstats_msdu(
  	u64 value;
  
  	do {
@@ -255,7 +255,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  	return value;
  }
-@@ -2384,9 +2384,9 @@ static inline u64 sta_get_stats_bytes(st
+@@ -2464,9 +2464,9 @@ static inline u64 sta_get_stats_bytes(st
  	u64 value;
  
  	do {
@@ -316,7 +316,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  	}
 --- a/net/openvswitch/datapath.c
 +++ b/net/openvswitch/datapath.c
-@@ -707,9 +707,9 @@ static void get_dp_stats(const struct da
+@@ -716,9 +716,9 @@ static void get_dp_stats(const struct da
  		percpu_stats = per_cpu_ptr(dp->stats_percpu, i);
  
  		do {

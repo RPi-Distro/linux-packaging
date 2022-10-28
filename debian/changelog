@@ -36,6 +36,7 @@ linux (6.1~rc2-1~exp1) UNRELEASED; urgency=medium
     - Enable SFC_SIENA as module
     - Enable SFC_SIENA_MTD, SFC_SIENA_MCDI_MON, SFC_SIENA_SRIOV and
       SFC_SIENA_MCDI_LOGGING
+  * [rt] Update to 6.1-rc2-rt1
 
  -- Bastian Blank <waldi@debian.org>  Fri, 21 Oct 2022 22:29:38 +0200
 
