@@ -3609,6 +3609,15 @@ CONFIG_SFC_FALCON=m
 CONFIG_SFC_FALCON_MTD=y
 
 ##
+## file: drivers/net/ethernet/sfc/siena/Kconfig
+##
+CONFIG_SFC_SIENA=m
+CONFIG_SFC_SIENA_MTD=y
+CONFIG_SFC_SIENA_MCDI_MON=y
+CONFIG_SFC_SIENA_SRIOV=y
+CONFIG_SFC_SIENA_MCDI_LOGGING=y
+
+##
 ## file: drivers/net/ethernet/silan/Kconfig
 ##
 CONFIG_NET_VENDOR_SILAN=y

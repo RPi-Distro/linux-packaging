@@ -30,6 +30,13 @@ linux (6.1~rc2-1~exp1) UNRELEASED; urgency=medium
     - Enable SND_SOC_RK817, SND_SOC_ROCKCHIP_I2S_TDM.
     - Enable SPI_ROCKCHIP_SFC.
 
+  [ Salvatore Bonaccorso ]
+  * drivers/net/ethernet/sfc: Re-enable support for Solarflare SFC9000
+    (Closes: #1022276)
+    - Enable SFC_SIENA as module
+    - Enable SFC_SIENA_MTD, SFC_SIENA_MCDI_MON, SFC_SIENA_SRIOV and
+      SFC_SIENA_MCDI_LOGGING
+
  -- Bastian Blank <waldi@debian.org>  Fri, 21 Oct 2022 22:29:38 +0200
 
 linux (6.0.3-1) unstable; urgency=medium
