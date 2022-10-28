@@ -23,6 +23,7 @@ linux (6.0.5-1) UNRELEASED; urgency=medium
     - io-wq: Fix memory leak in worker creation
     - fbdev/core: Remove remove_conflicting_pci_framebuffers()
     - Revert "ALSA: hda: Fix page fault in snd_hda_codec_shutdown()"
+      (Closes: #1022544)
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.0.5
     - [arm64,armhf] clk: tegra: Fix Tegra PWM parent clock
     - Revert "btrfs: call __btrfs_remove_free_space_cache_locked on cache load
