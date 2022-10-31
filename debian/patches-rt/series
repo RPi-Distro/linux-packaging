@@ -10,7 +10,6 @@
 # Posted
 ###########################################################################
 vduse-Remove-include-of-rwlock.h.patch
-mm-multi-gen-LRU-Move-lru_gen_add_mm-out-of-IRQ-off-.patch
 
 # Hacks to get ptrace to work.
 signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
