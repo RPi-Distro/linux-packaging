@@ -1,4 +1,4 @@
-linux (6.1~rc2-1~exp1) UNRELEASED; urgency=medium
+linux (6.1~rc3-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream release candidate.
 
@@ -37,6 +37,8 @@ linux (6.1~rc2-1~exp1) UNRELEASED; urgency=medium
     - Enable SFC_SIENA_MTD, SFC_SIENA_MCDI_MON, SFC_SIENA_SRIOV and
       SFC_SIENA_MCDI_LOGGING
   * [rt] Update to 6.1-rc2-rt1
+  * [rt] Drop "mm: multi-gen LRU: Move lru_gen_add_mm() out of IRQ-off" (applied
+    upstream)
 
  -- Bastian Blank <waldi@debian.org>  Fri, 21 Oct 2022 22:29:38 +0200
 
