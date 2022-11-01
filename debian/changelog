@@ -1,4 +1,4 @@
-linux (6.0.6-1) UNRELEASED; urgency=medium
+linux (6.0.6-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.0.6
@@ -80,7 +80,7 @@ linux (6.0.6-1) UNRELEASED; urgency=medium
     - ACPI: video: Force backlight native for more TongFang devices
     - mm: /proc/pid/smaps_rollup: fix no vma's null-deref
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 30 Oct 2022 16:56:12 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 01 Nov 2022 06:28:12 +0100
 
 linux (6.0.5-1) unstable; urgency=medium
 
