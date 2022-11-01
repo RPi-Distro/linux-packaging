@@ -110,6 +110,11 @@ ignore-changes:
  check_var_size
  check_var_size_nonblocking
  remove_conflicting_pci_framebuffers
+# Ignore ahci_fill_cmd_slot, not used OOT
+ ahci_fill_cmd_slot
+# Ignore phylink_create, phylink_generic_validate not used OOT (and changed in 6.0.6)
+ phylink_create
+ phylink_generic_validate
 
 [base]
 arches:
