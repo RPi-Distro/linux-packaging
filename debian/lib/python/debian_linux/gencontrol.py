@@ -509,39 +509,11 @@ class Gencontrol(object):
                             flavour, vars, makeflags, extra):
         pass
 
-    def process_relation(self, dep, vars):
-        import copy
-        dep = copy.deepcopy(dep)
-        for groups in dep:
-            for item in groups:
-                item.name = self.substitute(item.name, vars)
-                if item.version:
-                    item.version = self.substitute(item.version, vars)
-        return dep
-
-    def process_description(self, in_desc, vars):
-        desc = in_desc.__class__()
-        desc.short = self.substitute(in_desc.short, vars)
-        for i in in_desc.long:
-            desc.append(self.substitute(i, vars))
-        return desc
-
-    def process_package(self, in_entry, vars={}, rule=None, makeflags=None):
-        entry = in_entry.__class__()
-        for key, value in in_entry.items():
-            if isinstance(value, PackageRelation):
-                value = self.process_relation(value, vars)
-            elif isinstance(value, PackageDescription):
-                value = self.process_description(value, vars)
-            else:
-                value = self.substitute(value, vars)
-            entry[key] = value
-        for key, value in in_entry.meta.items():
-            entry.meta[key] = self.substitute(value, vars)
-        return entry
+    def process_package(self, entry, vars={}, rule=None, makeflags=None):
+        return entry.substitute(vars)
 
     def process_packages(self, entries, vars, rule=None, makeflags=None):
-        return [self.process_package(i, vars, rule, makeflags) for i in entries]
+        return [i.substitute(vars) for i in entries]
 
     def merge_packages_rules(self, packages, rule, makeflags, *, arch=None, check_packages=True):
         self.bundles[None].add(
