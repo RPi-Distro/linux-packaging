@@ -145,7 +145,7 @@ class PackagesBundle:
             check_packages: bool = True,
     ) -> list[typing.Any]:
         ret = []
-        for raw_package in self.templates[f'control.{pkgid}']:
+        for raw_package in self.templates[f'{pkgid}.control']:
             package = self.packages.setdefault(raw_package.substitute(replace))
             ret.append(package)
             package.meta.setdefault('rules-ruleids', {})[ruleid] = makeflags
@@ -347,7 +347,7 @@ class Gencontrol(object):
         self.write()
 
     def do_source(self):
-        source = self.templates["control.source"][0]
+        source = self.templates["source.control"][0]
         if not source.get('Source'):
             source['Source'] = self.changelog[0].source
         self.packages['source'] = source.substitute(self.vars)
@@ -382,7 +382,7 @@ class Gencontrol(object):
                          makeflags.copy(), extra)
 
     def do_extra(self):
-        templates_extra = self.templates.get("control.extra", None)
+        templates_extra = self.templates.get("extra.control", None)
         if templates_extra is None:
             return
 
