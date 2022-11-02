@@ -5,6 +5,7 @@ linux (6.1~rc3-1~exp1) UNRELEASED; urgency=medium
   [ Bastian Blank ]
   * [arm64] Enable ARCH_NXP.
   * Generate the lists of packages to build.
+  * Use abi name 0 for everything before unstable.
 
   [ Luca Boccassi ]
   * verity: enable DM_VERITY_VERIFY_ROOTHASH_SIG_SECONDARY_KEYRING
