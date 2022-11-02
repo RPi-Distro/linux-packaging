@@ -129,9 +129,9 @@ class Gencontrol(Base):
             for package in udeb_packages:
                 package.meta['rules-target'] = 'udeb'
 
-            self.merge_packages_rules(
+            self.bundle.add_packages(
                 udeb_packages,
-                f'{arch}_real',
+                (arch, 'real'),
                 makeflags_local, arch=arch,
             )
 
@@ -170,6 +170,8 @@ class Gencontrol(Base):
 
     def do_flavour_packages(self, arch, featureset,
                             flavour, vars, makeflags, extra):
+        ruleid = (arch, featureset, flavour, 'real')
+
         config_build = self.config.merge('build', arch, featureset, flavour)
         if not config_build.get('signed-code', False):
             return
@@ -198,16 +200,19 @@ class Gencontrol(Base):
             image_package_name
             + ' (= %(imagebinaryversion)s) [%(arch)s]' % vars)
 
-        packages_own = self.process_packages(
-            self.templates['control.image'], vars)
-        assert len(packages_own) == 1
+        packages_own = (
+            self.bundle.add('image',
+                            ruleid, makeflags, vars, arch=arch)
+        )
 
         if self.config.merge('packages').get('meta', True):
-            packages_meta = self.process_packages(
-                self.templates['control.image.meta'], vars)
+            packages_meta = (
+                self.bundle.add('image.meta', ruleid, makeflags, vars, arch=arch)
+            )
             assert len(packages_meta) == 1
-            packages_meta += self.process_packages(
-                self.templates['control.headers.meta'], vars)
+            packages_meta += (
+                self.bundle.add('headers.meta', ruleid, makeflags, vars, arch=arch)
+            )
             assert len(packages_meta) == 2
 
             # Don't pretend to support build-profiles
@@ -231,11 +236,6 @@ class Gencontrol(Base):
                 'headers.meta', vars,
                 'linux-headers%(localversion)s' % vars,
                 output_dir=self.template_debian_dir)
-
-        self.merge_packages_rules(
-            packages_own,
-            f'{arch}_{featureset}_{flavour}_real', makeflags, arch=arch,
-        )
 
         self.substitute_debhelper_config(
             'image', vars,
