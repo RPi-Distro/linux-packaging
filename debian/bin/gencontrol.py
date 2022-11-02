@@ -258,13 +258,12 @@ class Gencontrol(Base):
 
     def do_arch_packages(self, arch, vars, makeflags,
                          extra):
-        if self.version.linux_modifier is None:
-            try:
-                abiname_part = '-%s' % self.config['abi', arch]['abiname']
-            except KeyError:
-                abiname_part = self.abiname_part
-            makeflags['ABINAME'] = vars['abiname'] = \
-                self.abiname_version + abiname_part
+        try:
+            abiname_part = '-%s' % self.config['abi', arch]['abiname']
+        except KeyError:
+            abiname_part = self.abiname_part
+        makeflags['ABINAME'] = vars['abiname'] = \
+            self.abiname_version + abiname_part
 
         if not self.disable_signed:
             build_signed = self.config.merge('build', arch) \
@@ -682,14 +681,11 @@ class Gencontrol(Base):
 
     def process_changelog(self):
         version = self.version = self.changelog[0].version
-        if self.version.linux_modifier is not None:
-            self.abiname_part = ''
-        else:
-            self.abiname_part = '-%s' % self.config['abi', ]['abiname']
+        self.abiname_part = '-%s' % self.config['abi', ]['abiname']
         # We need to keep at least three version components to avoid
         # userland breakage (e.g. #742226, #745984).
         self.abiname_version = re.sub(r'^(\d+\.\d+)(?=-|$)', r'\1.0',
-                                      self.version.linux_upstream)
+                                      self.version.linux_version)
         self.vars = {
             'upstreamversion': self.version.linux_upstream,
             'version': self.version.linux_version,

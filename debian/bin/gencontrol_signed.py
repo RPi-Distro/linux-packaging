@@ -115,10 +115,7 @@ class Gencontrol(Base):
     def do_arch_setup(self, vars, makeflags, arch, extra):
         super(Gencontrol, self).do_main_setup(vars, makeflags, extra)
 
-        if self.version.linux_modifier is None:
-            abiname_part = '-%s' % self.config.merge('abi', arch)['abiname']
-        else:
-            abiname_part = ''
+        abiname_part = '-%s' % self.config.merge('abi', arch)['abiname']
         makeflags['ABINAME'] = vars['abiname'] = \
             self.config['version', ]['abiname_base'] + abiname_part
 
