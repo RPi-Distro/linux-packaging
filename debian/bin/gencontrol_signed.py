@@ -3,6 +3,7 @@
 import hashlib
 import json
 import os.path
+import pathlib
 import re
 import ssl
 import subprocess
@@ -11,7 +12,7 @@ import sys
 from debian_linux.config import ConfigCoreDump
 from debian_linux.debian import PackageRelation, VersionLinux
 from debian_linux.gencontrol import Gencontrol as Base, \
-    iter_flavours
+    iter_flavours, PackagesBundle
 from debian_linux.utils import Templates, read_control
 
 
@@ -56,6 +57,12 @@ class Gencontrol(Base):
         os.makedirs(self.template_debian_dir, exist_ok=True)
 
         self.image_packages = []
+
+        # We need a separate base dir for now
+        self.bundles = {None: PackagesBundle(None, self.templates,
+                                             pathlib.Path(self.template_debian_dir))}
+        self.packages = self.bundle.packages
+        self.makefile = self.bundle.makefile
 
     def do_main_setup(self, vars, makeflags, extra):
         makeflags['VERSION'] = self.version.linux_version
@@ -227,20 +234,6 @@ class Gencontrol(Base):
                                 .append('linux-headers-generic')
 
             packages_own.extend(packages_meta)
-
-            self.substitute_debhelper_config(
-                'image.meta', vars,
-                'linux-image%(localversion)s' % vars,
-                output_dir=self.template_debian_dir)
-            self.substitute_debhelper_config(
-                'headers.meta', vars,
-                'linux-headers%(localversion)s' % vars,
-                output_dir=self.template_debian_dir)
-
-        self.substitute_debhelper_config(
-            'image', vars,
-            'linux-image-%(abiname)s%(localversion)s' % vars,
-            output_dir=self.template_debian_dir)
 
     def write(self):
         self.bundle.extract_makefile()

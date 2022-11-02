@@ -185,16 +185,10 @@ class Gencontrol(Base):
             self.bundle.add('docs', ('real', ), makeflags, vars)
             if do_meta:
                 self.bundle.add('docs.meta', ('real', ), makeflags, vars)
-                self.substitute_debhelper_config(
-                    'docs.meta', vars,
-                    '%(source_basename)s-doc%(source_suffix)s' % vars)
         if self.config.merge('packages').get('source', True):
             self.bundle.add('sourcebin', ('real', ), makeflags, vars)
             if do_meta:
                 self.bundle.add('sourcebin.meta', ('real', ), makeflags, vars)
-                self.substitute_debhelper_config(
-                    'sourcebin.meta', vars,
-                    '%(source_basename)s-source%(source_suffix)s' % vars)
 
     def do_indep_featureset_setup(self, vars, makeflags, featureset, extra):
         makeflags['LOCALVERSION'] = vars['localversion']
@@ -509,13 +503,6 @@ class Gencontrol(Base):
 
             packages_own.extend(packages_meta)
 
-            self.substitute_debhelper_config(
-                "image.meta", vars,
-                "linux-image%(localversion)s" % vars)
-            self.substitute_debhelper_config(
-                'headers.meta', vars,
-                'linux-headers%(localversion)s' % vars)
-
         if config_entry_build.get('vdso', False):
             makeflags['VDSO'] = True
 
@@ -526,9 +513,6 @@ class Gencontrol(Base):
             packages_own.extend(
                 self.bundle.add('image-dbg.meta', ruleid, makeflags, vars, arch=arch)
             )
-            self.substitute_debhelper_config(
-                'image-dbg.meta', vars,
-                'linux-image%(localversion)s-dbg' % vars)
 
         # In a quick build, only build the quick flavour (if any).
         if flavour != self.quick_flavour:
@@ -648,14 +632,6 @@ class Gencontrol(Base):
         self.makefile.add_cmds(merged_config,
                                ["$(MAKE) -f debian/rules.real %s %s" %
                                 (merged_config, makeflags)])
-
-        self.substitute_debhelper_config(
-            'headers', vars,
-            'linux-headers-%(abiname)s%(localversion)s' % vars)
-        self.substitute_debhelper_config('image', vars, packages_image[0]['Package'])
-        self.substitute_debhelper_config(
-            'image-dbg', vars,
-            'linux-image-%(abiname)s%(localversion)s-dbg' % vars)
 
     def process_changelog(self):
         version = self.version = self.changelog[0].version
