@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import contextlib
-import os
 import pathlib
 import re
 import typing
@@ -180,8 +179,6 @@ class PackagesBundle:
                 else:
                     with self.open(f'{package_name}.{name}') as f:
                         f.write(template)
-                        os.chmod(f.fileno(),
-                                 self.templates.get_mode(f'{pkgid}.{name}') & 0o777)
 
         return ret
 
