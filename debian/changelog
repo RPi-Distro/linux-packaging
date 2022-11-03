@@ -1,5 +1,184 @@
-linux (6.0.6-3) UNRELEASED; urgency=medium
+linux (6.0.7-1) UNRELEASED; urgency=medium
 
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.0.7
+    - can: j1939: transport: j1939_session_skb_drop_old():
+      spin_unlock_irqrestore() before kfree_skb()
+    - can: kvaser_usb: Fix possible completions during init_completion
+    - ALSA: Use del_timer_sync() before freeing timer
+    - ALSA: hda/realtek: Add quirk for ASUS Zenbook using CS35L41
+    - ALSA: usb-audio: Add quirks for M-Audio Fast Track C400/600
+    - ALSA: hda/realtek: Add another HP ZBook G9 model quirks
+    - ALSA: control: add snd_ctl_rename()
+    - ALSA: hda/realtek: Use snd_ctl_rename() to rename a control
+    - ALSA: emu10k1: Use snd_ctl_rename() to rename a control
+    - ALSA: ac97: Use snd_ctl_rename() to rename a control
+    - ALSA: usb-audio: Use snd_ctl_rename() to rename a control
+    - ALSA: ca0106: Use snd_ctl_rename() to rename a control
+    - ALSA: au88x0: use explicitly signed char
+    - ALSA: rme9652: use explicitly signed char
+    - USB: add RESET_RESUME quirk for NVIDIA Jetson devices in RCM
+    - usb: gadget: uvc: limit isoc_sg to super speed gadgets
+    - Revert "usb: gadget: uvc: limit isoc_sg to super speed gadgets"
+    - usb: gadget: uvc: fix dropped frame after missed isoc
+    - usb: gadget: uvc: fix sg handling in error case
+    - usb: gadget: uvc: fix sg handling during video encode
+    - [armhf] usb: gadget: aspeed: Fix probe regression
+    - [arm64,armhf] usb: dwc3: gadget: Stop processing more requests on IMI
+    - [arm64,armhf] usb: dwc3: gadget: Don't set IMI for no_interrupt
+    - [arm64,armhf] usb: dwc3: gadget: Force sending delayed status during soft
+      disconnect
+    - [arm64,armhf] usb: dwc3: gadget: Don't delay End Transfer on
+      delayed_status
+    - usb: typec: ucsi: Check the connection on resume
+    - usb: typec: ucsi: acpi: Implement resume callback
+    - [arm64,armhf] usb: dwc3: st: Rely on child's compatible instead of name
+    - [arm64,armhf] usb: dwc3: Don't switch OTG -> peripheral if extcon is
+      present
+    - usb: xhci: add XHCI_SPURIOUS_SUCCESS to ASM1042 despite being a V0.96
+      controller
+    - squashfs: fix read regression introduced in readahead code
+      (Closes: #1023167)
+    - squashfs: fix extending readahead beyond end of file
+    - squashfs: fix buffer release race condition in readahead code
+    - xhci: Add quirk to reset host back to default state at shutdown
+    - xhci-pci: Set runtime PM as default policy on all xHC 1.2 or later devices
+    - xhci: Remove device endpoints from bandwidth list when freeing the device
+    - iio: light: tsl2583: Fix module unloading
+    - iio: temperature: ltc2983: allocate iio channels once
+    - iio: adxl372: Fix unsafe buffer attributes
+    - fbdev: smscufx: Fix several use-after-free bugs
+    - [x86] cpufreq: intel_pstate: Read all MSRs on the target CPU
+    - [x86] cpufreq: intel_pstate: hybrid: Use known scaling factor for P-cores
+    - fs/binfmt_elf: Fix memory leak in load_elf_binary()
+    - exec: Copy oldsighand->action under spin-lock
+    - mac802154: Fix LQI recording
+    - scsi: qla2xxx: Use transport-defined speed mask for supported_speeds
+    - drm/amdgpu: Fix VRAM BO swap issue
+    - drm/amdgpu: Fix for BO move issue
+    - [x86] drm/i915: Extend Wa_1607297627 to Alderlake-P
+    - drm/amdgpu: Remove ATC L2 access for MMHUB 2.1.x
+    - drm/amdgpu: disallow gfxoff until GC IP blocks complete s2idle resume
+    - drm/amdgpu: fix pstate setting issue
+    - drm/amd/display: Revert logic for plane modifiers
+    - [arm64] drm/msm: fix use-after-free on probe deferral
+    - [arm64] drm/msm/dsi: fix memory corruption with too many bridges
+    - [arm64] drm/msm/hdmi: fix memory corruption with too many bridges
+    - [arm64] drm/msm/hdmi: fix IRQ lifetime
+    - [arm64] drm/msm/dp: fix memory corruption with too many bridges
+    - [arm64] drm/msm/dp: fix aux-bus EP lifetime
+    - [arm64] drm/msm/dp: fix IRQ lifetime
+    - [arm64] drm/msm/dp: fix bridge lifetime
+    - random: use arch_get_random*_early() in random_init()
+    - mmc: block: Remove error check of hw_reset on reset
+    - mmc: queue: Cancel recovery work on cleanup
+    - mmc: core: Fix kernel panic when remove non-standard SDIO card
+    - mmc: core: Fix WRITE_ZEROES CQE handling
+    - mmc: sdhci-pci-core: Disable ES for ASUS BIOS on Jasper Lake
+    - [arm64,armhf] mmc: sdhci-esdhc-imx: Propagate ESDHC_FLAG_HS400* only on
+      8bit bus
+    - mm: migrate: fix return value if all subpages of THPs are migrated
+      successfully
+    - mm,madvise,hugetlb: fix unexpected data loss with MADV_DONTNEED on
+      hugetlbfs
+    - mm/huge_memory: do not clobber swp_entry_t during THP split
+    - mm: prep_compound_tail() clear page->private
+    - kernfs: fix use-after-free in __kernfs_remove
+    - Revert "dt-bindings: pinctrl-zynqmp: Add output-enable configuration"
+    - pinctrl: Ingenic: JZ4755 bug fixes
+    - [s390x] boot: add secure boot trailer
+    - [s390x] cio: fix out-of-bounds access on cio_ignore free
+    - [s390x] uaccess: add missing EX_TABLE entries to __clear_user()
+    - [s390x] futex: add missing EX_TABLE entry to __futex_atomic_op()
+    - [s390x] pci: add missing EX_TABLE entries to
+      __pcistg_mio_inuser()/__pcilg_mio_inuser()
+    - ethtool: eeprom: fix null-deref on genl_info in dump
+    - fbdev/core: Avoid uninitialized read in
+      aperture_remove_conflicting_pci_device()
+    - [amd64,arm64] ACPI: PCC: Fix unintentional integer overflow
+    - net: ieee802154: fix error return code in dgram_bind()
+    - media: v4l2: Fix v4l2_i2c_subdev_set_name function documentation
+    - [arm64] drm/msm/a6xx: Replace kcalloc() with kvzalloc()
+    - [arm64] drm/msm/dp: add atomic_check to bridge ops
+    - [arm64] drm/msm: Fix return type of mdp4_lvds_connector_mode_valid
+    - [arm64] drm/msm/dp: cleared DP_DOWNSPREAD_CTRL register before start link
+      training
+    - [arm64] ASoC: qcom: lpass-cpu: mark HDMI TX registers as volatile
+    - [arm64] drm/msm/a6xx: Fix kvzalloc vs state_kcalloc usage
+    - erofs: fix illegal unmapped accesses in z_erofs_fill_inode_lazy()
+    - erofs: fix up inplace decompression success rate
+    - [arm64] pinctrl: qcom: Avoid glitching lines when we first mux to output
+    - [arm64] spi: qup: support using GPIO as chip select line
+    - [x86] fpu: Configure init_fpstate attributes orderly
+    - [x86] fpu: Fix the init_fpstate size check with the actual size
+    - [x86] fpu: Exclude dynamic states from init_fpstate
+    - sched/core: Fix comparison in sched_group_cookie_match()
+    - bpf: prevent decl_tag from being referenced in func_proto
+    - mtd: core: add missing of_node_get() in dynamic partitions code
+    - [x86] ASoC: SOF: Intel: pci-mtl: fix firmware name
+    - [armhf] spi: aspeed: Fix window offset of CE1
+    - [arm64] ASoC: qcom: lpass-cpu: Mark HDMI TX parity register as volatile
+    - [x86] ASoC: Intel: common: add ACPI matching tables for Raptor Lake
+    - [x86] ASoC: SOF: Intel: pci-tgl: use RPL specific firmware definitions
+    - [x86] ASoC: SOF: Intel: pci-tgl: fix ADL-N descriptor
+    - ALSA: ac97: fix possible memory leak in snd_ac97_dev_register()
+    - [x86] perf/x86/intel/lbr: Use setup_clear_cpu_cap() instead of
+      clear_cpu_cap()
+    - rcu: Keep synchronize_rcu() from enabling irqs in early boot
+    - tipc: fix a null-ptr-deref in tipc_topsrv_accept
+    - [arm64] net: netsec: fix error handling in netsec_register_mdio()
+    - net: hinic: fix incorrect assignment issue in hinic_set_interrupt_cfg()
+    - net: hinic: fix memory leak when reading function table
+    - net: hinic: fix the issue of CMDQ memory leaks
+    - net: hinic: fix the issue of double release MBOX callback of VF
+    - [arm64] net: macb: Specify PHY PM management done by MAC
+    - [x86] unwind/orc: Fix unreliable stack dump with gcov
+    - [x86] fpu: Fix copy_xstate_to_uabi() to copy init states correctly
+    - [amd64,arm64] amd-xgbe: Yellow carp devices do not need rrc
+    - [amd64,arm64] amd-xgbe: fix the SFP compliance codes check for DAC cables
+    - [amd64,arm64] amd-xgbe: add the bit rate quirk for Molex cables
+    - [x86] drm/i915/dgfx: Keep PCI autosuspend control 'on' by default on all
+      dGPU
+    - [x86] drm/i915/dp: Reset frl trained flag before restarting FRL training
+    - atlantic: fix deadlock at aq_nic_stop
+    - net: fix UAF issue in nfqnl_nf_hook_drop() when ops_init() failed
+    - tcp: fix a signed-integer-overflow bug in tcp_add_backlog()
+    - tcp: fix indefinite deferral of RTO with SACK reneging
+    - mptcp: set msk local address earlier
+    - can: mcp251x: mcp251x_can_probe(): add missing unregister_candev() in
+      error path
+    - PM: hibernate: Allow hybrid sleep to work with s2idle
+    - media: vivid: s_fbuf: add more sanity checks
+    - media: vivid: dev->bitmap_cap wasn't freed in all cases
+    - media: v4l2-dv-timings: add sanity checks for blanking values
+    - media: videodev2.h: V4L2_DV_BT_BLANKING_HEIGHT should check 'interlaced'
+    - media: vivid: set num_in/outputs to 0 if not supported
+    - ipv6: ensure sane device mtu in tunnels
+    - i40e: Fix ethtool rx-flow-hash setting for X722
+    - i40e: Fix VF hang when reset is triggered on another VF
+    - i40e: Fix flow-type by setting GL_HASH_INSET registers
+    - net: ksz884x: fix missing pci_disable_device() on error in pcidev_init()
+    - PM: domains: Fix handling of unavailable/disabled idle states
+    - [arm64,armhf] net: fec: limit register access on i.MX6UL
+    - openvswitch: switch from WARN to pr_warn
+    - nh: fix scope used to find saddr when adding non gw nh
+    - net/mlx5e: Do not increment ESN when updating IPsec ESN state
+    - net/mlx5: Wait for firmware to enable CRS before pci_restore_state
+    - net/mlx5: DR, Fix matcher disconnect error flow
+    - net/mlx5e: Extend SKB room check to include PTP-SQ
+    - net/mlx5e: Update restore chain id for slow path packets
+    - net/mlx5: ASO, Create the ASO SQ with the correct timestamp format
+    - net/mlx5: Fix possible use-after-free in async command interface
+    - net/mlx5e: TC, Reject forwarding from internal port to internal port
+    - net/mlx5: Update fw fatal reporter state on PCI handlers successful
+      recover
+    - net/mlx5: Fix crash during sync firmware reset
+    - net: do not sense pfmemalloc status in skb_append_pagefrags()
+    - [arm64] net: enetc: survive memory pressure without crashing
+    - [arm64] Add AMPERE1 to the Spectre-BHB affected list
+    - tcp/udp: Fix memory leak in ipv6_renew_options(). (CVE-2022-3524)
+
+  [ Salvatore Bonaccorso ]
   * wifi: ath11k: avoid deadlock during regulatory update in
     ath11k_regd_update() (Closes: #1023329)
 
