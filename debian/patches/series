@@ -80,6 +80,7 @@ features/arm64/arm64-compat-Implement-misalignment-fixups-for-multi.patch
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
+bugfix/all/wifi-ath11k-avoid-deadlock-during-regulatory-update-.patch
 
 # Miscellaneous features
 

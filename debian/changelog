@@ -1,3 +1,10 @@
+linux (6.0.6-3) UNRELEASED; urgency=medium
+
+  * wifi: ath11k: avoid deadlock during regulatory update in
+    ath11k_regd_update() (Closes: #1023329)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 03 Nov 2022 12:34:11 +0100
+
 linux (6.0.6-2) unstable; urgency=medium
 
   * Ignore ABI changes for ahci_fill_cmd_slot, phylink_create and
