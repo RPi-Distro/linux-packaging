@@ -43,6 +43,97 @@ linux (6.1~rc3-1~exp1) experimental; urgency=medium
 
  -- Bastian Blank <waldi@debian.org>  Wed, 02 Nov 2022 22:24:00 +0100
 
+linux (6.0.6-2) unstable; urgency=medium
+
+  * Ignore ABI changes for ahci_fill_cmd_slot, phylink_create and
+    phylink_generic_validate
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 01 Nov 2022 13:55:44 +0100
+
+linux (6.0.6-1) unstable; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.0.6
+    - video/aperture: Call sysfb_disable() before removing PCI devices
+    - ocfs2: clear dinode links count in case of error
+    - ocfs2: fix BUG when iput after ocfs2_mknod fails
+    - smb3: interface count displayed incorrectly
+    - selinux: enable use of both GFP_KERNEL and GFP_ATOMIC in convert_context()
+    - [x86] microcode/AMD: Apply the patch early on every logical thread
+    - [x86] hwmon/coretemp: Handle large core ID value
+    - [armhf] ata: ahci-imx: Fix MODULE_ALIAS
+    - [x86] resctrl: Fix min_cbm_bits for AMD
+    - drm/amdgpu: fix sdma doorbell init ordering on APUs
+    - mm,hugetlb: take hugetlb_lock before decrementing h->resv_huge_pages
+    - kvm: Add support for arch compat vm ioctls
+    - [x86] KVM: x86: Copy filter arg outside kvm_vm_ioctl_set_msr_filter()
+    - x[86] KVM: x86: Add compat handler for KVM_X86_SET_MSR_FILTER
+    - [arm64] KVM: arm64: vgic: Fix exit condition in scan_its_table()
+    - media: mceusb: set timeout to at least timeout provided
+    - [x86] topology: Fix multiple packages shown on a single-package system
+    - [x86] topology: Fix duplicated core ID within a package
+    - [amd64] platform/x86/amd: pmc: Read SMU version during suspend on Cezanne
+      systems
+    - dm bufio: use the acquire memory barrier when testing for B_READING
+    - btrfs: fix processing of delayed data refs during backref walking
+    - btrfs: fix processing of delayed tree block refs during backref walking
+    - [arm*] drm/vc4: Add module dependency on hdmi-codec
+    - [arm*] drm/vc4: hdmi: Enforce the minimum rate at runtime_resume
+    - ACPI: extlog: Handle multiple records
+    - tipc: Fix recognition of trial period
+    - tipc: fix an information leak in tipc_topsrv_kern_subscr
+    - i40e: Fix DMA mappings leak
+    - tls: strp: make sure the TCP skbs do not have overlapping data
+    - HID: magicmouse: Do not set BTN_MOUSE on double report
+    - sfc: Change VF mac via PF as first preference if available.
+    - net/atm: fix proc_mpc_write incorrect return value
+    - net: phy: dp83867: Extend RX strap quirk for SGMII mode
+    - net/smc: Fix an error code in smc_lgr_create()
+    - net: phylink: add mac_managed_pm in phylink_config structure
+    - net: stmmac: Enable mac_managed_pm phylink config
+    - skmsg: pass gfp argument to alloc_sk_msg()
+    - erofs: shouldn't churn the mapping page for duplicated copies
+    - blk-mq: fix null pointer dereference in blk_mq_clear_rq_mapping()
+    - io_uring/rw: remove leftover debug statement
+    - scsi: lpfc: Fix memory leak in lpfc_create_port()
+    - udp: Update reuse->has_conns under reuseport_lock.
+    - ip6mr: fix UAF issue in ip6mr_sk_done() when addrconf_init_net() failed
+    - cifs: Fix xid leak in cifs_create()
+    - cifs: Fix xid leak in cifs_copy_file_range()
+    - cifs: Fix xid leak in cifs_flock()
+    - cifs: Fix xid leak in cifs_ses_add_channel()
+    - cifs: Fix memory leak when build ntlmssp negotiate blob failed
+    - dm: remove unnecessary assignment statement in alloc_dev()
+    - drm/amd/display: Increase frame size limit for display_mode_vba_util_32.o
+    - bnxt_en: fix memory leak in bnxt_nvm_test()
+    - netfilter: rpfilter/fib: Populate flowic_l3mdev field
+    - netfilter: rpfilter/fib: Set ->flowic_uid correctly for user namespaces.
+    - netfilter: nf_tables: relax NFTA_SET_ELEM_KEY_END set flags requirements
+    - nvme-hwmon: consistently ignore errors from nvme_hwmon_init
+    - nvme-hwmon: kmalloc the NVME SMART log buffer
+    - nvmet: fix workqueue MEM_RECLAIM flushing dependency
+    - net: sched: cake: fix null pointer access issue when cake_init() fails
+    - net: sched: delete duplicate cleanup of backlog and qlen
+    - net: sched: sfb: fix null pointer access issue when sfb_init() fails
+    - net: Fix return value of qdisc ingress handling on success
+    - io_uring/msg_ring: Fix NULL pointer dereference in io_msg_send_fd()
+    - sfc: include vport_id in filter spec hash and equal()
+    - [arm64] net: hns: fix possible memory leak in hnae_ae_register()
+    - net: sched: fix race condition in qdisc_graft()
+    - net: phy: dp83822: disable MDI crossover status change interrupt
+    - drbd: only clone bio if we have a backing device
+    - [amd64] iommu/vt-d: Allow NVS regions in arch_rmrr_sanity_check()
+    - [amd64] iommu/vt-d: Clean up si_domain in the init_dmars() error path
+    - wifi: mt76: mt7921e: fix random fw download fail
+    - io_uring: don't gate task_work run on TIF_NOTIFY_SIGNAL
+    - ext4: introduce EXT4_FC_TAG_BASE_LEN helper
+    - ext4: factor out ext4_fc_get_tl()
+    - ext4: fix potential out of bound read in ext4_fc_replay_scan()
+    - ACPI: video: Force backlight native for more TongFang devices
+    - mm: /proc/pid/smaps_rollup: fix no vma's null-deref
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 01 Nov 2022 06:28:12 +0100
+
 linux (6.0.5-1) unstable; urgency=medium
 
   * New upstream stable update:
