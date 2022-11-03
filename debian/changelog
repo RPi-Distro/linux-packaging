@@ -181,6 +181,7 @@ linux (6.0.7-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * wifi: ath11k: avoid deadlock during regulatory update in
     ath11k_regd_update() (Closes: #1023329)
+  * Bump ABI to 3 (Fixes FTBFS on arm64 and armhf) (Closes: #1023298)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 03 Nov 2022 12:34:11 +0100
 
