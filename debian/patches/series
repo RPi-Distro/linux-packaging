@@ -101,6 +101,7 @@ features/all/db-mok-keyring/KEYS-Make-use-of-platform-keyring-for-module-signatu
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
 bugfix/all/Bluetooth-L2CAP-Fix-accepting-connection-request-for.patch
+bugfix/all/Bluetooth-L2CAP-Fix-attempting-to-access-uninitializ.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
