@@ -9,6 +9,10 @@ linux (6.1~rc4-1~exp1) UNRELEASED; urgency=medium
   * [x86] drivers/hwmon: Enable SENSORS_AQUACOMPUTER_D5NEXT as module
     (Closes: #1019496)
 
+  [ Salvatore Bonaccorso ]
+  * [x86] sound/soc/intel/boards: Enable SND_SOC_INTEL_SOF_ES8336_MACH as module
+    (Closes: #1014595)
+
  -- Punit Agrawal <punit@debian.org>  Sat, 15 Oct 2022 17:34:23 +0100
 
 linux (6.1~rc3-1~exp1) experimental; urgency=medium
