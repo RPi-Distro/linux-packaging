@@ -49,6 +49,11 @@ CONFIG_DRM_AMDGPU=m
 CONFIG_SENSORS_LM90=m
 
 ##
+## file: drivers/i2c/Kconfig
+##
+CONFIG_I2C=y
+
+##
 ## file: drivers/i2c/busses/Kconfig
 ##
 CONFIG_I2C_DESIGNWARE_PLATFORM=m
