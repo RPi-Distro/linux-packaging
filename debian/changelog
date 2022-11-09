@@ -7,6 +7,8 @@ linux (6.0.7-2) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * ext4: update the backup superblock's at the end of the online resize
     (Closes: #1023450)
+  * ring-buffer: Check for NULL cpu_buffer in ring_buffer_wake_waiters()
+    (Closes: #1023726)
 
  -- Vincent Blut <vincent.debian@free.fr>  Mon, 07 Nov 2022 17:51:22 +0100
 
