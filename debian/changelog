@@ -20,6 +20,10 @@ linux (6.1~rc4-1~exp1) UNRELEASED; urgency=medium
   [ Bastian Blank ]
   * Install some leftovers into the right location. (closes: #1023720)
 
+  [ Aurelien Jarno ]
+  * [riscv64] Set CONFIG_I2C=y to match most other architectures and fix an
+    FTBFS due to modules ending-up in more than one package.
+
  -- Punit Agrawal <punit@debian.org>  Sat, 15 Oct 2022 17:34:23 +0100
 
 linux (6.1~rc3-1~exp1) experimental; urgency=medium
