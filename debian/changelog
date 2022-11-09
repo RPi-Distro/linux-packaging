@@ -13,6 +13,9 @@ linux (6.1~rc4-1~exp1) UNRELEASED; urgency=medium
   * [x86] sound/soc/intel/boards: Enable SND_SOC_INTEL_SOF_ES8336_MACH as module
     (Closes: #1014595)
 
+  [ Bastian Blank ]
+  * Install some leftovers into the right location. (closes: #1023720)
+
  -- Punit Agrawal <punit@debian.org>  Sat, 15 Oct 2022 17:34:23 +0100
 
 linux (6.1~rc3-1~exp1) experimental; urgency=medium

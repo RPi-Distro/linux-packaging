@@ -410,7 +410,7 @@ binary_image_dt: DT_INSTALL_DIR = $(DESTDIR)/usr/lib/linux-image-$(REAL_VERSION)
 binary_image_dt:
 ifneq ($(filter arm64 armel armhf mipsr6 mipsr6el mips64r6 mips64r6el riscv64,$(ARCH)),)
 	+$(MAKE_CLEAN) -C $(DIR) dtbs
-	+$(MAKE_CLEAN) -C $(DIR) dtbs_install INSTALL_DTBS_PATH=$(CURDIR)/$(DT_INSTALL_DIR)
+	+$(MAKE_CLEAN) -C $(DIR) dtbs_install INSTALL_DTBS_PATH=$(DT_INSTALL_DIR)
 endif
 ifneq ($(filter powerpc ppc64,$(ARCH)),)
 # Install wrapper code and DT source, but not the wrapper script or
@@ -419,8 +419,8 @@ ifneq ($(filter powerpc ppc64,$(ARCH)),)
 # symlinks to the versions in the linux-bootwrapper package instead.
 	rm -rf '$(BUILD_DIR)/bootwrapper_$(ARCH)_$(FEATURESET)_$(FLAVOUR)'
 	+$(MAKE_CLEAN) -C '$(DIR)' bootwrapper_install \
-		WRAPPER_OBJDIR='$(CURDIR)/$(DT_INSTALL_DIR)' \
-		WRAPPER_DTSDIR='$(CURDIR)/$(DT_INSTALL_DIR)/dts' \
+		WRAPPER_OBJDIR='$(DT_INSTALL_DIR)' \
+		WRAPPER_DTSDIR='$(DT_INSTALL_DIR)/dts' \
 		WRAPPER_BINDIR='$(CURDIR)/$(BUILD_DIR)/bootwrapper_$(ARCH)_$(FEATURESET)_$(FLAVOUR)'
 	for prog in '$(BUILD_DIR)/bootwrapper_$(ARCH)_$(FEATURESET)_$(FLAVOUR)'/*; do \
 		prog="$$(basename $$prog)"; \
