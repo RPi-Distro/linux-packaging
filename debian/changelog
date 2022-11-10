@@ -23,6 +23,11 @@ linux (6.1~rc4-1~exp1) UNRELEASED; urgency=medium
   [ Aurelien Jarno ]
   * [riscv64] Set CONFIG_I2C=y to match most other architectures and fix an
     FTBFS due to modules ending-up in more than one package.
+  * [riscv64] Improve Microchip Polarfire support:
+    - Enable HW_RANDOM_POLARFIRE_SOC.
+    - Enable MAILBOX and POLARFIRE_SOC_MAILBOX.
+    - Enable POLARFIRE_SOC_SYS_CTRL.
+    - Enable RTC_DRV_POLARFIRE_SOC.
 
  -- Punit Agrawal <punit@debian.org>  Sat, 15 Oct 2022 17:34:23 +0100
 
