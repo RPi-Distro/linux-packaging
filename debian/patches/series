@@ -81,8 +81,6 @@ features/arm64/arm64-compat-Implement-misalignment-fixups-for-multi.patch
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
 bugfix/all/wifi-ath11k-avoid-deadlock-during-regulatory-update-.patch
-bugfix/all/ext4-update-the-backup-superblock-s-at-the-end-of-th.patch
-bugfix/all/ring-buffer-Check-for-NULL-cpu_buffer-in-ring_buffer.patch
 
 # Miscellaneous features
 
@@ -102,8 +100,6 @@ features/all/db-mok-keyring/KEYS-Make-use-of-platform-keyring-for-module-signatu
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
-bugfix/all/Bluetooth-L2CAP-Fix-accepting-connection-request-for.patch
-bugfix/all/Bluetooth-L2CAP-Fix-attempting-to-access-uninitializ.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
