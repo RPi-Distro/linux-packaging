@@ -163,6 +163,9 @@ linux (6.0.8-1) UNRELEASED; urgency=medium
   * [x86] drivers/platform/x86: Enable GIGABYTE_WMI as module
     (Closes: #1023613)
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 4
+
  -- Vincent Blut <vincent.debian@free.fr>  Mon, 07 Nov 2022 17:51:22 +0100
 
 linux (6.0.7-1) unstable; urgency=medium
