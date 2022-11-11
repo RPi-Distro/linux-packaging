@@ -6,6 +6,7 @@ linux (6.1~rc4-1~exp1) UNRELEASED; urgency=medium
   * trace: Enable HIST_TRIGGERS for all kernels
   * [arm64] drivers/perf: Enable ARM_SPE_PMU as a module
   * [arm64] drivers/perf: Enable ARM_DSU_PMU as a module
+  * [arm64] drivers/perf: Convert CCN_PMU from builtin to a module
 
   [ Patrick Clara ]
   * [x86] drivers/hwmon: Enable SENSORS_AQUACOMPUTER_D5NEXT as module
