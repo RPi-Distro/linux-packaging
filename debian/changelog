@@ -1,4 +1,4 @@
-linux (6.0.8-1) UNRELEASED; urgency=medium
+linux (6.0.8-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.0.8
@@ -167,7 +167,7 @@ linux (6.0.8-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Bump ABI to 4
 
- -- Vincent Blut <vincent.debian@free.fr>  Mon, 07 Nov 2022 17:51:22 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 11 Nov 2022 09:36:29 +0100
 
 linux (6.0.7-1) unstable; urgency=medium
 
