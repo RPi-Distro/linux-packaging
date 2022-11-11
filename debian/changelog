@@ -112,6 +112,7 @@ linux (6.0.8-1) UNRELEASED; urgency=medium
     - efi: random: reduce seed size to 32 bytes
     - efi: random: Use 'ACPI reclaim' memory for random seed
     - efi: efivars: Fix variable writes with unsupported query_variable_store()
+      (Closes: #1022900)
     - net/ulp: remove SOCK_SUPPORT_ZC from tls sockets
     - [arm64] entry: avoid kprobe recursion
     - [armhf] dts: imx6dl-yapp4: Do not allow PM to switch PU regulator off on
