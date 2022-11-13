@@ -79,6 +79,177 @@ linux (6.1~rc3-1~exp1) experimental; urgency=medium
 
  -- Bastian Blank <waldi@debian.org>  Wed, 02 Nov 2022 22:24:00 +0100
 
+linux (6.0.8-1) unstable; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.0.8
+    - [arm64,armhf] usb: dwc3: gadget: Force sending delayed status during soft
+      disconnect
+    - [arm64,armhf] usb: dwc3: gadget: Don't delay End Transfer on
+      delayed_status
+    - RDMA/cma: Use output interface for net_dev check
+    - [amd64] IB/hfi1: Correctly move list in sc_disable()
+    - [arm64] RDMA/hns: Disable local invalidate operation
+    - [arm64] RDMA/hns: Fix NULL pointer problem in free_mr_init()
+    - RDMA/rxe: Fix mr leak in RESPST_ERR_RNR
+    - NFSv4: Fix a potential state reclaim deadlock
+    - NFSv4.1: Handle RECLAIM_COMPLETE trunking errors
+    - NFSv4.1: We must always send RECLAIM_COMPLETE after a reboot
+    - SUNRPC: Fix null-ptr-deref when xps sysfs alloc failed
+    - NFSv4.2: Fixup CLONE dest file size for zero-length count
+    - nfs4: Fix kmemleak when allocate slot failed
+    - RDMA/core: Fix null-ptr-deref in ib_core_cleanup()
+    - RDMA/qedr: clean up work queue on failure in qedr_alloc_resources()
+    - [arm64,armhf] net: dsa: fall back to default tagger if we can't load the
+      one from DT
+    - nfc: nxp-nci: Fix potential memory leak in nxp_nci_send()
+    - [arm64,armhf] net: fec: fix improper use of NETDEV_TX_BUSY
+    - [amd64,i386] ata: pata_legacy: fix pdc20230_set_piomode()
+    - net: sched: Fix use after free in red_enqueue()
+    - net: tun: fix bugs for oversize packet when napi frags enabled
+    - netfilter: nf_tables: netlink notifier might race to release objects
+    - netfilter: nf_tables: release flow rule object from commit path
+    - sfc: Fix an error handling path in efx_pci_probe()
+    - nfsd: fix nfsd_file_unhash_and_dispose
+    - nfsd: fix net-namespace logic in __nfsd_file_cache_purge
+    - ipvs: use explicitly signed chars
+    - ipvs: fix WARNING in __ip_vs_cleanup_batch()
+    - ipvs: fix WARNING in ip_vs_app_net_cleanup()
+    - rose: Fix NULL pointer dereference in rose_send_frame()
+    - mISDN: fix possible memory leak in mISDN_register_device()
+    - btrfs: fix inode list leak during backref walking at
+      resolve_indirect_refs()
+    - btrfs: fix inode list leak during backref walking at find_parent_nodes()
+    - btrfs: fix ulist leaks in error paths of qgroup self tests
+    - netfilter: ipset: enforce documented limit to prevent allocating huge
+      memory
+    - Bluetooth: L2CAP: Fix use-after-free caused by l2cap_reassemble_sdu
+    - Bluetooth: hci_conn: Fix CIS connection dst_type handling
+    - Bluetooth: virtio_bt: Use skb_put to set length
+    - Bluetooth: L2CAP: fix use-after-free in l2cap_conn_del()
+    - Bluetooth: L2CAP: Fix memory leak in vhci_write
+    - Bluetooth: hci_conn: Fix not restoring ISO buffer count on disconnect
+    - net: mdio: fix undefined behavior in bit shift for __mdiobus_register
+    - net/smc: Fix possible leaked pernet namespace in smc_init()
+    - net, neigh: Fix null-ptr-deref in neigh_table_clear()
+    - bridge: Fix flushing of dynamic FDB entries
+    - ipv6: fix WARNING in ip6_route_net_exit_late()
+    - vsock: fix possible infinite sleep in vsock_connectible_wait_data()
+    - [arm64] media: rkisp1: Fix source pad format configuration
+    - [arm64] media: rkisp1: Don't pass the quantization to rkisp1_csm_config()
+    - [arm64] media: rkisp1: Initialize color space on resizer sink and source
+      pads
+    - [arm64] media: rkisp1: Use correct macro for gradient registers
+    - [arm64] media: rkisp1: Zero v4l2_subdev_format fields in when validating
+      links
+    - media: dvb-frontends/drxk: initialize err to 0
+    - [arm64] media: meson: vdec: fix possible refcount leak in vdec_probe()
+    - [arm64,armhf] media: hantro: Store HEVC bit depth in context
+    - [arm64,armhf] media: hantro: HEVC: Fix auxilary buffer size calculation
+    - [arm64,armhf] media: hantro: HEVC: Fix chroma offset computation
+    - [arm*] drm/vc4: hdmi: Check the HSM rate at runtime_resume
+    - ACPI: APEI: Fix integer overflow in ghes_estatus_pool_init()
+    - [arm*] hwrng: bcm2835 - use hwrng_msleep() instead of cpu_relax()
+    - io_uring: don't iopoll from io_ring_ctx_wait_and_kill()
+    - scsi: core: Restrict legal sdev_state transitions via sysfs
+    - HID: saitek: add madcatz variant of MMO7 mouse device ID
+    - drm/amdgpu: set vm_update_mode=0 as default for Sienna Cichlid in SRIOV
+      case
+    - drm/amd/pm: skip loading pptable from driver on secure board for
+      smu_v13_0_10
+    - drm/amdgpu: Program GC registers through RLCG interface in gfx_v11/gmc_v11
+    - drm/amdgpu: dequeue mes scheduler during fini
+    - nvme-pci: disable write zeroes on various Kingston SSD
+    - bio: safeguard REQ_ALLOC_CACHE bio put
+    - [arm64] dts: imx8mm: Enable CPLD_Dn pull down resistor on MX8Menlo
+    - efi/tpm: Pass correct address to memblock_reserve
+    - [arm64,armhf] drm/rockchip: dw_hdmi: filter regulator -EPROBE_DEFER error
+      messages
+    - [arm64,armhf] drm/rockchip: fix fbdev on non-IOMMU devices
+    - [x86] drm/i915: stop abusing swiotlb_max_segment
+    - block: Fix possible memory leak for rq_wb on add_disk failure
+    - blk-mq: Fix kmemleak in blk_mq_init_allocated_queue
+    - i2c: piix4: Fix adapter not be removed in piix4_remove()
+    - fscrypt: stop using keyrings subsystem for fscrypt_master_key
+    - fscrypt: fix keyring memory leak on mount failure
+    - btrfs: fix lost file sync on direct IO write with nowait and dsync iocb
+    - btrfs: fix tree mod log mishandling of reallocated nodes
+    - btrfs: fix type of parameter generation in btrfs_get_dentry
+    - btrfs: don't use btrfs_chunk::sub_stripes from disk
+    - btrfs: fix a memory allocation failure test in btrfs_submit_direct
+    - [amd64,arm64] ACPI: NUMA: Add CXL CFMWS 'nodes' to the possible nodes set
+    - ftrace: Fix use-after-free for dynamic ftrace_ops
+    - tracing/fprobe: Fix to check whether fprobe is registered correctly
+    - fprobe: Check rethook_alloc() return in rethook initialization
+    - tracing: kprobe: Fix memory leak in test_gen_kprobe/kretprobe_cmd()
+    - kprobe: reverse kp->flags when arm_kprobe failed
+    - ring-buffer: Check for NULL cpu_buffer in ring_buffer_wake_waiters()
+      (Closes: #1023726)
+    - tracing/histogram: Update document for KEYS_MAX size
+    - capabilities: fix potential memleak on error path from
+      vfs_getxattr_alloc()
+    - fuse: add file_modified() to fallocate
+    - fuse: fix readdir cache race
+    - efi: random: reduce seed size to 32 bytes
+    - efi: random: Use 'ACPI reclaim' memory for random seed
+    - efi: efivars: Fix variable writes with unsupported query_variable_store()
+      (Closes: #1022900)
+    - net/ulp: remove SOCK_SUPPORT_ZC from tls sockets
+    - [arm64] entry: avoid kprobe recursion
+    - [armhf] dts: imx6dl-yapp4: Do not allow PM to switch PU regulator off on
+      Q/QP
+    - [x86] perf/x86/intel: Fix pebs event constraints for ICL
+    - [x86] perf/x86/intel: Add Cooper Lake stepping to isolation_ucodes[]
+    - [x86] perf/x86/intel: Fix pebs event constraints for SPR
+    - net: remove SOCK_SUPPORT_ZC from sockmap
+    - net: also flag accepted sockets supporting msghdr originated zerocopy
+    - ext4: fix warning in 'ext4_da_release_space'
+    - ext4: fix BUG_ON() when directory entry has invalid rec_len
+    - ext4: update the backup superblock's at the end of the online resize
+      (Closes: #1023450)
+    - [x86] syscall: Include asm/ptrace.h in syscall_wrapper header
+    - [x86] KVM: x86: Mask off reserved bits in CPUID.80000006H
+    - [x86] KVM: x86: Mask off reserved bits in CPUID.8000001AH
+    - [x86] KVM: x86: Mask off reserved bits in CPUID.80000008H
+    - [x86] KVM: x86: Mask off reserved bits in CPUID.80000001H
+    - [x86] KVM: x86: Mask off reserved bits in CPUID.8000001FH
+    - [x86] KVM: VMX: Advertise PMU LBRs if and only if perf supports LBRs
+    - [x86] KVM: VMX: Fold vmx_supported_debugctl() into
+      vcpu_supported_debugctl()
+    - [x86] KVM: VMX: Ignore guest CPUID for host userspace writes to DEBUGCTL
+    - [x86] KVM: VMX: fully disable SGX if SECONDARY_EXEC_ENCLS_EXITING
+      unavailable
+    - [x86] KVM: Initialize gfn_to_pfn_cache locks in dedicated helper
+    - [x86] KVM: Reject attempts to consume or refresh inactive gfn_to_pfn_cache
+    - [arm64] KVM: arm64: Fix SMPRI_EL1/TPIDR2_EL0 trapping on VHE
+    - [x86] KVM: x86: smm: number of GPRs in the SMRAM image depends on the
+      image format
+    - [x86] KVM: x86: emulator: em_sysexit should update ctxt->mode
+    - [x86] KVM: x86: emulator: introduce emulator_recalc_and_set_mode
+    - [x86] KVM: x86: emulator: update the emulation mode after rsm
+    - [x86] KVM: x86: emulator: update the emulation mode after CR0 write
+    - ext4,f2fs: fix readahead of verity data
+    - cifs: fix regression in very old smb1 mounts
+    - [arm64,armhf] drm/rockchip: dsi: Clean up 'usage_mode' when failing to
+      attach
+    - [arm64,armhf] drm/rockchip: dsi: Force synchronous probe
+    - drm/amdgpu: disable GFXOFF during compute for GFX11
+    - drm/amd/display: Update latencies on DCN321
+    - drm/amd/display: Update DSC capabilitie for DCN314
+    - [x86] drm/i915/sdvo: Filter out invalid outputs more sensibly
+    - [x86] drm/i915/sdvo: Setup DDC fully before output init
+    - wifi: brcmfmac: Fix potential buffer overflow in brcmf_fweh_event_worker()
+      (CVE-2022-3628)
+
+  [ Vincent Blut ]
+  * [x86] drivers/platform/x86: Enable GIGABYTE_WMI as module
+    (Closes: #1023613)
+
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 4
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 11 Nov 2022 09:36:29 +0100
+
 linux (6.0.7-1) unstable; urgency=medium
 
   * New upstream stable update:
