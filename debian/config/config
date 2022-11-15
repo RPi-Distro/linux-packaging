@@ -564,11 +564,11 @@ CONFIG_CRYPTO_DEV_VIRTIO=m
 ##
 ## file: drivers/cxl/Kconfig
 ##
-CONFIG_CXL_ACPI=m
-CONFIG_CXL_MEM=m
-# CONFIG_CXL_MEM_RAW_COMMANDS is not set
 CONFIG_CXL_PCI=m
+# CONFIG_CXL_MEM_RAW_COMMANDS is not set
+CONFIG_CXL_ACPI=m
 CONFIG_CXL_PMEM=m
+CONFIG_CXL_MEM=m
 
 ##
 ## file: drivers/dax/Kconfig
