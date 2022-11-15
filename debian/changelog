@@ -12,6 +12,8 @@ linux (6.1~rc5-1~exp1) UNRELEASED; urgency=medium
   [ Diederik de Haas ]
   * [arm64] Drop "arm64: dts: rockchip: correct voltage selector on
     Firefly-RK3399" (never applied upstream)
+  * [x86] drivers/hwmon: Enable SENSORS_CORSAIR_CPRO as module
+    (Closes: #1023992)
 
   [ Salvatore Bonaccorso ]
   * [x86] sound/soc/intel/boards: Enable SND_SOC_INTEL_SOF_ES8336_MACH as module
