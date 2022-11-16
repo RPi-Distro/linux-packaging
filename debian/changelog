@@ -19,6 +19,7 @@ linux (6.1~rc5-1~exp1) UNRELEASED; urgency=medium
   * [x86] sound/soc/intel/boards: Enable SND_SOC_INTEL_SOF_ES8336_MACH as module
     (Closes: #1014595)
   * [s390x] debian/config: Drop explicit enable of RELOCATABLE.
+  * mm: Enable Multi-Gen LRU implementation (not enabled by default)
 
   [ Adam Borowski ]
   * Enable CXL_BUS for amd64 arm64 ppc64el riscv64 (Closes: #1021998)
