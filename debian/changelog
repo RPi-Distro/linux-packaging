@@ -154,6 +154,9 @@ linux (6.0.9-1) UNRELEASED; urgency=medium
     - ALSA: memalloc: Try dma_alloc_noncontiguous() at first
     - [x86] cpu: Restore AMD's DE_CFG MSR after resume
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 5
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 16 Nov 2022 16:43:49 +0100
 
 linux (6.0.8-1) unstable; urgency=medium
