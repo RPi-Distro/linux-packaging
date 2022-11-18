@@ -1,3 +1,10 @@
+linux (6.1.1-1~exp1.1) UNRELEASED; urgency=medium
+
+  [ Diederik de Haas ]
+  * [arm64] Fix/enable audio on rk356x devices
+
+ -- Diederik de Haas <didi.debian@cknow.org>  Fri, 23 Dec 2022 08:38:44 +0100
+
 linux (6.1.1-1~exp1) experimental; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_6.1

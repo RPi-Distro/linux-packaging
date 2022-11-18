@@ -87,6 +87,10 @@ features/arm64/arm64-dts-rockchip-Add-IR-receiver-node-to-ODROID-M1.patch
 features/x86/x86-memtest-WARN-if-bad-RAM-found.patch
 features/x86/x86-make-x32-syscall-support-conditional.patch
 
+# Quartz64 bug fixes/patches
+bugfix/arm64/arm64-dts-rockchip-fix-spdif-fe460000-ordering-on-rk.patch
+features/arm64/quartz64/arm64-dts-rockchip-RK356x-Add-I2S2-device-node.patch
+
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
