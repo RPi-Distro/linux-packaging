@@ -90,6 +90,10 @@ features/x86/x86-make-x32-syscall-support-conditional.patch
 # Quartz64 bug fixes/patches
 bugfix/arm64/arm64-dts-rockchip-fix-spdif-fe460000-ordering-on-rk.patch
 features/arm64/quartz64/arm64-dts-rockchip-RK356x-Add-I2S2-device-node.patch
+features/arm64/quartz64/arm64-dts-rockchip-Enable-GPU-on-SOQuartz-CM4.patch
+features/arm64/quartz64/arm64-dts-rockchip-Enable-video-output-and-HDMI-on-S.patch
+features/arm64/quartz64/arm64-dts-rockchip-Enable-HDMI-sound-on-SOQuartz.patch
+features/arm64/quartz64/arm64-dts-rockchip-Enable-PCIe-2-on-SOQuartz-CM4IO.patch
 
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
