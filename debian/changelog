@@ -2,6 +2,9 @@ linux (6.1~rc6-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream release candidate.
 
+  [ Salvatore Bonaccorso ]
+  * [rt] Update to 6.1-rc6-rt4
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 21 Nov 2022 12:18:22 +0100
 
 linux (6.1~rc5-1~exp1) experimental; urgency=medium
