@@ -154,6 +154,10 @@ linux (6.0.9-1) UNRELEASED; urgency=medium
     - ALSA: memalloc: Try dma_alloc_noncontiguous() at first
     - [x86] cpu: Restore AMD's DE_CFG MSR after resume
 
+  [ Santiago Ruano Rincón ]
+  * net/cdc_ncm: Fix multicast RX support for CDC NCM devices with ZLP
+    (Closes: #1024328)
+
   [ Salvatore Bonaccorso ]
   * Bump ABI to 5
   * net: neigh: decrement the family specific qlen (Closes: #1024070)
