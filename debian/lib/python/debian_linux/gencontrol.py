@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import pathlib
 import re
@@ -6,7 +8,8 @@ from collections import OrderedDict
 
 from .debian import Changelog, PackageArchitecture, \
     PackageBuildRestrictFormula, PackageBuildRestrictList, \
-    PackageBuildRestrictTerm, PackageDescription, PackageRelation, Version
+    PackageBuildRestrictTerm, PackageRelation, Version
+from .utils import Templates
 
 
 class PackagesList(OrderedDict):
@@ -121,15 +124,37 @@ class MakeFlags(dict):
 
 class PackagesBundle:
     name: typing.Optional[str]
+    templates: Templates
     makefile: Makefile
     packages: PackagesList
 
-    def __init__(self, name: typing.Optional[str]) -> None:
+    def __init__(self, name: typing.Optional[str], templates: Templates) -> None:
         self.name = name
+        self.templates = templates
         self.makefile = Makefile()
         self.packages = PackagesList()
 
     def add(
+            self,
+            pkgid: str,
+            ruleid: tuple[str],
+            makeflags: MakeFlags,
+            replace: dict[str, str],
+            *,
+            arch: str = None,
+            check_packages: bool = True,
+    ) -> list[typing.Any]:
+        ret = []
+        for raw_package in self.templates[f'control.{pkgid}']:
+            package = self.packages.setdefault(raw_package.substitute(replace))
+            ret.append(package)
+            package.meta.setdefault('rules-ruleids', {})[ruleid] = makeflags
+            if arch:
+                package.meta.setdefault('architectures', PackageArchitecture()).add(arch)
+            package.meta['rules-check-packages'] = check_packages
+        return ret
+
+    def add_packages(
             self,
             packages: PackagesList,
             ruleid: tuple[str],
@@ -305,7 +330,7 @@ class Gencontrol(object):
         self.config, self.templates = config, templates
         self.changelog = Changelog(version=version)
         self.vars = {}
-        self.bundles = {None: PackagesBundle(None)}
+        self.bundles = {None: PackagesBundle(None, templates)}
         # TODO: Remove after all references are gone
         self.packages = self.bundle.packages
         self.makefile = self.bundle.makefile
@@ -325,7 +350,7 @@ class Gencontrol(object):
         source = self.templates["control.source"][0]
         if not source.get('Source'):
             source['Source'] = self.changelog[0].source
-        self.packages['source'] = self.process_package(source, self.vars)
+        self.packages['source'] = source.substitute(self.vars)
 
     def do_main(self):
         vars = self.vars.copy()
@@ -509,48 +534,11 @@ class Gencontrol(object):
                             flavour, vars, makeflags, extra):
         pass
 
-    def process_relation(self, dep, vars):
-        import copy
-        dep = copy.deepcopy(dep)
-        for groups in dep:
-            for item in groups:
-                item.name = self.substitute(item.name, vars)
-                if item.version:
-                    item.version = self.substitute(item.version, vars)
-        return dep
-
-    def process_description(self, in_desc, vars):
-        desc = in_desc.__class__()
-        desc.short = self.substitute(in_desc.short, vars)
-        for i in in_desc.long:
-            desc.append(self.substitute(i, vars))
-        return desc
-
-    def process_package(self, in_entry, vars={}, rule=None, makeflags=None):
-        entry = in_entry.__class__()
-        for key, value in in_entry.items():
-            if isinstance(value, PackageRelation):
-                value = self.process_relation(value, vars)
-            elif isinstance(value, PackageDescription):
-                value = self.process_description(value, vars)
-            else:
-                value = self.substitute(value, vars)
-            entry[key] = value
-        for key, value in in_entry.meta.items():
-            entry.meta[key] = self.substitute(value, vars)
-        return entry
+    def process_package(self, entry, vars={}, rule=None, makeflags=None):
+        return entry.substitute(vars)
 
     def process_packages(self, entries, vars, rule=None, makeflags=None):
-        return [self.process_package(i, vars, rule, makeflags) for i in entries]
-
-    def merge_packages_rules(self, packages, rule, makeflags, *, arch=None, check_packages=True):
-        self.bundles[None].add(
-            packages,
-            tuple(rule.split('_')),
-            makeflags,
-            arch=arch,
-            check_packages=check_packages,
-        )
+        return [i.substitute(vars) for i in entries]
 
     def substitute(self, s, vars):
         if isinstance(s, (list, tuple)):
