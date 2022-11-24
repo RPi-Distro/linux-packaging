@@ -39,9 +39,10 @@ extract-source:
       - orig
   extends:
     - .artifacts-default-expire
-  except:
-    variables:
-      - $CI_COMMIT_TAG != null
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
   script:
     # Move cache to where genorig.py and orig target want it
     - mkdir -p orig
@@ -113,9 +114,10 @@ build:
       - .ccache
   extends:
     - .artifacts-default-expire
-  except:
-    variables:
-      - $CI_COMMIT_TAG != null
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
   variables:
     CCACHE_TMP_DIR: ${CI_PROJECT_DIR}/../.ccache
     CCACHE_WORK_DIR: ${CI_PROJECT_DIR}/.ccache
@@ -178,9 +180,10 @@ rc-bugs:
 python-static:
   stage: test
   image: $SALSA_CI_IMAGES_BASE
-  except:
-    variables:
-      - $CI_COMMIT_TAG != null
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
   script:
     - |
       apt-get update && eatmydata apt-get install --no-install-recommends -y \
@@ -199,9 +202,10 @@ python-static:
 kconfig-static:
   stage: test
   image: $SALSA_CI_IMAGES_BASE
-  except:
-    variables:
-      - $CI_COMMIT_TAG != null
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
   script:
     # Unpack source and apply featureset patches
     - |
@@ -235,9 +239,10 @@ sign-code:
   image: $SALSA_CI_IMAGES_BASE
   extends:
     - .artifacts-default-expire
-  except:
-    variables:
-      - $CI_COMMIT_TAG != null
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
   script:
     - |
       apt-get update && eatmydata apt-get install --no-install-recommends -y \
@@ -267,9 +272,10 @@ build-signed:
   image: $SALSA_CI_IMAGES_BASE
   extends:
     - .artifacts-default-expire
-  except:
-    variables:
-      - $CI_COMMIT_TAG != null
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
   variables:
     SALSA_CI_DPKG_BUILDPACKAGE_ARGS: ''
     CCACHE_TMP_DIR: ${CI_PROJECT_DIR}/../.ccache
