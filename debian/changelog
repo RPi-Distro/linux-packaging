@@ -1,4 +1,4 @@
-linux (6.1~rc6-1~exp1) UNRELEASED; urgency=medium
+linux (6.1~rc6-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate.
 
@@ -12,7 +12,7 @@ linux (6.1~rc6-1~exp1) UNRELEASED; urgency=medium
   * [arm64] drivers/perf: Enable ARM_DSU_PMU as a module
   * [arm64] drivers/perf: Convert CCN_PMU from builtin to a module
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 21 Nov 2022 12:18:22 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 26 Nov 2022 19:05:45 +0100
 
 linux (6.1~rc5-1~exp1) experimental; urgency=medium
 
