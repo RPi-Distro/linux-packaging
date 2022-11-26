@@ -4,6 +4,8 @@ linux (6.1~rc6-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 6.1-rc6-rt4
+  * net: wwan: iosm: fix dma_alloc_coherent incompatible pointer type (Fixes
+    FTBFS on armhf)
 
   [ Punit Agrawal ]
   * [arm64] drivers/perf: Enable ARM_SPE_PMU as a module

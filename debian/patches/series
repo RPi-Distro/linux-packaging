@@ -79,6 +79,7 @@ bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
 bugfix/all/net-neigh-decrement-the-family-specific-qlen.patch
 bugfix/all/net-cdc_ncm-Fix-multicast-RX-support-for-CDC-NCM-dev.patch
+bugfix/all/net-wwan-iosm-fix-dma_alloc_coherent-incompatible-po.patch
 
 # Miscellaneous features
 
