@@ -8,7 +8,7 @@ from collections import OrderedDict
 
 from .debian import Changelog, PackageArchitecture, \
     PackageBuildRestrictFormula, PackageBuildRestrictList, \
-    PackageBuildRestrictTerm, PackageRelation, Version
+    PackageBuildRestrictTerm, PackageRelation, Version, _substitute_str
 from .utils import Templates
 
 
@@ -125,12 +125,19 @@ class MakeFlags(dict):
 class PackagesBundle:
     name: typing.Optional[str]
     templates: Templates
+    base: pathlib.Path
     makefile: Makefile
     packages: PackagesList
 
-    def __init__(self, name: typing.Optional[str], templates: Templates) -> None:
+    def __init__(
+            self,
+            name: typing.Optional[str],
+            templates: Templates,
+            base: pathlib.Path = pathlib.Path('debian'),
+    ) -> None:
         self.name = name
         self.templates = templates
+        self.base = base
         self.makefile = Makefile()
         self.packages = PackagesList()
 
@@ -145,13 +152,35 @@ class PackagesBundle:
             check_packages: bool = True,
     ) -> list[typing.Any]:
         ret = []
-        for raw_package in self.templates[f'control.{pkgid}']:
+        for raw_package in self.templates[f'{pkgid}.control']:
             package = self.packages.setdefault(raw_package.substitute(replace))
+            package_name = package['Package']
             ret.append(package)
+
             package.meta.setdefault('rules-ruleids', {})[ruleid] = makeflags
             if arch:
                 package.meta.setdefault('architectures', PackageArchitecture()).add(arch)
             package.meta['rules-check-packages'] = check_packages
+
+            for name in (
+                    'bug-presubj',
+                    'lintian-overrides',
+                    'maintscript',
+                    'postinst',
+                    'postrm',
+                    'preinst',
+                    'prerm',
+            ):
+                try:
+                    template = self.templates[f'{pkgid}.{name}']
+                except KeyError:
+                    pass
+                else:
+                    with self.path(f'{package_name}.{name}').open('w') as f:
+                        f.write(_substitute_str(template, replace | {'package': package_name}))
+                        os.chmod(f.fileno(),
+                                 self.templates.get_mode(f'{pkgid}.{name}') & 0o777)
+
         return ret
 
     def add_packages(
@@ -170,17 +199,19 @@ class PackagesBundle:
                 package.meta.setdefault('architectures', PackageArchitecture()).add(arch)
             package.meta['rules-check-packages'] = check_packages
 
+    def path(self, name) -> pathlib.Path:
+        if self.name:
+            raise RuntimeError
+            return self.base / f'debian/generated.{self.name}/{name}'
+        return self.base / name
+
     @property
     def path_control(self) -> pathlib.Path:
-        if self.name:
-            return pathlib.Path(f'debian/control.{self.name}')
-        return pathlib.Path('debian/control')
+        return self.path('control')
 
     @property
     def path_makefile(self) -> pathlib.Path:
-        if self.name:
-            return pathlib.Path(f'debian/rules.gen.{self.name}')
-        return pathlib.Path('debian/rules.gen')
+        return self.path('rules.gen')
 
     @staticmethod
     def __ruleid_deps(ruleid: tuple[str]) -> typing.Iterator[tuple[str, str]]:
@@ -347,7 +378,7 @@ class Gencontrol(object):
         self.write()
 
     def do_source(self):
-        source = self.templates["control.source"][0]
+        source = self.templates["source.control"][0]
         if not source.get('Source'):
             source['Source'] = self.changelog[0].source
         self.packages['source'] = source.substitute(self.vars)
@@ -382,7 +413,7 @@ class Gencontrol(object):
                          makeflags.copy(), extra)
 
     def do_extra(self):
-        templates_extra = self.templates.get("control.extra", None)
+        templates_extra = self.templates.get("extra.control", None)
         if templates_extra is None:
             return
 
@@ -548,26 +579,6 @@ class Gencontrol(object):
             return vars[match.group(1)]
 
         return re.sub(r'@([-_a-z0-9]+)@', subst, str(s))
-
-    # Substitute kernel version etc. into maintainer scripts,
-    # bug presubj message and lintian overrides
-    def substitute_debhelper_config(self, prefix, vars, package_name,
-                                    output_dir='debian'):
-        vars = vars.copy()
-        vars['package'] = package_name
-        for id in ['bug-presubj', 'lintian-overrides', 'maintscript',
-                   'postinst', 'postrm', 'preinst', 'prerm']:
-            name = '%s.%s' % (prefix, id)
-            try:
-                template = self.templates[name]
-            except KeyError:
-                continue
-            else:
-                target = '%s/%s.%s' % (output_dir, package_name, id)
-                with open(target, 'w') as f:
-                    f.write(self.substitute(template, vars))
-                    os.chmod(f.fileno(),
-                             self.templates.get_mode(name) & 0o777)
 
     def write(self):
         for bundle in self.bundles.values():

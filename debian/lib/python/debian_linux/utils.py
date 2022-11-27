@@ -16,19 +16,20 @@ class Templates(object):
         raise KeyError(key)
 
     def _read(self, name):
-        prefix, id = name.split('.', 1)
+        pkgid, name = name.rsplit('.', 1)
 
         for suffix in ['.in', '']:
             for dir in self.dirs:
-                filename = "%s/%s%s" % (dir, name, suffix)
+                filename = "%s/%s.%s%s" % (dir, pkgid, name, suffix)
                 if os.path.exists(filename):
                     with open(filename, 'r', encoding='utf-8') as f:
                         mode = os.stat(f.fileno()).st_mode
-                        if name == 'control.source':
-                            return (read_control_source(f), mode)
-                        if prefix == 'control':
-                            return (read_control(f), mode)
-                        if prefix == 'tests-control':
+                        if name == 'control':
+                            if pkgid == 'source':
+                                return (read_control_source(f), mode)
+                            else:
+                                return (read_control(f), mode)
+                        if name == 'tests-control':
                             return (read_tests_control(f), mode)
                         return (f.read(), mode)
 
