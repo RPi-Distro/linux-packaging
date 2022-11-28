@@ -1,3 +1,11 @@
+linux (6.1~rc6-1~exp2) UNRELEASED; urgency=medium
+
+  [ Bastian Blank ]
+  * Rename templates to debhelper schema.
+  * Support extra debhelper template for every package.
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 28 Nov 2022 22:11:35 +0100
+
 linux (6.1~rc6-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate.
