@@ -8,6 +8,7 @@ linux (6.1~rc7-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [x86] drivers/cpufreq: Change X86_AMD_PSTATE from module to built-in
+  * [rt] Update to 6.1-rc7-rt5
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 28 Nov 2022 22:11:35 +0100
 
