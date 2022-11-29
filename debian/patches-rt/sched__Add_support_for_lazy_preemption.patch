@@ -1,7 +1,7 @@
 Subject: sched: Add support for lazy preemption
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Fri Oct 26 18:50:54 2012 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1-rc6-rt4.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1-rc7-rt5.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
@@ -358,7 +358,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	preempt_enable();
  }
  EXPORT_SYMBOL_GPL(migrate_enable);
-@@ -4668,6 +4710,9 @@ int sched_fork(unsigned long clone_flags
+@@ -4686,6 +4728,9 @@ int sched_fork(unsigned long clone_flags
  	p->on_cpu = 0;
  #endif
  	init_task_preempt_count(p);
@@ -368,7 +368,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #ifdef CONFIG_SMP
  	plist_node_init(&p->pushable_tasks, MAX_PRIO);
  	RB_CLEAR_NODE(&p->pushable_dl_tasks);
-@@ -6537,6 +6582,7 @@ static void __sched notrace __schedule(u
+@@ -6555,6 +6600,7 @@ static void __sched notrace __schedule(u
  
  	next = pick_next_task(rq, prev, &rf);
  	clear_tsk_need_resched(prev);
@@ -376,7 +376,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	clear_preempt_need_resched();
  #ifdef CONFIG_SCHED_DEBUG
  	rq->last_seen_need_resched_ns = 0;
-@@ -6751,6 +6797,30 @@ static void __sched notrace preempt_sche
+@@ -6769,6 +6815,30 @@ static void __sched notrace preempt_sche
  	} while (need_resched());
  }
  
@@ -407,7 +407,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #ifdef CONFIG_PREEMPTION
  /*
   * This is the entry point to schedule() from in-kernel preemption
-@@ -6764,6 +6834,8 @@ asmlinkage __visible void __sched notrac
+@@ -6782,6 +6852,8 @@ asmlinkage __visible void __sched notrac
  	 */
  	if (likely(!preemptible()))
  		return;
@@ -416,7 +416,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	preempt_schedule_common();
  }
  NOKPROBE_SYMBOL(preempt_schedule);
-@@ -6811,6 +6883,9 @@ asmlinkage __visible void __sched notrac
+@@ -6829,6 +6901,9 @@ asmlinkage __visible void __sched notrac
  	if (likely(!preemptible()))
  		return;
  
@@ -426,7 +426,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	do {
  		/*
  		 * Because the function tracer can trace preempt_count_sub()
-@@ -9068,7 +9143,9 @@ void __init init_idle(struct task_struct
+@@ -9086,7 +9161,9 @@ void __init init_idle(struct task_struct
  
  	/* Set the preempt count _outside_ the spinlocks! */
  	init_idle_preempt_count(idle, cpu);
