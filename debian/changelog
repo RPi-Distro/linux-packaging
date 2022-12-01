@@ -114,6 +114,13 @@ linux (6.1~rc3-1~exp1) experimental; urgency=medium
 
  -- Bastian Blank <waldi@debian.org>  Wed, 02 Nov 2022 22:24:00 +0100
 
+linux (6.0.10-2) unstable; urgency=medium
+
+  * [x86] drm/i915: fix TLB invalidation for Gen12 video and compute engines
+    (CVE-2022-4139)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 01 Dec 2022 07:42:33 +0100
+
 linux (6.0.10-1) unstable; urgency=medium
 
   * New upstream stable update:
