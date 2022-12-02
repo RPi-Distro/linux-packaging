@@ -273,16 +273,22 @@ class PackagesBundle:
             ttype = target['type']
 
             rule = '_'.join(ruleid)
+            self.makefile.add_rules(f'setup_{rule}_{name}',
+                                    f'setup_{name}', makeflags, packages, packages_extra)
             self.makefile.add_rules(f'build-{ttype}_{rule}_{name}',
                                     f'build_{name}', makeflags, packages, packages_extra)
             self.makefile.add_rules(f'binary-{ttype}_{rule}_{name}',
                                     f'binary_{name}', makeflags, packages, packages_extra)
+            self.makefile.add_deps(f'setup_{rule}',
+                                   [f'setup_{rule}_{name}'])
             self.makefile.add_deps(f'build-{ttype}_{rule}',
                                    [f'build-{ttype}_{rule}_{name}'])
             self.makefile.add_deps(f'binary-{ttype}_{rule}',
                                    [f'binary-{ttype}_{rule}_{name}'])
 
             for i, j in self.__ruleid_deps(ruleid):
+                self.makefile.add_deps(f'setup_{i}',
+                                       [f'setup_{j}'])
                 self.makefile.add_deps(f'build-{ttype}_{i}',
                                        [f'build-{ttype}_{j}'])
                 self.makefile.add_deps(f'binary-{ttype}_{i}',
