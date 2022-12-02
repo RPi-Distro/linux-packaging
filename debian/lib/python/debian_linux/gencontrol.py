@@ -404,8 +404,7 @@ class Gencontrol(object):
         pass
 
     def do_main_makefile(self, makeflags, extra):
-        self.makefile.add_rules('build-indep', 'build-indep', makeflags)
-        self.makefile.add_rules('binary-indep', 'binary-indep', makeflags)
+        pass
 
     def do_main_packages(self, vars, makeflags, extra):
         pass

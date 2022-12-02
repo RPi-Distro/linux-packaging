@@ -208,12 +208,6 @@ class Gencontrol(Base):
                                      vars, makeflags, extra):
         self.bundle.add('headers.featureset', (featureset, 'real'), makeflags, vars)
 
-        cmds_binary_arch = ["$(MAKE) -f debian/rules.real "
-                            "binary-indep-featureset %s" %
-                            makeflags]
-        self.makefile.add_cmds('binary-indep_%s_real' % featureset,
-                               cmds_binary_arch)
-
     arch_makeflags = (
         ('kernel-arch', 'KERNEL_ARCH', False),
     )
@@ -249,15 +243,6 @@ class Gencontrol(Base):
                                       .get('signed-code', False)
         else:
             build_signed = False
-
-        cmds_build_arch = ["$(MAKE) -f debian/rules.real build-arch-arch %s" %
-                           makeflags]
-        self.makefile.add_cmds('build-arch_%s_real' % arch, cmds_build_arch)
-
-        cmds_binary_arch = ["$(MAKE) -f debian/rules.real binary-arch-arch %s"
-                            % makeflags]
-        self.makefile.add_deps('binary-arch_%s_real' % arch, ['setup_%s' % arch])
-        self.makefile.add_cmds('binary-arch_%s_real' % arch, cmds_binary_arch)
 
         udeb_packages = self.installer_packages.get(arch, [])
         if udeb_packages:
@@ -610,20 +595,6 @@ class Gencontrol(Base):
         if config_entry_build.get('trusted-certs'):
             makeflags['KCONFIG_OPTIONS'] += \
                 f' -o "SYSTEM_TRUSTED_KEYS=\\"${{CURDIR}}/{config_entry_build["trusted-certs"]}\\""'
-
-        cmds_binary_arch = ["$(MAKE) -f debian/rules.real binary-arch-flavour "
-                            "%s" %
-                            makeflags]
-        cmds_build = ["$(MAKE) -f debian/rules.real build-arch-flavour %s" %
-                      makeflags]
-        cmds_setup = ["$(MAKE) -f debian/rules.real setup-arch-flavour %s" %
-                      makeflags]
-        self.makefile.add_cmds('binary-arch_%s_%s_%s_real' % (arch, featureset, flavour),
-                               cmds_binary_arch)
-        self.makefile.add_cmds('build-arch_%s_%s_%s_real' % (arch, featureset, flavour),
-                               cmds_build)
-        self.makefile.add_cmds('setup_%s_%s_%s_real' % (arch, featureset, flavour),
-                               cmds_setup)
 
         merged_config = ('debian/build/config.%s_%s_%s' %
                          (arch, featureset, flavour))
