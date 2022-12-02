@@ -63,20 +63,6 @@ define if_profile
 $(if $(filter $(1),$(DEB_BUILD_PROFILES)),$(2))
 endef
 
-build-arch-arch:
-binary-arch-arch:
-
-build-indep:
-binary-indep:
-
-binary-arch-flavour:
-
-binary-indep-featureset:
-
-build-arch-flavour:
-
-setup-arch-flavour:
-
 source: $(STAMPS_DIR)/source_$(FEATURESET)
 
 $(BUILD_DIR)/config.$(ARCH)_$(FEATURESET)_$(FLAVOUR): $(KCONFIG)
