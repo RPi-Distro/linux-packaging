@@ -99,8 +99,7 @@ class Gencontrol(Base):
         makeflags['SOURCE_SUFFIX'] = vars['source_suffix']
 
         # Prepare to generate debian/tests/control
-        self.tests_control = self.process_packages(
-            self.templates.get_tests_control('main.tests-control'), vars)
+        self.tests_control = self.templates.get_tests_control('main.tests-control', vars)
         self.tests_control_image = None
         self.tests_control_headers = None
 
@@ -515,8 +514,7 @@ class Gencontrol(Base):
         self.makefile.add_deps(f'binary-arch_{arch}_real_udeb',
                                [f'binary-arch_{arch}_{featureset}_{flavour}_real'])
 
-        tests_control = self.process_package(
-            self.templates.get_tests_control('image.tests-control')[0], vars)
+        tests_control = self.templates.get_tests_control('image.tests-control', vars)[0]
         tests_control['Depends'].append(
             PackageRelationGroup(packages_image[0]['Package'],
                                  override_arches=(arch,)))
@@ -529,8 +527,8 @@ class Gencontrol(Base):
 
         if flavour == (self.quick_flavour or self.default_flavour):
             if not self.tests_control_headers:
-                self.tests_control_headers = self.process_package(
-                    self.templates.get_tests_control('headers.tests-control')[0], vars)
+                self.tests_control_headers = \
+                        self.templates.get_tests_control('headers.tests-control', vars)[0]
                 self.tests_control.append(self.tests_control_headers)
             self.tests_control_headers['Architecture'].add(arch)
             self.tests_control_headers['Depends'].append(

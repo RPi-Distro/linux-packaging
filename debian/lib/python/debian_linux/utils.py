@@ -25,7 +25,7 @@ class Templates(object):
                 if os.path.exists(filename):
                     with open(filename, 'r', encoding='utf-8') as f:
                         mode = os.stat(f.fileno()).st_mode
-                        return (f.read(), mode)
+                        return (f.read(), mode, suffix)
 
         raise KeyError(name)
 
@@ -36,20 +36,29 @@ class Templates(object):
             self._cache[key] = value = self._read(key)
             return value
 
-    def get(self, key: str) -> str:
-        return self._get(key)[0]
+    def get(self, key: str, context: dict[str, str] = {}) -> str:
+        value = self._get(key)
+        suffix = value[2]
+
+        if context:
+            if suffix == '.in':
+                def subst(match):
+                    return context[match.group(1)]
+                return re.sub(r'@([-_a-z0-9]+)@', subst, str(value[0]))
+
+        return value[0]
 
     def get_mode(self, key: str) -> str:
         return self._get(key)[1]
 
-    def get_control(self, key: str) -> BinaryPackage:
-        return BinaryPackage.read_rfc822(io.StringIO(self.get(key)))
+    def get_control(self, key: str, context: dict[str, str] = {}) -> BinaryPackage:
+        return BinaryPackage.read_rfc822(io.StringIO(self.get(key, context)))
 
-    def get_source_control(self, key: str) -> SourcePackage:
-        return SourcePackage.read_rfc822(io.StringIO(self.get(key)))
+    def get_source_control(self, key: str, context: dict[str, str] = {}) -> SourcePackage:
+        return SourcePackage.read_rfc822(io.StringIO(self.get(key, context)))
 
-    def get_tests_control(self, key: str) -> TestsControl:
-        return TestsControl.read_rfc822(io.StringIO(self.get(key)))
+    def get_tests_control(self, key: str, context: dict[str, str] = {}) -> TestsControl:
+        return TestsControl.read_rfc822(io.StringIO(self.get(key, context)))
 
 
 class TextWrapper(textwrap.TextWrapper):

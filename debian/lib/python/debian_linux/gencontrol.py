@@ -8,7 +8,7 @@ from collections import OrderedDict
 
 from .debian import Changelog, PackageArchitecture, \
     PackageBuildRestrictFormula, PackageBuildRestrictList, \
-    PackageBuildRestrictTerm, PackageRelation, Version, _substitute_str
+    PackageBuildRestrictTerm, PackageRelation, Version
 from .utils import Templates
 
 
@@ -152,8 +152,8 @@ class PackagesBundle:
             check_packages: bool = True,
     ) -> list[typing.Any]:
         ret = []
-        for raw_package in self.templates.get_control(f'{pkgid}.control'):
-            package = self.packages.setdefault(raw_package.substitute(replace))
+        for raw_package in self.templates.get_control(f'{pkgid}.control', replace):
+            package = self.packages.setdefault(raw_package)
             package_name = package['Package']
             ret.append(package)
 
@@ -172,12 +172,13 @@ class PackagesBundle:
                     'prerm',
             ):
                 try:
-                    template = self.templates.get(f'{pkgid}.{name}')
+                    template = self.templates.get(f'{pkgid}.{name}',
+                                                  replace | {'package': package_name})
                 except KeyError:
                     pass
                 else:
                     with self.path(f'{package_name}.{name}').open('w') as f:
-                        f.write(_substitute_str(template, replace | {'package': package_name}))
+                        f.write(template)
                         os.chmod(f.fileno(),
                                  self.templates.get_mode(f'{pkgid}.{name}') & 0o777)
 
@@ -391,10 +392,10 @@ class Gencontrol(object):
         self.write()
 
     def do_source(self):
-        source = self.templates.get_source_control("source.control")[0]
+        source = self.templates.get_source_control("source.control", self.vars)[0]
         if not source.get('Source'):
             source['Source'] = self.changelog[0].source
-        self.packages['source'] = source.substitute(self.vars)
+        self.packages['source'] = source
 
     def do_main(self):
         vars = self.vars.copy()
@@ -426,11 +427,10 @@ class Gencontrol(object):
 
     def do_extra(self):
         try:
-            templates_extra = self.templates.get_control("extra.control")
+            packages_extra = self.templates.get_control("extra.control", self.vars)
         except KeyError:
             return
 
-        packages_extra = self.process_packages(templates_extra, self.vars)
         extra_arches = {}
         for package in packages_extra:
             arches = package['Architecture']
@@ -540,12 +540,6 @@ class Gencontrol(object):
     def do_flavour_packages(self, arch, featureset,
                             flavour, vars, makeflags, extra):
         pass
-
-    def process_package(self, entry, vars={}, rule=None, makeflags=None):
-        return entry.substitute(vars)
-
-    def process_packages(self, entries, vars, rule=None, makeflags=None):
-        return [i.substitute(vars) for i in entries]
 
     def substitute(self, s, vars):
         if isinstance(s, (list, tuple)):
