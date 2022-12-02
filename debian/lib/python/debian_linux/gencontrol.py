@@ -424,7 +424,6 @@ class Gencontrol(object):
             return
 
         packages_extra = self.process_packages(templates_extra, self.vars)
-        self.packages.extend(packages_extra)
         extra_arches = {}
         for package in packages_extra:
             arches = package['Architecture']
@@ -433,14 +432,8 @@ class Gencontrol(object):
                 i.append(package)
                 extra_arches[arch] = i
         for arch in sorted(extra_arches.keys()):
-            cmds = []
-            for i in extra_arches[arch]:
-                cmds.append("$(MAKE) -f debian/rules.real install-dummy "
-                            "ARCH='%s' DH_OPTIONS='-p%s'" %
-                            (arch, i['Package']))
-            self.makefile.add_deps('binary-arch_%s' % arch,
-                                   ['binary-arch_%s_extra' % arch])
-            self.makefile.add_cmds("binary-arch_%s_extra" % arch, cmds)
+            self.bundle.add_packages(packages_extra, (arch, 'real'),
+                                     MakeFlags(), check_packages=False)
 
     def do_indep_featureset(self, featureset, vars,
                             makeflags, extra):
