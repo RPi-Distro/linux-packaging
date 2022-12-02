@@ -214,9 +214,25 @@ class PackagesBundle:
         return self.path('rules.gen')
 
     @staticmethod
-    def __ruleid_deps(ruleid: tuple[str]) -> typing.Iterator[tuple[str, str]]:
-        for i in range(2, len(ruleid), 2):
-            yield ('_'.join(ruleid[:i - 1]), '_'.join(ruleid[:i]))
+    def __ruleid_deps(ruleid: tuple[str], name: str) -> typing.Iterator[tuple[str, str]]:
+        """
+        Generate all the rules dependencies.
+        ```
+        build: build_a
+        build_a: build_a_b
+        build_a_b: build_a_b_image
+        ```
+        """
+        r = ruleid + (name, )
+        yield (
+            '',
+            '_' + '_'.join(r[:1]),
+        )
+        for i in range(1, len(r)):
+            yield (
+                '_' + '_'.join(r[:i]),
+                '_' + '_'.join(r[:i + 1]),
+            )
 
     def extract_makefile(self) -> None:
         targets = {}
@@ -279,20 +295,14 @@ class PackagesBundle:
                                     f'build_{name}', makeflags, packages, packages_extra)
             self.makefile.add_rules(f'binary-{ttype}_{rule}_{name}',
                                     f'binary_{name}', makeflags, packages, packages_extra)
-            self.makefile.add_deps(f'setup_{rule}',
-                                   [f'setup_{rule}_{name}'])
-            self.makefile.add_deps(f'build-{ttype}_{rule}',
-                                   [f'build-{ttype}_{rule}_{name}'])
-            self.makefile.add_deps(f'binary-{ttype}_{rule}',
-                                   [f'binary-{ttype}_{rule}_{name}'])
 
-            for i, j in self.__ruleid_deps(ruleid):
-                self.makefile.add_deps(f'setup_{i}',
-                                       [f'setup_{j}'])
-                self.makefile.add_deps(f'build-{ttype}_{i}',
-                                       [f'build-{ttype}_{j}'])
-                self.makefile.add_deps(f'binary-{ttype}_{i}',
-                                       [f'binary-{ttype}_{j}'])
+            for i, j in self.__ruleid_deps(ruleid, name):
+                self.makefile.add_deps(f'setup{i}',
+                                       [f'setup{j}'])
+                self.makefile.add_deps(f'build-{ttype}{i}',
+                                       [f'build-{ttype}{j}'])
+                self.makefile.add_deps(f'binary-{ttype}{i}',
+                                       [f'binary-{ttype}{j}'])
 
     def merge_build_depends(self):
         # Merge Build-Depends pseudo-fields from binary packages into the
@@ -360,9 +370,6 @@ def iter_flavours(config, arch, featureset):
 
 
 class Gencontrol(object):
-    makefile_targets = ('binary-arch', 'build-arch', 'setup')
-    makefile_targets_indep = ('binary-indep', 'build-indep', 'setup')
-
     def __init__(self, config, templates, version=Version):
         self.config, self.templates = config, templates
         self.changelog = Changelog(version=version)
@@ -453,15 +460,6 @@ class Gencontrol(object):
                                      extra):
         makeflags['FEATURESET'] = featureset
 
-        for i in self.makefile_targets_indep:
-            target1 = i
-            target2 = '_'.join((target1, featureset))
-            target3 = '_'.join((target2, 'real'))
-            target4 = '_'.join((target1, 'real'))
-            self.makefile.add_deps(target1, [target2])
-            self.makefile.add_deps(target2, [target3])
-            self.makefile.add_deps(target1, [target4])
-
     def do_indep_featureset_packages(self, featureset, vars, makeflags, extra):
         pass
 
@@ -478,13 +476,6 @@ class Gencontrol(object):
 
     def do_arch_makefile(self, arch, makeflags, extra):
         makeflags['ARCH'] = arch
-
-        for i in self.makefile_targets:
-            target1 = i
-            target2 = '_'.join((target1, arch))
-            target3 = '_'.join((target2, 'real'))
-            self.makefile.add_deps(target1, [target2])
-            self.makefile.add_deps(target2, [target3])
 
     def do_arch_packages(self, arch, vars, makeflags,
                          extra):
@@ -513,13 +504,6 @@ class Gencontrol(object):
     def do_featureset_makefile(self, arch, featureset, makeflags,
                                extra):
         makeflags['FEATURESET'] = featureset
-
-        for i in self.makefile_targets:
-            target1 = '_'.join((i, arch))
-            target2 = '_'.join((target1, featureset))
-            target3 = '_'.join((target2, 'real'))
-            self.makefile.add_deps(target1, [target2])
-            self.makefile.add_deps(target2, [target3])
 
     def do_featureset_packages(self, arch, featureset, vars, makeflags, extra):
         pass
@@ -551,13 +535,6 @@ class Gencontrol(object):
     def do_flavour_makefile(self, arch, featureset, flavour,
                             makeflags, extra):
         makeflags['FLAVOUR'] = flavour
-
-        for i in self.makefile_targets:
-            target1 = '_'.join((i, arch, featureset))
-            target2 = '_'.join((target1, flavour))
-            target3 = '_'.join((target2, 'real'))
-            self.makefile.add_deps(target1, [target2])
-            self.makefile.add_deps(target2, [target3])
 
     def do_flavour_packages(self, arch, featureset,
                             flavour, vars, makeflags, extra):
