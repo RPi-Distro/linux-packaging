@@ -75,8 +75,7 @@ binary-indep-featureset:
 
 build-arch-flavour:
 
-setup-arch-flavour: \
-	$(call if_package, $(IMAGE_PACKAGE_NAME),        $(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR))
+setup-arch-flavour:
 
 source-featureset: $(STAMPS_DIR)/source_$(FEATURESET)
 
@@ -359,6 +358,8 @@ binary_support:
 	dh_python3
 	dh_link $(PACKAGE_ROOT) /usr/src/$(PACKAGE_NAME)
 	+$(MAKE_SELF) install-base
+
+setup_image: $(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR))
 
 build_image: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 
@@ -764,6 +765,9 @@ endif
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-.PHONY: binary_% build_% binary-% build-% install-% setup-% source-%
+setup_%:
+	@:
+
+.PHONY: binary_% build_% setup_% binary-% build-% install-% setup-% source-%
 
 # vim: filetype=make
