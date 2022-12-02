@@ -77,7 +77,7 @@ build-arch-flavour:
 
 setup-arch-flavour:
 
-source-featureset: $(STAMPS_DIR)/source_$(FEATURESET)
+source: $(STAMPS_DIR)/source_$(FEATURESET)
 
 $(BUILD_DIR)/config.$(ARCH)_$(FEATURESET)_$(FLAVOUR): $(KCONFIG)
 	mkdir -p '$(dir $@)'
@@ -768,6 +768,6 @@ endif
 setup_%:
 	@:
 
-.PHONY: binary_% build_% setup_% binary-% build-% install-% setup-% source-%
+.PHONY: binary_% build_% setup_% binary-% build-% install-% setup-% source
 
 # vim: filetype=make
