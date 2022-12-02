@@ -1,21 +1,25 @@
 import os
 import re
 import textwrap
+import typing
 
 
 class Templates(object):
-    def __init__(self, dirs=["debian/templates"]):
+    dirs: list[str]
+    _cache: dict[str, typing.Any]
+
+    def __init__(self, dirs: list[str] = ["debian/templates"]) -> None:
         self.dirs = dirs
 
         self._cache = {}
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str):
         ret = self.get(key)
         if ret is not None:
             return ret
         raise KeyError(key)
 
-    def _read(self, name):
+    def _read(self, name: str) -> typing.Any:
         pkgid, name = name.rsplit('.', 1)
 
         for suffix in ['.in', '']:
@@ -33,20 +37,20 @@ class Templates(object):
                             return (read_tests_control(f), mode)
                         return (f.read(), mode)
 
-    def _get(self, key):
+    def _get(self, key: str) -> typing.Any:
         try:
             return self._cache[key]
         except KeyError:
             self._cache[key] = value = self._read(key)
             return value
 
-    def get(self, key, default=None):
+    def get(self, key: str, default: typing.Any = None) -> typing.Any:
         value = self._get(key)
         if value is None:
             return default
         return value[0]
 
-    def get_mode(self, key):
+    def get_mode(self, key: str) -> typing.Any:
         value = self._get(key)
         if value is None:
             return None
