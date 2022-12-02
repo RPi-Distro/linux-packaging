@@ -9,8 +9,6 @@ import re
 import unittest
 import warnings
 
-from . import utils
-
 
 def _substitute_str(s: str, replace: dict[str, str]) -> str:
     def subst(match):
@@ -463,7 +461,8 @@ class PackageDescription(object):
                 self.append(desc_split[1])
 
     def __str__(self):
-        wrap = utils.TextWrapper(width=74, fix_sentence_endings=True).wrap
+        from .utils import TextWrapper
+        wrap = TextWrapper(width=74, fix_sentence_endings=True).wrap
         short = ', '.join(self.short)
         long_pars = []
         for i in self.long:
@@ -802,6 +801,47 @@ class _ControlFileDict(collections.abc.MutableMapping):
         for key, value in self.meta.items():
             ret.meta[key] = _substitute_str(value, replace)
         return ret
+
+    @classmethod
+    def read_rfc822(cls, f):
+        entries = []
+        eof = False
+
+        while not eof:
+            e = cls()
+            last = None
+            lines = []
+            while True:
+                line = f.readline()
+                if not line:
+                    eof = True
+                    break
+                # Strip comments rather than trying to preserve them
+                if line[0] == '#':
+                    continue
+                line = line.strip('\n')
+                if not line:
+                    break
+                if line[0] in ' \t':
+                    if not last:
+                        raise ValueError(
+                            'Continuation line seen before first header')
+                    lines.append(line.lstrip())
+                    continue
+                if last:
+                    e[last] = '\n'.join(lines)
+                i = line.find(':')
+                if i < 0:
+                    raise ValueError(u"Not a header, not a continuation: ``%s''" %
+                                     line)
+                last = line[:i]
+                lines = [line[i + 1:].lstrip()]
+            if last:
+                e[last] = '\n'.join(lines)
+            if e:
+                entries.append(e)
+
+        return entries
 
 
 class SourcePackage(_ControlFileDict):

@@ -9,11 +9,11 @@ import re
 
 from debian_linux import config
 from debian_linux.debian import PackageDescription, PackageRelation, \
-    PackageRelationEntry, PackageRelationGroup, VersionLinux, \
+    PackageRelationEntry, PackageRelationGroup, VersionLinux, BinaryPackage, \
     restriction_requires_profile
 from debian_linux.gencontrol import Gencontrol as Base, \
     iter_featuresets, iter_flavours, add_package_build_restriction
-from debian_linux.utils import Templates, read_control
+from debian_linux.utils import Templates
 
 locale.setlocale(locale.LC_CTYPE, "C.UTF-8")
 
@@ -100,7 +100,7 @@ class Gencontrol(Base):
 
         # Prepare to generate debian/tests/control
         self.tests_control = self.process_packages(
-            self.templates['main.tests-control'], vars)
+            self.templates.get_tests_control('main.tests-control'), vars)
         self.tests_control_image = None
         self.tests_control_headers = None
 
@@ -116,7 +116,7 @@ class Gencontrol(Base):
                 stdout=subprocess.PIPE,
                 text=True,
                 env=kw_env)
-            udeb_packages = read_control(kw_proc.stdout)
+            udeb_packages = BinaryPackage.read_rfc822(kw_proc.stdout)
             kw_proc.wait()
             if kw_proc.returncode != 0:
                 raise RuntimeError('kernel-wedge exited with code %d' %
@@ -516,7 +516,7 @@ class Gencontrol(Base):
                                [f'binary-arch_{arch}_{featureset}_{flavour}_real'])
 
         tests_control = self.process_package(
-            self.templates['image.tests-control'][0], vars)
+            self.templates.get_tests_control('image.tests-control')[0], vars)
         tests_control['Depends'].append(
             PackageRelationGroup(packages_image[0]['Package'],
                                  override_arches=(arch,)))
@@ -530,7 +530,7 @@ class Gencontrol(Base):
         if flavour == (self.quick_flavour or self.default_flavour):
             if not self.tests_control_headers:
                 self.tests_control_headers = self.process_package(
-                    self.templates['headers.tests-control'][0], vars)
+                    self.templates.get_tests_control('headers.tests-control')[0], vars)
                 self.tests_control.append(self.tests_control_headers)
             self.tests_control_headers['Architecture'].add(arch)
             self.tests_control_headers['Depends'].append(
