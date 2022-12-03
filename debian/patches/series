@@ -80,8 +80,6 @@ features/arm64/arm64-compat-Implement-misalignment-fixups-for-multi.patch
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
-bugfix/all/net-neigh-decrement-the-family-specific-qlen.patch
-bugfix/all/net-cdc_ncm-Fix-multicast-RX-support-for-CDC-NCM-dev.patch
 
 # Miscellaneous features
 
@@ -101,7 +99,6 @@ features/all/db-mok-keyring/KEYS-Make-use-of-platform-keyring-for-module-signatu
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
-bugfix/x86/drm-i915-fix-TLB-invalidation-for-Gen12-video-and-co.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
