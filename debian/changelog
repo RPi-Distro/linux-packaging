@@ -250,6 +250,7 @@ linux (6.0.11-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Refresh "serial: 8250: implement write_atomic"
+  * Bump ABI to 6
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 03 Dec 2022 18:54:29 +0100
 
