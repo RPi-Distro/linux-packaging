@@ -15,6 +15,8 @@ linux (6.1.1-1~exp1) UNRELEASED; urgency=medium
 
   [ Diederik de Haas ]
   * [x86] Enable X86_SGX_KVM (Closes: #1026174)
+  * [arm64,powerpc*,s390x,x86] arch: Enable RANDOMIZE_KSTACK_OFFSET_DEFAULT
+    (Closes: #1016056)
 
   [ Ben Hutchings ]
   * d/salsa-ci.yml: Run extract-source job in target release, not unstable
