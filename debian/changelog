@@ -8,6 +8,10 @@ linux (6.1~rc8-1~exp1) UNRELEASED; urgency=medium
   * Generate calls into rules.real for extra.
   * Remove remaining old targets in rules.real.
 
+  [ Salvatore Bonaccorso ]
+  * lockdown: Correct mentioning of mode when LOCK_DOWN_IN_EFI_SECURE_BOOT is
+    enabled (Closes: #1025417)
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 07 Dec 2022 21:21:11 +0100
 
 linux (6.1~rc7-1~exp1) experimental; urgency=medium
