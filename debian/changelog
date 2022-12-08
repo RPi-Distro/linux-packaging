@@ -353,6 +353,8 @@ linux (6.0.12-1) UNRELEASED; urgency=medium
   * [x86] drivers/cpufreq: Change X86_AMD_PSTATE from module to built-in
   * xen/netback: Ensure protocol headers don't fall in the non-linear area
     (XSA-423, CVE-2022-3643)
+  * xen/netback: don't call kfree_skb() with interrupts disabled (XSA-424,
+    CVE-2022-42328, CVE-2022-42329)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 03 Dec 2022 18:54:29 +0100
 
