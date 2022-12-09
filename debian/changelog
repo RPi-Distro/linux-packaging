@@ -1,4 +1,4 @@
-linux (6.1~rc8-1~exp1) UNRELEASED; urgency=medium
+linux (6.1~rc8-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate.
 
@@ -12,7 +12,7 @@ linux (6.1~rc8-1~exp1) UNRELEASED; urgency=medium
   * lockdown: Correct mentioning of mode when LOCK_DOWN_IN_EFI_SECURE_BOOT is
     enabled (Closes: #1025417)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 07 Dec 2022 21:21:11 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 09 Dec 2022 08:20:09 +0100
 
 linux (6.1~rc7-1~exp1) experimental; urgency=medium
 
