@@ -10,10 +10,10 @@ import subprocess
 import sys
 
 from debian_linux.config import ConfigCoreDump
-from debian_linux.debian import PackageRelation, VersionLinux
+from debian_linux.debian import PackageRelation, VersionLinux, BinaryPackage
 from debian_linux.gencontrol import Gencontrol as Base, \
     iter_flavours, PackagesBundle
-from debian_linux.utils import Templates, read_control
+from debian_linux.utils import Templates
 
 
 class Gencontrol(Base):
@@ -93,7 +93,7 @@ class Gencontrol(Base):
                 stdout=subprocess.PIPE,
                 text=True,
                 env=kw_env)
-            udeb_packages = read_control(kw_proc.stdout)
+            udeb_packages = BinaryPackage.read_rfc822(kw_proc.stdout)
             kw_proc.wait()
             if kw_proc.returncode != 0:
                 raise RuntimeError('kernel-wedge exited with code %d' %
@@ -343,7 +343,7 @@ linux-signed@source_suffix@-@arch@ (@signedsourceversion@) @distribution@; urgen
                     exist_ok=True)
         with open(os.path.join(self.template_debian_dir,
                                'source/lintian-overrides'), 'w') as f:
-            f.write(self.substitute(self.templates['source.lintian-overrides'],
+            f.write(self.substitute(self.templates.get('source.lintian-overrides'),
                                     self.vars))
 
 

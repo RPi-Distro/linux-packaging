@@ -2,21 +2,11 @@ from __future__ import annotations
 
 import collections
 import collections.abc
-import copy
 import functools
 import os.path
 import re
 import unittest
 import warnings
-
-from . import utils
-
-
-def _substitute_str(s: str, replace: dict[str, str]) -> str:
-    def subst(match):
-        return replace[match.group(1)]
-
-    return re.sub(r'@([-_a-z0-9]+)@', subst, str(s))
 
 
 class Changelog(list):
@@ -446,9 +436,6 @@ class PackageArchitecture(collections.abc.MutableSet):
         else:
             raise RuntimeError
 
-    def substitute(self, replace: dict[str, str]) -> PackageArchitecture:
-        return self
-
 
 class PackageDescription(object):
     __slots__ = "short", "long"
@@ -463,7 +450,8 @@ class PackageDescription(object):
                 self.append(desc_split[1])
 
     def __str__(self):
-        wrap = utils.TextWrapper(width=74, fix_sentence_endings=True).wrap
+        from .utils import TextWrapper
+        wrap = TextWrapper(width=74, fix_sentence_endings=True).wrap
         short = ', '.join(self.short)
         long_pars = []
         for i in self.long:
@@ -487,12 +475,6 @@ class PackageDescription(object):
             self.long.extend(desc.long)
         else:
             raise TypeError
-
-    def substitute(self, replace: dict[str, str]) -> PackageDescription:
-        ret = self.__class__()
-        ret.short = [_substitute_str(i, replace) for i in self.short]
-        ret.long = [_substitute_str(i, replace) for i in self.long]
-        return ret
 
 
 class PackageRelation(list):
@@ -525,15 +507,6 @@ class PackageRelation(list):
             value = (j.strip() for j in re.split(r',', value.strip()))
         for i in value:
             self.append(i, override_arches)
-
-    def substitute(self, replace: dict[str, str]) -> PackageRelation:
-        ret = copy.deepcopy(self)
-        for groups in ret:
-            for item in groups:
-                item.name = _substitute_str(item.name, replace)
-                if item.version:
-                    item.version = _substitute_str(item.version, replace)
-        return ret
 
 
 class PackageRelationGroup(list):
@@ -688,9 +661,6 @@ class PackageBuildRestrictFormula(set):
         for i in value:
             self.add(i)
 
-    def substitute(self, replace: dict[str, str]) -> PackageBuildRestrictFormula:
-        return self
-
     # TODO: union etc.
 
 
@@ -792,16 +762,46 @@ class _ControlFileDict(collections.abc.MutableMapping):
     def __len__(self):
         return len(self.__data)
 
-    def substitute(self, replace: dict[str, str]) -> _ControlFileDict:
-        ret = self.__class__()
-        for key, value in self.items():
-            if isinstance(value, str):
-                ret[key] = _substitute_str(value, replace)
-            else:
-                ret[key] = value.substitute(replace)
-        for key, value in self.meta.items():
-            ret.meta[key] = _substitute_str(value, replace)
-        return ret
+    @classmethod
+    def read_rfc822(cls, f):
+        entries = []
+        eof = False
+
+        while not eof:
+            e = cls()
+            last = None
+            lines = []
+            while True:
+                line = f.readline()
+                if not line:
+                    eof = True
+                    break
+                # Strip comments rather than trying to preserve them
+                if line[0] == '#':
+                    continue
+                line = line.strip('\n')
+                if not line:
+                    break
+                if line[0] in ' \t':
+                    if not last:
+                        raise ValueError(
+                            'Continuation line seen before first header')
+                    lines.append(line.lstrip())
+                    continue
+                if last:
+                    e[last] = '\n'.join(lines)
+                i = line.find(':')
+                if i < 0:
+                    raise ValueError(u"Not a header, not a continuation: ``%s''" %
+                                     line)
+                last = line[:i]
+                lines = [line[i + 1:].lstrip()]
+            if last:
+                e[last] = '\n'.join(lines)
+            if e:
+                entries.append(e)
+
+        return entries
 
 
 class SourcePackage(_ControlFileDict):
