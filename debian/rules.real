@@ -190,18 +190,6 @@ ifeq ($(IMAGE_FILE),vmlinux)
 	$(CROSS_COMPILE)strip --strip-debug $(INSTALL_DIR)/boot/$(IMAGE_INSTALL_STEM)-$(REAL_VERSION)
 endif
 	+$(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH='$(CURDIR)/$(INSTALL_DIR)' INSTALL_MOD_STRIP=1
-ifeq ($(call if_package,linux-image-$(ABINAME)$(LOCALVERSION)-dbg,y),y)
-# We are building debug info, so add debug links
-	set -o pipefail; \
-	find $(INSTALL_DIR) -name '*.ko' | sed 's|$(INSTALL_DIR)/lib/modules/$(REAL_VERSION)/kernel/||' | while read module ; do \
-	  $(CROSS_COMPILE)objcopy --add-gnu-debuglink=$(DIR)/$$module $(INSTALL_DIR)/lib/modules/$(REAL_VERSION)/kernel/$$module || exit; \
-	done
-# stripping the modules removes signatures as well - if automated signing is enabled with
-# an ephemeral key, re-do the sign step
-	+if grep -qs '^CONFIG_MODULE_SIG_ALL=y' $(DIR)/.config; then \
-		$(MAKE_CLEAN) -C $(DIR) modules_sign INSTALL_MOD_PATH=$(DESTDIR); \
-	fi
-endif
 ifneq ($(filter arm64 armel armhf mipsel mips64el mipsr6 mipsr6el mips64r6 mips64r6el riscv64,$(ARCH)),)
 	+$(MAKE_CLEAN) -C $(DIR) dtbs
 	+$(MAKE_CLEAN) -C $(DIR) dtbs_install INSTALL_DTBS_PATH='$(CURDIR)/$(DT_INSTALL_DIR)'
