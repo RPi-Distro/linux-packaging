@@ -71,6 +71,19 @@ bugfix/powerpc/powerpc-boot-fix-missing-crc32poly.h-when-building-with-kernel_xz
 bugfix/arm64/arm64-acpi-Add-fixup-for-HPE-m400-quirks.patch
 
 # Arch features
+features/arm64/dt-bindings-rockchip-Add-Hardkernel-ODROID-M1-board.patch
+features/arm64/arm64-dts-rockchip-Add-Hardkernel-ODROID-M1-board.patch
+features/arm64/arm64-dts-rockchip-add-thermal-support-to-ODROID-M1.patch
+features/arm64/arm64-dts-rockchip-Add-NOR-flash-to-ODROID-M1.patch
+features/arm64/arm64-dts-rockchip-Add-analog-audio-on-ODROID-M1.patch
+features/arm64/arm64-dts-rockchip-Enable-vop2-and-hdmi-tx-on-ODROID.patch
+features/arm64/arm64-dts-rockchip-Enable-HDMI-audio-on-ODROID-M1.patch
+features/arm64/arm64-dts-rockchip-Enable-the-GPU-on-ODROID-M1.patch
+features/arm64/arm64-dts-rockchip-Enable-the-USB-2.0-ports-on-ODROI.patch
+features/arm64/arm64-dts-rockchip-Enable-the-USB-3.0-ports-on-ODROI.patch
+features/arm64/arm64-dts-rockchip-Add-SATA-support-to-ODROID-M1.patch
+features/arm64/arm64-dts-rockchip-Add-PCIEe-v3-nodes-to-ODROID-M1.patch
+features/arm64/arm64-dts-rockchip-Add-IR-receiver-node-to-ODROID-M1.patch
 features/x86/x86-memtest-WARN-if-bad-RAM-found.patch
 features/x86/x86-make-x32-syscall-support-conditional.patch
 
