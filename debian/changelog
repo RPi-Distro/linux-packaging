@@ -6,6 +6,9 @@ linux (6.1-1~exp1) UNRELEASED; urgency=medium
   * Support Jinja2 templates.
   * Convert some templates to Jinja2.
 
+  [ Diederik de Haas ]
+  * [x86] Enable X86_SGX_KVM (Closes: #1026174)
+
  -- Diederik de Haas <didi.debian@cknow.org>  Mon, 12 Dec 2022 00:20:14 +0100
 
 linux (6.1~rc8-1~exp1) experimental; urgency=medium
