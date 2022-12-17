@@ -346,7 +346,8 @@ class PackagesBundle:
     def write_rfc822(self, f: typing.TextIO, entries: typing.Iterable) -> None:
         for entry in entries:
             for key, value in entry.items():
-                f.write(u"%s: %s\n" % (key, value))
+                if value:
+                    f.write(u"%s: %s\n" % (key, value))
             f.write('\n')
 
 
