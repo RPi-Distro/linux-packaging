@@ -6,6 +6,9 @@ linux (6.1-1~exp1) UNRELEASED; urgency=medium
   * Support Jinja2 templates.
   * Convert some templates to Jinja2.
 
+  [ Aurelien Jarno ]
+  * [arm64] Backport rk3568-odroid-m1.dts file from upstream.
+
  -- Diederik de Haas <didi.debian@cknow.org>  Mon, 12 Dec 2022 00:20:14 +0100
 
 linux (6.1~rc8-1~exp1) experimental; urgency=medium
