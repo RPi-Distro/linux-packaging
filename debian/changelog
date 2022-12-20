@@ -1,6 +1,7 @@
 linux (6.1-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_6.1
+    - xen/netback: fix build warning (Closes: #1026035)
 
   [ Bastian Blank ]
   * Support Jinja2 templates.
