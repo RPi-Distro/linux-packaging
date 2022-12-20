@@ -94,6 +94,10 @@ features/arm64/quartz64/arm64-dts-rockchip-Enable-GPU-on-SOQuartz-CM4.patch
 features/arm64/quartz64/arm64-dts-rockchip-Enable-video-output-and-HDMI-on-S.patch
 features/arm64/quartz64/arm64-dts-rockchip-Enable-HDMI-sound-on-SOQuartz.patch
 features/arm64/quartz64/arm64-dts-rockchip-Enable-PCIe-2-on-SOQuartz-CM4IO.patch
+features/arm64/quartz64/dt-bindings-arm-rockchip-Add-SOQuartz-Blade.patch
+features/arm64/quartz64/arm64-dts-rockchip-Add-SOQuartz-blade-board.patch
+features/arm64/quartz64/dt-bindings-arm-rockchip-Add-SOQuartz-Model-A.patch
+features/arm64/quartz64/arm64-dts-rockchip-Add-SOQuartz-Model-A-baseboard.patch
 
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch

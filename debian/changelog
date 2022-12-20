@@ -3,6 +3,7 @@ linux (6.1.1-1~exp1.1) UNRELEASED; urgency=medium
   [ Diederik de Haas ]
   * [arm64] Fix/enable audio on rk356x devices
   * [arm64] Enable various Pine64's SOQuartz features
+  * [arm64] Enable several Pine64's SOQuartz baseboards
 
  -- Diederik de Haas <didi.debian@cknow.org>  Fri, 23 Dec 2022 08:38:44 +0100
 
