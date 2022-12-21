@@ -762,6 +762,19 @@ class _ControlFileDict(collections.abc.MutableMapping):
     def __len__(self):
         return len(self.__data)
 
+    def setdefault(self, key):
+        try:
+            return self[key]
+        except KeyError:
+            try:
+                ret = self[key] = self._fields[key]()
+            except KeyError:
+                warnings.warn(
+                    f'setting unknown field { key } in { type(self).__name__ }',
+                    stacklevel=2)
+                ret = self[key] = ''
+            return ret
+
     @classmethod
     def read_rfc822(cls, f):
         entries = []

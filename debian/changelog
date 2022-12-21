@@ -6,6 +6,7 @@ linux (6.1-1~exp1) UNRELEASED; urgency=medium
   [ Bastian Blank ]
   * Support Jinja2 templates.
   * Convert some templates to Jinja2.
+  * Restore lost special relations for images.
 
   [ Aurelien Jarno ]
   * [arm64] Backport rk3568-odroid-m1.dts file from upstream.
