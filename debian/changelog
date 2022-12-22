@@ -1,4 +1,4 @@
-linux (6.1.1-1~exp1) UNRELEASED; urgency=medium
+linux (6.1.1-1~exp1) experimental; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_6.1
     - xen/netback: fix build warning (Closes: #1026035)
@@ -24,7 +24,7 @@ linux (6.1.1-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * [x86] drivers/thermal/intel: Enable INTEL_HFI_THERMAL (Closes: #1026336)
 
- -- Diederik de Haas <didi.debian@cknow.org>  Mon, 12 Dec 2022 00:20:14 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 22 Dec 2022 21:58:26 +0100
 
 linux (6.1~rc8-1~exp1) experimental; urgency=medium
 
