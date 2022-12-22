@@ -16,6 +16,9 @@ linux (6.1.1-1~exp1) UNRELEASED; urgency=medium
   [ Diederik de Haas ]
   * [x86] Enable X86_SGX_KVM (Closes: #1026174)
 
+  [ Ben Hutchings ]
+  * d/salsa-ci.yml: Run extract-source job in target release, not unstable
+
  -- Diederik de Haas <didi.debian@cknow.org>  Mon, 12 Dec 2022 00:20:14 +0100
 
 linux (6.1~rc8-1~exp1) experimental; urgency=medium
