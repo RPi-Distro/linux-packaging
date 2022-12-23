@@ -5,6 +5,10 @@ linux (6.1.1-1~exp2) UNRELEASED; urgency=medium
   * [arm64] Enable various Pine64's SOQuartz features
   * [arm64] Enable several Pine64's SOQuartz baseboards
 
+  [ Salvatore Bonaccorso ]
+  * debian/bin/gencontrol_signed.py: Adjust arguments for
+    _ControlFileDict.setdefault() calls
+
  -- Diederik de Haas <didi.debian@cknow.org>  Fri, 23 Dec 2022 08:38:44 +0100
 
 linux (6.1.1-1~exp1) experimental; urgency=medium
