@@ -10,7 +10,7 @@ import subprocess
 import sys
 
 from debian_linux.config import ConfigCoreDump
-from debian_linux.debian import PackageRelation, VersionLinux, BinaryPackage
+from debian_linux.debian import VersionLinux, BinaryPackage
 from debian_linux.gencontrol import Gencontrol as Base, \
     iter_flavours, PackagesBundle
 from debian_linux.utils import Templates
@@ -228,9 +228,9 @@ class Gencontrol(Base):
 
             if flavour == self.default_flavour \
                and not self.vars['source_suffix']:
-                packages_meta[0].setdefault('Provides', PackageRelation()) \
+                packages_meta[0].setdefault('Provides') \
                                 .append('linux-image-generic')
-                packages_meta[1].setdefault('Provides', PackageRelation()) \
+                packages_meta[1].setdefault('Provides') \
                                 .append('linux-headers-generic')
 
             packages_own.extend(packages_meta)
