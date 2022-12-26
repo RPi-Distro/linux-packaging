@@ -3,6 +3,7 @@ linux (6.1.1-1~exp3) UNRELEASED; urgency=medium
   * linux-perf: Simplify build-dependency on libbabeltrace-dev
   * linux-perf: Build with libzstd
   * linux-perf: Disable building with libdebuginfod
+  * linux-perf: Update variable definitions to disable building with libbfd
 
  -- Ben Hutchings <benh@debian.org>  Mon, 26 Dec 2022 20:33:00 +0100
 
