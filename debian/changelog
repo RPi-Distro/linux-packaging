@@ -1,3 +1,9 @@
+linux (6.1.1-1~exp3) UNRELEASED; urgency=medium
+
+  * linux-perf: Simplify build-dependency on libbabeltrace-dev
+
+ -- Ben Hutchings <benh@debian.org>  Mon, 26 Dec 2022 20:33:00 +0100
+
 linux (6.1.1-1~exp2) experimental; urgency=medium
 
   [ Diederik de Haas ]
