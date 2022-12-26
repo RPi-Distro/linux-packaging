@@ -17,7 +17,7 @@ MAKE_PERF += perfexecdir=lib/perf-core plugindir=/usr/lib/traceevent/plugins tip
 MAKE_PERF += feature-libbfd=0 feature-libbfd-liberty=0 feature-libbfd-liberty-z=0 HAVE_CPLUS_DEMANGLE_SUPPORT=1
 
 # perf can link against libcrypto if available, but the result is
-# undistributable as GPL v2 and OpenSSL are not compatible without
+# undistributable as GPL v2 and Apache 2.0 are not compatible without
 # an explicit exception.  Override detection of libcrypto.
 MAKE_PERF += NO_LIBCRYPTO=1
 
