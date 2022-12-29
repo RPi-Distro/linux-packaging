@@ -1,3 +1,9 @@
+linux (6.1.1-1~exp3) UNRELEASED; urgency=medium
+
+  * Fix build regression in stage1 and pkg.linux.nokernel profiles
+
+ -- Ben Hutchings <benh@debian.org>  Mon, 26 Dec 2022 21:37:31 +0100
+
 linux (6.1.1-1~exp2) experimental; urgency=medium
 
   [ Diederik de Haas ]

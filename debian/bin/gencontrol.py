@@ -148,7 +148,8 @@ class Gencontrol(Base):
                     # convince debhelper and kernel-wedge to go
                     # part way to building them.
                     package['Build-Profiles'] = (
-                        '<pkg.linux.udeb-unsigned-test-build !pkg.linux.quick>')
+                        '<pkg.linux.udeb-unsigned-test-build !stage1'
+                        ' !pkg.linux.nokernel !pkg.linux.quick>')
                 else:
                     package['Build-Profiles'] = (
                         '<!stage1 !pkg.linux.nokernel !pkg.linux.quick>')
