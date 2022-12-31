@@ -1,5 +1,12 @@
-linux (6.1.1-1~exp3) UNRELEASED; urgency=medium
+linux (6.1.2-1~exp1) UNRELEASED; urgency=medium
 
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.2
+    - misc: sgi-gru: fix use-after-free error in gru_set_context_option,
+      gru_fault and gru_handle_user_call_os (CVE-2022-3424)
+    - i2c: ismt: Fix an out-of-bounds bug in ismt_access() (CVE-2022-2873)
+
+  [ Ben Hutchings ]
   * Fix build regression in stage1 and pkg.linux.nokernel profiles
   * linux-perf: Simplify build-dependency on libbabeltrace-dev
   * linux-perf: Build with libzstd
