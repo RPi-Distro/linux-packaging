@@ -1,4 +1,4 @@
-linux (6.1.2-1~exp1) UNRELEASED; urgency=medium
+linux (6.1.2-1~exp1) experimental; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.2
@@ -16,7 +16,7 @@ linux (6.1.2-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * [rt] Refresh "net: Remove the obsolte u64_stats_fetch_*_irq() users (net)."
 
- -- Ben Hutchings <benh@debian.org>  Mon, 26 Dec 2022 21:37:31 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 01 Jan 2023 10:57:02 +0100
 
 linux (6.1.1-1~exp2) experimental; urgency=medium
 
