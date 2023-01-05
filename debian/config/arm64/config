@@ -577,6 +577,13 @@ CONFIG_SENSORS_XGENE=m
 CONFIG_HWSPINLOCK_QCOM=m
 
 ##
+## file: drivers/hwtracing/coresight/Kconfig
+##
+CONFIG_CORESIGHT=m
+CONFIG_CORESIGHT_SOURCE_ETM4X=m
+CONFIG_CORESIGHT_TRBE=m
+
+##
 ## file: drivers/i2c/Kconfig
 ##
 CONFIG_I2C=y
