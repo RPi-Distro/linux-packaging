@@ -1,3 +1,58 @@
+linux (6.1.3-1~exp1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.3
+    - eventpoll: add EPOLL_URING_WAKE poll wakeup flag
+    - eventfd: provide a eventfd_signal_mask() helper
+    - io_uring: pass in EPOLL_URING_WAKE for eventfd signaling and wakeups
+    - nvme-pci: fix doorbell buffer value endianness
+    - nvme-pci: fix mempool alloc size
+    - nvme-pci: fix page size checks
+    - ACPI: resource: do IRQ override on XMG Core 15
+    - ACPI: resource: do IRQ override on Lenovo 14ALC7
+    - ACPI: resource: Add Asus ExpertBook B2502 to Asus quirks
+    - [x86] ACPI: video: Fix Apple GMUX backlight detection
+    - block, bfq: fix uaf for bfqq in bfq_exit_icq_bfqq
+    - ata: ahci: Fix PCS quirk application for suspend
+    - nvme: fix the NVME_CMD_EFFECTS_CSE_MASK definition
+    - soundwire: dmi-quirks: add quirk variant for LAPBC710 NUC15
+    - [arm64,armhf] phy: sun4i-usb: Introduce port2 SIDDQ quirk
+    - [arm64,armhf] phy: sun4i-usb: Add support for the H616 USB PHY
+    - [powerpc*] rtas: avoid device tree lookups in rtas_os_term()
+    - [powerpc*] rtas: avoid scheduling in rtas_os_term()
+    - NFSD: fix use-after-free in __nfs42_ssc_open() (CVE-2022-4379)
+    - kprobes: kretprobe events missing on 2-core KVM guest
+    - HID: multitouch: fix Asus ExpertBook P2 P2451FA trackpoint
+    - HID: plantronics: Additional PIDs for double volume key presses quirk
+    - futex: Fix futex_waitv() hrtimer debug object leak on kcalloc error
+    - rtmutex: Add acquire semantics for rtmutex lock acquisition slow path
+    - mm, mremap: fix mremap() expanding vma with addr inside vma
+    - mm/mempolicy: fix memory leak in set_mempolicy_home_node system call
+    - pstore: Properly assign mem_type property
+    - pstore/zone: Use GFP_ATOMIC to allocate zone buffer
+    - hfsplus: fix bug causing custom uid and gid being unable to be assigned
+      with mount
+    - [x86] ACPI: x86: s2idle: Force AMD GUID/_REV 2 on HP Elitebook 865
+    - [x86] ACPI: x86: s2idle: Stop using AMD specific codepath for Rembrandt+
+    - ovl: Use ovl mounter's fsuid and fsgid in ovl_link()
+    - ovl: update ->f_iocb_flags when ovl_change_flags() modifies ->f_flags
+    - ALSA: line6: correct midi status byte when receiving data from podxt
+    - ALSA: line6: fix stack overflow in line6_midi_transmit
+    - ALSA: hda/hdmi: Static PCM mapping again with AMD HDMI codecs
+    - pnode: terminate at peers of source
+    - md: fix a crash in mempool_free
+    - mm, compaction: fix fast_isolate_around() to stay within boundaries
+    - f2fs: should put a page when checking the summary info
+    - f2fs: allow to read node block after shutdown
+    - block: Do not reread partition table on exclusively open device
+    - mmc: vub300: fix warning - do not call blocking ops when !TASK_RUNNING
+    - tpm: acpi: Call acpi_put_table() to fix memory leak
+    - tpm: tpm_crb: Add the missed acpi_put_table() to fix memory leak
+    - tpm: tpm_tis: Add the missed acpi_put_table() to fix memory leak
+    - SUNRPC: Don't leak netobj memory when gss_read_proxy_verf() fails
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 04 Jan 2023 12:46:31 +0100
+
 linux (6.1.2-1~exp1) experimental; urgency=medium
 
   * New upstream stable update:
