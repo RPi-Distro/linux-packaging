@@ -1,7 +1,7 @@
 Subject: tpm_tis: fix stall after iowrite*()s
 From: Haris Okanovic <haris.okanovic@ni.com>
 Date: Tue Aug 15 15:13:08 2017 -0500
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1-rc7-rt5.tar.xz
 
 From: Haris Okanovic <haris.okanovic@ni.com>
 

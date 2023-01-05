@@ -2,7 +2,7 @@ From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 25 Aug 2022 16:15:44 +0200
 Subject: [PATCH 2/4] net: Remove the obsolte u64_stats_fetch_*_irq() users
  (drivers).
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1-rc7-rt5.tar.xz
 
 Now that the 32bit UP oddity is gone and 32bit uses always a sequence
 count, there is no need for the fetch_irq() variants anymore.
@@ -116,7 +116,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  static void ena_queue_stats(struct ena_adapter *adapter, u64 **data)
 --- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
 +++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-@@ -3270,10 +3270,10 @@ static void ena_get_stats64(struct net_d
+@@ -3268,10 +3268,10 @@ static void ena_get_stats64(struct net_d
  		tx_ring = &adapter->tx_ring[i];
  
  		do {
@@ -129,7 +129,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  		stats->tx_packets += packets;
  		stats->tx_bytes += bytes;
-@@ -3281,20 +3281,20 @@ static void ena_get_stats64(struct net_d
+@@ -3279,20 +3279,20 @@ static void ena_get_stats64(struct net_d
  		rx_ring = &adapter->rx_ring[i];
  
  		do {
@@ -557,7 +557,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  						       start));
  			s->tx_packets += packets;
  			s->tx_bytes += bytes;
-@@ -1274,9 +1274,9 @@ void gve_handle_report_stats(struct gve_
+@@ -1273,9 +1273,9 @@ void gve_handle_report_stats(struct gve_
  			}
  
  			do {
@@ -571,7 +571,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  				.value = cpu_to_be64(priv->tx[idx].wake_queue),
 --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
 +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -2486,7 +2486,7 @@ static void hns3_fetch_stats(struct rtnl
+@@ -2488,7 +2488,7 @@ static void hns3_fetch_stats(struct rtnl
  	unsigned int start;
  
  	do {
@@ -580,7 +580,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		if (is_tx) {
  			stats->tx_bytes += ring->stats.tx_bytes;
  			stats->tx_packets += ring->stats.tx_pkts;
-@@ -2520,7 +2520,7 @@ static void hns3_fetch_stats(struct rtnl
+@@ -2522,7 +2522,7 @@ static void hns3_fetch_stats(struct rtnl
  			stats->multicast += ring->stats.rx_multicast;
  			stats->rx_length_errors += ring->stats.err_pkt_len;
  		}
@@ -688,7 +688,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  	*data += size;
 --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
 +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -418,10 +418,10 @@ static void i40e_get_netdev_stats_struct
+@@ -419,10 +419,10 @@ static void i40e_get_netdev_stats_struct
  	unsigned int start;
  
  	do {
@@ -701,7 +701,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  	stats->tx_packets += packets;
  	stats->tx_bytes   += bytes;
-@@ -471,10 +471,10 @@ static void i40e_get_netdev_stats_struct
+@@ -472,10 +472,10 @@ static void i40e_get_netdev_stats_struct
  		if (!ring)
  			continue;
  		do {
@@ -714,7 +714,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  		stats->rx_packets += packets;
  		stats->rx_bytes   += bytes;
-@@ -896,10 +896,10 @@ static void i40e_update_vsi_stats(struct
+@@ -897,10 +897,10 @@ static void i40e_update_vsi_stats(struct
  			continue;
  
  		do {
@@ -727,7 +727,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		tx_b += bytes;
  		tx_p += packets;
  		tx_restart += p->tx_stats.restart_queue;
-@@ -914,10 +914,10 @@ static void i40e_update_vsi_stats(struct
+@@ -915,10 +915,10 @@ static void i40e_update_vsi_stats(struct
  			continue;
  
  		do {
@@ -740,7 +740,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		rx_b += bytes;
  		rx_p += packets;
  		rx_buf += p->rx_stats.alloc_buff_failed;
-@@ -934,10 +934,10 @@ static void i40e_update_vsi_stats(struct
+@@ -935,10 +935,10 @@ static void i40e_update_vsi_stats(struct
  				continue;
  
  			do {
@@ -784,7 +784,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  	*data += size;
 --- a/drivers/net/ethernet/intel/ice/ice_main.c
 +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -6297,10 +6297,10 @@ ice_fetch_u64_stats_per_ring(struct u64_
+@@ -6370,10 +6370,10 @@ ice_fetch_u64_stats_per_ring(struct u64_
  	unsigned int start;
  
  	do {
@@ -837,7 +837,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  	spin_unlock(&adapter->stats64_lock);
 --- a/drivers/net/ethernet/intel/igb/igb_main.c
 +++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -6633,10 +6633,10 @@ void igb_update_stats(struct igb_adapter
+@@ -6632,10 +6632,10 @@ void igb_update_stats(struct igb_adapter
  		}
  
  		do {
@@ -850,7 +850,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		bytes += _bytes;
  		packets += _packets;
  	}
-@@ -6649,10 +6649,10 @@ void igb_update_stats(struct igb_adapter
+@@ -6648,10 +6648,10 @@ void igb_update_stats(struct igb_adapter
  	for (i = 0; i < adapter->num_tx_queues; i++) {
  		struct igb_ring *ring = adapter->tx_ring[i];
  		do {
@@ -903,7 +903,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  	spin_unlock(&adapter->stats64_lock);
 --- a/drivers/net/ethernet/intel/igc/igc_main.c
 +++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -4645,10 +4645,10 @@ void igc_update_stats(struct igc_adapter
+@@ -4682,10 +4682,10 @@ void igc_update_stats(struct igc_adapter
  		}
  
  		do {
@@ -916,7 +916,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		bytes += _bytes;
  		packets += _packets;
  	}
-@@ -4662,10 +4662,10 @@ void igc_update_stats(struct igc_adapter
+@@ -4699,10 +4699,10 @@ void igc_update_stats(struct igc_adapter
  		struct igc_ring *ring = adapter->tx_ring[i];
  
  		do {
@@ -1154,7 +1154,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  	stats->tx_bytes = _bytes;
 --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
 +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -853,7 +853,7 @@ static void mtk_get_stats64(struct net_d
+@@ -865,7 +865,7 @@ static void mtk_get_stats64(struct net_d
  	}
  
  	do {
@@ -1163,7 +1163,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		storage->rx_packets = hw_stats->rx_packets;
  		storage->tx_packets = hw_stats->tx_packets;
  		storage->rx_bytes = hw_stats->rx_bytes;
-@@ -865,7 +865,7 @@ static void mtk_get_stats64(struct net_d
+@@ -877,7 +877,7 @@ static void mtk_get_stats64(struct net_d
  		storage->rx_crc_errors = hw_stats->rx_fcs_errors;
  		storage->rx_errors = hw_stats->rx_checksum_errors;
  		storage->tx_aborted_errors = hw_stats->tx_skip;
@@ -1172,7 +1172,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  	storage->tx_errors = dev->stats.tx_errors;
  	storage->rx_dropped = dev->stats.rx_dropped;
-@@ -3664,13 +3664,13 @@ static void mtk_get_ethtool_stats(struct
+@@ -3688,13 +3688,13 @@ static void mtk_get_ethtool_stats(struct
  
  	do {
  		data_dst = data;
@@ -1267,7 +1267,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		data[i++] = bytes;
 --- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
 +++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-@@ -1630,21 +1630,21 @@ static void nfp_net_stat64(struct net_de
+@@ -1631,21 +1631,21 @@ static void nfp_net_stat64(struct net_de
  		unsigned int start;
  
  		do {
@@ -1295,7 +1295,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		stats->tx_errors += data[2];
 --- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
 +++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-@@ -649,7 +649,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
+@@ -686,7 +686,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
  		unsigned int start;
  
  		do {
@@ -1304,7 +1304,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  			data[0] = nn->r_vecs[i].rx_pkts;
  			tmp[0] = nn->r_vecs[i].hw_csum_rx_ok;
  			tmp[1] = nn->r_vecs[i].hw_csum_rx_inner_ok;
-@@ -657,10 +657,10 @@ static u64 *nfp_vnic_get_sw_stats(struct
+@@ -694,10 +694,10 @@ static u64 *nfp_vnic_get_sw_stats(struct
  			tmp[3] = nn->r_vecs[i].hw_csum_rx_error;
  			tmp[4] = nn->r_vecs[i].rx_replace_buf_alloc_fail;
  			tmp[5] = nn->r_vecs[i].hw_tls_rx;
@@ -1317,7 +1317,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  			data[1] = nn->r_vecs[i].tx_pkts;
  			data[2] = nn->r_vecs[i].tx_busy;
  			tmp[6] = nn->r_vecs[i].hw_csum_tx;
-@@ -670,7 +670,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
+@@ -707,7 +707,7 @@ static u64 *nfp_vnic_get_sw_stats(struct
  			tmp[10] = nn->r_vecs[i].hw_tls_tx;
  			tmp[11] = nn->r_vecs[i].tls_tx_fallback;
  			tmp[12] = nn->r_vecs[i].tls_tx_no_fallback;
@@ -1414,7 +1414,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  /* Set or clear the multicast filter for this adaptor.
 --- a/drivers/net/ethernet/socionext/sni_ave.c
 +++ b/drivers/net/ethernet/socionext/sni_ave.c
-@@ -1506,16 +1506,16 @@ static void ave_get_stats64(struct net_d
+@@ -1508,16 +1508,16 @@ static void ave_get_stats64(struct net_d
  	unsigned int start;
  
  	do {
@@ -1437,7 +1437,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  	stats->tx_errors      = priv->stats_tx.errors;
 --- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
 +++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -1365,12 +1365,12 @@ static void am65_cpsw_nuss_ndo_get_stats
+@@ -1362,12 +1362,12 @@ static void am65_cpsw_nuss_ndo_get_stats
  
  		cpu_stats = per_cpu_ptr(ndev_priv->stats, cpu);
  		do {
@@ -1675,7 +1675,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  }
 --- a/drivers/net/ipvlan/ipvlan_main.c
 +++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -299,13 +299,13 @@ static void ipvlan_get_stats64(struct ne
+@@ -301,13 +301,13 @@ static void ipvlan_get_stats64(struct ne
  		for_each_possible_cpu(idx) {
  			pcptr = per_cpu_ptr(ipvlan->pcpu_stats, idx);
  			do {
@@ -1708,7 +1708,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  	}
 --- a/drivers/net/macsec.c
 +++ b/drivers/net/macsec.c
-@@ -2823,9 +2823,9 @@ static void get_rx_sc_stats(struct net_d
+@@ -2793,9 +2793,9 @@ static void get_rx_sc_stats(struct net_d
  
  		stats = per_cpu_ptr(rx_sc->stats, cpu);
  		do {
@@ -1720,7 +1720,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  		sum->InOctetsValidated += tmp.InOctetsValidated;
  		sum->InOctetsDecrypted += tmp.InOctetsDecrypted;
-@@ -2904,9 +2904,9 @@ static void get_tx_sc_stats(struct net_d
+@@ -2874,9 +2874,9 @@ static void get_tx_sc_stats(struct net_d
  
  		stats = per_cpu_ptr(macsec_priv(dev)->secy.tx_sc.stats, cpu);
  		do {
@@ -1732,7 +1732,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  		sum->OutPktsProtected   += tmp.OutPktsProtected;
  		sum->OutPktsEncrypted   += tmp.OutPktsEncrypted;
-@@ -2960,9 +2960,9 @@ static void get_secy_stats(struct net_de
+@@ -2930,9 +2930,9 @@ static void get_secy_stats(struct net_de
  
  		stats = per_cpu_ptr(macsec_priv(dev)->stats, cpu);
  		do {
@@ -1805,7 +1805,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  static int
 --- a/drivers/net/team/team.c
 +++ b/drivers/net/team/team.c
-@@ -1853,13 +1853,13 @@ team_get_stats64(struct net_device *dev,
+@@ -1865,13 +1865,13 @@ team_get_stats64(struct net_device *dev,
  	for_each_possible_cpu(i) {
  		p = per_cpu_ptr(team->pcpu_stats, i);
  		do {
@@ -1885,7 +1885,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		result->xdp_packets += packets;
 --- a/drivers/net/virtio_net.c
 +++ b/drivers/net/virtio_net.c
-@@ -2066,18 +2066,18 @@ static void virtnet_stats(struct net_dev
+@@ -2069,18 +2069,18 @@ static void virtnet_stats(struct net_dev
  		struct send_queue *sq = &vi->sq[i];
  
  		do {
@@ -1908,7 +1908,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  		tot->rx_packets += rpackets;
  		tot->tx_packets += tpackets;
-@@ -2688,12 +2688,12 @@ static void virtnet_get_ethtool_stats(st
+@@ -2691,12 +2691,12 @@ static void virtnet_get_ethtool_stats(st
  
  		stats_base = (u8 *)&rq->stats;
  		do {
@@ -1923,7 +1923,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		idx += VIRTNET_RQ_STATS_LEN;
  	}
  
-@@ -2702,12 +2702,12 @@ static void virtnet_get_ethtool_stats(st
+@@ -2705,12 +2705,12 @@ static void virtnet_get_ethtool_stats(st
  
  		stats_base = (u8 *)&sq->stats;
  		do {

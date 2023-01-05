@@ -2,7 +2,7 @@ From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 25 Aug 2022 16:17:37 +0200
 Subject: [PATCH 3/4] net: Remove the obsolte u64_stats_fetch_*_irq() users
  (net).
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.0/older/patches-6.0.5-rt14.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1-rc7-rt5.tar.xz
 
 Now that the 32bit UP oddity is gone and 32bit uses always a sequence
 count, there is no need for the fetch_irq() variants anymore.
@@ -33,7 +33,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
 --- a/net/8021q/vlan_dev.c
 +++ b/net/8021q/vlan_dev.c
-@@ -712,13 +712,13 @@ static void vlan_dev_get_stats64(struct
+@@ -712,13 +712,13 @@
  
  		p = per_cpu_ptr(vlan_dev_priv(dev)->vlan_pcpu_stats, i);
  		do {
@@ -51,7 +51,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		stats->rx_bytes		+= rxbytes;
 --- a/net/bridge/br_multicast.c
 +++ b/net/bridge/br_multicast.c
-@@ -4899,9 +4899,9 @@ void br_multicast_get_stats(const struct
+@@ -4899,9 +4899,9 @@
  		unsigned int start;
  
  		do {
@@ -65,7 +65,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		mcast_stats_add_dir(tdst.igmp_v2queries, temp.igmp_v2queries);
 --- a/net/bridge/br_vlan.c
 +++ b/net/bridge/br_vlan.c
-@@ -1378,12 +1378,12 @@ void br_vlan_get_stats(const struct net_
+@@ -1389,12 +1389,12 @@
  
  		cpu_stats = per_cpu_ptr(v->stats, i);
  		do {
@@ -82,7 +82,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		u64_stats_add(&stats->rx_bytes, rxbytes);
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -10492,12 +10492,12 @@ void dev_fetch_sw_netstats(struct rtnl_l
+@@ -10469,12 +10469,12 @@
  
  		stats = per_cpu_ptr(netstats, cpu);
  		do {
@@ -99,7 +99,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		s->rx_bytes   += rx_bytes;
 --- a/net/core/devlink.c
 +++ b/net/core/devlink.c
-@@ -8268,10 +8268,10 @@ static void devlink_trap_stats_read(stru
+@@ -8307,10 +8307,10 @@
  
  		cpu_stats = per_cpu_ptr(trap_stats, i);
  		do {
@@ -114,7 +114,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		u64_stats_add(&stats->rx_bytes, rx_bytes);
 --- a/net/core/drop_monitor.c
 +++ b/net/core/drop_monitor.c
-@@ -1432,9 +1432,9 @@ static void net_dm_stats_read(struct net
+@@ -1432,9 +1432,9 @@
  		u64 dropped;
  
  		do {
@@ -126,7 +126,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  		u64_stats_add(&stats->dropped, dropped);
  	}
-@@ -1476,9 +1476,9 @@ static void net_dm_hw_stats_read(struct
+@@ -1476,9 +1476,9 @@
  		u64 dropped;
  
  		do {
@@ -140,7 +140,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  	}
 --- a/net/core/gen_stats.c
 +++ b/net/core/gen_stats.c
-@@ -135,10 +135,10 @@ static void gnet_stats_add_basic_cpu(str
+@@ -135,10 +135,10 @@
  		u64 bytes, packets;
  
  		do {
@@ -153,7 +153,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  		t_bytes += bytes;
  		t_packets += packets;
-@@ -162,10 +162,10 @@ void gnet_stats_add_basic(struct gnet_st
+@@ -162,10 +162,10 @@
  	}
  	do {
  		if (running)
@@ -166,7 +166,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  	_bstats_update(bstats, bytes, packets);
  }
-@@ -187,10 +187,10 @@ static void gnet_stats_read_basic(u64 *r
+@@ -187,10 +187,10 @@
  			u64 bytes, packets;
  
  			do {
@@ -179,7 +179,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  			t_bytes += bytes;
  			t_packets += packets;
-@@ -201,10 +201,10 @@ static void gnet_stats_read_basic(u64 *r
+@@ -201,10 +201,10 @@
  	}
  	do {
  		if (running)
@@ -194,7 +194,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  static int
 --- a/net/dsa/slave.c
 +++ b/net/dsa/slave.c
-@@ -934,12 +934,12 @@ static void dsa_slave_get_ethtool_stats(
+@@ -976,12 +976,12 @@
  
  		s = per_cpu_ptr(dev->tstats, i);
  		do {
@@ -211,7 +211,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		data[2] += rx_packets;
 --- a/net/ipv4/af_inet.c
 +++ b/net/ipv4/af_inet.c
-@@ -1684,9 +1684,9 @@ u64 snmp_get_cpu_field64(void __percpu *
+@@ -1699,9 +1699,9 @@
  	bhptr = per_cpu_ptr(mib, cpu);
  	syncp = (struct u64_stats_sync *)(bhptr + syncp_offset);
  	do {
@@ -225,7 +225,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  }
 --- a/net/ipv6/seg6_local.c
 +++ b/net/ipv6/seg6_local.c
-@@ -1508,13 +1508,13 @@ static int put_nla_counters(struct sk_bu
+@@ -1644,13 +1644,13 @@
  
  		pcounters = per_cpu_ptr(slwt->pcpu_counters, i);
  		do {
@@ -243,7 +243,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		counters.bytes += bytes;
 --- a/net/mac80211/sta_info.c
 +++ b/net/mac80211/sta_info.c
-@@ -2316,9 +2316,9 @@ static inline u64 sta_get_tidstats_msdu(
+@@ -2396,9 +2396,9 @@
  	u64 value;
  
  	do {
@@ -255,7 +255,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  	return value;
  }
-@@ -2384,9 +2384,9 @@ static inline u64 sta_get_stats_bytes(st
+@@ -2464,9 +2464,9 @@
  	u64 value;
  
  	do {
@@ -269,7 +269,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  }
 --- a/net/mpls/af_mpls.c
 +++ b/net/mpls/af_mpls.c
-@@ -1079,9 +1079,9 @@ static void mpls_get_stats(struct mpls_d
+@@ -1079,9 +1079,9 @@
  
  		p = per_cpu_ptr(mdev->stats, i);
  		do {
@@ -283,17 +283,17 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		stats->rx_bytes		+= local.rx_bytes;
 --- a/net/netfilter/ipvs/ip_vs_ctl.c
 +++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -2296,13 +2296,13 @@ static int ip_vs_stats_percpu_show(struc
+@@ -2296,13 +2296,13 @@
  		u64 conns, inpkts, outpkts, inbytes, outbytes;
  
  		do {
 -			start = u64_stats_fetch_begin_irq(&u->syncp);
 +			start = u64_stats_fetch_begin(&u->syncp);
- 			conns = u->cnt.conns;
- 			inpkts = u->cnt.inpkts;
- 			outpkts = u->cnt.outpkts;
- 			inbytes = u->cnt.inbytes;
- 			outbytes = u->cnt.outbytes;
+ 			conns = u64_stats_read(&u->cnt.conns);
+ 			inpkts = u64_stats_read(&u->cnt.inpkts);
+ 			outpkts = u64_stats_read(&u->cnt.outpkts);
+ 			inbytes = u64_stats_read(&u->cnt.inbytes);
+ 			outbytes = u64_stats_read(&u->cnt.outbytes);
 -		} while (u64_stats_fetch_retry_irq(&u->syncp, start));
 +		} while (u64_stats_fetch_retry(&u->syncp, start));
  
@@ -301,7 +301,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  			   i, (u64)conns, (u64)inpkts,
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -1534,10 +1534,10 @@ static int nft_dump_stats(struct sk_buff
+@@ -1534,10 +1534,10 @@
  	for_each_possible_cpu(cpu) {
  		cpu_stats = per_cpu_ptr(stats, cpu);
  		do {
@@ -316,7 +316,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  	}
 --- a/net/openvswitch/datapath.c
 +++ b/net/openvswitch/datapath.c
-@@ -707,9 +707,9 @@ static void get_dp_stats(const struct da
+@@ -716,9 +716,9 @@
  		percpu_stats = per_cpu_ptr(dp->stats_percpu, i);
  
  		do {
@@ -330,7 +330,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  		stats->n_missed += local_stats.n_missed;
 --- a/net/openvswitch/flow_table.c
 +++ b/net/openvswitch/flow_table.c
-@@ -205,9 +205,9 @@ static void tbl_mask_array_reset_counter
+@@ -205,9 +205,9 @@
  
  			stats = per_cpu_ptr(ma->masks_usage_stats, cpu);
  			do {
@@ -342,7 +342,7 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
  
  			ma->masks_usage_zero_cntr[i] += counter;
  		}
-@@ -1136,10 +1136,9 @@ void ovs_flow_masks_rebalance(struct flo
+@@ -1136,10 +1136,9 @@
  
  			stats = per_cpu_ptr(ma->masks_usage_stats, cpu);
  			do {
