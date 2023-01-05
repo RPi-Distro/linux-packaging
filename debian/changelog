@@ -61,6 +61,15 @@ linux (6.1.3-1) UNRELEASED; urgency=medium
   * [arm64] drivers/hwtracing/coresight: Enable CORESIGHT,
     CORESIGHT_SOURCE_ETM4X and CORESIGHT_TRBE as modules (Closes: #1014743)
 
+  [ Miguel Bernal Marin ]
+  * [x86] Enable Intel Vendor Specific Extended Capabilities Driver,
+    with Intel Platform Monitoring Technology and Intel Software Defined
+    Silicon Driver as modules (Closes: #1027953)
+    - Enable CONFIG_INTEL_VSEC.
+    - Enable CONFIG_INTEL_SDSI.
+    - Enable CONFIG_INTEL_PMT_TELEMETRY.
+    - Enable CONFIG_INTEL_PMT_CRASHLOG.
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 04 Jan 2023 12:46:31 +0100
 
 linux (6.1.2-1~exp1) experimental; urgency=medium
