@@ -1509,8 +1509,10 @@ CONFIG_INTEL_INT0002_VGPIO=m
 CONFIG_INTEL_OAKTRAIL=m
 CONFIG_INTEL_CHTWC_INT33FE=m
 CONFIG_INTEL_RST=m
+CONFIG_INTEL_SDSI=m
 CONFIG_INTEL_SMARTCONNECT=m
 CONFIG_INTEL_TURBO_MAX_3=y
+CONFIG_INTEL_VSEC=m
 
 ##
 ## file: drivers/platform/x86/intel/atomisp2/Kconfig
@@ -1521,6 +1523,12 @@ CONFIG_INTEL_ATOMISP2_PM=m
 ## file: drivers/platform/x86/intel/pmc/Kconfig
 ##
 CONFIG_INTEL_PMC_CORE=m
+
+##
+## file: drivers/platform/x86/intel/pmt/Kconfig
+##
+CONFIG_INTEL_PMT_TELEMETRY=m
+CONFIG_INTEL_PMT_CRASHLOG=m
 
 ##
 ## file: drivers/platform/x86/intel/wmi/Kconfig
