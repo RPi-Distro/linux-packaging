@@ -239,6 +239,7 @@ linux (6.1.4-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Set ABI to 1
+  * Refresh "security,perf: Allow further restriction of perf_event_open"
 
   [ Diederik de Haas ]
   * [arm64] Enable CRYPTO_POLYVAL_ARM64_CE as module
