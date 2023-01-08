@@ -1,10 +1,15 @@
 linux (6.1.7-2) UNRELEASED; urgency=medium
 
+  [ Salvatore Bonaccorso ]
   * d/t/main.control.in: Add Depends on python3-jinja2 for linux-support
     packages
 
   [ Diederik de Haas ]
   * d/rules.real: Remove executable bit from dtb files (Closes: #1028601)
+
+  [ John Paul Adrian Glaubitz ]
+  * Add patch to fix missing symbol versions for str{,n}{cat,cpy}
+    on alpha. Fixes FTBFS. (Closes: #1027974)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 22 Jan 2023 09:40:58 +0100
 
