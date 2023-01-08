@@ -6,8 +6,8 @@ Standards-Version: 4.2.0
 Build-Depends:
  debhelper-compat (= 12), dh-exec,
 # used to run debian/bin/*.py
- python3:any,
- python3-jinja2,
+ python3:native,
+ python3-jinja2:native,
 # used by debian/rules.real to prepare the source
  quilt,
 # used by debian/rules.real to build linux-doc and linux-headers
