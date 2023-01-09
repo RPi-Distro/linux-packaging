@@ -73,33 +73,8 @@ bugfix/arm64/arm64-acpi-Add-fixup-for-HPE-m400-quirks.patch
 bugfix/alpha/alpha-fix-missing-symbol-versions-for-str-n-cat-cpy.patch
 
 # Arch features
-features/arm64/dt-bindings-rockchip-Add-Hardkernel-ODROID-M1-board.patch
-features/arm64/arm64-dts-rockchip-Add-Hardkernel-ODROID-M1-board.patch
-features/arm64/arm64-dts-rockchip-add-thermal-support-to-ODROID-M1.patch
-features/arm64/arm64-dts-rockchip-Add-NOR-flash-to-ODROID-M1.patch
-features/arm64/arm64-dts-rockchip-Add-analog-audio-on-ODROID-M1.patch
-features/arm64/arm64-dts-rockchip-Enable-vop2-and-hdmi-tx-on-ODROID.patch
-features/arm64/arm64-dts-rockchip-Enable-HDMI-audio-on-ODROID-M1.patch
-features/arm64/arm64-dts-rockchip-Enable-the-GPU-on-ODROID-M1.patch
-features/arm64/arm64-dts-rockchip-Enable-the-USB-2.0-ports-on-ODROI.patch
-features/arm64/arm64-dts-rockchip-Enable-the-USB-3.0-ports-on-ODROI.patch
-features/arm64/arm64-dts-rockchip-Add-SATA-support-to-ODROID-M1.patch
-features/arm64/arm64-dts-rockchip-Add-PCIEe-v3-nodes-to-ODROID-M1.patch
-features/arm64/arm64-dts-rockchip-Add-IR-receiver-node-to-ODROID-M1.patch
 features/x86/x86-memtest-WARN-if-bad-RAM-found.patch
 features/x86/x86-make-x32-syscall-support-conditional.patch
-
-# Quartz64 bug fixes/patches
-bugfix/arm64/arm64-dts-rockchip-fix-spdif-fe460000-ordering-on-rk.patch
-features/arm64/quartz64/arm64-dts-rockchip-RK356x-Add-I2S2-device-node.patch
-features/arm64/quartz64/arm64-dts-rockchip-Enable-GPU-on-SOQuartz-CM4.patch
-features/arm64/quartz64/arm64-dts-rockchip-Enable-video-output-and-HDMI-on-S.patch
-features/arm64/quartz64/arm64-dts-rockchip-Enable-HDMI-sound-on-SOQuartz.patch
-features/arm64/quartz64/arm64-dts-rockchip-Enable-PCIe-2-on-SOQuartz-CM4IO.patch
-features/arm64/quartz64/dt-bindings-arm-rockchip-Add-SOQuartz-Blade.patch
-features/arm64/quartz64/arm64-dts-rockchip-Add-SOQuartz-blade-board.patch
-features/arm64/quartz64/dt-bindings-arm-rockchip-Add-SOQuartz-Model-A.patch
-features/arm64/quartz64/arm64-dts-rockchip-Add-SOQuartz-Model-A-baseboard.patch
 
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch

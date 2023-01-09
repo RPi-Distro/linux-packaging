@@ -17,7 +17,7 @@ Signed-off-by: Adam Borowski <kilobyte@angband.pl>
 
 --- a/fs/btrfs/disk-io.c
 +++ b/fs/btrfs/disk-io.c
-@@ -3060,6 +3060,15 @@ retry_root_backup:
+@@ -3832,6 +3832,15 @@ int __cold open_ctree(struct super_block *sb,
  		btrfs_set_and_info(fs_info, SSD, "enabling ssd optimizations");
  	}
  
@@ -31,5 +31,5 @@ Signed-off-by: Adam Borowski <kilobyte@angband.pl>
 +	}
 +
  	/*
- 	 * Mount does not set all options immediately, we can do it now and do
- 	 * not have to wait for transaction commit
+ 	 * For devices supporting discard turn on discard=async automatically,
+ 	 * unless it's already set or disabled. This could be turned off by
