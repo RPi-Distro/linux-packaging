@@ -7,6 +7,10 @@ linux (6.1.4-2) UNRELEASED; urgency=medium
   [ Helge Deller ]
   * [hppa] Add i2c-modules udeb
 
+  [ Miguel Bernal Marin ]
+  * [x86] Enable Intel Speed Select Technology as module (Closes: #1028344)
+    - Enable INTEL_SPEED_SELECT_INTERFACE.
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 08 Jan 2023 13:32:17 +0100
 
 linux (6.1.4-1) unstable; urgency=medium
