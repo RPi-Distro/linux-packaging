@@ -1,5 +1,6 @@
 linux (6.1.3-1~exp1) UNRELEASED; urgency=medium
 
+  [ Salvatore Bonaccorso ]
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.3
     - eventpoll: add EPOLL_URING_WAKE poll wakeup flag
@@ -50,6 +51,9 @@ linux (6.1.3-1~exp1) UNRELEASED; urgency=medium
     - tpm: tpm_crb: Add the missed acpi_put_table() to fix memory leak
     - tpm: tpm_tis: Add the missed acpi_put_table() to fix memory leak
     - SUNRPC: Don't leak netobj memory when gss_read_proxy_verf() fails
+
+  [ Helge Deller ]
+  * [hppa] Add i2c-modules udeb
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 04 Jan 2023 12:46:31 +0100
 
