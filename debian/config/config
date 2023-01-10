@@ -451,8 +451,6 @@ CONFIG_DEVMEM=y
 CONFIG_DEVPORT=y
 CONFIG_HANGCHECK_TIMER=m
 CONFIG_TELCLOCK=m
-CONFIG_RANDOM_TRUST_CPU=y
-CONFIG_RANDOM_TRUST_BOOTLOADER=y
 
 ##
 ## file: drivers/char/hw_random/Kconfig
@@ -2781,7 +2779,6 @@ CONFIG_FUSION_LAN=m
 # CONFIG_MFD_MC13XXX_I2C is not set
 # CONFIG_MFD_HI6421_PMIC is not set
 # CONFIG_HTC_PASIC3 is not set
-# CONFIG_HTC_I2CPLD is not set
 CONFIG_LPC_SCH=m
 # CONFIG_INTEL_SOC_PMIC is not set
 # CONFIG_MFD_INTEL_LPSS_ACPI is not set
@@ -5340,6 +5337,12 @@ CONFIG_USB_LEDS_TRIGGER_USBPORT=m
 # CONFIG_USB_DWC3 is not set
 
 ##
+## file: drivers/usb/fotg210/Kconfig
+##
+# CONFIG_USB_FOTG210_HCD is not set
+# CONFIG_USB_FOTG210_UDC is not set
+
+##
 ## file: drivers/usb/gadget/Kconfig
 ##
 # CONFIG_USB_GADGET is not set
@@ -5383,7 +5386,6 @@ CONFIG_USB_G_SERIAL=m
 ## file: drivers/usb/gadget/udc/Kconfig
 ##
 # CONFIG_USB_FUSB300 is not set
-# CONFIG_USB_FOTG210_UDC is not set
 # CONFIG_USB_GR_UDC is not set
 # CONFIG_USB_R8A66597 is not set
 # CONFIG_USB_PXA27X is not set
@@ -5415,7 +5417,6 @@ CONFIG_USB_EHCI_TT_NEWSCHED=y
 # CONFIG_USB_OXU210HP_HCD is not set
 # CONFIG_USB_ISP116X_HCD is not set
 # CONFIG_USB_ISP1362_HCD is not set
-# CONFIG_USB_FOTG210_HCD is not set
 # CONFIG_USB_MAX3421_HCD is not set
 CONFIG_USB_OHCI_HCD_PCI=y
 # CONFIG_USB_OHCI_HCD_PLATFORM is not set
@@ -5467,7 +5468,6 @@ CONFIG_USB_CHAOSKEY=m
 ## file: drivers/usb/misc/sisusbvga/Kconfig
 ##
 CONFIG_USB_SISUSBVGA=m
-CONFIG_USB_SISUSBVGA_CON=y
 
 ##
 ## file: drivers/usb/mon/Kconfig
@@ -6290,8 +6290,8 @@ CONFIG_SQUASHFS=m
 ## choice: File decompression options
 CONFIG_SQUASHFS_FILE_DIRECT=y
 ## end choice
-## choice: Decompressor parallelisation options
-CONFIG_SQUASHFS_DECOMP_MULTI_PERCPU=y
+## choice: Select decompression parallel mode at compile time
+CONFIG_SQUASHFS_COMPILE_DECOMP_MULTI_PERCPU=y
 ## end choice
 CONFIG_SQUASHFS_XATTR=y
 CONFIG_SQUASHFS_ZLIB=y
@@ -6782,7 +6782,7 @@ CONFIG_ZSMALLOC=m
 ## choice: Choose SLAB allocator
 # CONFIG_SLAB is not set
 CONFIG_SLUB=y
-# CONFIG_SLOB is not set
+# CONFIG_SLOB_DEPRECATED is not set
 ## end choice
 CONFIG_SLAB_MERGE_DEFAULT=y
 CONFIG_SLAB_FREELIST_RANDOM=y
@@ -7327,7 +7327,6 @@ CONFIG_NFT_MASQ=m
 CONFIG_NFT_REDIR=m
 CONFIG_NFT_NAT=m
 CONFIG_NFT_TUNNEL=m
-CONFIG_NFT_OBJREF=m
 CONFIG_NFT_QUEUE=m
 CONFIG_NFT_QUOTA=m
 CONFIG_NFT_REJECT=m

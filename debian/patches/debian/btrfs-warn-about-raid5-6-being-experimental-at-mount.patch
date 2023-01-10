@@ -11,6 +11,8 @@ produce nice red background which should get the point across.
 
 Signed-off-by: Adam Borowski <kilobyte@angband.pl>
 [bwh: Also add_taint() so this is flagged in bug reports]
+[2023-01-10: still accurate according to btrfs-progs own manpage:
+https://git.kernel.org/pub/scm/linux/kernel/git/kdave/btrfs-progs.git/commit/?id=922797e15590b836e377d6dc47b828356cafc2a9]
 ---
  fs/btrfs/disk-io.c | 8 ++++++++
  1 file changed, 8 insertions(+)

@@ -164,11 +164,6 @@ CONFIG_MTD_REDBOOT_PARTS=y
 CONFIG_NET_FC=y
 
 ##
-## file: drivers/net/ethernet/Kconfig
-##
-CONFIG_FEALNX=m
-
-##
 ## file: drivers/net/ethernet/3com/Kconfig
 ##
 CONFIG_VORTEX=m

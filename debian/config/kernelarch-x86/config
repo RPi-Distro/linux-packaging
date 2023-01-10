@@ -53,6 +53,8 @@ CONFIG_X86_PAT=y
 CONFIG_X86_UMIP=y
 CONFIG_EFI=y
 CONFIG_EFI_STUB=y
+# CONFIG_EFI_FAKE_MEMMAP is not set
+CONFIG_EFI_RUNTIME_MAP=y
 CONFIG_KEXEC=y
 CONFIG_CRASH_DUMP=y
 # CONFIG_KEXEC_JUMP is not set
@@ -548,8 +550,6 @@ CONFIG_ISCSI_IBFT_FIND=y
 ##
 ## file: drivers/firmware/efi/Kconfig
 ##
-CONFIG_EFI_RUNTIME_MAP=y
-# CONFIG_EFI_FAKE_MEMMAP is not set
 CONFIG_APPLE_PROPERTIES=y
 
 ##
@@ -573,14 +573,17 @@ CONFIG_GPIO_ML_IOH=m
 ## file: drivers/gpu/drm/Kconfig
 ##
 CONFIG_DRM=m
-CONFIG_DRM_RADEON=m
-CONFIG_DRM_AMDGPU=m
 CONFIG_DRM_HYPERV=m
 
 ##
 ## file: drivers/gpu/drm/amd/acp/Kconfig
 ##
 CONFIG_DRM_AMD_ACP=y
+
+##
+## file: drivers/gpu/drm/amd/amdgpu/Kconfig
+##
+CONFIG_DRM_AMDGPU=m
 
 ##
 ## file: drivers/gpu/drm/amd/amdkfd/Kconfig
@@ -625,6 +628,11 @@ CONFIG_DRM_NOUVEAU=m
 CONFIG_DRM_NOUVEAU_BACKLIGHT=y
 
 ##
+## file: drivers/gpu/drm/radeon/Kconfig
+##
+CONFIG_DRM_RADEON=m
+
+##
 ## file: drivers/gpu/drm/vboxvideo/Kconfig
 ##
 CONFIG_DRM_VBOXVIDEO=m
@@ -633,7 +641,6 @@ CONFIG_DRM_VBOXVIDEO=m
 ## file: drivers/gpu/drm/vmwgfx/Kconfig
 ##
 CONFIG_DRM_VMWGFX=m
-CONFIG_DRM_VMWGFX_FBCON=y
 
 ##
 ## file: drivers/gpu/drm/xen/Kconfig
@@ -1119,7 +1126,6 @@ CONFIG_ARCNET_COM20020_CS=m
 ## file: drivers/net/ethernet/Kconfig
 ##
 # CONFIG_CX_ECAT is not set
-CONFIG_FEALNX=m
 
 ##
 ## file: drivers/net/ethernet/3com/Kconfig
@@ -1459,8 +1465,6 @@ CONFIG_AMILO_RFKILL=m
 CONFIG_FUJITSU_LAPTOP=m
 CONFIG_FUJITSU_TABLET=m
 CONFIG_GPD_POCKET_FAN=m
-CONFIG_HP_ACCEL=m
-CONFIG_HP_WMI=m
 CONFIG_IBM_RTL=m
 CONFIG_IDEAPAD_LAPTOP=m
 CONFIG_SENSORS_HDAPS=m
@@ -1510,6 +1514,12 @@ CONFIG_DELL_SMO8800=m
 CONFIG_DELL_WMI=m
 CONFIG_DELL_WMI_AIO=m
 CONFIG_DELL_WMI_LED=m
+
+##
+## file: drivers/platform/x86/hp/Kconfig
+##
+CONFIG_HP_ACCEL=m
+CONFIG_HP_WMI=m
 
 ##
 ## file: drivers/platform/x86/intel/Kconfig

@@ -580,7 +580,6 @@ CONFIG_XEN_NETDEV_FRONTEND=m
 ## file: drivers/net/ethernet/Kconfig
 ##
 # CONFIG_JME is not set
-# CONFIG_FEALNX is not set
 
 ##
 ## file: drivers/net/ethernet/3com/Kconfig
