@@ -150,6 +150,7 @@ linux (6.1.5-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Refresh "arm: Add support for lazy preemption"
+  * Bump ABI to 2
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 08 Jan 2023 13:32:17 +0100
 
