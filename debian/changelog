@@ -148,6 +148,9 @@ linux (6.1.5-1) UNRELEASED; urgency=medium
     (Closes: #1028509)
     - Enable INTEL_IDXD_PERFMON.
 
+  [ Salvatore Bonaccorso ]
+  * [rt] Refresh "arm: Add support for lazy preemption"
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 08 Jan 2023 13:32:17 +0100
 
 linux (6.1.4-1) unstable; urgency=medium
