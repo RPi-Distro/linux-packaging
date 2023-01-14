@@ -1,4 +1,4 @@
-linux (6.1.5-1) UNRELEASED; urgency=medium
+linux (6.1.6-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.5
@@ -133,6 +133,22 @@ linux (6.1.5-1) UNRELEASED; urgency=medium
     - [x86] drm/i915/dsi: fix MIPI_BKLT_EN_1 native GPIO index
     - efi: random: combine bootloader provided RNG seed with RNG protocol output
     - wifi: ath11k: Send PME message during wakeup from D3cold
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.6
+    - [x86] fpu: Take task_struct* in copy_sigframe_from_user_to_xstate()
+    - [x86] fpu: Add a pkru argument to copy_uabi_from_kernel_to_xstate().
+    - [x86] fpu: Add a pkru argument to copy_uabi_to_xstate()
+    - [x86] fpu: Allow PKRU to be (once again) written by ptrace.
+    - [x86] fpu: Emulate XRSTOR's behavior if the xfeatures PKRU bit is not set
+    - Revert "SUNRPC: Use RMW bitops in single-threaded hot paths"
+    - gcc: disable -Warray-bounds for gcc-11 too
+    - net: sched: disallow noqueue for qdisc classes
+    - ALSA: pcm: Move rwsem lock inside snd_ctl_elem_read to prevent UAF
+      (CVE-2023-0266)
+    - ALSA: hda/hdmi: Add a HP device 0x8715 to force connect list
+    - ALSA: hda/realtek: fix mute/micmute LEDs don't work for a HP platform
+    - ALSA: hda: cs35l41: Don't return -EINVAL from system suspend/resume
+    - ALSA: hda - Enable headset mic on another Dell laptop with ALC3254
+    - ALSA: hda: cs35l41: Check runtime suspend capability at runtime_idle
 
   [ Helmut Grohne ]
   * Fix cross Build-Depends: Annotate python3 and python3-jinja2
