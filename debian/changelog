@@ -11,6 +11,12 @@ linux (6.3.1-1~exp2) UNRELEASED; urgency=medium
   * drivers/tty: Unset LEGACY_TIOCSTI (Closes: #1033095)
   * d/rules.real: Fix typo in setup_image target.
 
+  [ Miguel Bernal Marin ]
+  * Enable MEI options for Intel ARC GPUs as modules (Closes: #1028463)
+    - [amd64] drivers/gpu/drm/i915: Enable DRM_I915_PXP
+    - [x86] drivers/misc/mei: Enable INTEL_MEI_GSC as module
+    - [x86] drivers/misc/mei/pxp: Enable INTEL_MEI_PXP as module
+
  -- Yoann Congal <yoann.congal@smile.fr>  Mon, 08 May 2023 17:49:24 +0200
 
 linux (6.3.1-1~exp1) experimental; urgency=medium
