@@ -19,11 +19,9 @@ Signed-off-by: Jens Axboe <axboe@kernel.dk>
  drivers/s390/block/dcssblk.c  | 2 ++
  8 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-merge.c b/block/blk-merge.c
-index 35a8f75cc45d..071c5f8cf0cf 100644
 --- a/block/blk-merge.c
 +++ b/block/blk-merge.c
-@@ -358,11 +358,13 @@ struct bio *__bio_split_to_limits(struct bio *bio,
+@@ -358,11 +358,13 @@ struct bio *__bio_split_to_limits(struct
  	default:
  		split = bio_split_rw(bio, lim, nr_segs, bs,
  				get_max_io_size(bio, lim) << SECTOR_SHIFT);
@@ -38,11 +36,9 @@ index 35a8f75cc45d..071c5f8cf0cf 100644
  		split->bi_opf |= REQ_NOMERGE;
  
  		blkcg_bio_issue_init(split);
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index c5cf0dbca1db..2c49b4151da1 100644
 --- a/block/blk-mq.c
 +++ b/block/blk-mq.c
-@@ -2951,8 +2951,11 @@ void blk_mq_submit_bio(struct bio *bio)
+@@ -2919,8 +2919,11 @@ void blk_mq_submit_bio(struct bio *bio)
  	blk_status_t ret;
  
  	bio = blk_queue_bounce(bio, q);
@@ -55,8 +51,6 @@ index c5cf0dbca1db..2c49b4151da1 100644
  
  	if (!bio_integrity_prep(bio))
  		return;
-diff --git a/drivers/block/drbd/drbd_req.c b/drivers/block/drbd/drbd_req.c
-index eb14ec8ec04c..e36216d50753 100644
 --- a/drivers/block/drbd/drbd_req.c
 +++ b/drivers/block/drbd/drbd_req.c
 @@ -1607,6 +1607,8 @@ void drbd_submit_bio(struct bio *bio)
@@ -68,11 +62,9 @@ index eb14ec8ec04c..e36216d50753 100644
  
  	/*
  	 * what we "blindly" assume:
-diff --git a/drivers/block/ps3vram.c b/drivers/block/ps3vram.c
-index c76e0148eada..574e470b220b 100644
 --- a/drivers/block/ps3vram.c
 +++ b/drivers/block/ps3vram.c
-@@ -587,6 +587,8 @@ static void ps3vram_submit_bio(struct bio *bio)
+@@ -587,6 +587,8 @@ static void ps3vram_submit_bio(struct bi
  	dev_dbg(&dev->core, "%s\n", __func__);
  
  	bio = bio_split_to_limits(bio);
@@ -81,11 +73,9 @@ index c76e0148eada..574e470b220b 100644
  
  	spin_lock_irq(&priv->lock);
  	busy = !bio_list_empty(&priv->list);
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index e1ea3a7bd9d9..b424a6ee27ba 100644
 --- a/drivers/md/dm.c
 +++ b/drivers/md/dm.c
-@@ -1742,6 +1742,8 @@ static void dm_split_and_process_bio(struct mapped_device *md,
+@@ -1755,6 +1755,8 @@ static void dm_split_and_process_bio(str
  		 * otherwise associated queue_limits won't be imposed.
  		 */
  		bio = bio_split_to_limits(bio);
@@ -94,24 +84,20 @@ index e1ea3a7bd9d9..b424a6ee27ba 100644
  	}
  
  	init_clone_info(&ci, md, map, bio, is_abnormal);
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 775f1dde190a..8af639296b3c 100644
 --- a/drivers/md/md.c
 +++ b/drivers/md/md.c
-@@ -455,6 +455,8 @@ static void md_submit_bio(struct bio *bio)
+@@ -443,6 +443,8 @@ static void md_submit_bio(struct bio *bi
  	}
  
  	bio = bio_split_to_limits(bio);
 +	if (!bio)
 +		return;
  
- 	if (mddev->ro == MD_RDONLY && unlikely(rw == WRITE)) {
+ 	if (mddev->ro == 1 && unlikely(rw == WRITE)) {
  		if (bio_sectors(bio) != 0)
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index c03093b6813c..fc39d01e7b63 100644
 --- a/drivers/nvme/host/multipath.c
 +++ b/drivers/nvme/host/multipath.c
-@@ -376,6 +376,8 @@ static void nvme_ns_head_submit_bio(struct bio *bio)
+@@ -351,6 +351,8 @@ static void nvme_ns_head_submit_bio(stru
  	 * pool from the original queue to allocate the bvecs from.
  	 */
  	bio = bio_split_to_limits(bio);
@@ -120,8 +106,6 @@ index c03093b6813c..fc39d01e7b63 100644
  
  	srcu_idx = srcu_read_lock(&head->srcu);
  	ns = nvme_find_path(head);
-diff --git a/drivers/s390/block/dcssblk.c b/drivers/s390/block/dcssblk.c
-index b392b9f5482e..c0f85ffb2b62 100644
 --- a/drivers/s390/block/dcssblk.c
 +++ b/drivers/s390/block/dcssblk.c
 @@ -865,6 +865,8 @@ dcssblk_submit_bio(struct bio *bio)
@@ -133,6 +117,3 @@ index b392b9f5482e..c0f85ffb2b62 100644
  
  	bytes_done = 0;
  	dev_info = bio->bi_bdev->bd_disk->private_data;
--- 
-2.39.0
-
