@@ -170,6 +170,7 @@ linux (6.1.6-1) UNRELEASED; urgency=medium
   * Bump ABI to 2
   * netfilter: nft_payload: incorrect arithmetics when fetching VLAN header bits
     (CVE-2023-0179)
+  * block: handle bio_split_to_limits() NULL return
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 08 Jan 2023 13:32:17 +0100
 
