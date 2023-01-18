@@ -120,7 +120,7 @@ Meta-Rules-Target: hyperv-daemons
 Build-Profiles: <!stage1 !pkg.linux.notools>
 Architecture: i386 amd64 x32 arm64
 Pre-Depends: ${misc:Pre-Depends}
-Depends: lsb-base, ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Section: admin
 Description: Support daemons for Linux running on Hyper-V
  Suite of daemons for Linux guests running on Hyper-V, consisting of

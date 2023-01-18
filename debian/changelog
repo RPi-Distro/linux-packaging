@@ -172,6 +172,7 @@ linux (6.1.6-1) UNRELEASED; urgency=medium
     (CVE-2023-0179)
   * block: handle bio_split_to_limits() NULL return
   * ipv6: raw: Deduct extension header length in rawv6_push_pending_frames
+  * d/t/tools-unversioned: hyperv-daemons Drop Depends on lsb-base
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 08 Jan 2023 13:32:17 +0100
 
