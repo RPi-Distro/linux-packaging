@@ -1,4 +1,4 @@
-linux (6.1.7-1) UNRELEASED; urgency=medium
+linux (6.1.7-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.5
@@ -340,7 +340,7 @@ linux (6.1.7-1) UNRELEASED; urgency=medium
   * Refresh "radeon, amdgpu: Firmware is required for DRM and KMS on R600
     onward"
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 08 Jan 2023 13:32:17 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 18 Jan 2023 20:56:44 +0100
 
 linux (6.1.4-1) unstable; urgency=medium
 
