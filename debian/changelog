@@ -337,6 +337,8 @@ linux (6.1.7-1) UNRELEASED; urgency=medium
   * [rt] Refresh "arm: Add support for lazy preemption"
   * Bump ABI to 2
   * d/t/tools-unversioned: hyperv-daemons Drop Depends on lsb-base
+  * Refresh "radeon, amdgpu: Firmware is required for DRM and KMS on R600
+    onward"
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 08 Jan 2023 13:32:17 +0100
 
