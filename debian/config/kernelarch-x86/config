@@ -1531,6 +1531,11 @@ CONFIG_INTEL_PMT_TELEMETRY=m
 CONFIG_INTEL_PMT_CRASHLOG=m
 
 ##
+## file: drivers/platform/x86/intel/speed_select_if/Kconfig
+##
+CONFIG_INTEL_SPEED_SELECT_INTERFACE=m
+
+##
 ## file: drivers/platform/x86/intel/wmi/Kconfig
 ##
 CONFIG_INTEL_WMI_THUNDERBOLT=m
