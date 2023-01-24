@@ -1,4 +1,169 @@
-linux (6.1.7-2) UNRELEASED; urgency=medium
+linux (6.1.8-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.8
+    - dma-buf: fix dma_buf_export init order v2
+    - btrfs: fix trace event name typo for FLUSH_DELAYED_REFS
+    - wifi: iwlwifi: fw: skip PPAG for JF
+    - pNFS/filelayout: Fix coalescing test for single DS
+    - virtio_pci: modify ENOENT to EINVAL
+    - net/ethtool/ioctl: return -EOPNOTSUPP if we have no phy stats
+    - r8169: move rtl_wol_enable_rx() and rtl_prepare_power_down()
+    - r8169: fix dmar pte write access is not set error
+    - bpf: keep a reference to the mm, in case the task is dead.
+    - btrfs: always report error in run_one_delayed_ref()
+    - [x86] asm: Fix an assembler warning with current binutils
+    - f2fs: let's avoid panic if extent_tree is not created
+    - [x86] perf/x86/rapl: Treat Tigerlake like Icelake
+    - cifs: fix race in assemble_neg_contexts()
+    - [x86] perf/x86/rapl: Add support for Intel Meteor Lake
+    - [x86] perf/x86/rapl: Add support for Intel Emerald Rapids
+    - of: fdt: Honor CONFIG_CMDLINE* even without /chosen node, take 2
+    - Bluetooth: hci_sync: Fix use HCI_OP_LE_READ_BUFFER_SIZE_V2
+    - Bluetooth: hci_qca: Fix driver shutdown on closed serdev
+    - wifi: brcmfmac: fix regression for Broadcom PCIe wifi devices
+    - wifi: mac80211: fix MLO + AP_VLAN check
+    - wifi: mac80211: reset multiple BSSID options in stop_ap()
+    - wifi: mac80211: sdata can be NULL during AMPDU start
+    - wifi: mac80211: fix initialization of rx->link and rx->link_sta
+    - proc: fix PIE proc-empty-vm, proc-pid-vm tests
+    - zonefs: Detect append writes at invalid locations
+    - nilfs2: fix general protection fault in nilfs_btree_insert()
+    - mm/shmem: restore SHMEM_HUGE_DENY precedence over MADV_COLLAPSE
+    - hugetlb: unshare some PMDs when splitting VMAs
+    - mm/khugepaged: fix collapse_pte_mapped_thp() to allow anon_vma
+    - xhci-pci: set the dma max_seg_size
+    - usb: xhci: Check endpoint is valid before dereferencing it
+    - xhci: Fix null pointer dereference when host dies
+    - xhci: Add update_hub_device override for PCI xHCI hosts
+    - xhci: Add a flag to disable USB3 lpm on a xhci root port level.
+    - usb: acpi: add helper to check port lpm capability using acpi _DSM
+    - xhci: Detect lpm incapable xHC USB3 roothub ports from ACPI tables
+    - prlimit: do_prlimit needs to have a speculation check
+    - USB: serial: option: add Quectel EM05-G (GR) modem
+    - USB: serial: option: add Quectel EM05-G (CS) modem
+    - USB: serial: option: add Quectel EM05-G (RS) modem
+    - USB: serial: option: add Quectel EC200U modem
+    - USB: serial: option: add Quectel EM05CN (SG) modem
+    - USB: serial: option: add Quectel EM05CN modem
+    - USB: misc: iowarrior: fix up header size for
+      USB_DEVICE_ID_CODEMERCS_IOW100
+    - usb: core: hub: disable autosuspend for TI TUSB8041
+    - [x86] comedi: adv_pci1760: Fix PWM instruction handling
+    - [amd64,arm64] ACPI: PRM: Check whether EFI runtime is available
+    - [arm64,armhf] mmc: sunxi-mmc: Fix clock refcount imbalance during unbind
+    - [arm64,armhf] mmc: sdhci-esdhc-imx: correct the tuning start tap and step
+      setting
+    - mm/hugetlb: fix PTE marker handling in hugetlb_change_protection()
+    - mm/hugetlb: fix uffd-wp handling for migration entries in
+      hugetlb_change_protection()
+    - mm/hugetlb: pre-allocate pgtable pages for uffd wr-protects
+    - mm/userfaultfd: enable writenotify while userfaultfd-wp is enabled for a
+      VMA
+    - mm/MADV_COLLAPSE: don't expand collapse when vm_end is past requested end
+    - btrfs: add extra error messages to cover non-ENOMEM errors from
+      device_add_list()
+    - btrfs: fix missing error handling when logging directory items
+    - btrfs: fix directory logging due to race with concurrent index key
+      deletion
+    - btrfs: add missing setup of log for full commit at add_conflicting_inode()
+    - btrfs: do not abort transaction on failure to write log tree when syncing
+      log
+    - btrfs: do not abort transaction on failure to update log root
+    - btrfs: qgroup: do not warn on record without old_roots populated
+    - btrfs: fix invalid leaf access due to inline extent during lseek
+    - btrfs: fix race between quota rescan and disable leading to NULL pointer
+      deref
+    - cifs: do not include page data when checking signature
+    - [x86] thunderbolt: Disable XDomain lane 1 only in software connection
+      manager
+    - [x86] thunderbolt: Use correct function to calculate maximum USB3 link
+      rate
+    - [x86] thunderbolt: Do not report errors if on-board retimers are found
+    - [x86] thunderbolt: Do not call PM runtime functions in tb_retimer_scan()
+    - bpf: restore the ebpf program ID for BPF_AUDIT_UNLOAD and
+      PERF_BPF_EVENT_PROG_UNLOAD
+    - [arm64] tty: serial: qcom-geni-serial: fix slab-out-of-bounds on RX FIFO
+      buffer
+    - tty: fix possible null-ptr-defer in spk_ttyio_release
+    - pktcdvd: check for NULL returna fter calling bio_split_to_limits()
+    - io_uring/poll: don't reissue in case of poll race on multishot request
+    - mptcp: explicitly specify sock family at subflow creation time
+    - mptcp: netlink: respect v4/v6-only sockets
+    - USB: gadgetfs: Fix race between mounting and unmounting
+    - USB: serial: cp210x: add SCALANCE LPE-9000 device id
+    - [arm64] usb: host: ehci-fsl: Fix module alias
+    - [armhf] usb: musb: fix error return code in omap2430_probe()
+    - usb: typec: tcpm: Fix altmode re-registration causes sysfs create fail
+    - usb: typec: altmodes/displayport: Add pin assignment helper
+    - usb: typec: altmodes/displayport: Fix pin assignment calculation
+    - USB: gadget: Add ID numbers to configfs-gadget driver names
+    - usb: gadget: f_ncm: fix potential NULL ptr deref in ncm_bitrate()
+    - [i386] serial: pch_uart: Pass correct sg to dma_unmap_sg()
+    - [arm64] dmaengine: tegra210-adma: fix global intr clear
+    - [amd64] dmaengine: idxd: Let probe fail when workqueue cannot be enabled
+    - [amd64] dmaengine: idxd: Prevent use after free on completion memory
+    - [amd64] dmaengine: idxd: Do not call DMX TX callbacks during workqueue
+      disable
+    - [arm*] serial: amba-pl011: fix high priority character transmission in
+      rs486 mode
+    - serial: exar: Add support for Sealevel 7xxxC serial cards
+    - mei: bus: fix unlink on bus in error path
+    - mei: me: add meteor lake point M DID
+    - [x86] VMCI: Use threaded irqs instead of tasklets
+    - drm/amdgpu: fix amdgpu_job_free_resources v2
+    - drm/amdgpu: allow multipipe policy on ASICs with one MEC
+    - drm/amdgpu: Correct the power calcultion for Renior/Cezanne.
+    - [x86] drm/i915: re-disable RC6p on Sandy Bridge
+    - [x86] drm/i915/display: Check source height is > 0
+    - [x86] drm/i915: Allow switching away via vga-switcheroo if uninitialized
+    - [x86] drm/i915: Remove unused variable
+    - drm/amd/display: Fix set scaling doesn's work
+    - drm/amd/display: Calculate output_color_space after pixel encoding
+      adjustment
+    - drm/amd/display: Fix COLOR_SPACE_YCBCR2020_TYPE matrix
+    - drm/amd/display: disable S/G display on DCN 3.1.5
+    - drm/amd/display: disable S/G display on DCN 3.1.4
+    - cifs: reduce roundtrips on create/qinfo requests
+    - fs/ntfs3: Fix attr_punch_hole() null pointer derenference (CVE-2022-4842)
+    - [arm64] efi: Execute runtime services from a dedicated stack
+    - [arm64] efi: rt-wrapper: Add missing include
+    - panic: Separate sysctl logic from CONFIG_SMP
+    - exit: Put an upper limit on how often we can oops
+    - exit: Expose "oops_count" to sysfs
+    - exit: Allow oops_limit to be disabled
+    - panic: Consolidate open-coded panic_on_warn checks
+    - panic: Introduce warn_limit
+    - panic: Expose "warn_count" to sysfs
+    - docs: Fix path paste-o for /sys/kernel/warn_count
+    - exit: Use READ_ONCE() for all oops/warn limit reads
+    - [x86] fpu: Use _Alignof to avoid undefined behavior in TYPE_ALIGN
+    - drm/amdgpu/discovery: enable soc21 common for GC 11.0.4
+    - drm/amdgpu/discovery: enable gmc v11 for GC 11.0.4
+    - drm/amdgpu/discovery: enable gfx v11 for GC 11.0.4
+    - drm/amdgpu/discovery: enable mes support for GC v11.0.4
+    - drm/amdgpu: set GC 11.0.4 family
+    - drm/amdgpu/discovery: set the APU flag for GC 11.0.4
+    - drm/amdgpu: add gfx support for GC 11.0.4
+    - drm/amdgpu: add gmc v11 support for GC 11.0.4
+    - drm/amdgpu/discovery: add PSP IP v13.0.11 support
+    - drm/amdgpu/pm: enable swsmu for SMU IP v13.0.11
+    - drm/amdgpu: add smu 13 support for smu 13.0.11
+    - drm/amdgpu/pm: add GFXOFF control IP version check for SMU IP v13.0.11
+    - drm/amdgpu/soc21: add mode2 asic reset for SMU IP v13.0.11
+    - drm/amdgpu/pm: use the specific mailbox registers only for SMU IP v13.0.4
+    - drm/amdgpu/discovery: enable nbio support for NBIO v7.7.1
+    - drm/amdgpu: enable PSP IP v13.0.11 support
+    - drm/amdgpu: enable GFX IP v11.0.4 CG support
+    - drm/amdgpu: enable GFX Power Gating for GC IP v11.0.4
+    - drm/amdgpu: enable GFX Clock Gating control for GC IP v11.0.4
+    - drm/amdgpu: add tmz support for GC 11.0.1
+    - drm/amdgpu: add tmz support for GC IP v11.0.4
+    - drm/amdgpu: correct MEC number for gfx11 APUs
+    - net/ulp: use consistent error code when blocking ULP
+    - net/mlx5: fix missing mutex_unlock in mlx5_fw_fatal_reporter_err_work()
+    - block: mq-deadline: Rename deadline_is_seq_writes()
+    - Revert "wifi: mac80211: fix memory leak in ieee80211_if_add()"
 
   [ Salvatore Bonaccorso ]
   * d/t/main.control.in: Add Depends on python3-jinja2 for linux-support
