@@ -200,6 +200,11 @@ CONFIG_PINCTRL_AMD=y
 CONFIG_AMD_PMC=m
 
 ##
+## file: drivers/platform/x86/intel/uncore-frequency/Kconfig
+##
+CONFIG_INTEL_UNCORE_FREQ_CONTROL=m
+
+##
 ## file: drivers/scsi/Kconfig
 ##
 CONFIG_SCSI_INIA100=m
