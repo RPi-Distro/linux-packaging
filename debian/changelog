@@ -190,6 +190,8 @@ linux (6.1.8-1) UNRELEASED; urgency=medium
   * [amd64] drivers/platform/x86/intel/uncore-frequency: Enable
     INTEL_UNCORE_FREQ_CONTROL as module (Intel Uncore frequency control)
     (Closes: #1029484)
+  * [amd64] arch/x86: Enable 5-level page tables support (X86_5LEVEL)
+    (Closes: #1029674)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 22 Jan 2023 09:40:58 +0100
 
