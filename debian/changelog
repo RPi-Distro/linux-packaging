@@ -26,6 +26,7 @@ linux (6.1.8-1) UNRELEASED; urgency=medium
     - wifi: mac80211: reset multiple BSSID options in stop_ap()
     - wifi: mac80211: sdata can be NULL during AMPDU start
     - wifi: mac80211: fix initialization of rx->link and rx->link_sta
+      (Closes: #1029816)
     - proc: fix PIE proc-empty-vm, proc-pid-vm tests
     - zonefs: Detect append writes at invalid locations
     - nilfs2: fix general protection fault in nilfs_btree_insert()
