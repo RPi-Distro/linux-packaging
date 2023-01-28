@@ -169,6 +169,7 @@ linux (6.1.8-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * d/t/main.control.in: Add Depends on python3-jinja2 for linux-support
     packages
+  * gpiolib-acpi: Don't set GPIOs for wakeup in S3 mode (Closes: #1029046)
 
   [ Diederik de Haas ]
   * d/rules.real: Remove executable bit from dtb files (Closes: #1028601)
