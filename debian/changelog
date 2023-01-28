@@ -182,7 +182,6 @@ linux (6.1.8-1) UNRELEASED; urgency=medium
     INTEL_UNCORE_FREQ_CONTROL as module (Intel Uncore frequency control)
     (Closes: #1029484)
 
-
  -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 22 Jan 2023 09:40:58 +0100
 
 linux (6.1.7-1) unstable; urgency=medium
