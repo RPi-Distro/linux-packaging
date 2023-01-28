@@ -176,6 +176,7 @@ linux (6.1.8-1) UNRELEASED; urgency=medium
     (Closes: #1028451)
   * drm/amdgpu/display/mst: update mst_mgr relevant variable when long HPD
     (Closes: #1028451)
+  * drm/display/dp_mst: Correct the kref of port. (Closes: #1028451)
 
   [ Diederik de Haas ]
   * d/rules.real: Remove executable bit from dtb files (Closes: #1028601)
