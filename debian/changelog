@@ -170,6 +170,13 @@ linux (6.1.8-1) UNRELEASED; urgency=medium
   * d/t/main.control.in: Add Depends on python3-jinja2 for linux-support
     packages
   * gpiolib-acpi: Don't set GPIOs for wakeup in S3 mode (Closes: #1029046)
+  * drm/amdgpu/display/mst: Fix mst_state->pbn_div and slot count assignments
+    (Closes: #1028451)
+  * drm/amdgpu/display/mst: limit payload to be updated one by one
+    (Closes: #1028451)
+  * drm/amdgpu/display/mst: update mst_mgr relevant variable when long HPD
+    (Closes: #1028451)
+  * drm/display/dp_mst: Correct the kref of port. (Closes: #1028451)
 
   [ Diederik de Haas ]
   * d/rules.real: Remove executable bit from dtb files (Closes: #1028601)
