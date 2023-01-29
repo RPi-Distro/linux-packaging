@@ -1,4 +1,4 @@
-linux (6.1.8-1) UNRELEASED; urgency=medium
+linux (6.1.8-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.8
@@ -194,7 +194,7 @@ linux (6.1.8-1) UNRELEASED; urgency=medium
   * [amd64] arch/x86: Enable 5-level page tables support (X86_5LEVEL)
     (Closes: #1029674)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 22 Jan 2023 09:40:58 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 29 Jan 2023 13:33:36 +0100
 
 linux (6.1.7-1) unstable; urgency=medium
 
