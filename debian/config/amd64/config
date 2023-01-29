@@ -13,7 +13,6 @@ CONFIG_X86_X2APIC=y
 CONFIG_MAXSMP=y
 CONFIG_X86_16BIT=y
 CONFIG_X86_VSYSCALL_EMULATION=y
-# CONFIG_X86_5LEVEL is not set
 CONFIG_NUMA=y
 CONFIG_AMD_NUMA=y
 CONFIG_X86_64_ACPI_NUMA=y
@@ -200,6 +199,11 @@ CONFIG_PINCTRL_AMD=y
 CONFIG_AMD_PMC=m
 
 ##
+## file: drivers/platform/x86/intel/uncore-frequency/Kconfig
+##
+CONFIG_INTEL_UNCORE_FREQ_CONTROL=m
+
+##
 ## file: drivers/scsi/Kconfig
 ##
 CONFIG_SCSI_INIA100=m
@@ -246,6 +250,9 @@ CONFIG_RCU_FANOUT=64
 ## file: lib/Kconfig.debug
 ##
 CONFIG_DEBUG_INFO_BTF=y
+#. Workaround module loading of different builds of on-disk modules
+#. vs booted kernel when keeping same ABI, cf. #1003210, #1022202
+CONFIG_MODULE_ALLOW_BTF_MISMATCH=y
 CONFIG_FRAME_WARN=2048
 
 ##
