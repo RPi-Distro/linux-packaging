@@ -2,6 +2,7 @@ linux (6.2-1~exp1) UNRELEASED; urgency=medium
 
   [ Diederik de Haas ]
   * New upstream release: https://kernelnewbies.org/Linux_6.2
+    - libcpupower1: Update symbols file for 6.2
 
   [ Uwe Kleine-König ]
   * iwlwifi: Enable device tracing
