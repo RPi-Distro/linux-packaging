@@ -258,6 +258,7 @@ linux (6.1.9-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Refresh "kbuild: Make the toolchain variables easily overwritable"
+  * Bump ABI to 4
 
  -- Diederik de Haas <didi.debian@cknow.org>  Wed, 01 Feb 2023 18:40:58 +0100
 
