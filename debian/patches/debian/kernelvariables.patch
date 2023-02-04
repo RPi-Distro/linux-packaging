@@ -15,10 +15,8 @@ use of $(ARCH) needs to be moved after this.
 [bwh: Updated for 5.3: include .kernelvariables from current directory
  rather than using undefined $(obj).]
 ---
-Index: linux/Makefile
-===================================================================
---- linux.orig/Makefile
-+++ linux/Makefile
+--- a/Makefile
++++ b/Makefile
 @@ -395,36 +395,6 @@ include $(srctree)/scripts/subarch.inclu
  # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
  ARCH		?= $(SUBARCH)
@@ -58,7 +56,7 @@ Index: linux/Makefile
  
 @@ -540,6 +510,35 @@ RUSTFLAGS_KERNEL =
  AFLAGS_KERNEL	=
- export LDFLAGS_vmlinux =
+ LDFLAGS_vmlinux =
  
 +-include .kernelvariables
 +

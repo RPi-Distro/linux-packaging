@@ -256,6 +256,9 @@ linux (6.1.9-1) UNRELEASED; urgency=medium
   * [amd64,arm64,armel,i386] Remove unnecessary constraints since stretch
     (old-old-stable)
 
+  [ Salvatore Bonaccorso ]
+  * Refresh "kbuild: Make the toolchain variables easily overwritable"
+
  -- Diederik de Haas <didi.debian@cknow.org>  Wed, 01 Feb 2023 18:40:58 +0100
 
 linux (6.1.8-1) unstable; urgency=medium
