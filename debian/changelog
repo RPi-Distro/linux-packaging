@@ -1,4 +1,4 @@
-linux (6.1.9-1) UNRELEASED; urgency=medium
+linux (6.1.10-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.9
@@ -251,6 +251,29 @@ linux (6.1.9-1) UNRELEASED; urgency=medium
     - netfilter: conntrack: unify established states for SCTP paths
     - [x86] perf/x86/amd: fix potential integer overflow on shift of a int
     - amdgpu: fix build on non-DCN platforms.
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.10
+    - [armhf] dts: imx: Fix pca9547 i2c-mux node name
+    - [arm64] dts: freescale: Fix pca954x i2c-mux node names
+    - [arm64] dts: imx8mq-thor96: fix no-mmc property for SDHCI
+    - [arm64] firmware: arm_scmi: Clear stale xfer->hdr.status
+    - bpf: Skip task with pid=1 in send_signal_common()
+    - erofs/zmap.c: Fix incorrect offset calculation
+    - mac80211: Fix MLO address translation for multiple bss case
+    - [arm64] dts: msm8994-angler: fix the memory map
+    - erofs: clean up parsing of fscache related options
+    - blk-cgroup: fix missing pd_online_fn() while activating policy
+    - ACPI: video: Add backlight=native DMI quirk for Acer Aspire 4810T
+    - block: fix hctx checks for batch allocation
+    - [s390x] workaround invalid gcc-11 out of bounds read warning
+    - HID: uclogic: Add support for XP-PEN Deco 01 V2
+    - HID: playstation: sanity check DualSense calibration data.
+    - [arm64,armhf] dmaengine: imx-sdma: Fix a possible memory leak in
+      sdma_transfer_init
+    - gpiolib: acpi: Allow ignoring wake capability on pins that aren't in _AEI
+    - cifs: fix return of uninitialized rc in dfs_cache_update_tgthint()
+    - gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xRU
+    - net: fix NULL pointer in skb_segment_list
+    - net: mctp: purge receive queues on sk destruction
 
   [ Diederik de Haas ]
   * [amd64,arm64,armel,i386] Remove unnecessary constraints since stretch
