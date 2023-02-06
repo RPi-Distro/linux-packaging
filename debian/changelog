@@ -283,6 +283,9 @@ linux (6.1.10-1) UNRELEASED; urgency=medium
   * Refresh "kbuild: Make the toolchain variables easily overwritable"
   * Bump ABI to 4
 
+  [ John Paul Adrian Glaubitz ]
+  * [hppa,ia64,sparc64] Add i2c-modules to Depends for nic-shared-modules udeb
+
  -- Diederik de Haas <didi.debian@cknow.org>  Wed, 01 Feb 2023 18:40:58 +0100
 
 linux (6.1.8-1) unstable; urgency=medium
