@@ -803,6 +803,16 @@ linux (6.1.18-1) UNRELEASED; urgency=medium
     with mt7921e (Closes: #1029116). Thanks to Helmut Grohne for the
     initial patch, which led upstream to propose this patch.
 
+  [ Alper Nebi Yasak ]
+  * Enable important configs for ChromeOS boards:
+    - Enable GOOGLE_VPD, GOOGLE_SMI, GOOGLE_FRAMEBUFFER_COREBOOT as modules
+    - [x86] Enable FB_SIMPLE as built-in
+    - [x86,armhf,arm64] Change GOOGLE_FRAMEBUFFER_COREBOOT and
+      GOOGLE_COREBOOT_TABLE to built-in (except cloud-*)
+    - [x86,arm64] Enable CHROMEOS_ACPI as module
+    - [x86,arm64] Enable TCG_TIS_SPI_CR50 as built-in
+    - [x86,arm64] Enable TCG_TIS_I2C_CR50 as module
+
  -- Diederik de Haas <didi.debian@cknow.org>  Sun, 05 Mar 2023 21:24:05 +0100
 
 linux (6.1.15-1) unstable; urgency=medium
