@@ -284,7 +284,8 @@ linux (6.1.10-1) UNRELEASED; urgency=medium
   * Bump ABI to 4
 
   [ John Paul Adrian Glaubitz ]
-  * [hppa,ia64,sh4,sparc64] Add i2c-modules to Depends for nic-shared-modules udeb
+  * [hppa,ia64,sh4,sparc64] Add i2c-modules to Depends for nic-shared-modules
+    udeb
 
  -- Diederik de Haas <didi.debian@cknow.org>  Wed, 01 Feb 2023 18:40:58 +0100
 
