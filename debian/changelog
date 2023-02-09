@@ -1,4 +1,4 @@
-linux (6.1.11-1) UNRELEASED; urgency=medium
+linux (6.1.11-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.9
@@ -465,7 +465,7 @@ linux (6.1.11-1) UNRELEASED; urgency=medium
   * [hppa,ia64,sh4,sparc64] Add i2c-modules to Depends for nic-shared-modules
     udeb
 
- -- Diederik de Haas <didi.debian@cknow.org>  Wed, 01 Feb 2023 18:40:58 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 09 Feb 2023 22:48:50 +0100
 
 linux (6.1.8-1) unstable; urgency=medium
 
