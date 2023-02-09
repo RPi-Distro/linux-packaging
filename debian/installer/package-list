@@ -45,6 +45,7 @@ Package: nic-shared-modules
 Depends: kernel-image
 Depends_hppa: i2c-modules
 Depends_ia64: i2c-modules
+Depends_sh4: i2c-modules
 Depends_sparc64: i2c-modules
 Priority: standard
 Description: Shared NIC drivers
