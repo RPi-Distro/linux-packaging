@@ -18,7 +18,6 @@ part-long-pae: This kernel requires PAE (Physical Address Extension).
 [image]
 bootloaders: grub-pc grub-efi-ia32 extlinux
 install-stem: vmlinuz
-breaks: xserver-xorg-input-vmmouse (<< 1:13.0.99)
 
 [relations]
 headers%gcc-12: linux-compiler-gcc-12-x86

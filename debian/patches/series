@@ -103,11 +103,6 @@ features/arm64/quartz64/arm64-dts-rockchip-Add-SOQuartz-Model-A-baseboard.patch
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
-bugfix/all/gpiolib-acpi-Don-t-set-GPIOs-for-wakeup-in-S3-mode.patch
-bugfix/all/drm-amdgpu-display-mst-Fix-mst_state-pbn_div-and-slo.patch
-bugfix/all/drm-amdgpu-display-mst-limit-payload-to-be-updated-o.patch
-bugfix/all/drm-amdgpu-display-mst-update-mst_mgr-relevant-varia.patch
-bugfix/all/drm-display-dp_mst-Correct-the-kref-of-port.patch
 
 # Miscellaneous features
 
