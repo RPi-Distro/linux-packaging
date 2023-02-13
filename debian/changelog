@@ -5,6 +5,7 @@ linux (6.1.11-2) UNRELEASED; urgency=medium
 
   [ John Paul Adrian Glaubitz ]
   * [alpha] Add i2c-modules to Depends for nic-shared-modules udeb
+  * [powerpc,ppc64] Set DESTDIR= when installing bootwrapper (fixes FTBFS)
 
  -- Helge Deller <deller@gmx.de>  Sat, 11 Feb 2023 22:14:11 +0000
 
