@@ -59,6 +59,9 @@ linux (6.3.2-1~exp1) UNRELEASED; urgency=medium
   * linux-kbuild: Fix cross-build regression in objtool in 6.3
   * linux-kbuild: Add support for objtool powerpc target
 
+  [ Martyn Welch ]
+  * d/rules.real: Enable limiting of compression threading
+
  -- Yoann Congal <yoann.congal@smile.fr>  Mon, 08 May 2023 17:49:24 +0200
 
 linux (6.3.1-1~exp1) experimental; urgency=medium
