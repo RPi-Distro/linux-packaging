@@ -115,6 +115,9 @@ linux (6.1.12-1) UNRELEASED; urgency=medium
   * [alpha] Add i2c-modules to Depends for nic-shared-modules udeb
   * [powerpc,ppc64] Set DESTDIR= when installing bootwrapper (fixes FTBFS)
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 5
+
  -- Helge Deller <deller@gmx.de>  Sat, 11 Feb 2023 22:14:11 +0000
 
 linux (6.1.11-1) unstable; urgency=medium
