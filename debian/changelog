@@ -1,4 +1,112 @@
-linux (6.1.11-2) UNRELEASED; urgency=medium
+linux (6.1.12-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.12
+    - hv_netvsc: Allocate memory in netvsc_dma_map() with GFP_ATOMIC
+    - btrfs: limit device extents to the device size
+    - btrfs: zlib: zero-initialize zlib workspace
+    - ALSA: hda/realtek: Add Positivo N14KP6-TG
+    - ALSA: emux: Avoid potential array out-of-bound in snd_emux_xg_control()
+    - ALSA: hda/realtek: Fix the speaker output on Samsung Galaxy Book2 Pro 360
+    - ALSA: hda/realtek: Enable mute/micmute LEDs on HP Elitebook, 645 G9
+    - ALSA: hda/realtek: Add quirk for ASUS UM3402 using CS35L41
+    - ALSA: hda/realtek: fix mute/micmute LEDs don't work for a HP platform.
+    - Revert "PCI/ASPM: Save L1 PM Substates Capability for suspend/resume"
+    - Revert "PCI/ASPM: Refactor L1 PM Substates Control Register programming"
+    - tracing: Fix poll() and select() do not work on per_cpu trace_pipe and
+      trace_pipe_raw
+    - of/address: Return an error when no valid dma-ranges are found
+      (Closes: #993612)
+    - can: j1939: do not wait 250 ms if the same addr was already claimed
+    - HID: logitech: Disable hi-res scrolling on USB (Closes: #1029584)
+    - [amd64] IB/hfi1: Restore allocated resources on failed copyout
+    - IB/IPoIB: Fix legacy IPoIB due to wrong number of queues
+    - xfrm: annotate data-race around use_time
+    - RDMA/irdma: Fix potential NULL-ptr-dereference
+    - [amd64] RDMA/usnic: use iommu_map_atomic() under spin_lock()
+    - xfrm: fix bug with DSCP copy to v6 from v4 tunnel
+    - of: Make OF framebuffer device names unique
+    - net: phylink: move phy_device_free() to correctly release phy device
+    - bonding: fix error checking in bond_debug_reregister()
+    - [arm64,riscv64] net: macb: Perform zynqmp dynamic configuration only for
+      SGMII interface
+    - [arm64] net: phy: meson-gxl: use MMD access dummy stubs for GXL, internal
+      PHY
+    - [arm64] cpufreq: qcom-hw: Fix cpufreq_driver->get() for non-LMH systems
+    - uapi: add missing ip/ipv6 header dependencies for linux/stddef.h
+    - [amd64] HID: amd_sfh: if no sensors are enabled, clean up
+    - [x86] drm/i915: Don't do the WM0->WM1 copy w/a if WM1 is already enabled
+    - drm/virtio: exbuf->fence_fd unmodified on interrupted wait
+    - cpuset: Call set_cpus_allowed_ptr() with appropriate mask for task
+    - ice: Do not use WQ_MEM_RECLAIM flag for workqueue
+    - ice: Fix disabling Rx VLAN filtering with port VLAN enabled
+    - ice: switch: fix potential memleak in ice_add_adv_recipe()
+    - [arm64] net: mscc: ocelot: fix VCAP filters not matching on MAC with
+      "protocol 802.1Q"
+    - net/mlx5e: Update rx ring hw mtu upon each rx-fcs flag change
+    - net/mlx5: Bridge, fix ageing of peer FDB entries
+    - net/mlx5e: Fix crash unsetting rx-vlan-filter in switchdev mode
+    - net/mlx5e: IPoIB, Show unknown speed instead of error
+    - net/mlx5: Store page counters in a single array
+    - net/mlx5: Expose SF firmware pages counter
+    - net/mlx5: fw_tracer, Clear load bit when freeing string DBs buffers
+    - net/mlx5: fw_tracer, Zero consumer index when reloading the tracer
+    - net/mlx5: Serialize module cleanup with reload and remove
+    - igc: Add ndo_tx_timeout support
+    - txhash: fix sk->sk_txrehash default
+    - rds: rds_rm_zerocopy_callback() use list_first_entry()
+    - [arm64] net: mscc: ocelot: fix all IPv6 getting trapped to CPU when PTP
+      timestamping is used
+    - [arm64] dts: rockchip: set sdmmc0 speed to sd-uhs-sdr50 on rock-3a
+    - ALSA: pci: lx6464es: fix a debug loop
+    - [riscv64] stacktrace: Fix missing the first frame
+    - [arm64] ASoC: fsl_sai: fix getting version from VERID
+    - [x86] ASoC: topology: Return -ENOMEM on memory allocation failure
+    - [riscv64] clk: microchip: mpfs-ccc: Use devm_kasprintf() for allocating
+      formatted strings
+    - [armhf] pinctrl: aspeed: Fix confusing types in return value
+    - [arm64,armhf] pinctrl: single: fix potential NULL dereference
+    - [armhf] pinctrl: aspeed: Revert "Force to disable the function's signal"
+    - [x86] pinctrl: intel: Restore the pins that used to be in Direct IRQ mode
+    - cifs: Fix use-after-free in rdata->read_into_pages()
+    - net: USB: Fix wrong-direction WARNING in plusb.c
+    - mptcp: do not wait for bare sockets' timeout
+    - mptcp: be careful on subflow status propagation on errors
+    - btrfs: simplify update of last_dir_index_offset when logging a directory
+    - btrfs: free device in btrfs_close_devices for a single device filesystem
+    - usb: core: add quirk for Alcor Link AK9563 smartcard reader
+    - usb: typec: altmodes/displayport: Fix probe pin assign check
+    - cxl/region: Fix null pointer dereference for resetting decoder
+    - cxl/region: Fix passthrough-decoder detection
+    - drm/amd/pm: add SMU 13.0.7 missing GetPptLimit message mapping
+    - ceph: flush cap releases when the session is flushed
+    - [amd64] nvdimm: Support sizeof(struct page) > MAX_STRUCT_PAGE_SIZE
+    - [riscv64] Fixup race condition on PG_dcache_clean in flush_icache_pte
+    - [riscv64] kprobe: Fixup misaligned load text
+    - [powerpc*] 64s/interrupt: Fix interrupt exit race with security mitigation
+      switch
+    - drm/amdgpu: Use the TGID for trace_amdgpu_vm_update_ptes
+    - tracing: Fix TASK_COMM_LEN in trace event format file
+    - rtmutex: Ensure that the top waiter is always woken up
+    - Fix page corruption caused by racy check in __free_pages
+    - [arm64] efi: Force the use of SetVirtualAddressMap() on eMAG and Altra Max
+      machines
+    - drm/amd/pm: bump SMU 13.0.0 driver_if header version
+    - drm/amdgpu: Add unique_id support for GC 11.0.1/2
+    - drm/amd/pm: bump SMU 13.0.7 driver_if header version
+    - drm/amdgpu/fence: Fix oops due to non-matching drm_sched init/fini
+    - drm/amdgpu/smu: skip pptable init under sriov
+    - drm/amd/display: properly handling AGP aperture in vm setup
+    - drm/amd/display: fix cursor offset on rotation 180
+    - [x86] drm/i915: Move fd_install after last use of fence
+    - [x86] drm/i915: Initialize the obj flags for shmem objects
+    - [x86] drm/i915: Fix VBT DSI DVO port handling
+    - [x86] speculation: Identify processors vulnerable to SMT RSB predictions
+      (CVE-2022-27672)
+    - [x86] KVM: x86: Mitigate the cross-thread return address predictions bug
+      (CVE-2022-27672)
+    - Documentation/hw-vuln: Add documentation for Cross-Thread Return
+      Predictions (CVE-2022-27672)
 
   [ Helge Deller ]
   * [hppa] Fix i2c-modules udeb for parisc64
