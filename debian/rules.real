@@ -407,7 +407,7 @@ ifneq ($(filter powerpc ppc64,$(ARCH)),)
 # as native code, which is wrong for a cross-built package.  Install
 # symlinks to the versions in the linux-bootwrapper package instead.
 	rm -rf '$(BUILD_DIR)/bootwrapper_$(ARCH)_$(FEATURESET)_$(FLAVOUR)'
-	+$(MAKE_CLEAN) -C '$(DIR)' bootwrapper_install \
+	+$(MAKE_CLEAN) -C '$(DIR)' bootwrapper_install DESTDIR= \
 		WRAPPER_OBJDIR='$(DT_INSTALL_DIR)' \
 		WRAPPER_DTSDIR='$(DT_INSTALL_DIR)/dts' \
 		WRAPPER_BINDIR='$(CURDIR)/$(BUILD_DIR)/bootwrapper_$(ARCH)_$(FEATURESET)_$(FLAVOUR)'
