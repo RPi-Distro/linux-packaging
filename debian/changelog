@@ -111,6 +111,9 @@ linux (6.1.13-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * [rt] Update to 6.1.12-rt7
 
+  [ Diederik de Haas ]
+  * [arm64,armhf] udeb: Add sound and speakup packages (Closes: #1031289)
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 22 Feb 2023 14:30:19 +0100
 
 linux (6.1.12-1) unstable; urgency=medium
