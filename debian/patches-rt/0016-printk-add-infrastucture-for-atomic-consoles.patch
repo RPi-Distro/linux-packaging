@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Fri, 4 Feb 2022 16:01:17 +0106
 Subject: [PATCH 16/18] printk: add infrastucture for atomic consoles
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1-rc7-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.12-rt7.tar.xz
 
 Many times it is not possible to see the console output on
 panic because printing threads cannot be scheduled and/or the
@@ -76,7 +76,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  };
 --- a/init/Kconfig
 +++ b/init/Kconfig
-@@ -1581,6 +1581,10 @@ config PRINTK
+@@ -1585,6 +1585,10 @@ config PRINTK
  	  very difficult to diagnose system problems, saying N here is
  	  strongly discouraged.
  
@@ -89,7 +89,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	default y
 --- a/kernel/panic.c
 +++ b/kernel/panic.c
-@@ -257,7 +257,6 @@ void panic(const char *fmt, ...)
+@@ -300,7 +300,6 @@ void panic(const char *fmt, ...)
  		panic_smp_self_stop();
  
  	console_verbose();
@@ -97,7 +97,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	va_start(args, fmt);
  	len = vscnprintf(buf, sizeof(buf), fmt, args);
  	va_end(args);
-@@ -274,6 +273,11 @@ void panic(const char *fmt, ...)
+@@ -317,6 +316,11 @@ void panic(const char *fmt, ...)
  		dump_stack();
  #endif
  

@@ -1,7 +1,7 @@
 Subject: arm: Add support for lazy preemption
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed Oct 31 12:04:11 2012 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1-rc7-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.12-rt7.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
@@ -20,7 +20,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -114,6 +114,7 @@
+@@ -114,6 +114,7 @@ config ARM
  	select HAVE_PERF_EVENTS
  	select HAVE_PERF_REGS
  	select HAVE_PERF_USER_STACK_DUMP
@@ -30,7 +30,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	select HAVE_RSEQ
 --- a/arch/arm/include/asm/thread_info.h
 +++ b/arch/arm/include/asm/thread_info.h
-@@ -62,6 +62,7 @@
+@@ -62,6 +62,7 @@ struct cpu_context_save {
  struct thread_info {
  	unsigned long		flags;		/* low level flags */
  	int			preempt_count;	/* 0 => preemptable, <0 => bug */
@@ -38,15 +38,15 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	__u32			cpu;		/* cpu */
  	__u32			cpu_domain;	/* cpu domain */
  	struct cpu_context_save	cpu_context;	/* cpu context */
-@@ -129,6 +130,7 @@
+@@ -129,6 +130,7 @@ extern int vfp_restore_user_hwstate(stru
  #define TIF_NOTIFY_RESUME	2	/* callback before returning to user */
  #define TIF_UPROBE		3	/* breakpointed or singlestepping */
  #define TIF_NOTIFY_SIGNAL	4	/* signal notifications exist */
-+#define TIF_NEED_RESCHED_LAZY	9
++#define TIF_NEED_RESCHED_LAZY	5
  
  #define TIF_USING_IWMMXT	17
  #define TIF_MEMDIE		18	/* is terminating due to OOM killer */
-@@ -148,6 +150,7 @@
+@@ -148,6 +150,7 @@ extern int vfp_restore_user_hwstate(stru
  #define _TIF_SYSCALL_TRACEPOINT	(1 << TIF_SYSCALL_TRACEPOINT)
  #define _TIF_SECCOMP		(1 << TIF_SECCOMP)
  #define _TIF_NOTIFY_SIGNAL	(1 << TIF_NOTIFY_SIGNAL)
@@ -54,7 +54,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #define _TIF_USING_IWMMXT	(1 << TIF_USING_IWMMXT)
  
  /* Checks for any syscall work in entry-common.S */
-@@ -157,7 +160,8 @@
+@@ -157,7 +160,8 @@ extern int vfp_restore_user_hwstate(stru
  /*
   * Change these and you break ASM code in entry-common.S
   */
@@ -66,7 +66,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 --- a/arch/arm/kernel/asm-offsets.c
 +++ b/arch/arm/kernel/asm-offsets.c
-@@ -43,6 +43,7 @@
+@@ -43,6 +43,7 @@ int main(void)
    BLANK();
    DEFINE(TI_FLAGS,		offsetof(struct thread_info, flags));
    DEFINE(TI_PREEMPT,		offsetof(struct thread_info, preempt_count));
@@ -76,7 +76,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
    DEFINE(TI_CPU_SAVE,		offsetof(struct thread_info, cpu_context));
 --- a/arch/arm/kernel/entry-armv.S
 +++ b/arch/arm/kernel/entry-armv.S
-@@ -222,11 +222,18 @@
+@@ -222,11 +222,18 @@ ENDPROC(__dabt_svc)
  
  #ifdef CONFIG_PREEMPTION
  	ldr	r8, [tsk, #TI_PREEMPT]		@ get preempt count
@@ -97,7 +97,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  #endif
  
  	svc_exit r5, irq = 1			@ return from exception
-@@ -241,8 +248,14 @@
+@@ -241,8 +248,14 @@ ENDPROC(__irq_svc)
  1:	bl	preempt_schedule_irq		@ irq en/disable is done inside
  	ldr	r0, [tsk, #TI_FLAGS]		@ get new tasks TI_FLAGS
  	tst	r0, #_TIF_NEED_RESCHED
@@ -115,7 +115,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  __und_fault:
 --- a/arch/arm/kernel/signal.c
 +++ b/arch/arm/kernel/signal.c
-@@ -607,7 +607,8 @@
+@@ -607,7 +607,8 @@ do_work_pending(struct pt_regs *regs, un
  	 */
  	trace_hardirqs_off();
  	do {
