@@ -1,3 +1,115 @@
+linux (6.1.13-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.13
+    - mptcp: sockopt: make 'tcp_fastopen_connect' generic
+    - mptcp: fix locking for setsockopt corner-case
+    - mptcp: deduplicate error paths on endpoint creation
+    - mptcp: fix locking for in-kernel listener creation
+    - btrfs: move the auto defrag code to defrag.c
+    - btrfs: lock the inode in shared mode before starting fiemap
+    - [x86] ASoC: amd: yc: Add DMI support for new acer/emdoor platforms
+    - [x86] ASoC: SOF: sof-audio: start with the right widget type
+    - ALSA: usb-audio: Add FIXED_RATE quirk for JBL Quantum610 Wireless
+    - [x86] ASoC: Intel: sof_rt5682: always set dpcm_capture for amplifiers
+    - ALSA: hda: Do not unset preset when cleaning up codec
+    - [x86] ASoC: amd: yc: Add Xiaomi Redmi Book Pro 15 2022 into DMI table
+    - bpf, sockmap: Don't let sock_map_{close,destroy,unhash} call itself
+    - net/rose: Fix to not accept on connected socket
+    - net: stmmac: do not stop RX_CLK in Rx LPI state for qcs404 SoC
+    - [powerpc*] 64: Fix perf profiling asynchronous interrupt handlers
+    - fscache: Use clear_and_wake_up_bit() in fscache_create_volume_work()
+    - drm/nouveau/devinit/tu102-: wait for GFW_BOOT_PROGRESS == COMPLETED
+    - net: sched: sch: Bounds check priority
+    - nvme-fc: fix a missing queue put in nvmet_fc_ls_create_association
+    - nvme: clear the request_queue pointers on failure in
+      nvme_alloc_admin_tag_set
+    - nvme: clear the request_queue pointers on failure in nvme_alloc_io_tag_set
+    - drm/amd/display: Add missing brackets in calculation
+    - drm/amd/display: Adjust downscaling limits for dcn314
+    - drm/amd/display: Unassign does_plane_fit_in_mall function from dcn3.2
+    - drm/amd/display: Reset DMUB mailbox SW state after HW reset
+    - drm/amdgpu: enable HDP SD for gfx 11.0.3
+    - drm/amdgpu: Enable vclk dclk node for gc11.0.3
+    - drm/amd/display: Properly handle additional cases where DCN is not
+      supported
+    - ceph: move mount state enum to super.h
+    - ceph: blocklist the kclient when receiving corrupted snap trace
+    - of: reserved_mem: Have kmemleak ignore dynamically allocated reserved mem
+    - mm: shrinkers: fix deadlock in shrinker debugfs
+    - aio: fix mremap after fork null-deref
+    - vmxnet3: move rss code block under eop descriptor
+    - fbdev: Fix invalid page access after closing deferred I/O devices
+    - drm/amd/amdgpu: fix warning during suspend
+    - drm/amd/display: Fail atomic_check early on normalize_zpos error
+    - drm/vmwgfx: Stop accessing buffer objects which failed init
+    - drm/vmwgfx: Do not drop the reference to the handle too soon
+    - [arm64] mmc: meson-gx: fix SDIO mode if cap_sdio_irq isn't set
+    - mmc: sdio: fix possible resource leaks in some error paths
+    - mmc: mmc_spi: fix error handling in mmc_spi_probe()
+    - ALSA: hda: Fix codec device field initializan
+    - ALSA: hda/conexant: add a new hda codec SN6180
+    - ALSA: hda/realtek - fixed wrong gpio assigned
+    - ALSA: hda/realtek: fix mute/micmute LEDs don't work for a HP platform.
+    - ALSA: hda/realtek: Enable mute/micmute LEDs and speaker support for HP
+      Laptops
+    - ata: ahci: Add Tiger Lake UP{3,4} AHCI controller
+    - ata: libata-core: Disable READ LOG DMA EXT for Samsung MZ7LH
+    - hugetlb: check for undefined shift on 32 bit architectures
+    - nilfs2: fix underflow in second superblock position calculations
+    - mm/MADV_COLLAPSE: set EAGAIN on unexpected page refcount
+    - mm/filemap: fix page end in filemap_get_read_batch
+    - mm/migrate: fix wrongly apply write bit after mkdirty on sparc64
+    - freezer,umh: Fix call_usermode_helper_exec() vs SIGKILL
+    - Revert "mm: Always release pages to the buddy allocator in
+      memblock_free_late()."
+    - net: Fix unwanted sign extension in netdev_stats_to_stats64()
+    - revert "squashfs: harden sanity check in squashfs_read_xattr_id_table"
+    - [arm64,armhf] drm/vc4: crtc: Increase setup cost in core clock calculation
+      to handle extreme reduced blanking
+    - [arm64,armhf] drm/vc4: Fix YUV plane handling when planes are in different
+      buffers
+    - [x86] drm/i915/gen11: Wa_1408615072/Wa_1407596294 should be on GT list
+    - ice: fix lost multicast packets in promisc mode
+    - ixgbe: allow to increase MTU to 3K with XDP enabled
+    - i40e: add double of VLAN header when computing the max MTU
+    - net: bgmac: fix BCM5358 support by setting correct flags
+    - sctp: sctp_sock_filter(): avoid list_entry() on possibly empty list
+    - net/sched: tcindex: update imperfect hash filters respecting rcu
+    - ice: xsk: Fix cleaning of XDP_TX frames
+    - dccp/tcp: Avoid negative sk_forward_alloc by ipv6_pinfo.pktoptions.
+    - net/usb: kalmia: Don't pass act_len in usb_bulk_msg error path
+    - net/sched: act_ctinfo: use percpu stats
+    - net: openvswitch: fix possible memory leak in ovs_meter_cmd_set()
+    - net: stmmac: fix order of dwmac5 FlexPPS parametrization sequence
+    - bnxt_en: Fix mqprio and XDP ring checking logic
+    - tracing: Make trace_define_field_ext() static
+    - net: stmmac: Restrict warning on disabling DMA store and fwd mode
+    - net: use a bounce buffer for copying skb->mark
+    - tipc: fix kernel warning when sending SYN message
+    - net: mpls: fix stale pointer if allocation fails during device rename
+    - igb: conditionalize I2C bit banging on external thermal sensor support
+    - igb: Fix PPS input and output using 3rd and 4th SDP
+    - ixgbe: add double of VLAN header when computing the max MTU
+    - ipv6: Fix datagram socket connection with DSCP.
+    - ipv6: Fix tcp socket connection with DSCP.
+    - mm/gup: add folio to list when folio_isolate_lru() succeed
+    - mm: extend max struct page size for kmsan
+    - i40e: Add checking for null for nlmsg_find_attr()
+    - net/sched: tcindex: search key must be 16 bits
+    - nvme-tcp: stop auth work after tearing down queues in error recovery
+    - nvme-rdma: stop auth work after tearing down queues in error recovery
+    - [x86] KVM: x86/pmu: Disable vPMU support on hybrid CPUs (host PMUs)
+    - [x86] kvm: initialize all of the kvm_debugregs structure before sending it
+      to userspace
+    - [x86] perf/x86: Refuse to export capabilities for hybrid PMUs
+    - alarmtimer: Prevent starvation by small intervals and SIG_IGN
+    - nvme-pci: refresh visible attrs for cmb attributes
+    - [x86] ASoC: SOF: Intel: hda-dai: fix possible stream_tag leak
+    - net: sched: sch: Fix off by one in htb_activate_prios()
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 22 Feb 2023 14:30:19 +0100
+
 linux (6.1.12-1) unstable; urgency=medium
 
   * New upstream stable update:
