@@ -1,7 +1,7 @@
 Subject: x86: Support for lazy preemption
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu Nov  1 11:03:47 2012 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1-rc7-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.12-rt7.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 

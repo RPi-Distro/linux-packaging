@@ -41,6 +41,7 @@ x86__Enable_RT_also_on_32bit.patch
 softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
 rcutorture-Also-force-sched-priority-to-timersd-on-b.patch
 tick-Fix-timer-storm-since-introduction-of-timersd.patch
+softirq-Wake-ktimers-thread-also-in-softirq.patch
 tpm_tis__fix_stall_after_iowrites.patch
 drivers_block_zram__Replace_bit_spinlocks_with_rtmutex_for_-rt.patch
 locking-lockdep-Remove-lockdep_init_map_crosslock.patch

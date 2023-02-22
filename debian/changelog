@@ -108,6 +108,9 @@ linux (6.1.13-1) UNRELEASED; urgency=medium
     - [x86] ASoC: SOF: Intel: hda-dai: fix possible stream_tag leak
     - net: sched: sch: Fix off by one in htb_activate_prios()
 
+  [ Salvatore Bonaccorso ]
+  * [rt] Update to 6.1.12-rt7
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 22 Feb 2023 14:30:19 +0100
 
 linux (6.1.12-1) unstable; urgency=medium
