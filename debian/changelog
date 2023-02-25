@@ -140,6 +140,7 @@ linux (6.1.14-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 6.1.12-rt7
+  * Bump ABI to 6
 
   [ Diederik de Haas ]
   * [arm64,armhf] udeb: Add sound and speakup packages (Closes: #1031289)
