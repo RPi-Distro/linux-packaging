@@ -109,17 +109,20 @@ linux (6.1.14-1) UNRELEASED; urgency=medium
     - net: sched: sch: Fix off by one in htb_activate_prios()
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.14
     - [arm64,armhf] drm/etnaviv: don't truncate physical page address
-    - wifi: ath11k: fix warning in dma_free_coherent() of memory chunks while recovery
+    - wifi: ath11k: fix warning in dma_free_coherent() of memory chunks while
+      recovery
     - wifi: rtl8xxxu: gen2: Turn on the rate control
     - drm/edid: Fix minimum bpc supported with DSC1.2 for HDMI sink
     - sched/psi: Stop relying on timer_pending() for poll_work rescheduling
     - random: always mix cycle counter in add_latent_entropy()
     - scsi: libsas: Add smp_ata_check_ready_type()
-    - [arm64] scsi: hisi_sas: Fix SATA devices missing issue during I_T nexus reset
+    - [arm64] scsi: hisi_sas: Fix SATA devices missing issue during I_T nexus
+      reset
     - docs: perf: Fix PMU instance name of hisi-pcie-pmu
     - [x86] KVM: x86: Fail emulation during EMULTYPE_SKIP on any exception
     - [x86] KVM: SVM: Skip WRMSR fastpath on VM-Exit if next RIP isn't valid
-    - [x86] KVM: VMX: Execute IBPB on emulated VM-exit when guest has IBRS (CVE-2022-2196)
+    - [x86] KVM: VMX: Execute IBPB on emulated VM-exit when guest has IBRS
+      (CVE-2022-2196)
     - [x86] drm/i915: Remove __maybe_unused from mtl_info
     - [x86] KVM: x86: fix deadlock for KVM_XEN_EVTCHN_RESET
     - [powerpc*] 64s/radix: Fix RWX mapping with relocated kernel
