@@ -88,6 +88,7 @@ linux (6.1.14-1) UNRELEASED; urgency=medium
     - net: use a bounce buffer for copying skb->mark
     - tipc: fix kernel warning when sending SYN message
     - net: mpls: fix stale pointer if allocation fails during device rename
+      (CVE-2023-26545)
     - igb: conditionalize I2C bit banging on external thermal sensor support
     - igb: Fix PPS input and output using 3rd and 4th SDP
     - ixgbe: add double of VLAN header when computing the max MTU
