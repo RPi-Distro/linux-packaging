@@ -1,4 +1,4 @@
-linux (6.1.14-1) UNRELEASED; urgency=medium
+linux (6.1.15-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.13
@@ -141,6 +141,41 @@ linux (6.1.14-1) UNRELEASED; urgency=medium
     - [x86] platform/x86: nvidia-wmi-ec-backlight: Add force module parameter
     - ext4: Fix function prototype mismatch for ext4_feat_ktype
     - bpf: add missing header file include
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.15
+    - Fix XFRM-I support for nested ESP tunnels
+    - [arm64] dts: rockchip: reduce thermal limits on rk3399-pinephone-pro
+    - [arm64] dts: rockchip: drop unused LED mode property from rk3328-roc-cc
+    - [arm64] dts: rockchip: fix probe of analog sound card on rock-3a
+    - HID: elecom: add support for TrackBall 056E:011C
+    - HID: Ignore battery for Elan touchscreen on Asus TP420IA
+    - [amd64,arm64] ACPI: NFIT: fix a potential deadlock during NFIT teardown
+    - pinctrl: amd: Fix debug output for debounce time
+    - btrfs: send: limit number of clones and allocated memory size
+    - [x86] ASoC: rt715-sdca: fix clock stop prepare timeout issue
+    - [amd64] IB/hfi1: Assign npages earlier
+    - neigh: make sure used and confirmed times are valid
+    - HID: core: Fix deadloop in hid_apply_multiplier.
+    - [x86] ASoC: codecs: es8326: Fix DTS properties reading
+    - [x86] HID: Ignore battery for ELAN touchscreen 29DF on HP
+    - [x86] cpu: Add Lunar Lake M
+    - PM: sleep: Avoid using pr_cont() in the tasks freezing code
+    - bpf: bpf_fib_lookup should not return neigh in NUD_FAILED state
+    - net: Remove WARN_ON_ONCE(sk->sk_forward_alloc) from
+      sk_stream_kill_queues().
+    - vc_screen: don't clobber return value in vcs_read
+    - drm/amd/display: Move DCN314 DOMAIN power control to DMCUB
+    - drm/amd/display: Fix race condition in DPIA AUX transfer
+    - USB: serial: option: add support for VW/Skoda "Carstick LTE"
+    - usb: gadget: u_serial: Add null pointer check in gserial_resume
+    - usb: typec: pd: Remove usb_suspend_supported sysfs from sink PDO
+    - drm/amd/display: Properly reuse completion structure
+    - attr: add in_group_or_capable()
+    - fs: move should_remove_suid()
+    - attr: add setattr_should_drop_sgid()
+    - attr: use consistent sgid stripping checks
+    - fs: use consistent setgid checks in is_sxid()
+    - USB: core: Don't hold device lock while reading the "descriptors" sysfs
+      file
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 6.1.12-rt7
