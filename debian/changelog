@@ -6,6 +6,7 @@ linux (6.2-1~exp1) UNRELEASED; urgency=medium
     - d/patches: Forward and add patches to fix hardening issues
     - d/rules: Let blhc ignore perf tests binaries that are compiled without
       fortification (by Uwe Kleine-König)
+    - [rt] Update to 6.2-rt3
 
   [ Uwe Kleine-König ]
   * iwlwifi: Enable device tracing

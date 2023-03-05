@@ -1,52 +1,101 @@
-0001-vduse-Remove-include-of-rwlock.h.patch
-0002-signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
-0003-sched-Consider-task_struct-saved_state-in-wait_task_.patch
-0004-spi-Remove-the-obsolte-u64_stats_fetch_-_irq-users.patch
-0005-net-Remove-the-obsolte-u64_stats_fetch_-_irq-users-d.patch
-0006-net-Remove-the-obsolte-u64_stats_fetch_-_irq-users-n.patch
-0007-bpf-Remove-the-obsolte-u64_stats_fetch_-_irq-users.patch
-0008-u64_stat-Remove-the-obsolete-fetch_irq-variants.patch
-0009-net-Avoid-the-IPI-to-free-the.patch
-0010-x86-Allow-to-enable-RT.patch
-0011-x86-Enable-RT-also-on-32bit.patch
-0012-softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
-0013-rcutorture-Also-force-sched-priority-to-timersd-on-b.patch
-0014-tick-Fix-timer-storm-since-introduction-of-timersd.patch
-0015-softirq-Wake-ktimers-thread-also-in-softirq.patch
-0016-tpm_tis-fix-stall-after-iowrite-s.patch
-0017-zram-Replace-bit-spinlocks-with-spinlock_t-for-PREEM.patch
-0018-locking-lockdep-Remove-lockdep_init_map_crosslock.patch
-0019-printk-Bring-back-the-RT-bits.patch
-0020-printk-add-infrastucture-for-atomic-consoles.patch
-0021-serial-8250-implement-write_atomic.patch
-0022-printk-avoid-preempt_disable-for-PREEMPT_RT.patch
-0023-drm-i915-Use-preempt_disable-enable_rt-where-recomme.patch
-0024-drm-i915-Don-t-disable-interrupts-on-PREEMPT_RT-duri.patch
-0025-drm-i915-Don-t-check-for-atomic-context-on-PREEMPT_R.patch
-0026-drm-i915-Disable-tracing-points-on-PREEMPT_RT.patch
-0027-drm-i915-skip-DRM_I915_LOW_LEVEL_TRACEPOINTS-with-NO.patch
-0028-drm-i915-gt-Queue-and-wait-for-the-irq_work-item.patch
-0029-drm-i915-gt-Use-spin_lock_irq-instead-of-local_irq_d.patch
-0030-drm-i915-Drop-the-irqs_disabled-check.patch
-0031-Revert-drm-i915-Depend-on-PREEMPT_RT.patch
-0032-sched-Add-support-for-lazy-preemption.patch
-0033-x86-entry-Use-should_resched-in-idtentry_exit_cond_r.patch
-0034-x86-Support-for-lazy-preemption.patch
-0035-entry-Fix-the-preempt-lazy-fallout.patch
-0036-arm-Add-support-for-lazy-preemption.patch
-0037-powerpc-Add-support-for-lazy-preemption.patch
-0038-arch-arm64-Add-lazy-preempt-support.patch
-0039-arm-Disable-jump-label-on-PREEMPT_RT.patch
-0040-ARM-enable-irq-in-translation-section-permission-fau.patch
-0041-tty-serial-omap-Make-the-locking-RT-aware.patch
-0042-tty-serial-pl011-Make-the-locking-work-on-RT.patch
-0043-ARM-Allow-to-enable-RT.patch
-0044-ARM64-Allow-to-enable-RT.patch
-0045-powerpc-traps-Use-PREEMPT_RT.patch
-0046-powerpc-pseries-iommu-Use-a-locallock-instead-local_.patch
-0047-powerpc-kvm-Disable-in-kernel-MPIC-emulation-for-PRE.patch
-0048-powerpc-stackprotector-work-around-stack-guard-init-.patch
-0049-POWERPC-Allow-to-enable-RT.patch
-0050-sysfs-Add-sys-kernel-realtime-entry.patch
-0051-Add-localversion-for-RT-release.patch
-0052-Linux-6.1.19-rt8.patch
+# Applied upstream
+
+###########################################################################
+# Posted and applied
+###########################################################################
+
+# signal_x86__Delay_calling_signals_in_atomic.patch
+
+###########################################################################
+# Posted
+###########################################################################
+vduse-Remove-include-of-rwlock.h.patch
+
+# Hacks to get ptrace to work.
+signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
+sched-Consider-task_struct-saved_state-in-wait_task_.patch
+
+# ifdef RT cleanups.
+u64_stat-Remove-the-obsolete-fetch_irq-variants.patch
+
+###########################################################################
+# Post
+###########################################################################
+net-Avoid-the-IPI-to-free-the.patch
+
+###########################################################################
+# X86:
+###########################################################################
+x86__Allow_to_enable_RT.patch
+x86__Enable_RT_also_on_32bit.patch
+
+###########################################################################
+# For later, not essencial
+###########################################################################
+softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
+rcutorture-Also-force-sched-priority-to-timersd-on-b.patch
+tick-Fix-timer-storm-since-introduction-of-timersd.patch
+softirq-Wake-ktimers-thread-also-in-softirq.patch
+tpm_tis__fix_stall_after_iowrites.patch
+drivers_block_zram__Replace_bit_spinlocks_with_rtmutex_for_-rt.patch
+locking-lockdep-Remove-lockdep_init_map_crosslock.patch
+
+###########################################################################
+# John's printk queue
+###########################################################################
+printk-Bring-back-the-RT-bits.patch
+0016-printk-add-infrastucture-for-atomic-consoles.patch
+0017-serial-8250-implement-write_atomic.patch
+0018-printk-avoid-preempt_disable-for-PREEMPT_RT.patch
+
+###########################################################################
+# DRM:
+###########################################################################
+0003-drm-i915-Use-preempt_disable-enable_rt-where-recomme.patch
+0004-drm-i915-Don-t-disable-interrupts-on-PREEMPT_RT-duri.patch
+0005-drm-i915-Don-t-check-for-atomic-context-on-PREEMPT_R.patch
+0006-drm-i915-Disable-tracing-points-on-PREEMPT_RT.patch
+0007-drm-i915-skip-DRM_I915_LOW_LEVEL_TRACEPOINTS-with-NO.patch
+0008-drm-i915-gt-Queue-and-wait-for-the-irq_work-item.patch
+0009-drm-i915-gt-Use-spin_lock_irq-instead-of-local_irq_d.patch
+0010-drm-i915-Drop-the-irqs_disabled-check.patch
+Revert-drm-i915-Depend-on-PREEMPT_RT.patch
+
+###########################################################################
+# Lazy preemption
+###########################################################################
+sched__Add_support_for_lazy_preemption.patch
+x86_entry__Use_should_resched_in_idtentry_exit_cond_resched.patch
+x86__Support_for_lazy_preemption.patch
+entry--Fix-the-preempt-lazy-fallout.patch
+arm__Add_support_for_lazy_preemption.patch
+powerpc__Add_support_for_lazy_preemption.patch
+arch_arm64__Add_lazy_preempt_support.patch
+
+###########################################################################
+# ARM/ARM64
+###########################################################################
+0001-arm-Disable-jump-label-on-PREEMPT_RT.patch
+ARM__enable_irq_in_translation_section_permission_fault_handlers.patch
+# arm64-signal-Use-ARCH_RT_DELAYS_SIGNAL_SEND.patch
+tty_serial_omap__Make_the_locking_RT_aware.patch
+tty_serial_pl011__Make_the_locking_work_on_RT.patch
+ARM__Allow_to_enable_RT.patch
+ARM64__Allow_to_enable_RT.patch
+
+###########################################################################
+# POWERPC
+###########################################################################
+powerpc__traps__Use_PREEMPT_RT.patch
+powerpc_pseries_iommu__Use_a_locallock_instead_local_irq_save.patch
+powerpc_kvm__Disable_in-kernel_MPIC_emulation_for_PREEMPT_RT.patch
+powerpc_stackprotector__work_around_stack-guard_init_from_atomic.patch
+POWERPC__Allow_to_enable_RT.patch
+
+# Sysfs file vs uname() -v
+sysfs__Add__sys_kernel_realtime_entry.patch
+
+###########################################################################
+# RT release version
+###########################################################################
+Add_localversion_for_-RT_release.patch
