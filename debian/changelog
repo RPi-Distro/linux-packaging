@@ -184,6 +184,9 @@ linux (6.1.15-1) UNRELEASED; urgency=medium
   [ Diederik de Haas ]
   * [arm64,armhf] udeb: Add sound and speakup packages (Closes: #1031289)
 
+  [ Cyril Brulebois ]
+  * udeb: Add qrtr_mhi to nic-wireless, for ath11k (Closes: #1032140)
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 22 Feb 2023 14:30:19 +0100
 
 linux (6.1.12-1) unstable; urgency=medium
