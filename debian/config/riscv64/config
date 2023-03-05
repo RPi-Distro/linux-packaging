@@ -29,6 +29,7 @@ CONFIG_KVM=m
 ## file: drivers/ata/Kconfig
 ##
 CONFIG_SATA_AHCI_PLATFORM=m
+CONFIG_AHCI_DWC=m
 
 ##
 ## file: drivers/char/hw_random/Kconfig

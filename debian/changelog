@@ -1,3 +1,10 @@
+linux (6.1.15-2) UNRELEASED; urgency=medium
+
+  * [arm64,armhf,riscv64] drivers/ata: Enable AHCI_DWC as module
+    (Closes: #1032362)
+
+ -- Diederik de Haas <didi.debian@cknow.org>  Sun, 05 Mar 2023 21:24:05 +0100
+
 linux (6.1.15-1) unstable; urgency=medium
 
   * New upstream stable update:
