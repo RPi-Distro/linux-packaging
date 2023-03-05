@@ -1,4 +1,4 @@
-linux (6.1.15-1) UNRELEASED; urgency=medium
+linux (6.1.15-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.13
@@ -187,7 +187,7 @@ linux (6.1.15-1) UNRELEASED; urgency=medium
   [ Cyril Brulebois ]
   * udeb: Add qrtr_mhi to nic-wireless, for ath11k (Closes: #1032140)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 22 Feb 2023 14:30:19 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 05 Mar 2023 16:33:00 +0100
 
 linux (6.1.12-1) unstable; urgency=medium
 
