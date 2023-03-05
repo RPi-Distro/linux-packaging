@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue, 19 Jul 2022 20:08:01 +0200
 Subject: [PATCH] printk: Bring back the RT bits.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1-rc7-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.12-rt7.tar.xz
 
 This is a revert of the commits:
 | 07a22b61946f0 Revert "printk: add functions to prefer direct printing"
@@ -152,7 +152,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	if (hung_task_call_panic)
 --- a/kernel/panic.c
 +++ b/kernel/panic.c
-@@ -297,6 +297,7 @@ void panic(const char *fmt, ...)
+@@ -340,6 +340,7 @@ void panic(const char *fmt, ...)
  		 * unfortunately means it may not be hardened to work in a
  		 * panic situation.
  		 */
@@ -160,7 +160,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		smp_send_stop();
  	} else {
  		/*
-@@ -304,6 +305,7 @@ void panic(const char *fmt, ...)
+@@ -347,6 +348,7 @@ void panic(const char *fmt, ...)
  		 * kmsg_dump, we will need architecture dependent extra
  		 * works in addition to stopping other CPUs.
  		 */
@@ -168,7 +168,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		crash_smp_send_stop();
  	}
  
-@@ -601,6 +603,8 @@ void __warn(const char *file, int line,
+@@ -644,6 +646,8 @@ void __warn(const char *file, int line,
  {
  	disable_trace_on_warning();
  
@@ -177,7 +177,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	if (file)
  		pr_warn("WARNING: CPU: %d PID: %d at %s:%d %pS\n",
  			raw_smp_processor_id(), current->pid, file, line,
-@@ -630,6 +634,8 @@ void __warn(const char *file, int line,
+@@ -672,6 +676,8 @@ void __warn(const char *file, int line,
  
  	/* Just a warning, don't kill lockdep. */
  	add_taint(taint, LOCKDEP_STILL_OK);
