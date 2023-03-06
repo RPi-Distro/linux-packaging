@@ -42,7 +42,7 @@ Index: linux/scripts/Makefile.modfinal
  
  quiet_cmd_btf_ko = BTF [M] $@
 @@ -57,7 +58,7 @@ if_changed_except = $(if $(call newer_pr
- 	printf '%s\n' 'cmd_$@ := $(make-cmd)' > $(dot-target).cmd, @:)
+ 	printf '%s\n' 'savedcmd_$@ := $(make-cmd)' > $(dot-target).cmd, @:)
  
  # Re-generate module BTFs if either module's .ko or vmlinux changed
 -%.ko: %.o %.mod.o scripts/module.lds $(and $(CONFIG_DEBUG_INFO_BTF_MODULES),$(KBUILD_BUILTIN),vmlinux) FORCE
