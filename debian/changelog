@@ -817,6 +817,12 @@ linux (6.1.19-1) UNRELEASED; urgency=medium
   * [powerpc/powerpc64,ppc64el] udeb: add DRM ast driver to fb-modules
     (Closes: #990016)
 
+  [ Miguel Bernal Marin ]
+  * Enable modules to be used by rasdaemon tool on Intel platforms
+    (Closes: #1032467)
+    - [amd64] drivers/edac: Enable EDAC_IGEN6 as module
+    - [x86] drivers/acpi/apei: Enable ACPI_APEI_EINJ as module
+
  -- Diederik de Haas <didi.debian@cknow.org>  Sun, 05 Mar 2023 21:24:05 +0100
 
 linux (6.1.15-1) unstable; urgency=medium
