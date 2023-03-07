@@ -1105,7 +1105,6 @@ CONFIG_DUMMY=m
 CONFIG_NET_FC=y
 CONFIG_NET_SB1000=m
 CONFIG_VMXNET3=m
-CONFIG_USB4_NET=m
 
 ##
 ## file: drivers/net/arcnet/Kconfig
@@ -1280,6 +1279,11 @@ CONFIG_HYPERV_NET=m
 ## file: drivers/net/plip/Kconfig
 ##
 CONFIG_PLIP=m
+
+##
+## file: drivers/net/thunderbolt/Kconfig
+##
+CONFIG_USB4_NET=m
 
 ##
 ## file: drivers/net/wan/Kconfig
@@ -1667,13 +1671,6 @@ CONFIG_PCMCIA_SYM53C500=m
 ## file: drivers/staging/media/Kconfig
 ##
 CONFIG_STAGING_MEDIA=y
-
-##
-## file: drivers/staging/media/deprecated/tm6000/Kconfig
-##
-CONFIG_VIDEO_TM6000=m
-CONFIG_VIDEO_TM6000_ALSA=m
-CONFIG_VIDEO_TM6000_DVB=m
 
 ##
 ## file: drivers/staging/rtl8192e/Kconfig

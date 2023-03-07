@@ -269,18 +269,18 @@ CONFIG_MTD_PCMCIA=m
 CONFIG_ARCNET_COM20020_ISA=m
 
 ##
-## file: drivers/net/can/cc770/Kconfig
-##
-CONFIG_CAN_CC770=m
-CONFIG_CAN_CC770_ISA=m
-# CONFIG_CAN_CC770_PLATFORM is not set
-
-##
 ## file: drivers/net/can/c_can/Kconfig
 ##
 CONFIG_CAN_C_CAN=y
 # CONFIG_CAN_C_CAN_PLATFORM is not set
 CONFIG_CAN_C_CAN_PCI=m
+
+##
+## file: drivers/net/can/cc770/Kconfig
+##
+CONFIG_CAN_CC770=m
+CONFIG_CAN_CC770_ISA=m
+# CONFIG_CAN_CC770_PLATFORM is not set
 
 ##
 ## file: drivers/net/ethernet/3com/Kconfig

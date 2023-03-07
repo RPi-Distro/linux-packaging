@@ -427,7 +427,7 @@ CONFIG_DRM_EXYNOS_HDMI=y
 CONFIG_DRM_I2C_NXP_TDA998X=m
 
 ##
-## file: drivers/gpu/drm/imx/Kconfig
+## file: drivers/gpu/drm/imx/ipuv3/Kconfig
 ##
 CONFIG_DRM_IMX=m
 CONFIG_DRM_IMX_PARALLEL_DISPLAY=m
@@ -1093,7 +1093,8 @@ CONFIG_PCI_HOST_GENERIC=y
 ## file: drivers/pci/controller/dwc/Kconfig
 ##
 CONFIG_PCI_DRA7XX_HOST=y
-CONFIG_PCI_IMX6=y
+CONFIG_PCI_IMX6_HOST=y
+CONFIG_PCI_IMX6_EP=y
 
 ##
 ## file: drivers/phy/allwinner/Kconfig

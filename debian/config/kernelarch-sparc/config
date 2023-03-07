@@ -221,6 +221,13 @@ CONFIG_SERIO_LIBPS2=y
 # CONFIG_VIDEO_CX88 is not set
 
 ##
+## file: drivers/media/pci/saa7146/Kconfig
+##
+# CONFIG_VIDEO_HEXIUM_GEMINI is not set
+# CONFIG_VIDEO_HEXIUM_ORION is not set
+# CONFIG_VIDEO_MXB is not set
+
+##
 ## file: drivers/media/radio/Kconfig
 ##
 # CONFIG_RADIO_MAXIRADIO is not set
@@ -411,13 +418,6 @@ CONFIG_MEGARAID_NEWGEN=y
 CONFIG_MEGARAID_MM=m
 CONFIG_MEGARAID_MAILBOX=m
 CONFIG_MEGARAID_LEGACY=m
-
-##
-## file: drivers/staging/media/deprecated/saa7146/saa7146/Kconfig
-##
-# CONFIG_VIDEO_HEXIUM_GEMINI is not set
-# CONFIG_VIDEO_HEXIUM_ORION is not set
-# CONFIG_VIDEO_MXB is not set
 
 ##
 ## file: drivers/tty/Kconfig
