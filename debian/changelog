@@ -8,6 +8,7 @@ linux (6.3-1~exp1) UNRELEASED; urgency=medium
       fortification (by Uwe Kleine-König)
     - [rt] Update to 6.2-rt3
   * New upstream release: https://kernelnewbies.org/Linux_6.3
+    - linux-kbuild: Stop building bin2c in 6.3
 
   [ Uwe Kleine-König ]
   * iwlwifi: Enable device tracing
