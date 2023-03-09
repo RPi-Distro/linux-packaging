@@ -6,6 +6,8 @@ linux (6.1.15-2) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [x86] drivers/platform/x86: Enable THINKPAD_LMI as module (Closes: #1032399)
+  * scsi: mpt3sas: Remove usage of dma_get_required_mask() API
+    (Closes: #1022126)
 
  -- Diederik de Haas <didi.debian@cknow.org>  Sun, 05 Mar 2023 21:24:05 +0100
 
