@@ -9,6 +9,13 @@ linux (6.1.15-2) UNRELEASED; urgency=medium
   * scsi: mpt3sas: Remove usage of dma_get_required_mask() API
     (Closes: #1022126)
 
+  [ Cyril Brulebois ]
+  * wifi: mt76: do not run mt76_unregister_device() on unregistered hw
+    This prevents a kernel panic when unloading the module, which happens
+    within the installer after firmware files have been deployed, at least
+    with mt7921e (Closes: #1029116). Thanks to Helmut Grohne for the
+    initial patch, which led upstream to propose this patch.
+
  -- Diederik de Haas <didi.debian@cknow.org>  Sun, 05 Mar 2023 21:24:05 +0100
 
 linux (6.1.15-1) unstable; urgency=medium

@@ -36,6 +36,7 @@ bugfix/all/firmware_class-log-every-success-and-failure.patch
 bugfix/all/firmware-remove-redundant-log-messages-from-drivers.patch
 bugfix/all/radeon-amdgpu-firmware-is-required-for-drm-and-kms-on-r600-onward.patch
 debian/firmware_class-refer-to-debian-wiki-firmware-page.patch
+bugfix/all/wifi-mt76-do-not-run-mt76_unregister_device-on-unregistered-hw.patch
 
 # Change some defaults for security reasons
 debian/af_802154-Disable-auto-loading-as-mitigation-against.patch
