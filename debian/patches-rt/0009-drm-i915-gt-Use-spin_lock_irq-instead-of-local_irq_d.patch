@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 8 Sep 2021 19:03:41 +0200
 Subject: [PATCH 09/10] drm/i915/gt: Use spin_lock_irq() instead of
  local_irq_disable() + spin_lock()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.2/older/patches-6.2-rt3.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3-rt11.tar.xz
 
 execlists_dequeue() is invoked from a function which uses
 local_irq_disable() to disable interrupts so the spin_lock() behaves
@@ -78,7 +78,7 @@ Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
  static void clear_ports(struct i915_request **ports, int count)
  {
  	memset_p((void **)ports, NULL, count);
-@@ -2469,7 +2462,7 @@ static void execlists_submission_tasklet
+@@ -2477,7 +2470,7 @@ static void execlists_submission_tasklet
  	}
  
  	if (!engine->execlists.pending[0]) {

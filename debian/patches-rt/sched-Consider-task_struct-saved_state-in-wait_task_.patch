@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 22 Jun 2022 12:27:05 +0200
 Subject: [PATCH] sched: Consider task_struct::saved_state in
  wait_task_inactive().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.2/older/patches-6.2-rt3.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3-rt11.tar.xz
 
 wait_task_inactive() waits for thread to unschedule in a certain task state.
 On PREEMPT_RT that state may be stored in task_struct::saved_state while the
@@ -27,7 +27,7 @@ Reviewed-by: Valentin Schneider <vschneid@redhat.com>
 
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -3310,6 +3310,76 @@ int migrate_swap(struct task_struct *cur
+@@ -3318,6 +3318,76 @@ int migrate_swap(struct task_struct *cur
  }
  #endif /* CONFIG_NUMA_BALANCING */
  
@@ -104,7 +104,7 @@ Reviewed-by: Valentin Schneider <vschneid@redhat.com>
  /*
   * wait_task_inactive - wait for a thread to unschedule.
   *
-@@ -3328,7 +3398,7 @@ int migrate_swap(struct task_struct *cur
+@@ -3336,7 +3406,7 @@ int migrate_swap(struct task_struct *cur
   */
  unsigned long wait_task_inactive(struct task_struct *p, unsigned int match_state)
  {
@@ -113,7 +113,7 @@ Reviewed-by: Valentin Schneider <vschneid@redhat.com>
  	struct rq_flags rf;
  	unsigned long ncsw;
  	struct rq *rq;
-@@ -3354,7 +3424,7 @@ unsigned long wait_task_inactive(struct
+@@ -3362,7 +3432,7 @@ unsigned long wait_task_inactive(struct
  		 * is actually now running somewhere else!
  		 */
  		while (task_on_cpu(rq, p)) {
@@ -122,7 +122,7 @@ Reviewed-by: Valentin Schneider <vschneid@redhat.com>
  				return 0;
  			cpu_relax();
  		}
-@@ -3367,9 +3437,10 @@ unsigned long wait_task_inactive(struct
+@@ -3375,9 +3445,10 @@ unsigned long wait_task_inactive(struct
  		rq = task_rq_lock(p, &rf);
  		trace_sched_wait_task(p);
  		running = task_on_cpu(rq, p);
@@ -135,7 +135,7 @@ Reviewed-by: Valentin Schneider <vschneid@redhat.com>
  			ncsw = p->nvcsw | LONG_MIN; /* sets MSB */
  		task_rq_unlock(rq, p, &rf);
  
-@@ -3399,7 +3470,7 @@ unsigned long wait_task_inactive(struct
+@@ -3407,7 +3478,7 @@ unsigned long wait_task_inactive(struct
  		 * running right now), it's preempted, and we should
  		 * yield - it could be a while.
  		 */

@@ -1,7 +1,7 @@
 Subject: powerpc: Add support for lazy preemption
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu Nov  1 10:14:11 2012 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.2/older/patches-6.2-rt3.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3-rt11.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
@@ -18,7 +18,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
 --- a/arch/powerpc/Kconfig
 +++ b/arch/powerpc/Kconfig
-@@ -246,6 +246,7 @@ config PPC
+@@ -247,6 +247,7 @@ config PPC
  	select HAVE_PERF_EVENTS_NMI		if PPC64
  	select HAVE_PERF_REGS
  	select HAVE_PERF_USER_STACK_DUMP

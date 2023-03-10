@@ -9,14 +9,20 @@
 ###########################################################################
 # Posted
 ###########################################################################
-vduse-Remove-include-of-rwlock.h.patch
 
 # Hacks to get ptrace to work.
-signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
 sched-Consider-task_struct-saved_state-in-wait_task_.patch
-
-# ifdef RT cleanups.
-u64_stat-Remove-the-obsolete-fetch_irq-variants.patch
+io-mapping-Don-t-disable-preempt-on-RT-in-io_mapping.patch
+locking-rwbase-Mitigate-indefinite-writer-starvation.patch
+0001-sched-core-Provide-sched_rtmutex-and-expose-sched-wo.patch
+0002-locking-rtmutex-Submit-resume-work-explicitly-before.patch
+0003-locking-rtmutex-Avoid-pointless-blk_flush_plug-invoc.patch
+0004-locking-rtmutex-Add-a-lockdep-assert-to-catch-potent.patch
+signal-Let-tasks-cache-one-sigqueue-struct.patch
+0001-signal-Add-proper-comment-about-the-preempt-disable-.patch
+0002-signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
+tick-common-Align-tick-period-with-the-HZ-tick.patch
+tracing-timer-Add-missing-hrtimer-modes-to-decode_hr.patch
 
 ###########################################################################
 # Post
@@ -36,17 +42,37 @@ softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
 rcutorture-Also-force-sched-priority-to-timersd-on-b.patch
 tick-Fix-timer-storm-since-introduction-of-timersd.patch
 softirq-Wake-ktimers-thread-also-in-softirq.patch
-tpm_tis__fix_stall_after_iowrites.patch
-drivers_block_zram__Replace_bit_spinlocks_with_rtmutex_for_-rt.patch
-locking-lockdep-Remove-lockdep_init_map_crosslock.patch
+tpm_tis-fix-stall-after-iowrite-s.patch
+zram-Replace-bit-spinlocks-with-spinlock_t-for-PREEM.patch
+preempt-Put-preempt_enable-within-an-instrumentation.patch
 
 ###########################################################################
 # John's printk queue
 ###########################################################################
-printk-Bring-back-the-RT-bits.patch
-0016-printk-add-infrastucture-for-atomic-consoles.patch
-0017-serial-8250-implement-write_atomic.patch
-0018-printk-avoid-preempt_disable-for-PREEMPT_RT.patch
+0001-kdb-do-not-assume-write-callback-available.patch
+0002-printk-Add-NMI-check-to-console_flush_on_panic-and-c.patch
+0003-printk-Consolidate-console-deferred-printing.patch
+0004-printk-Add-per-console-suspended-state.patch
+0005-printk-Add-non-BKL-console-basic-infrastructure.patch
+0006-printk-nobkl-Add-acquire-release-logic.patch
+0007-printk-nobkl-Add-buffer-management.patch
+0008-printk-nobkl-Add-sequence-handling.patch
+0009-printk-nobkl-Add-print-state-functions.patch
+0010-printk-nobkl-Add-emit-function-and-callback-function.patch
+0011-printk-nobkl-Introduce-printer-threads.patch
+0012-printk-nobkl-Add-printer-thread-wakeups.patch
+0013-printk-nobkl-Add-write-context-storage-for-atomic-wr.patch
+0014-printk-nobkl-Provide-functions-for-atomic-write-enfo.patch
+0015-printk-nobkl-Stop-threads-on-shutdown-reboot.patch
+0016-tty-tty_io-Show-non-BKL-consoles-as-active.patch
+0017-proc-consoles-Add-support-for-non-BKL-consoles.patch
+0018-kernel-panic-Add-atomic-write-enforcement-to-warn-pa.patch
+0019-rcu-Add-atomic-write-enforcement-for-rcu-stalls.patch
+0020-printk-Perform-atomic-flush-in-console_flush_on_pani.patch
+0021-printk-only-disable-if-actually-unregistered.patch
+0022-printk-Add-threaded-printing-support-for-BKL-console.patch
+0023-printk-replace-local_irq_save-with-local_lock-for-sa.patch
+0024-serial-8250-implement-non-BKL-console.patch
 
 ###########################################################################
 # DRM:
@@ -88,6 +114,8 @@ ARM64__Allow_to_enable_RT.patch
 ###########################################################################
 powerpc__traps__Use_PREEMPT_RT.patch
 powerpc_pseries_iommu__Use_a_locallock_instead_local_irq_save.patch
+powerpc-imc-pmu-Use-the-correct-spinlock-initializer.patch
+powerpc-pseries-Select-the-generic-memory-allocator.patch
 powerpc_kvm__Disable_in-kernel_MPIC_emulation_for_PREEMPT_RT.patch
 powerpc_stackprotector__work_around_stack-guard_init_from_atomic.patch
 POWERPC__Allow_to_enable_RT.patch
