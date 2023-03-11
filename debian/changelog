@@ -1,4 +1,4 @@
-linux (6.1.17-1) UNRELEASED; urgency=medium
+linux (6.1.18-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.16
@@ -637,6 +637,154 @@ linux (6.1.17-1) UNRELEASED; urgency=medium
     - Revert "blk-cgroup: synchronize pd_free_fn() from blkg_free_workfn() and
       blkcg_deactivate_policy()"
     - Revert "blk-cgroup: dropping parent refcount after pd_free_fn() is done"
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.18
+    - net/sched: Retire tcindex classifier
+    - fs/jfs: fix shift exponent db_agl2size negative
+    - [arm64] driver: soc: xilinx: fix memory leak in
+      xlnx_add_cb_for_notify_event()
+    - f2fs: don't rely on F2FS_MAP_* in f2fs_iomap_begin
+    - f2fs: fix to avoid potential deadlock
+    - objtool: Fix memory leak in create_static_call_sections()
+    - [armhf] pwm: stm32-lp: fix the check on arr and cmp registers update
+    - f2fs: introduce trace_f2fs_replace_atomic_write_block
+    - f2fs: correct i_size change for atomic writes
+    - f2fs: clear atomic_write_task in f2fs_abort_atomic_write()
+    - fs: f2fs: initialize fsdata in pagecache_write()
+    - f2fs: allow set compression option of files without blocks
+    - f2fs: fix to abort atomic write only during do_exist()
+    - ubi: ensure that VID header offset + VID header size <= alloc, size
+    - ubifs: Fix memory leak in ubifs_sysfs_init()
+    - ubifs: Rectify space budget for ubifs_symlink() if symlink is encrypted
+    - ubifs: Rectify space budget for ubifs_xrename()
+    - ubifs: Fix wrong dirty space budget for dirty inode
+    - ubifs: do_rename: Fix wrong space budget when target inode's nlink > 1
+    - ubifs: Reserve one leb for each journal head while doing budget
+    - ubi: Fix use-after-free when volume resizing failed
+    - ubi: Fix unreferenced object reported by kmemleak in ubi_resize_volume()
+    - ubifs: Fix memory leak in alloc_wbufs()
+    - ubi: Fix possible null-ptr-deref in ubi_free_volume()
+    - ubifs: Re-statistic cleaned znode count if commit failed
+    - ubifs: dirty_cow_znode: Fix memleak in error handling path
+    - ubifs: ubifs_writepage: Mark page dirty after writing inode failed
+    - ubifs: ubifs_releasepage: Remove ubifs_assert(0) to valid this process
+    - ubi: Fix UAF wear-leveling entry in eraseblk_count_seq_show()
+    - ubi: ubi_wl_put_peb: Fix infinite loop when wear-leveling work failed
+    - f2fs: fix to avoid potential memory corruption in
+      __update_iostat_latency()
+    - ext4: use ext4_fc_tl_mem in fast-commit replay path
+    - ext4: don't show commit interval if it is zero
+    - netfilter: nf_tables: allow to fetch set elements when table has an owner
+    - [x86] um: vdso: Add '%rcx' and '%r11' to the syscall clobber list
+    - f2fs: synchronize atomic write aborts
+    - watchdog: Fix kmemleak in watchdog_cdev_register
+    - watchdog: pcwd_usb: Fix attempting to access uninitialized memory
+    - [arm64] watchdog: sbsa_wdog: Make sure the timeout programming is within
+      the limits
+    - netfilter: ctnetlink: fix possible refcount leak in
+      ctnetlink_create_conntrack()
+    - netfilter: conntrack: fix rmmod double-free race
+    - netfilter: ip6t_rpfilter: Fix regression with VRF interfaces
+    - netfilter: ebtables: fix table blob use-after-free
+    - netfilter: xt_length: use skb len to match in length_mt6
+    - netfilter: ctnetlink: make event listener tracking global
+    - netfilter: x_tables: fix percpu counter block leak on error path when
+      creating new netns
+    - ptp: vclock: use mutex to fix "sleep on atomic" bug
+    - ipv6: Add lwtunnel encap size of all siblings in nexthop calculation
+    - net: sunhme: Fix region request
+    - sctp: add a refcnt in sctp_stream_priorities to avoid a nested loop
+    - net: fix __dev_kfree_skb_any() vs drop monitor
+    - 9p/xen: fix version parsing
+    - 9p/xen: fix connection sequence
+    - 9p/rdma: unmap receive dma buffer in rdma_request()/post_recv()
+    - mlx5: fix skb leak while fifo resync and push
+    - mlx5: fix possible ptp queue fifo use-after-free
+    - net/mlx5: ECPF, wait for VF pages only after disabling host PFs
+    - net/mlx5e: Verify flow_source cap before using it
+    - net/mlx5: Geneve, Fix handling of Geneve object id as error code
+    - ext4: fix incorrect options show of original mount_opt and extend
+      mount_opt2
+    - nfc: fix memory leak of se_io context in nfc_genl_se_io
+    - net/sched: transition act_pedit to rcu and percpu stats
+    - net/sched: act_pedit: fix action bind logic
+    - net/sched: act_mpls: fix action bind logic
+    - net/sched: act_sample: fix action bind logic
+    - [arm64] net: dsa: felix: fix internal MDIO controller resource length
+    - tcp: tcp_check_req() can be called from process context
+    - vc_screen: modify vcs_size() handling in vcs_read()
+    - [arm64,armhf] rtc: sun6i: Always export the internal oscillator
+    - genirq/ipi: Fix NULL pointer deref in irq_data_get_affinity_mask()
+    - scsi: ipr: Work around fortify-string warning
+    - rtc: allow rtc_read_alarm without read_alarm callback
+    - io_uring: fix size calculation when registering buf ring
+    - loop: loop_set_status_from_info() check before assignment
+    - nvme: bring back auto-removal of deleted namespaces during sequential scan
+    - nvme-tcp: don't access released socket during error recovery
+    - tracing: Add NULL checks for buffer in ring_buffer_free_read_page()
+    - kernel/printk/index.c: fix memory leak with using debugfs_lookup()
+    - [x86] firmware/efi sysfb_efi: Add quirk for Lenovo IdeaPad Duet 3
+    - bootconfig: Increase max nodes of bootconfig from 1024 to 8192 for DCC
+      support
+    - [amd64] IB/hfi1: Update RMT size calculation
+    - [amd64] iommu/amd: Fix error handling for pdev_pri_ats_enable()
+    - PCI/ACPI: Account for _S0W of the target bridge in acpi_pci_bridge_d3()
+    - media: uvcvideo: Remove format descriptions
+    - media: uvcvideo: Handle cameras with invalid descriptors
+    - media: uvcvideo: Handle errors from calls to usb_string
+    - media: uvcvideo: Quirk for autosuspend in Logitech B910 and C910
+    - media: uvcvideo: Silence memcpy() run-time false positive warnings
+    - USB: fix memory leak with using debugfs_lookup()
+    - cacheinfo: Fix shared_cpu_map to handle shared caches at different levels
+    - tty: fix out-of-bounds access in tty_driver_lookup_tty()
+    - [arm64] tty: serial: fsl_lpuart: disable the CTS when send break signal
+    - [x86] mei: bus-fixup:upon error print return values of send and receive
+    - iio: accel: mma9551_core: Prevent uninitialized variable in
+      mma9551_read_status_word()
+    - iio: accel: mma9551_core: Prevent uninitialized variable in
+      mma9551_read_config_word()
+    - media: uvcvideo: Add GUID for BGRA/X 8:8:8:8
+    - soundwire: bus_type: Avoid lockdep assert in sdw_drv_probe()
+    - [arm64,armhf] USB: dwc3: fix memory leak with using debugfs_lookup()
+    - [arm64,armhf] USB: chipidea: fix memory leak with using debugfs_lookup()
+    - [arm64,armhf] USB: ULPI: fix memory leak with using debugfs_lookup()
+    - USB: uhci: fix memory leak with using debugfs_lookup()
+    - USB: sl811: fix memory leak with using debugfs_lookup()
+    - [mips64el,mipsel] USB: isp116x: fix memory leak with using
+      debugfs_lookup()
+    - [arm64,armhf] usb: host: xhci: mvebu: Iterate over array indexes instead
+      of using pointer math
+    - USB: ene_usb6250: Allocate enough memory for full object
+    - usb: uvc: Enumerate valid values for color matching
+    - usb: gadget: uvc: Make bSourceID read/write
+    - PCI: Align extra resources for hotplug bridges properly
+    - PCI: Take other bus devices into account when distributing resources
+    - PCI: Distribute available resources for root buses, too
+    - [i386] tty: pcn_uart: fix memory leak with using debugfs_lookup()
+    - [x86] misc: vmw_balloon: fix memory leak with using debugfs_lookup()
+    - drivers: base: component: fix memory leak with using debugfs_lookup()
+    - drivers: base: dd: fix memory leak with using debugfs_lookup()
+    - PCI: Add ACS quirk for Wangxun NICs
+    - PCI: pciehp: Add Qualcomm quirk for Command Completed erratum
+    - [arm64] phy: rockchip-typec: Fix unsigned comparison with less than zero
+    - RDMA/cma: Distinguish between sockaddr_in and sockaddr_in6 by size
+    - iommu: Attach device group to old domain in error path
+    - soundwire: cadence: Remove wasted space in response_buf
+    - soundwire: cadence: Drain the RX FIFO after an IO timeout
+    - net: tls: avoid hanging tasks on the tx_lock
+    - [x86] resctl: fix scheduler confusion with 'current'
+    - drm/display/dp_mst: Add drm_atomic_get_old_mst_topology_state()
+    - drm/display/dp_mst: Fix down/up message handling after sink disconnect
+    - drm/display/dp_mst: Fix down message handling after a packet reception
+      error
+    - drm/display/dp_mst: Fix payload addition on a disconnected sink
+    - [x86] drm/i915/dp_mst: Add the MST topology state for modesetted CRTCs
+    - [x86] drm/i915: Fix system suspend without fbdev being initialized
+    - media: uvcvideo: Fix race condition with usb_kill_urb
+    - io_uring: fix two assignments in if conditions
+    - io_uring/poll: allow some retries for poll triggering spuriously
+    - [arm64] efi: Make efi_rt_lock a raw_spinlock
+    - [arm64] mte: Fix/clarify the PG_mte_tagged semantics
+    - usb: gadget: uvc: fix missing mutex_unlock() if kstrtou8() fails
 
   [ Diederik de Haas ]
   * [arm64,armhf,riscv64] drivers/ata: Enable AHCI_DWC as module
