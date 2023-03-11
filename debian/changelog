@@ -641,6 +641,7 @@ linux (6.1.16-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * [x86] drivers/platform/x86: Enable THINKPAD_LMI as module (Closes: #1032399)
   * [rt] Refresh "printk: Bring back the RT bits." for context changes in 6.1.16
+  * Bump ABI to 7
 
   [ Cyril Brulebois ]
   * wifi: mt76: do not run mt76_unregister_device() on unregistered hw
