@@ -803,6 +803,10 @@ linux (6.1.18-1) UNRELEASED; urgency=medium
     with mt7921e (Closes: #1029116). Thanks to Helmut Grohne for the
     initial patch, which led upstream to propose this patch.
 
+  [ Héctor Orón Martínez ]
+  * [powerpc/powerpc64,ppc64el] udeb: add DRM ast driver to fb-modules
+    (Closes: #990016)
+
  -- Diederik de Haas <didi.debian@cknow.org>  Sun, 05 Mar 2023 21:24:05 +0100
 
 linux (6.1.15-1) unstable; urgency=medium
