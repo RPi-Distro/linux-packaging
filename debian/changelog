@@ -632,7 +632,7 @@ linux (6.1.19-1) UNRELEASED; urgency=medium
     - sbitmap: Advance the queue index before waking up a queue
     - wait: Return number of exclusive waiters awaken
     - sbitmap: Try each queue to wake up at least one waiter
-    - net: avoid double iput when sock_alloc_file fails
+    - net: avoid double iput when sock_alloc_file fails (CVE-2023-1032)
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.17
     - Revert "blk-cgroup: synchronize pd_free_fn() from blkg_free_workfn() and
       blkcg_deactivate_policy()"
