@@ -802,6 +802,9 @@ linux (6.1.18-1) UNRELEASED; urgency=medium
     within the installer after firmware files have been deployed, at least
     with mt7921e (Closes: #1029116). Thanks to Helmut Grohne for the
     initial patch, which led upstream to propose this patch.
+  * udeb: Add michael_mic to crypto-modules, for ath11k and others.
+    Thanks to Nicolas Dandrimont for reporting and Benoît Chauvet for
+    testing (See: #1032140).
 
   [ Héctor Orón Martínez ]
   * [powerpc/powerpc64,ppc64el] udeb: add DRM ast driver to fb-modules
