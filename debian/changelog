@@ -1,4 +1,4 @@
-linux (6.1.18-1) UNRELEASED; urgency=medium
+linux (6.1.19-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.16
@@ -785,6 +785,13 @@ linux (6.1.18-1) UNRELEASED; urgency=medium
     - [arm64] efi: Make efi_rt_lock a raw_spinlock
     - [arm64] mte: Fix/clarify the PG_mte_tagged semantics
     - usb: gadget: uvc: fix missing mutex_unlock() if kstrtou8() fails
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.19
+    - tpm: disable hwrng for fTPM on some AMD designs
+    - wifi: cfg80211: Partial revert "wifi: cfg80211: Fix use after free for
+      wext"
+    - [x86] staging: rtl8192e: Remove function ..dm_check_ac_dc_power calling a
+      script
+    - [x86] staging: rtl8192e: Remove call_usermodehelper starting RadioPower.sh
 
   [ Diederik de Haas ]
   * [arm64,armhf,riscv64] drivers/ata: Enable AHCI_DWC as module
