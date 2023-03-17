@@ -7013,7 +7013,7 @@ CONFIG_DNS_RESOLVER=m
 ##
 ## file: net/hsr/Kconfig
 ##
-# CONFIG_HSR is not set
+CONFIG_HSR=m
 
 ##
 ## file: net/ieee802154/Kconfig

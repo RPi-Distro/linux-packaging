@@ -1,3 +1,10 @@
+linux (6.3.1-1~exp2) UNRELEASED; urgency=medium
+
+  [ Yoann Congal ]
+  * net/hsr: Enable PRP/HSR protocols as module (Closes: #1034506)
+
+ -- Yoann Congal <yoann.congal@smile.fr>  Mon, 08 May 2023 17:49:24 +0200
+
 linux (6.3.1-1~exp1) experimental; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_6.2
