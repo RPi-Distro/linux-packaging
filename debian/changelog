@@ -914,6 +914,8 @@ linux (6.1.20-1) UNRELEASED; urgency=medium
   [ Diederik de Haas ]
   * [arm64,armhf,riscv64] drivers/ata: Enable AHCI_DWC as module
     (Closes: #1032362)
+  * drivers/net/can/spi/mcp251xfd: Enable CAN_MCP251XFD as module
+    (Closes: #1032582)
 
   [ Salvatore Bonaccorso ]
   * [x86] drivers/platform/x86: Enable THINKPAD_LMI as module (Closes: #1032399)

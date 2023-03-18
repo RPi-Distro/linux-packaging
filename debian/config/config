@@ -3173,6 +3173,11 @@ CONFIG_CAN_HI311X=m
 CONFIG_CAN_MCP251X=m
 
 ##
+## file: drivers/net/can/spi/mcp251xfd/Kconfig
+##
+CONFIG_CAN_MCP251XFD=m
+
+##
 ## file: drivers/net/can/usb/Kconfig
 ##
 CONFIG_CAN_8DEV_USB=m
