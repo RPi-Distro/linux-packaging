@@ -344,6 +344,12 @@ CONFIG_EXTCON_USB_GPIO=m
 CONFIG_RASPBERRYPI_FIRMWARE=y
 
 ##
+## file: drivers/firmware/google/Kconfig
+##
+CONFIG_GOOGLE_COREBOOT_TABLE=y
+CONFIG_GOOGLE_FRAMEBUFFER_COREBOOT=y
+
+##
 ## file: drivers/fsi/Kconfig
 ##
 CONFIG_FSI=m
