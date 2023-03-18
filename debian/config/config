@@ -7204,7 +7204,7 @@ CONFIG_IP6_NF_TARGET_NPT=m
 ##
 ## file: net/kcm/Kconfig
 ##
-# CONFIG_AF_KCM is not set
+CONFIG_AF_KCM=m
 
 ##
 ## file: net/l2tp/Kconfig
