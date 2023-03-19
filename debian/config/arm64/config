@@ -116,6 +116,7 @@ CONFIG_ANDROID_BINDER_IPC=m
 ## file: drivers/ata/Kconfig
 ##
 CONFIG_SATA_AHCI_PLATFORM=m
+CONFIG_AHCI_DWC=m
 CONFIG_AHCI_CEVA=m
 CONFIG_AHCI_MVEBU=m
 CONFIG_AHCI_TEGRA=m
@@ -167,6 +168,8 @@ CONFIG_IPMI_POWEROFF=m
 ## file: drivers/char/tpm/Kconfig
 ##
 CONFIG_TCG_TPM=m
+CONFIG_TCG_TIS_SPI_CR50=y
+CONFIG_TCG_TIS_I2C_CR50=m
 CONFIG_TCG_TIS_I2C_INFINEON=m
 
 ##
@@ -365,6 +368,12 @@ CONFIG_ARM_SCMI_PROTOCOL=y
 #. Enable until support for loading initrd from a device path is supported
 #. in bootloaders, cf. #997907 for details.
 CONFIG_EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER=y
+
+##
+## file: drivers/firmware/google/Kconfig
+##
+CONFIG_GOOGLE_COREBOOT_TABLE=y
+CONFIG_GOOGLE_FRAMEBUFFER_COREBOOT=y
 
 ##
 ## file: drivers/gpio/Kconfig
@@ -1303,6 +1312,7 @@ CONFIG_PINCTRL_SDM845=y
 ## file: drivers/platform/chrome/Kconfig
 ##
 CONFIG_CHROME_PLATFORMS=y
+CONFIG_CHROMEOS_ACPI=m
 CONFIG_CROS_EC=m
 CONFIG_CROS_EC_I2C=m
 CONFIG_CROS_EC_SPI=m

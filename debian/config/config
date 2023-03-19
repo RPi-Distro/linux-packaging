@@ -655,8 +655,11 @@ CONFIG_RESET_ATTACK_MITIGATION=y
 ## file: drivers/firmware/google/Kconfig
 ##
 CONFIG_GOOGLE_FIRMWARE=y
+CONFIG_GOOGLE_SMI=m
 CONFIG_GOOGLE_COREBOOT_TABLE=m
+CONFIG_GOOGLE_FRAMEBUFFER_COREBOOT=m
 CONFIG_GOOGLE_MEMCONSOLE_COREBOOT=m
+CONFIG_GOOGLE_VPD=m
 
 ##
 ## file: drivers/fpga/Kconfig
@@ -3168,6 +3171,11 @@ CONFIG_CAN_SOFTING_CS=m
 ##
 CONFIG_CAN_HI311X=m
 CONFIG_CAN_MCP251X=m
+
+##
+## file: drivers/net/can/spi/mcp251xfd/Kconfig
+##
+CONFIG_CAN_MCP251XFD=m
 
 ##
 ## file: drivers/net/can/usb/Kconfig
@@ -7204,7 +7212,7 @@ CONFIG_IP6_NF_TARGET_NPT=m
 ##
 ## file: net/kcm/Kconfig
 ##
-# CONFIG_AF_KCM is not set
+CONFIG_AF_KCM=m
 
 ##
 ## file: net/l2tp/Kconfig
@@ -7573,7 +7581,6 @@ CONFIG_NET_SCH_DEFAULT=y
 CONFIG_DEFAULT_FQ_CODEL=y
 ## end choice
 CONFIG_NET_CLS_BASIC=m
-CONFIG_NET_CLS_TCINDEX=m
 CONFIG_NET_CLS_ROUTE4=m
 CONFIG_NET_CLS_FW=m
 CONFIG_NET_CLS_U32=m

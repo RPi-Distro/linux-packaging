@@ -114,6 +114,7 @@ CONFIG_INTEL_IDXD_PERFMON=y
 ## file: drivers/edac/Kconfig
 ##
 CONFIG_EDAC_SBRIDGE=m
+CONFIG_EDAC_IGEN6=m
 
 ##
 ## file: drivers/gpu/drm/i915/Kconfig

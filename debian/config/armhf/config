@@ -188,6 +188,7 @@ CONFIG_ANDROID_BINDER_IPC=m
 ## file: drivers/ata/Kconfig
 ##
 CONFIG_SATA_AHCI_PLATFORM=m
+CONFIG_AHCI_DWC=m
 CONFIG_AHCI_IMX=m
 CONFIG_AHCI_MVEBU=m
 CONFIG_AHCI_SUNXI=m
@@ -341,6 +342,12 @@ CONFIG_EXTCON_USB_GPIO=m
 ## file: drivers/firmware/Kconfig
 ##
 CONFIG_RASPBERRYPI_FIRMWARE=y
+
+##
+## file: drivers/firmware/google/Kconfig
+##
+CONFIG_GOOGLE_COREBOOT_TABLE=y
+CONFIG_GOOGLE_FRAMEBUFFER_COREBOOT=y
 
 ##
 ## file: drivers/fsi/Kconfig

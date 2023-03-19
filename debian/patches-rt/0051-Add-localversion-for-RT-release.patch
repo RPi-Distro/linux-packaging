@@ -1,0 +1,25 @@
+From 1f86326fe4463886d802397e8458bc66936c0a30 Mon Sep 17 00:00:00 2001
+From: Thomas Gleixner <tglx@linutronix.de>
+Date: Fri, 8 Jul 2011 20:25:16 +0200
+Subject: [PATCH 51/52] Add localversion for -RT release
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+
+(cherry picked from commit 90d96fee668dc306dd748393383c0fc74b798eee)
+Signed-off-by: Clark Williams <clark.williams@gmail.com>
+---
+ localversion-rt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 localversion-rt
+
+diff --git a/localversion-rt b/localversion-rt
+new file mode 100644
+index 000000000000..045478966e9f
+--- /dev/null
++++ b/localversion-rt
+@@ -0,0 +1 @@
++-rt7
+-- 
+2.39.2
+

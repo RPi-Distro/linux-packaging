@@ -1,0 +1,31 @@
+From e6aee23ca679fe1e289ce0842162f3697d35c9f2 Mon Sep 17 00:00:00 2001
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Date: Mon, 21 Feb 2022 17:59:14 +0100
+Subject: [PATCH 31/52] Revert "drm/i915: Depend on !PREEMPT_RT."
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+
+Once the known issues are addressed, it should be safe to enable the
+driver.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+(cherry picked from commit 70d4a57eece6740f10cf5d4a96e1ea97d845d7da)
+Signed-off-by: Clark Williams <clark.williams@gmail.com>
+---
+ drivers/gpu/drm/i915/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/i915/Kconfig b/drivers/gpu/drm/i915/Kconfig
+index 3a6e176d77aa..43b8bf809962 100644
+--- a/drivers/gpu/drm/i915/Kconfig
++++ b/drivers/gpu/drm/i915/Kconfig
+@@ -3,7 +3,6 @@ config DRM_I915
+ 	tristate "Intel 8xx/9xx/G3x/G4x/HD Graphics"
+ 	depends on DRM
+ 	depends on X86 && PCI
+-	depends on !PREEMPT_RT
+ 	select INTEL_GTT if X86
+ 	select INTERVAL_TREE
+ 	# we need shmfs for the swappable backing store, and in particular
+-- 
+2.39.2
+
