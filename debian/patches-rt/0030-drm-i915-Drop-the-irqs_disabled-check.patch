@@ -1,0 +1,47 @@
+From 5ad835700bac88fe2e039bac0a73e2d9f2834dfc Mon Sep 17 00:00:00 2001
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Date: Fri, 1 Oct 2021 20:01:03 +0200
+Subject: [PATCH 30/52] drm/i915: Drop the irqs_disabled() check
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+
+The !irqs_disabled() check triggers on PREEMPT_RT even with
+i915_sched_engine::lock acquired. The reason is the lock is transformed
+into a sleeping lock on PREEMPT_RT and does not disable interrupts.
+
+There is no need to check for disabled interrupts. The lockdep
+annotation below already check if the lock has been acquired by the
+caller and will yell if the interrupts are not disabled.
+
+Remove the !irqs_disabled() check.
+
+Reported-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+(cherry picked from commit 639da4c367e8b5c6751348fcfce1c83aa6cc2b5a)
+Signed-off-by: Clark Williams <clark.williams@gmail.com>
+---
+ drivers/gpu/drm/i915/i915_request.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/i915_request.c b/drivers/gpu/drm/i915/i915_request.c
+index 62fad16a55e8..af07927650b2 100644
+--- a/drivers/gpu/drm/i915/i915_request.c
++++ b/drivers/gpu/drm/i915/i915_request.c
+@@ -612,7 +612,6 @@ bool __i915_request_submit(struct i915_request *request)
+ 
+ 	RQ_TRACE(request, "\n");
+ 
+-	GEM_BUG_ON(!irqs_disabled());
+ 	lockdep_assert_held(&engine->sched_engine->lock);
+ 
+ 	/*
+@@ -721,7 +720,6 @@ void __i915_request_unsubmit(struct i915_request *request)
+ 	 */
+ 	RQ_TRACE(request, "\n");
+ 
+-	GEM_BUG_ON(!irqs_disabled());
+ 	lockdep_assert_held(&engine->sched_engine->lock);
+ 
+ 	/*
+-- 
+2.39.2
+
