@@ -922,6 +922,7 @@ linux (6.1.20-1) UNRELEASED; urgency=medium
   * [rt] Refresh "printk: Bring back the RT bits." for context changes in 6.1.16
   * Bump ABI to 7
   * net/sched: Drop setting of NET_CLS_TCINDEX (retired upstream)
+  * net/kcm: Enable AF_KCM as module (Closes: #1023958)
 
   [ Cyril Brulebois ]
   * wifi: mt76: do not run mt76_unregister_device() on unregistered hw
