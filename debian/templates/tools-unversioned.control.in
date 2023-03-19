@@ -140,7 +140,7 @@ Package: rtla
 Meta-Rules-Target: rtla
 Build-Profiles: <!stage1 !pkg.linux.notools>
 Architecture: amd64 arm64 armhf i386 x32
-Build-Depends: libtracefs-dev, libtraceevent-dev, python3-docutils
+Build-Depends: libtracefs-dev (>= 1.3), libtraceevent-dev (>= 1:1.5), python3-docutils
 Depends: ${shlibs:Depends}
 Section: devel
 Description: Real-Time Linux Analysis tools
