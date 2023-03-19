@@ -924,8 +924,6 @@ linux (6.1.20-1) UNRELEASED; urgency=medium
   * net/sched: Drop setting of NET_CLS_TCINDEX (retired upstream)
   * net/kcm: Enable AF_KCM as module (Closes: #1023958)
   * [rt] Update to 6.1.19-rt8
-  * act_mirred: use the backlog for nested calls to mirred ingress
-    (CVE-2022-4269)
 
   [ Cyril Brulebois ]
   * wifi: mt76: do not run mt76_unregister_device() on unregistered hw
