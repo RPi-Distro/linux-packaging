@@ -152,6 +152,9 @@ linux (6.1.21-1) UNRELEASED; urgency=medium
     - io_uring/msg_ring: let target know allocated index
     - perf: Fix check before add_event_to_groups() in perf_group_detach()
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 8
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 08 Apr 2023 21:17:35 +0200
 
 linux (6.1.20-2) unstable; urgency=medium
