@@ -1,4 +1,4 @@
-linux (6.1.21-1) UNRELEASED; urgency=medium
+linux (6.1.22-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.21
@@ -151,6 +151,187 @@ linux (6.1.21-1) UNRELEASED; urgency=medium
     - [amd64] virt/coco/sev-guest: Add throttling awareness
     - io_uring/msg_ring: let target know allocated index
     - perf: Fix check before add_event_to_groups() in perf_group_detach()
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.22
+    - perf/core: Fix perf_output_begin parameter is incorrectly invoked in
+      perf_event_bpf_output
+    - perf: fix perf_event_context->time
+    - drm/amd/display: Include virtual signal to set k1 and k2 values
+    - drm/amd/display: fix k1 k2 divider programming for phantom streams
+    - drm/amd/display: Remove OTG DIV register write for Virtual signals.
+    - mptcp: refactor passive socket initialization
+    - mptcp: use the workqueue to destroy unaccepted sockets
+    - mptcp: fix UaF in listener shutdown
+    - drm/amd/display: Fix DP MST sinks removal issue
+    - [x86] power: supply: bq24190: Fix use after free bug in bq24190_remove due
+      to race condition
+    - [arm64] dts: imx8dxl-evk: Disable hibernation mode of AR8031 for EQOS
+    - [arm64] dts: imx8dxl-evk: Fix eqos phy reset gpio
+    - NFS: Fix /proc/PID/io read_bytes for buffered reads
+    - xsk: Add missing overflow check in xdp_umem_reg
+    - iavf: fix inverted Rx hash condition leading to disabled hash
+    - iavf: fix non-tunneled IPv6 UDP packet type and hashing
+    - iavf: do not track VLAN 0 filters
+    - intel/igbvf: free irq on the error path in igbvf_request_msix()
+    - igbvf: Regard vf reset nack as success
+    - igc: fix the validation logic for taprio's gate list
+    - [arm64] i2c: imx-lpi2c: check only for enabled interrupt flags
+    - scsi: scsi_dh_alua: Fix memleak for 'qdata' in alua_activate()
+    - nfsd: don't replace page in rq_pages if it's a continuation of last page
+    - net: usb: smsc95xx: Limit packet length to skb->len
+    - efi/libstub: smbios: Use length member instead of record struct size
+    - qed/qed_sriov: guard against NULL derefs from qed_iov_get_vf_info
+    - net: phy: Ensure state transitions are processed from phy_stop()
+    - net: mdio: fix owner field for mdio buses registered using device-tree
+    - net: mdio: fix owner field for mdio buses registered using ACPI
+    - net: stmmac: Fix for mismatched host/device DMA address width
+    - [x86] drm/i915: Print return value on error
+    - [x86] drm/i915/fbdev: lock the fbdev obj before vma pin
+    - [x86] drm/i915/guc: Rename GuC register state capture node to be more
+      obvious
+    - [x86] drm/i915/guc: Fix missing ecodes
+    - [x86] drm/i915/gt: perform uc late init after probe error injection
+    - [arm64] net: qcom/emac: Fix use after free bug in emac_remove due to race
+      condition
+    - net: usb: lan78xx: Limit packet length to skb->len
+    - keys: Do not cache key in task struct if key is requested from kernel
+      thread
+    - ice: check if VF exists before mode check
+    - iavf: fix hang on reboot with ice
+    - i40e: fix flow director packet filter programming
+    - bpf: Adjust insufficient default bpf_jit_limit
+    - net/mlx5e: Set uplink rep as NETNS_LOCAL
+    - net/mlx5e: Block entering switchdev mode with ns inconsistency
+    - net/mlx5: Fix steering rules cleanup
+    - net/mlx5e: Overcome slow response for first macsec ASO WQE
+    - net/mlx5: Read the TC mapping of all priorities on ETS query
+    - net/mlx5: E-Switch, Fix an Oops in error handling code
+    - [armhf] net: dsa: tag_brcm: legacy: fix daisy-chained switches
+    - atm: idt77252: fix kmemleak when rmmod idt77252
+    - erspan: do not use skb_mac_header() in ndo_start_xmit()
+    - nvme-tcp: fix nvme_tcp_term_pdu to match spec
+    - hvc/xen: prevent concurrent accesses to the shared ring
+    - ksmbd: add low bound validation to FSCTL_SET_ZERO_DATA
+    - ksmbd: add low bound validation to FSCTL_QUERY_ALLOCATED_RANGES
+    - ksmbd: fix possible refcount leak in smb2_open()
+    - Bluetooth: hci_sync: Resume adv with no RPA when active scan
+    - Bluetooth: hci_core: Detect if an ACL packet is in fact an ISO packet
+    - Bluetooth: btusb: Remove detection of ISO packets over bulk
+    - Bluetooth: ISO: fix timestamped HCI ISO data packet parsing
+    - Bluetooth: Remove "Power-on" check from Mesh feature
+    - [amd64,arm64] gve: Cache link_speed value from device
+    - net: asix: fix modprobe "sysfs: cannot create duplicate filename"
+    - [arm64] net: mdio: thunder: Add missing fwnode_handle_put()
+    - drm/amd/display: Set dcn32 caps.seamless_odm
+    - Bluetooth: btqcomsmd: Fix command timeout after setting BD address
+    - Bluetooth: L2CAP: Fix responding with wrong PDU type
+    - Bluetooth: btsdio: fix use after free bug in btsdio_remove due to
+      unfinished work (CVE-2023-1989)
+    - Bluetooth: mgmt: Fix MGMT add advmon with RSSI command
+    - platform/chrome: cros_ec_chardev: fix kernel data leak from ioctl
+    - entry: Fix noinstr warning in __enter_from_user_mode()
+    - [x86] perf/x86/amd/core: Always clear status for idx
+    - entry/rcu: Check TIF_RESCHED _after_ delayed RCU wake-up
+    - hwmon: fix potential sensor registration fail if of_node is missing
+    - [x86] hwmon (it87): Fix voltage scaling for chips with 10.9mV ADCs
+    - scsi: qla2xxx: Synchronize the IOCB count to be in order
+    - scsi: qla2xxx: Perform lockless command completion in abort path
+    - smb3: lower default deferred close timeout to address perf regression
+    - smb3: fix unusable share after force unmount failure
+    - [x86] thunderbolt: Use scale field when allocating USB3 bandwidth
+    - [x86] thunderbolt: Call tb_check_quirks() after initializing adapters
+    - [x86] thunderbolt: Add quirk to disable CLx
+    - [x86] thunderbolt: Fix memory leak in margining
+    - [x86] thunderbolt: Disable interrupt auto clear for rings
+    - [x86] thunderbolt: Add missing UNSET_INBOUND_SBTX for retimer access
+    - [x86] thunderbolt: Use const qualifier for `ring_interrupt_index`
+    - [x86] thunderbolt: Rename shadowed variables bit to interrupt_bit and
+      auto_clear_bit
+    - [x86] ASoC: amd: yp: Add OMEN by HP Gaming Laptop 16z-n000 to quirks
+    - [x86] ASoC: amd: yc: Add DMI entries to support HP OMEN 16-n0xxx (8A43)
+    - [x86] ACPI: x86: Drop quirk for HP Elitebook
+    - [x86] ACPI: x86: utils: Add Cezanne to the list for forcing
+      StorageD3Enable
+    - drm/cirrus: NULL-check pipe->plane.state->fb in cirrus_pipe_update()
+    - HID: cp2112: Fix driver not registering GPIO IRQ chip as threaded
+    - HID: logitech-hidpp: Add support for Logitech MX Master 3S mouse
+    - [amd64] HID: intel-ish-hid: ipc: Fix potential use-after-free in work
+      function
+    - scsi: target: iscsi: Fix an error message in iscsi_check_key()
+    - scsi: qla2xxx: Add option to disable FC2 Target support
+    - [arm64] scsi: hisi_sas: Check devm_add_action() return value
+    - scsi: ufs: core: Add soft dependency on governor_simpleondemand
+    - scsi: lpfc: Check kzalloc() in lpfc_sli4_cgn_params_read()
+    - scsi: lpfc: Avoid usage of list iterator variable after loop
+    - scsi: mpi3mr: Driver unload crashes host when enhanced logging is enabled
+    - scsi: mpi3mr: Wait for diagnostic save during controller init
+    - scsi: mpi3mr: NVMe command size greater than 8K fails
+    - scsi: mpi3mr: Bad drive in topology results kernel crash
+    - scsi: storvsc: Handle BlockSize change in Hyper-V VHD/VHDX file
+    - net: usb: cdc_mbim: avoid altsetting toggling for Telit FE990
+    - net: usb: qmi_wwan: add Telit 0x1080 composition
+    - drm/amd/display: Update clock table to include highest clock setting
+    - drm/amdgpu: Fix call trace warning and hang when removing amdgpu device
+    - drm/amd: Fix initialization mistake for NBIO 7.3.0
+    - cifs: lock chan_lock outside match_session
+    - cifs: append path to open_enter trace event
+    - cifs: do not poll server interfaces too regularly
+    - cifs: empty interface list when server doesn't support query interfaces
+    - cifs: dump pending mids for all channels in DebugData
+    - cifs: print session id while listing open files
+    - cifs: fix dentry lookups in directory handle cache
+    - [x86] fpu/xstate: Prevent false-positive warning in
+      __copy_xstate_uabi_buf()
+    - scsi: core: Add BLIST_SKIP_VPD_PAGES for SKhynix H28U74301AMR
+    - [arm64] usb: dwc2: drd: fix inconsistent mode if
+      role-switch-default-mode="host"
+    - [arm64,armhf] usb: dwc2: fix a devres leak in hw_enable upon suspend
+      resume
+    - usb: gadget: u_audio: don't let userspace block driver unbind
+    - btrfs: zoned: fix btrfs_can_activate_zone() to support DUP profile
+    - Bluetooth: Fix race condition in hci_cmd_sync_clear
+    - efi: sysfb_efi: Fix DMI quirks not working for simpledrm
+    - mm/slab: Fix undefined init_cache_node_node() for NUMA and !SMP
+    - fscrypt: destroy keyring after security_sb_delete()
+    - fsverity: Remove WQ_UNBOUND from fsverity read workqueue
+    - lockd: set file_lock start and end when decoding nlm4 testargs
+    - [arm64] dts: imx8mm-nitrogen-r2: fix WM8960 clock name
+    - igb: revert rtnl_lock() that causes deadlock
+    - dm thin: fix deadlock when swapping to thin device
+    - usb: typec: tcpm: fix create duplicate source-capabilities file
+    - usb: typec: tcpm: fix warning when handle discover_identity message
+    - [arm64,armhf] usb: chipdea: core: fix return -EINVAL if request role is
+      the same with current role
+    - [arm64,armhf] usb: chipidea: core: fix possible concurrent when switch
+      role
+    - [arm64,armhf] usb: dwc3: gadget: Add 1ms delay after end transfer command
+      without IOC
+    - io_uring/net: avoid sending -ECONNABORTED on repeated connection requests
+    - io_uring/rsrc: fix null-ptr-deref in io_file_bitmap_get() (CVE-2023-1583)
+    - maple_tree: fix mas_skip_node() end slot detection
+    - ksmbd: fix wrong signingkey creation when encryption is AES256
+    - ksmbd: set FILE_NAMED_STREAMS attribute in FS_ATTRIBUTE_INFORMATION
+    - ksmbd: don't terminate inactive sessions after a few seconds
+    - ksmbd: return STATUS_NOT_SUPPORTED on unsupported smb2.0 dialect
+    - ksmbd: return unsupported error on smb1 mount
+    - wifi: mac80211: fix qos on mesh interfaces
+    - nilfs2: fix kernel-infoleak in nilfs_ioctl_wrap_copy()
+    - drm/amd/display: fix wrong index used in dccg32_set_dpstreamclk
+    - [arm64] drm/meson: fix missing component unbind on bind errors
+    - drm/amdgpu/nv: Apply ASPM quirk on Intel ADL + AMD Navi
+    - [x86] drm/i915/active: Fix missing debug object activation
+    - [x86] drm/i915: Preserve crtc_state->inherited during state clearing
+    - drm/amdgpu: skip ASIC reset for APUs when go to S4
+    - drm/amdgpu: reposition the gpu reset checking for reuse
+    - [arm64] firmware: arm_scmi: Fix device node validation for mailbox
+      transport
+    - mm/ksm: fix race with VMA iteration and mm_struct teardown
+    - [arm64] i2c: xgene-slimpro: Fix out-of-bounds bug in
+      xgene_slimpro_i2c_xfer()
+    - dm stats: check for and propagate alloc_percpu failure
+    - dm crypt: add cond_resched() to dmcrypt_write()
+    - dm crypt: avoid accessing uninitialized tasklet
+    - sched/fair: sanitize vruntime of entity being placed
+    - sched/fair: Sanitize vruntime of entity being migrated
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 8
