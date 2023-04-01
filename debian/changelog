@@ -26,6 +26,11 @@ linux (6.1.20-2) UNRELEASED; urgency=medium
   [ Diederik de Haas ]
   * [arm64,armhf] Enable DRM_PANEL_FEIYANG_FY07024DI26A30D as module
 
+  [ Cyril Brulebois ]
+  * udeb: add intel_lpss* (optional) to kernel-image (Closes: #1032136)
+    Many laptops have their touchpad accessible over I2C, only visible
+    if LPSS is available in the installer.
+
  -- Ben Hutchings <benh@debian.org>  Sun, 19 Mar 2023 21:28:43 +0100
 
 linux (6.1.20-1) unstable; urgency=medium
