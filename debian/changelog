@@ -31,6 +31,9 @@ linux (6.1.20-2) UNRELEASED; urgency=medium
     Many laptops have their touchpad accessible over I2C, only visible
     if LPSS is available in the installer.
 
+  [ Salvatore Bonaccorso ]
+  * [x86] acpi/boot: Correct acpi_is_processor_usable() check (Closes: #1033732)
+
  -- Ben Hutchings <benh@debian.org>  Sun, 19 Mar 2023 21:28:43 +0100
 
 linux (6.1.20-1) unstable; urgency=medium
