@@ -1,4 +1,4 @@
-linux (6.1.22-1) UNRELEASED; urgency=medium
+linux (6.1.23-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.21
@@ -332,6 +332,140 @@ linux (6.1.22-1) UNRELEASED; urgency=medium
     - dm crypt: avoid accessing uninitialized tasklet
     - sched/fair: sanitize vruntime of entity being placed
     - sched/fair: Sanitize vruntime of entity being migrated
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.23
+    - [x86] thunderbolt: Limit USB3 bandwidth of certain Intel USB4 host routers
+    - cifs: update ip_addr for ses only for primary chan setup
+    - cifs: prevent data race in cifs_reconnect_tcon()
+    - cifs: avoid race conditions with parallel reconnects
+    - zonefs: Reorganize code
+    - zonefs: Simplify IO error handling
+    - zonefs: Reduce struct zonefs_inode_info size
+    - zonefs: Separate zone information from inode information
+    - zonefs: Fix error message in zonefs_file_dio_append()
+    - fsverity: don't drop pagecache at end of FS_IOC_ENABLE_VERITY
+    - btrfs: rename BTRFS_FS_NO_OVERCOMMIT to BTRFS_FS_ACTIVE_ZONE_TRACKING
+    - btrfs: zoned: count fresh BG region as zone unusable
+    - [armhf] dts: aspeed: p10bmc: Update battery node name
+    - [arm64] drm/msm/dpu: Refactor sc7280_pp location
+    - [arm64] drm/msm/dpu: correct sm8250 and sm8350 scaler
+    - [arm64] drm/msm/disp/dpu: fix sc7280_pp base offset
+    - [arm64] tty: serial: fsl_lpuart: switch to new dmaengine_terminate_* API
+    - [arm64] tty: serial: fsl_lpuart: fix race on RX DMA shutdown
+    - tracing: Add .percent suffix option to histogram values
+    - tracing: Add .graph suffix option to histogram value
+    - tracing: Do not let histogram values have some modifiers
+    - [arm64] net: mscc: ocelot: fix stats region batching
+    - [arm64] efi: Set NX compat flag in PE/COFF header
+    - cifs: fix missing unload_nls() in smb2_reconnect()
+    - xfrm: Zero padding when dumping algos and encap
+    - zstd: Fix definition of assert()
+    - ACPI: video: Add backlight=native DMI quirk for Dell Vostro 15 3535
+    - [x86] ASoC: SOF: ipc3: Check for upper size limit for the received message
+    - [x86] ASoC: SOF: ipc4-topology: Fix incorrect sample rate print unit
+    - [x86] ASoC: SOF: Intel: pci-tng: revert invalid bar size setting
+    - [x86] ASoC: SOF: IPC4: update gain ipc msg definition to align with fw
+    - md: avoid signed overflow in slot_store()
+    - [amd64] x86/PVH: obtain VGA console info in Dom0
+    - ALSA: asihpi: check pao in control_message()
+    - ALSA: hda/ca0132: fixup buffer overrun at tuning_ctl_set()
+    - sched_getaffinity: don't assume 'cpumask_size()' is fully initialized
+    - nvme-pci: add NVME_QUIRK_BOGUS_NID for Lexar NM620
+    - net/mlx5e: Lower maximum allowed MTU in XSK to match XDP prerequisites
+    - tracing: Fix wrong return in kprobe_event_gen_test.c
+    - btrfs: fix uninitialized variable warning in btrfs_update_block_group
+    - btrfs: use temporary variable for space_info in btrfs_update_block_group
+    - ALSA: usb-audio: Fix recursive locking at XRUN during syncing
+    - [arm64,armhf] PCI: dwc: Fix PORT_LINK_CONTROL update when CDM check
+      enabled
+    - [x86] platform/x86: think-lmi: add missing type attribute
+    - [x86] platform/x86: think-lmi: use correct possible_values delimiters
+    - [x86] platform/x86: think-lmi: only display possible_values if available
+    - [x86] platform/x86: think-lmi: Add possible_values for ThinkStation
+    - [x86] platform/surface: aggregator: Add missing fwnode_handle_put()
+    - SUNRPC: fix shutdown of NFS TCP client socket
+    - sfc: ef10: don't overwrite offload features at NIC reset
+    - scsi: megaraid_sas: Fix crash after a double completion
+    - scsi: mpt3sas: Don't print sense pool info twice
+    - [arm64] ptp_qoriq: fix memory leak in probe()
+    - r8169: fix RTL8168H and RTL8107E rx crc error
+    - [arm*] regulator: Handle deferred clk
+    - net/net_failover: fix txq exceeding warning
+    - net: stmmac: don't reject VLANs when IFF_PROMISC is set
+    - [x86] drm/i915/tc: Fix the ICL PHY ownership check in TC-cold state
+    - [x86] platform/x86/intel/pmc: Alder Lake PCH slp_s0_residency fix
+    - can: bcm: bcm_tx_setup(): fix KMSAN uninit-value in vfs_write
+    - ACPI: bus: Rework system-level device notification handling
+    - loop: LOOP_CONFIGURE: send uevents for partitions
+    - [arm64,armhf] net: mvpp2: classifier flow fix fragmentation flags
+    - [arm64,armhf] net: mvpp2: parser fix QinQ
+    - [arm64,armhf] net: mvpp2: parser fix PPPoE
+    - [arm64,armhf] smsc911x: avoid PHY being resumed when interface is not up
+    - ice: Fix ice_cfg_rdma_fltr() to only update relevant fields
+    - ice: add profile conflict check for AVF FDIR
+    - ice: fix invalid check for empty list in ice_sched_assoc_vsi_to_agg()
+    - ALSA: ymfpci: Create card with device-managed snd_devm_card_new()
+    - ALSA: ymfpci: Fix BUG_ON in probe function
+    - i40e: fix registers dump after run ethtool adapter self test
+    - bnxt_en: Fix reporting of test result in ethtool selftest
+    - bnxt_en: Fix typo in PCI id to device description string mapping
+    - bnxt_en: Add missing 200G link speed reporting
+    - [arm64,armhf] net: dsa: mv88e6xxx: Enable IGMP snooping on user ports only
+    - Input: xpad - fix incorrectly applied patch for MAP_PROFILE_BUTTON
+    - [amd64] iommu/vt-d: Allow zero SAGAW if second-stage not supported
+    - Input: alps - fix compatibility with -funsigned-char
+    - Input: focaltech - use explicitly signed char type
+    - cifs: prevent infinite recursion in CIFSGetDFSRefer()
+    - cifs: fix DFS traversal oops without CONFIG_CIFS_DFS_UPCALL
+    - Input: goodix - add Lenovo Yoga Book X90F to nine_bytes_report DMI table
+    - btrfs: fix deadlock when aborting transaction during relocation with scrub
+    - btrfs: fix race between quota disable and quota assign ioctls
+      (CVE-2023-1611)
+    - btrfs: scan device in non-exclusive mode
+    - zonefs: Do not propagate iomap_dio_rw() ENOTBLK error to user space
+    - block/io_uring: pass in issue_flags for uring_cmd task_work handling
+    - io_uring/poll: clear single/double poll flags on poll arming
+    - io_uring/rsrc: fix rogue rsrc node grabbing
+    - io_uring: fix poll/netmsg alloc caches
+    - vmxnet3: use gro callback when UPT is enabled
+    - zonefs: Always invalidate last cached page on append write
+    - dm: fix __send_duplicate_bios() to always allow for splitting IO
+    - can: j1939: prevent deadlock by moving j1939_sk_errqueue()
+    - xen/netback: don't do grant copy across page boundary
+    - modpost: Fix processing of CRCs on 32-bit build machines
+      (Closes: #1033329)
+    - pinctrl: amd: Disable and mask interrupts on resume
+    - [x86] platform/x86: ideapad-laptop: Stop sending KEY_TOUCHPAD_TOGGLE
+    - [powerpc*] Don't try to copy PPR for task with NULL pt_regs
+    - [powerpc*] pseries/vas: Ignore VAS update for DLPAR if copy/paste is not
+      enabled
+    - NFSv4: Fix hangs when recovering open state after a server reboot
+    - ALSA: hda/conexant: Partial revert of a quirk for Lenovo
+    - ALSA: usb-audio: Fix regression on detection of Roland VS-100
+    - ALSA: hda/realtek: Add quirks for some Clevo laptops
+    - ALSA: hda/realtek: Add quirk for Lenovo ZhaoYang CF4620Z
+    - rcu: Fix rcu_torture_read ftrace event
+    - [s390x] uaccess: add missing earlyclobber annotations to __clear_user()
+    - [arm64,armhf] drm/etnaviv: fix reference leak when mmaping imported buffer
+    - drm/amdgpu: allow more APUs to do mode2 reset when go to S4
+    - drm/amd/display: Add DSC Support for Synaptics Cascaded MST Hub
+    - drm/amd/display: Take FEC Overhead into Timeslot Calculation
+    - [x86] drm/i915/gem: Flush lmem contents after construction
+    - [x86] drm/i915/dpt: Treat the DPT BO as a framebuffer
+    - [x86] drm/i915: Disable DC states for all commits
+    - [x86] drm/i915: Move CSC load back into .color_commit_arm() when PSR is
+      enabled on skl/glk
+    - [arm64] KVM: arm64: PMU: Fix GET_ONE_REG for vPMC regs to return the
+      current value
+    - [arm64] KVM: arm64: Disable interrupts while walking userspace PTs
+    - [arm64,armhf] net: dsa: mv88e6xxx: read FID when handling ATU violations
+    - [arm64,armhf] net: dsa: mv88e6xxx: replace ATU violation prints with trace
+      points
+    - [arm64,armhf] net: dsa: mv88e6xxx: replace VTU violation prints with trace
+      points
+    - usb: ucsi: Fix ucsi->connector race
+    - [amd64] x86/PVH: avoid 32-bit build warning when obtaining VGA console
+      info
+    - Revert "cpuidle, intel_idle: Fix CPUIDLE_FLAG_IRQ_ENABLE *again*"
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 8
