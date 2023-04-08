@@ -36,6 +36,8 @@ linux (6.1.20-2) UNRELEASED; urgency=medium
   * usb: ucsi: Fix NULL pointer deref in ucsi_connector_change()
     (Closes: #1032948)
   * usb: ucsi_acpi: Increase the command completion timeout (Closes: #1032948)
+  * [arm64] hwmon: (xgene) Fix use after free bug in xgene_hwmon_remove due to
+    race condition (CVE-2023-1855)
 
   [ Henning Schild ]
   * [x86] drivers/gpio: Enable GPIO_F7188X as module
