@@ -125,6 +125,7 @@ features/all/db-mok-keyring/trust-machine-keyring-by-default.patch
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
 bugfix/arm64/hwmon-xgene-Fix-use-after-free-bug-in-xgene_hwmon_re.patch
+bugfix/all/net-sched-act_mirred-better-wording-on-protection-ag.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
