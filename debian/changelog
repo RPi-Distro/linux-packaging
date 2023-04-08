@@ -36,6 +36,14 @@ linux (6.1.20-2) UNRELEASED; urgency=medium
   * usb: ucsi: Fix NULL pointer deref in ucsi_connector_change()
     (Closes: #1032948)
   * usb: ucsi_acpi: Increase the command completion timeout (Closes: #1032948)
+  * [arm64] hwmon: (xgene) Fix use after free bug in xgene_hwmon_remove due to
+    race condition (CVE-2023-1855)
+  * net/sched: act_mirred: better wording on protection against excessive stack
+    growth
+  * act_mirred: use the backlog for nested calls to mirred ingress
+    (CVE-2022-4269)
+  * [x86] xirc2ps_cs: Fix use after free bug in xirc2ps_detach (CVE-2023-1670)
+  * Bluetooth: HCI: Fix global-out-of-bounds (CVE-2023-28866)
 
   [ Henning Schild ]
   * [x86] drivers/gpio: Enable GPIO_F7188X as module
