@@ -111,6 +111,7 @@ extract-source:
 
 build:
   stage: build
+  timeout: 3 hours
   image: $SALSA_CI_IMAGES_BASE
   cache:
     key: "build-${BUILD_ARCH}_${HOST_ARCH}"

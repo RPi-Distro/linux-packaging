@@ -1,3 +1,55 @@
+linux (6.1.20-2) unstable; urgency=medium
+
+  [ Hans van Kranenburg ]
+  * d/t/control.tools-unversioned.in: version rtla build deps
+
+  [ Helmut Grohne ]
+  * Fix FTCBFS: Supply the host pkg-config to the rtla build. (Closes: #1019118)
+
+  [ Francesco Dolcini ]
+  * [armhf] Add support for NXP i.MX7 SOC (Closes: #1031180)
+
+  [ Martyn Welch ]
+  * [arm64] ti: am62x: Enable support for am625-sk eval board
+  * d/salsa-ci.yml: Increase timeout of CI build stage to 3 hours
+
+  [ наб ]
+  * Re-instate "KEYS: Make use of platform keyring for module signature verify"
+    (Closes: #1030200)
+
+  [ Vincent Blut ]
+  * drivers/input/touchscreen: Enable TOUCHSCREEN_SILEAD as module
+    (Closes: #925424)
+  * [x86] drivers/platform/x86: Enable TOUCHSCREEN_DMI
+  * drivers/scsi/mpi3mr: Enable SCSI_MPI3MR as module (Closes: #1033566)
+
+  [ Diederik de Haas ]
+  * [arm64,armhf] Enable DRM_PANEL_FEIYANG_FY07024DI26A30D as module
+
+  [ Cyril Brulebois ]
+  * udeb: add intel_lpss* (optional) to kernel-image (Closes: #1032136)
+    Many laptops have their touchpad accessible over I2C, only visible
+    if LPSS is available in the installer.
+
+  [ Salvatore Bonaccorso ]
+  * [x86] acpi/boot: Correct acpi_is_processor_usable() check (Closes: #1033732)
+  * usb: ucsi: Fix NULL pointer deref in ucsi_connector_change()
+    (Closes: #1032948)
+  * usb: ucsi_acpi: Increase the command completion timeout (Closes: #1032948)
+  * [arm64] hwmon: (xgene) Fix use after free bug in xgene_hwmon_remove due to
+    race condition (CVE-2023-1855)
+  * net/sched: act_mirred: better wording on protection against excessive stack
+    growth
+  * act_mirred: use the backlog for nested calls to mirred ingress
+    (CVE-2022-4269)
+  * [x86] xirc2ps_cs: Fix use after free bug in xirc2ps_detach (CVE-2023-1670)
+  * Bluetooth: HCI: Fix global-out-of-bounds (CVE-2023-28866)
+
+  [ Henning Schild ]
+  * [x86] drivers/gpio: Enable GPIO_F7188X as module
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 08 Apr 2023 17:36:24 +0200
+
 linux (6.1.20-1) unstable; urgency=medium
 
   * New upstream stable update:

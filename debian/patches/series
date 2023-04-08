@@ -71,6 +71,7 @@ bugfix/arm/arm-mm-export-__sync_icache_dcache-for-xen-privcmd.patch
 bugfix/powerpc/powerpc-boot-fix-missing-crc32poly.h-when-building-with-kernel_xz.patch
 bugfix/arm64/arm64-acpi-Add-fixup-for-HPE-m400-quirks.patch
 bugfix/alpha/alpha-fix-missing-symbol-versions-for-str-n-cat-cpy.patch
+bugfix/x86/x86-acpi-boot-Correct-acpi_is_processor_usable-check.patch
 
 # Arch features
 features/arm64/dt-bindings-rockchip-Add-Hardkernel-ODROID-M1-board.patch
@@ -104,6 +105,8 @@ features/arm64/quartz64/arm64-dts-rockchip-Add-SOQuartz-Model-A-baseboard.patch
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
+bugfix/all/usb-ucsi-Fix-NULL-pointer-deref-in-ucsi_connector_ch.patch
+bugfix/all/usb-ucsi_acpi-Increase-the-command-completion-timeou.patch
 
 # Miscellaneous features
 
@@ -115,11 +118,17 @@ features/all/lockdown/arm64-add-kernel-config-option-to-lock-down-when.patch
 
 # Improve integrity platform keyring for kernel modules verification
 features/all/db-mok-keyring/0003-MODSIGN-checking-the-blacklisted-hash-before-loading-a-kernel-module.patch
+features/all/db-mok-keyring/KEYS-Make-use-of-platform-keyring-for-module-signature.patch
 features/all/db-mok-keyring/trust-machine-keyring-by-default.patch
 
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
+bugfix/arm64/hwmon-xgene-Fix-use-after-free-bug-in-xgene_hwmon_re.patch
+bugfix/all/net-sched-act_mirred-better-wording-on-protection-ag.patch
+bugfix/all/act_mirred-use-the-backlog-for-nested-calls-to-mirre.patch
+bugfix/x86/xirc2ps_cs-Fix-use-after-free-bug-in-xirc2ps_detach.patch
+bugfix/all/Bluetooth-HCI-Fix-global-out-of-bounds.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
