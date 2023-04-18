@@ -1,3 +1,9 @@
+linux (6.5.1-1~exp2) UNRELEASED; urgency=medium
+
+  * Enable KFENCE support (not enabled by default) (Closes: #1025845)
+
+ -- Christian Göttsche <cgzones@googlemail.com>  Sun, 03 Sep 2023 18:23:17 +0200
+
 linux (6.5.1-1~exp1) experimental; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_6.5
