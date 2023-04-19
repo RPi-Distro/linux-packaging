@@ -877,6 +877,18 @@ CONFIG_VMXNET3=m
 CONFIG_CAN_FLEXCAN=m
 
 ##
+## file: drivers/net/can/c_can/Kconfig
+##
+CONFIG_CAN_C_CAN=m
+CONFIG_CAN_C_CAN_PLATFORM=m
+
+##
+## file: drivers/net/can/m_can/Kconfig
+##
+CONFIG_CAN_M_CAN=m
+CONFIG_CAN_M_CAN_PLATFORM=m
+
+##
 ## file: drivers/net/dsa/Kconfig
 ##
 CONFIG_NET_DSA_MV88E6060=m

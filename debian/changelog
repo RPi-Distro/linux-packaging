@@ -625,6 +625,9 @@ linux (6.1.24-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 8
+  * [arm64] drivers/net/can: Enable CAN_C_CAN, CAN_C_CAN_PLATFORM, CAN_M_CAN and
+    CAN_M_CAN_PLATFORM as module.
+    Move configuration enablement to arm64 specific configuration.
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 08 Apr 2023 21:17:35 +0200
 
