@@ -326,7 +326,7 @@ linux (6.1.24-1) UNRELEASED; urgency=medium
       transport
     - mm/ksm: fix race with VMA iteration and mm_struct teardown
     - [arm64] i2c: xgene-slimpro: Fix out-of-bounds bug in
-      xgene_slimpro_i2c_xfer()
+      xgene_slimpro_i2c_xfer() (CVE-2023-2194)
     - dm stats: check for and propagate alloc_percpu failure
     - dm crypt: add cond_resched() to dmcrypt_write()
     - dm crypt: avoid accessing uninitialized tasklet
