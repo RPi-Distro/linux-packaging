@@ -1,4 +1,4 @@
-linux (6.1.24-1) UNRELEASED; urgency=medium
+linux (6.1.25-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.21
@@ -622,6 +622,122 @@ linux (6.1.24-1) UNRELEASED; urgency=medium
     - maple_tree: add smp_rmb() to dead node detection
     - maple_tree: add RCU lock checking to rcu callback functions
     - mm: enable maple tree RCU mode by default.
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.25
+    - Revert "pinctrl: amd: Disable and mask interrupts on resume"
+    - drm/amd/display: Pass the right info to drm_dp_remove_payload
+    - ALSA: emu10k1: fix capture interrupt handler unlinking
+    - ALSA: hda/sigmatel: add pin overrides for Intel DP45SG motherboard
+    - ALSA: i2c/cs8427: fix iec958 mixer control deactivation
+    - ALSA: hda: patch_realtek: add quirk for Asus N7601ZM
+    - ALSA: hda/realtek: Add quirks for Lenovo Z13/Z16 Gen2
+    - ALSA: firewire-tascam: add missing unwind goto in
+      snd_tscm_stream_start_duplex()
+    - ALSA: emu10k1: don't create old pass-through playback device on Audigy
+    - ALSA: hda/sigmatel: fix S/PDIF out on Intel D*45* motherboards
+    - ALSA: hda/hdmi: disable KAE for Intel DG2
+    - Bluetooth: L2CAP: Fix use-after-free in l2cap_disconnect_{req,rsp}
+    - Bluetooth: Fix race condition in hidp_session_thread
+    - bluetooth: btbcm: Fix logic error in forming the board name.
+    - Bluetooth: Free potentially unfreed SCO connection
+    - Bluetooth: hci_conn: Fix possible UAF
+    - btrfs: restore the thread_pool= behavior in remount for the end I/O
+      workqueues
+    - btrfs: fix fast csum implementation detection
+    - fbmem: Reject FB_ACTIVATE_KD_TEXT from userspace
+    - mtdblock: tolerate corrected bit-flips
+    - [armhf] mtd: rawnand: stm32_fmc2: remove unsupported EDO mode
+    - [armhf] mtd: rawnand: stm32_fmc2: use timings.mode instead of checking
+      tRC_min
+    - [arm64] KVM: arm64: PMU: Restore the guest's EL0 event counting after
+      migration
+    - fbcon: Fix error paths in set_con2fb_map
+    - fbcon: set_con2fb_map needs to set con2fb_map!
+    - [x86] drm/i915/dsi: fix DSS CTL register offsets for TGL+
+    - RDMA/irdma: Do not generate SW completions for NOPs
+    - RDMA/irdma: Fix memory leak of PBLE objects
+    - RDMA/irdma: Increase iWARP CM default rexmit count
+    - RDMA/irdma: Add ipv4 check to irdma_find_listener()
+    - IB/mlx5: Add support for 400G_8X lane speed
+    - RDMA/cma: Allow UD qp_type to join multicast only
+    - bpf: tcp: Use sock_gen_put instead of sock_put in bpf_iter_tcp
+    - 9p/xen : Fix use after free bug in xen_9pfs_front_remove due to race
+      condition (CVE-2023-1859)
+    - [arm64] bpf, arm64: Fixed a BTI error on returning to patched function
+    - [arm64] KVM: arm64: Initialise hypervisor copies of host symbols
+      unconditionally
+    - [arm64] KVM: arm64: Advertise ID_AA64PFR0_EL1.CSV2/3 to protected VMs
+    - niu: Fix missing unwind goto in niu_alloc_channels()
+    - tcp: restrict net.ipv4.tcp_app_win
+    - bonding: fix ns validation on backup slaves
+    - iavf: refactor VLAN filter states
+    - iavf: remove active_cvlans and active_svlans bitmaps
+    - net: openvswitch: fix race on port output
+    - Bluetooth: hci_conn: Fix not cleaning up on LE Connection failure
+    - Bluetooth: Fix printing errors if LE Connection times out
+    - Bluetooth: SCO: Fix possible circular locking dependency
+      sco_sock_getsockopt
+    - Bluetooth: Set ISO Data Path on broadcast sink
+    - [armhf] drm/armada: Fix a potential double free in an error handling path
+    - qlcnic: check pci_reset_function result
+    - net: wwan: iosm: Fix error handling path in ipc_pcie_probe()
+    - cgroup,freezer: hold cpu_hotplug_lock before freezer_mutex
+    - net: qrtr: Fix an uninit variable access bug in qrtr_tx_resume()
+    - sctp: fix a potential overflow in sctp_ifwdtsn_skip
+    - RDMA/core: Fix GID entry ref leak when create_ah fails
+    - udp6: fix potential access to stale information
+    - [arm64] net: macb: fix a memory corruption in extended buffer descriptor
+      mode
+    - skbuff: Fix a race between coalescing and releasing SKBs
+    - [arm64] power: supply: rk817: Fix unsigned comparison with less than zero
+    - [arm64] power: supply: cros_usbpd: reclassify "default case!" as debug
+    - [x86] power: supply: axp288_fuel_gauge: Added check for negative values
+    - wifi: mwifiex: mark OF related data as maybe unused
+    - [arm64] i2c: imx-lpi2c: clean rx/tx buffers upon new message
+    - efi: sysfb_efi: Add quirk for Lenovo Yoga Book X91F/L
+    - [x86] ACPI: video: Add backlight=native DMI quirk for Acer Aspire 3830TG
+    - drm: panel-orientation-quirks: Add quirk for Lenovo Yoga Book X90F
+    - [arm64] hwmon: (xgene) Fix ioremap and memremap leak
+    - [amd64] verify_pefile: relax wrapper length check
+    - asymmetric_keys: log on fatal failures in PE/pkcs7
+    - nvme: send Identify with CNS 06h only to I/O controllers
+    - wifi: iwlwifi: mvm: fix mvmtxq->stopped handling
+    - wifi: iwlwifi: mvm: protect TXQ list manipulation
+    - drm/amdgpu: add mes resume when do gfx post soft reset
+    - drm/amdgpu: Force signal hw_fences that are embedded in non-sched jobs
+    - drm/amdgpu/gfx: set cg flags to enter/exit safe mode
+    - ACPI: resource: Add Medion S17413 to IRQ override quirk
+    - [x86] hyperv: Move VMCB enlightenment definitions to hyperv-tlfs.h
+    - [x86] KVM: SVM: Add a proper field for Hyper-V VMCB enlightenments
+    - [x86] hyperv: KVM: Rename "hv_enlightenments" to "hv_vmcb_enlightenments"
+    - [x86] KVM: SVM: Flush Hyper-V TLB when required
+    - tracing: Add trace_array_puts() to write into instance
+    - tracing: Have tracing_snapshot_instance_cond() write errors to the
+      appropriate instance
+    - maple_tree: fix write memory barrier of nodes once dead for RCU mode
+    - ksmbd: avoid out of bounds access in decode_preauth_ctxt()
+    - [riscv64] add icache flush for nommu sigreturn trampoline
+    - [amd64] HID: intel-ish-hid: Fix kernel panic during warm reset
+    - net: sfp: initialize sfp->i2c_block_size at sfp allocation
+    - scsi: ses: Handle enclosure with just a primary component gracefully
+    - [x86] PCI: Add quirk for AMD XHCI controller that loses MSI-X state in
+      D3hot
+    - cgroup: fix display of forceidle time at root
+    - cgroup/cpuset: Fix partition root's cpuset.cpus update bug
+    - cgroup/cpuset: Wake up cpuset_attach_wq tasks in cpuset_cancel_attach()
+    - mptcp: use mptcp_schedule_work instead of open-coding it
+    - mptcp: stricter state check in mptcp_worker
+    - ubi: Fix failure attaching when vid_hdr offset equals to (sub)page size
+    - ubi: Fix deadlock caused by recursively holding work_sem
+    - [powerpc*] papr_scm: Update the NUMA distance table for the target node
+    - sched/fair: Fix imbalance overflow
+    - [x86] rtc: Remove __init for runtime functions
+    - i2c: ocores: generate stop condition after timeout in polling mode
+    - cifs: fix negotiate context parsing
+    - nvme-pci: mark Lexar NM760 as IGNORE_DEV_SUBNQN
+    - nvme-pci: add NVME_QUIRK_BOGUS_NID for T-FORCE Z330 SSD
+    - cgroup/cpuset: Skip spread flags update on v2
+    - cgroup/cpuset: Make cpuset_fork() handle CLONE_INTO_CGROUP properly
+    - cgroup/cpuset: Add cpuset_can_fork() and cpuset_cancel_fork() methods
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 8
