@@ -1,4 +1,4 @@
-linux (6.1.25-1) UNRELEASED; urgency=medium
+linux (6.1.25-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.21
@@ -750,7 +750,7 @@ linux (6.1.25-1) UNRELEASED; urgency=medium
     This fixes the hang/black screen in Debian Installer on ppc64el, with
     thanks to Frédéric Bonnard for the detailed bug report.
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 08 Apr 2023 21:17:35 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 22 Apr 2023 20:48:02 +0200
 
 linux (6.1.20-2) unstable; urgency=medium
 
