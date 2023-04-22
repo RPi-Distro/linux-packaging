@@ -138,4 +138,7 @@ bugfix/all/tools-perf-pmu-events-fix-reproducibility.patch
 bugfix/all/libapi-define-_fortify_source-as-2-not-empty.patch
 bugfix/all/tools-perf-fix-missing-ldflags-for-some-programs.patch
 
+# debian-installer fixes
+bugfix/powerpc/fbdev-offb-Update-expected-device-name.patch
+
 # ABI maintenance
