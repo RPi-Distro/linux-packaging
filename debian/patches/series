@@ -112,6 +112,8 @@ bugfix/all/cpupower-fix-checks-for-cpu-existence.patch
 bugfix/all/tools-perf-pmu-events-fix-reproducibility.patch
 bugfix/all/libapi-define-_fortify_source-as-2-not-empty.patch
 bugfix/all/tools-perf-fix-missing-ldflags-for-some-programs.patch
+bugfix/all/tools_lib_symbol_use_d_fortify_source_2_for_non_debug_builds.patch
+bugfix/all/usbip_use__fortify_source_2_instead_of_implicitly_1.patch
 
 # debian-installer fixes
 bugfix/powerpc/fbdev-offb-Update-expected-device-name.patch
