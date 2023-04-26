@@ -1,9 +1,9 @@
 linux (6.1.25-2) UNRELEASED; urgency=medium
 
   [ Punit Agrawal ]
-  * [arm64] drivers/hwtracing/coresight: Enable components
+  * [arm64,armhf] drivers/hwtracing/coresight: Enable components
 
- -- Punit Agrawal <punit@debian.org>  Wed, 26 Apr 2023 21:30:43 +0100
+ -- Punit Agrawal <punit@debian.org>  Wed, 26 Apr 2023 21:33:03 +0100
 
 linux (6.1.25-1) unstable; urgency=medium
 
