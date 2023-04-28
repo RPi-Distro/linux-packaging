@@ -106,6 +106,7 @@ linux (6.1.26-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * netfilter: nf_tables: deactivate anonymous set from preparation phase
     (CVE-2023-32233)
+  * Bump ABI to 9
 
  -- Aurelien Jarno <aurel32@debian.org>  Sun, 23 Apr 2023 17:06:46 +0200
 
