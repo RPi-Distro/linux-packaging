@@ -188,7 +188,6 @@ CONFIG_INPUT_MOUSEDEV=y
 ##
 ## file: drivers/input/joystick/Kconfig
 ##
-CONFIG_INPUT_JOYSTICK=y
 # CONFIG_JOYSTICK_ANALOG is not set
 # CONFIG_JOYSTICK_A3D is not set
 # CONFIG_JOYSTICK_ADI is not set

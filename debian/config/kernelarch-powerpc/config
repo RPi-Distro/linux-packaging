@@ -284,11 +284,6 @@ CONFIG_GAMEPORT_EMU10K1=m
 CONFIG_GAMEPORT_FM801=m
 
 ##
-## file: drivers/input/joystick/Kconfig
-##
-CONFIG_INPUT_JOYSTICK=y
-
-##
 ## file: drivers/input/keyboard/Kconfig
 ##
 CONFIG_INPUT_KEYBOARD=y
