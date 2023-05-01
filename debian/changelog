@@ -1,4 +1,4 @@
-linux (6.1.26-1) UNRELEASED; urgency=medium
+linux (6.1.27-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.26
@@ -82,6 +82,23 @@ linux (6.1.26-1) UNRELEASED; urgency=medium
     - mm/page_alloc: fix potential deadlock on zonelist_update_seq seqlock
     - [x86] ASoC: SOF: pm: Tear down pipelines only if DSP was active
     - ASN.1: Fix check for strdup() success
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.27
+    - [arm64] KVM: arm64: Retry fault if vma_lookup() results become invalid
+    - mm/mempolicy: fix use-after-free of VMA iterator
+    - mptcp: stops worker on unaccepted sockets at listener close
+    - mptcp: fix accept vs worker race
+    - wifi: brcmfmac: slab-out-of-bounds read in brcmf_get_assoc_ies()
+      (CVE-2023-1380)
+    - drm/fb-helper: set x/yres_virtual in drm_fb_helper_check_var
+    - gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xNU
+    - bluetooth: Perform careful capability checks in hci_sock_ioctl()
+      (CVE-2023-2002)
+    - btrfs: fix uninitialized variable warnings
+    - USB: serial: option: add UNISOC vendor and TOZED LT70C product
+    - driver core: Don't require dynamic_debug for initcall_debug probe timing
+    - [riscv64] Move early dtb mapping into the fixmap region
+    - [riscv64] Do not set initial_boot_params to the linear address of the dtb
+    - [riscv64] No need to relocate the dtb as it lies in the fixmap region
 
   [ Aurelien Jarno ]
   * [armhf] Asymmetric Multi Processing on STM32MP1: Enable STM32_IPCC,
