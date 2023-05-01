@@ -148,11 +148,11 @@ class Gencontrol(Base):
                     # convince debhelper and kernel-wedge to go
                     # part way to building them.
                     package['Build-Profiles'] = (
-                        '<pkg.linux.udeb-unsigned-test-build !stage1'
+                        '<pkg.linux.udeb-unsigned-test-build !noudeb !stage1'
                         ' !pkg.linux.nokernel !pkg.linux.quick>')
                 else:
                     package['Build-Profiles'] = (
-                        '<!stage1 !pkg.linux.nokernel !pkg.linux.quick>')
+                        '<!noudeb !stage1 !pkg.linux.nokernel !pkg.linux.quick>')
 
                 for arch in package['Architecture']:
                     self.installer_packages.setdefault(arch, []) \
