@@ -54,13 +54,12 @@ if [ -z "$flavour" ]; then
     exit 2
 fi
 
-export DEB_BUILD_PROFILES=pkg.linux.notools
+profiles=nodoc,noudeb,pkg.linux.nosource,pkg.linux.notools
 if [ -z "$dbginfo" ]; then
-    DEB_BUILD_PROFILES="$DEB_BUILD_PROFILES pkg.linux.nokerneldbg pkg.linux.nokerneldbginfo"
+    profiles="$profiles,pkg.linux.nokerneldbg,pkg.linux.nokerneldbginfo"
 fi
-export MAKEFLAGS="$MAKEFLAGS -j$jobs"
 
-dpkg-checkbuilddeps -B
+dpkg-checkbuilddeps -P"$profiles"
 
 # Append 'a~test' to Debian version; this should be less than any official
 # successor and easily recognisable
@@ -89,13 +88,27 @@ fi
 rm -rf $patchdir/test/
 mkdir $patchdir/test
 
-# Prepare a new directory for the config; override ABI name
+# Prepare a new directory for the config; override ABI name, featuresets, flavours
 rm -rf debian/config.local
-mkdir debian/config.local
+mkdir debian/config.local debian/config.local/"$arch" debian/config.local/"$arch"/"$featureset"
 cat >debian/config.local/defines <<EOF
 [abi]
 abiname: 0.a.test
 EOF
+cat >debian/config.local/"$arch"/defines <<EOF
+[base]
+featuresets: $featureset
+EOF
+cat >debian/config.local/"$arch"/"$featureset"/defines <<EOF
+[base]
+flavours: $flavour
+EOF
+if [ "$featureset" = none ]; then
+    # default-flavour must refer to a flavour that's enabled
+    cat >>debian/config.local/"$arch"/"$featureset"/defines <<EOF
+default-flavour: $flavour
+EOF
+fi
 
 # Regenerate control and included rules
 rm debian/control debian/rules.gen
@@ -116,4 +129,4 @@ for patch in "$@"; do
 done
 
 # Build selected binaries
-fakeroot make -f debian/rules.gen binary-arch_"$arch"_"$featureset"_"$flavour"
+dpkg-buildpackage -b -P"$profiles" -j"$jobs" -nc -uc
