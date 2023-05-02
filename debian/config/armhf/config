@@ -698,6 +698,11 @@ CONFIG_STM32_IPCC=m
 CONFIG_MEDIA_CONTROLLER=y
 
 ##
+## file: drivers/media/cec/platform/Kconfig
+##
+CONFIG_CEC_STM32=m
+
+##
 ## file: drivers/media/platform/Kconfig
 ##
 CONFIG_VIDEO_MUX=m
