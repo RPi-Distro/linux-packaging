@@ -4373,6 +4373,11 @@ CONFIG_NVME_TARGET_FC=m
 CONFIG_NVME_TARGET_TCP=m
 
 ##
+## file: drivers/nvmem/Kconfig
+##
+CONFIG_NVMEM=y
+
+##
 ## file: drivers/of/Kconfig
 ##
 # CONFIG_OF is not set

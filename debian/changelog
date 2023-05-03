@@ -1,6 +1,7 @@
 linux (6.1.25-2) UNRELEASED; urgency=medium
 
   * iwlwifi: Enable device tracing
+  * [arm*] Enable NVMEM_RMEM which is useful (at least) on raspberry pi
 
  -- Uwe Kleine-König <ukleinek@debian.org>  Sun, 23 Apr 2023 16:54:47 +0200
 
