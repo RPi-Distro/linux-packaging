@@ -5,6 +5,11 @@ linux (6.1.25-2) UNRELEASED; urgency=medium
     RPMSG_CHAR, RPMSG_CTRL, RPMSG_VIRTIO, CONFIG_RPMSG_TTY as module.
   * [armhf] Enable CEC_STM32 as module.
 
+  [ Emanuele Rocca ]
+  * [arm64] Enable support for RZ/G2M-HiHope. Set ARCH_RENESAS, ARCH_R8A774A1,
+    and SERIAL_SH_SCI. Enable GPIO_RCAR, MMC_SDHI, PHY_RCAR_GEN3_USB2 as
+    modules. (Closes: #1033232)
+
  -- Aurelien Jarno <aurel32@debian.org>  Sun, 23 Apr 2023 17:06:46 +0200
 
 linux (6.1.25-1) unstable; urgency=medium
