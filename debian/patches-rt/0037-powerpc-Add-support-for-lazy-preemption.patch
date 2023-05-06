@@ -1,15 +1,12 @@
-From cebff95e437182a1969f7fad9980cd3c7b4c9208 Mon Sep 17 00:00:00 2001
+From ae9dd3f45db2fe0c082a789bec5e45a6a633a64b Mon Sep 17 00:00:00 2001
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 1 Nov 2012 10:14:11 +0100
 Subject: [PATCH 37/52] powerpc: Add support for lazy preemption
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.26-rt8.tar.xz
 
 Implement the powerpc pieces for lazy preempt.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-
-(cherry picked from commit 94c600ab4fe472865862c70ebbac86eb64c5441f)
-Signed-off-by: Clark Williams <clark.williams@gmail.com>
 ---
  arch/powerpc/Kconfig                   | 1 +
  arch/powerpc/include/asm/thread_info.h | 8 ++++++++
@@ -117,5 +114,5 @@ index 0ec1581619db..e333feb12c98 100644
  		}
  
 -- 
-2.39.2
+2.40.0
 

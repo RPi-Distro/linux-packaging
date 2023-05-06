@@ -1,16 +1,13 @@
-From a09e4da267110b0ae11c487d42ebabc3dc134d1e Mon Sep 17 00:00:00 2001
+From 772bc84c25d0a50d3e2d279ae0ecbd574187422d Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 11 Oct 2019 13:14:41 +0200
 Subject: [PATCH 49/52] POWERPC: Allow to enable RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.26-rt8.tar.xz
 
 Allow to select RT.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-
-(cherry picked from commit 0ed9ac287e5389ba4c983cd64da7d8a5800c0fb1)
-Signed-off-by: Clark Williams <clark.williams@gmail.com>
 ---
  arch/powerpc/Kconfig | 2 ++
  1 file changed, 2 insertions(+)
@@ -36,5 +33,5 @@ index ca5cfdec7c4a..d688aff0828a 100644
  	select HAVE_SETUP_PER_CPU_AREA		if PPC64
  	select HAVE_SOFTIRQ_ON_OWN_STACK
 -- 
-2.39.2
+2.40.0
 

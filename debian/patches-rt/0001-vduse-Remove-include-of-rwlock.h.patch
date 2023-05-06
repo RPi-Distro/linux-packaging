@@ -1,8 +1,8 @@
-From 77802b2f63d35f47890e9246d34b9c3c7b3bca70 Mon Sep 17 00:00:00 2001
+From 40e01d1d134a93e19035420f9468f2b36797be34 Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue, 16 Aug 2022 09:45:22 +0200
 Subject: [PATCH 01/52] vduse: Remove include of rwlock.h
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.26-rt8.tar.xz
 
 rwlock.h should not be included directly. Instead linux/splinlock.h
 should be included. Including it directly will break the RT build.
@@ -12,8 +12,6 @@ Remove the rwlock.h include.
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Link: https://lkml.kernel.org/r/20221026134407.711768-1-bigeasy@linutronix.de
-(cherry picked from commit 10745848677412d239701f16b459e53d2ed83119)
-Signed-off-by: Clark Williams <clark.williams@gmail.com>
 ---
  drivers/vdpa/vdpa_user/iova_domain.h | 1 -
  1 file changed, 1 deletion(-)
@@ -31,5 +29,5 @@ index 4e0e50e7ac15..173e979b84a9 100644
  #define IOVA_START_PFN 1
  
 -- 
-2.39.2
+2.40.0
 

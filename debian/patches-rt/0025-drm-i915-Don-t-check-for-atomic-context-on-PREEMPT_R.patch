@@ -1,8 +1,8 @@
-From 78985c5b9a3b1cbae317824fa1ef7e6dc3d227f1 Mon Sep 17 00:00:00 2001
+From cd0211045f6d41f869b23d2eecb2b73b1df5a2d1 Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Mon, 25 Oct 2021 15:05:18 +0200
 Subject: [PATCH 25/52] drm/i915: Don't check for atomic context on PREEMPT_RT
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.26-rt8.tar.xz
 
 The !in_atomic() check in _wait_for_atomic() triggers on PREEMPT_RT
 because the uncore::lock is a spinlock_t and does not disable
@@ -14,8 +14,6 @@ currently unsure about changing this.
 
 Link: https://lore.kernel.org/all/20211006164628.s2mtsdd2jdbfyf7g@linutronix.de/
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-(cherry picked from commit a5ffe0cccb2a061cf442a845518c21259f6fff21)
-Signed-off-by: Clark Williams <clark.williams@gmail.com>
 ---
  drivers/gpu/drm/i915/i915_utils.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -34,5 +32,5 @@ index 6c14d13364bf..de58855e6926 100644
  #else
  # define _WAIT_FOR_ATOMIC_CHECK(ATOMIC) do { } while (0)
 -- 
-2.39.2
+2.40.0
 

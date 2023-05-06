@@ -1,15 +1,12 @@
-From e5a138fb4f129dec8cbdce0fb3007e849ff36646 Mon Sep 17 00:00:00 2001
+From 5f039f47c1f450f399b499f936302bf2c0dac1a5 Mon Sep 17 00:00:00 2001
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Wed, 31 Oct 2012 12:04:11 +0100
 Subject: [PATCH 36/52] arm: Add support for lazy preemption
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.26-rt8.tar.xz
 
 Implement the arm pieces for lazy preempt.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-
-(cherry picked from commit 3cf5cbb81f62ecb97940e19ef884c61d488ea8fc)
-Signed-off-by: Clark Williams <clark.williams@gmail.com>
 ---
  arch/arm/Kconfig                   |  1 +
  arch/arm/include/asm/thread_info.h |  6 +++++-
@@ -136,5 +133,5 @@ index e07f359254c3..b50a3248e79f 100644
  		} else {
  			if (unlikely(!user_mode(regs)))
 -- 
-2.39.2
+2.40.0
 

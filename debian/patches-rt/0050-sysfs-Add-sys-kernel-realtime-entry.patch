@@ -1,8 +1,8 @@
-From dfdf94a607baf3aac13e289b185d007714af9be5 Mon Sep 17 00:00:00 2001
+From b87f68cafcacbd57cf03c2e2e541d2e620feb945 Mon Sep 17 00:00:00 2001
 From: Clark Williams <williams@redhat.com>
 Date: Sat, 30 Jul 2011 21:55:53 -0500
 Subject: [PATCH 50/52] sysfs: Add /sys/kernel/realtime entry
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.26-rt8.tar.xz
 
 Add a /sys/kernel entry to indicate that the kernel is a
 realtime kernel.
@@ -16,9 +16,6 @@ Are there better solutions? Should it exist and return 0 on !-rt?
 Signed-off-by: Clark Williams <williams@redhat.com>
 Signed-off-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-
-(cherry picked from commit e19567fb178b8c33923b9e921e365eda84867606)
-Signed-off-by: Clark Williams <clark.williams@gmail.com>
 ---
  kernel/ksysfs.c | 12 ++++++++++++
  1 file changed, 12 insertions(+)
@@ -54,5 +51,5 @@ index 65dba9076f31..ab18048e2186 100644
  	NULL
  };
 -- 
-2.39.2
+2.40.0
 

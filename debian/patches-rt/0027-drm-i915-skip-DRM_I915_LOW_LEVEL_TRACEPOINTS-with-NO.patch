@@ -1,9 +1,9 @@
-From 7e6f6d5d7fe59cb8f5dc9a163c304aefbe96483d Mon Sep 17 00:00:00 2001
+From 505cf2907d8c8c3962234da2d6d84d296930cb3e Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 19 Dec 2018 10:47:02 +0100
 Subject: [PATCH 27/52] drm/i915: skip DRM_I915_LOW_LEVEL_TRACEPOINTS with
  NOTRACE
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.26-rt8.tar.xz
 
 The order of the header files is important. If this header file is
 included after tracepoint.h was included then the NOTRACE here becomes a
@@ -13,8 +13,6 @@ behind DRM_I915_LOW_LEVEL_TRACEPOINTS.
 Cc: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-(cherry picked from commit dbb3159e40ba3a6958fa89d7de7bd1c5706d1687)
-Signed-off-by: Clark Williams <clark.williams@gmail.com>
 ---
  drivers/gpu/drm/i915/i915_trace.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -33,5 +31,5 @@ index 1434485cb536..73f29d8008f0 100644
  	     TP_PROTO(struct i915_request *rq),
  	     TP_ARGS(rq)
 -- 
-2.39.2
+2.40.0
 
