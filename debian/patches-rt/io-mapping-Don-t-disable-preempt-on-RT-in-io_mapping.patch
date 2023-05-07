@@ -1,0 +1,83 @@
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Date: Tue, 28 Feb 2023 15:07:30 +0100
+Subject: [PATCH] io-mapping: Don't disable preempt on RT in
+ io_mapping_map_atomic_wc().
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3-rt11.tar.xz
+
+io_mapping_map_atomic_wc() disables preemption and pagefaults for historical
+reasons. The conversion to io_mapping_map_local_wc(), which only disables
+migration, cannot be done wholesale because quite some call sites need to be
+updated to accommodate with the changed semantics.
+
+On PREEMPT_RT enabled kernels the io_mapping_map_atomic_wc() semantics are
+problematic due to the implicit disabling of preemption which makes it
+impossible to acquire 'sleeping' spinlocks within the mapped atomic sections.
+
+PREEMPT_RT replaces the preempt_disable() with a migrate_disable() for
+more than a decade. It could be argued that this is a justification to do
+this unconditionally, but PREEMPT_RT covers only a limited number of
+architectures and it disables some functionality which limits the coverage
+further.
+
+Limit the replacement to PREEMPT_RT for now. This is also done
+kmap_atomic().
+
+Cc: stable-rt@vger.kernel.org
+Reported-by: Richard Weinberger <richard.weinberger@gmail.com>
+Link: https://lore.kernel.org/CAFLxGvw0WMxaMqYqJ5WgvVSbKHq2D2xcXTOgMCpgq9nDC-MWTQ@mail.gmail.com
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/20230310162905.O57Pj7hh@linutronix.de
+---
+ include/linux/io-mapping.h |   20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
+
+--- a/include/linux/io-mapping.h
++++ b/include/linux/io-mapping.h
+@@ -69,7 +69,10 @@ io_mapping_map_atomic_wc(struct io_mappi
+ 
+ 	BUG_ON(offset >= mapping->size);
+ 	phys_addr = mapping->base + offset;
+-	preempt_disable();
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++		preempt_disable();
++	else
++		migrate_disable();
+ 	pagefault_disable();
+ 	return __iomap_local_pfn_prot(PHYS_PFN(phys_addr), mapping->prot);
+ }
+@@ -79,7 +82,10 @@ io_mapping_unmap_atomic(void __iomem *va
+ {
+ 	kunmap_local_indexed((void __force *)vaddr);
+ 	pagefault_enable();
+-	preempt_enable();
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++		preempt_enable();
++	else
++		migrate_enable();
+ }
+ 
+ static inline void __iomem *
+@@ -162,7 +168,10 @@ static inline void __iomem *
+ io_mapping_map_atomic_wc(struct io_mapping *mapping,
+ 			 unsigned long offset)
+ {
+-	preempt_disable();
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++		preempt_disable();
++	else
++		migrate_disable();
+ 	pagefault_disable();
+ 	return io_mapping_map_wc(mapping, offset, PAGE_SIZE);
+ }
+@@ -172,7 +181,10 @@ io_mapping_unmap_atomic(void __iomem *va
+ {
+ 	io_mapping_unmap(vaddr);
+ 	pagefault_enable();
+-	preempt_enable();
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++		preempt_enable();
++	else
++		migrate_enable();
+ }
+ 
+ static inline void __iomem *

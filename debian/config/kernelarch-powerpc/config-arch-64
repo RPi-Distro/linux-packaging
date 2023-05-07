@@ -87,7 +87,7 @@ CONFIG_CRYPTO_DEV_NX_COMPRESS_POWERNV=m
 CONFIG_CRYPTO_DEV_VMX_ENCRYPT=m
 
 ##
-## file: drivers/gpu/drm/Kconfig
+## file: drivers/gpu/drm/amd/amdgpu/Kconfig
 ##
 CONFIG_DRM_AMDGPU=m
 

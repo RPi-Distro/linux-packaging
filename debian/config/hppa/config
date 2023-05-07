@@ -161,11 +161,6 @@ CONFIG_SERIO_RAW=m
 # CONFIG_ARCNET is not set
 
 ##
-## file: drivers/net/ethernet/Kconfig
-##
-CONFIG_FEALNX=m
-
-##
 ## file: drivers/net/ethernet/3com/Kconfig
 ##
 CONFIG_NET_VENDOR_3COM=y

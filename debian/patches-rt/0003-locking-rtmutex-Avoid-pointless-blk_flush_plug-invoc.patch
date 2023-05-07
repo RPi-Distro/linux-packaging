@@ -1,0 +1,91 @@
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Date: Thu, 27 Apr 2023 13:19:36 +0200
+Subject: [PATCH 3/4] locking/rtmutex: Avoid pointless blk_flush_plug()
+ invocations
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3-rt11.tar.xz
+
+With DEBUG_RT_MUTEXES enabled the fast-path rt_mutex_cmpxchg_acquire()
+always fails and all lock operations take the slow path, which leads to the
+invocation of blk_flush_plug() even if the lock is not contended which is
+unnecessary and avoids batch processing of requests.
+
+Provide a new helper inline rt_mutex_try_acquire() which maps to
+rt_mutex_cmpxchg_acquire() in the non-debug case. For the debug case it
+invokes rt_mutex_slowtrylock() which can acquire a non-contended rtmutex
+under full debug coverage.
+
+Replace the rt_mutex_cmpxchg_acquire() invocations in __rt_mutex_lock() and
+__ww_rt_mutex_lock() with the new helper function, which avoid the
+blk_flush_plug() for the non-contended case and preserves the debug
+mechanism.
+
+[ tglx: Created a new helper and massaged changelog ]
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20230427111937.2745231-4-bigeasy@linutronix.de
+---
+ kernel/locking/rtmutex.c     |   25 ++++++++++++++++++++++++-
+ kernel/locking/ww_rt_mutex.c |    2 +-
+ 2 files changed, 25 insertions(+), 2 deletions(-)
+
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -218,6 +218,11 @@ static __always_inline bool rt_mutex_cmp
+ 	return try_cmpxchg_acquire(&lock->owner, &old, new);
+ }
+ 
++static __always_inline bool rt_mutex_try_acquire(struct rt_mutex_base *lock)
++{
++	return rt_mutex_cmpxchg_acquire(lock, NULL, current);
++}
++
+ static __always_inline bool rt_mutex_cmpxchg_release(struct rt_mutex_base *lock,
+ 						     struct task_struct *old,
+ 						     struct task_struct *new)
+@@ -297,6 +302,24 @@ static __always_inline bool rt_mutex_cmp
+ 
+ }
+ 
++static int __sched rt_mutex_slowtrylock(struct rt_mutex_base *lock);
++
++static __always_inline bool rt_mutex_try_acquire(struct rt_mutex_base *lock)
++{
++	/*
++	 * With debug enabled rt_mutex_cmpxchg trylock() will always fail,
++	 * which will unconditionally invoke sched_submit/resume_work() in
++	 * the slow path of __rt_mutex_lock() and __ww_rt_mutex_lock() even
++	 * in the non-contended case.
++	 *
++	 * Avoid that by using rt_mutex_slow_trylock() which is covered by
++	 * the debug code and can acquire a non-contended rtmutex. On
++	 * success the callsite avoids the sched_submit/resume_work()
++	 * dance.
++	 */
++	return rt_mutex_slowtrylock(lock);
++}
++
+ static __always_inline bool rt_mutex_cmpxchg_release(struct rt_mutex_base *lock,
+ 						     struct task_struct *old,
+ 						     struct task_struct *new)
+@@ -1704,7 +1727,7 @@ static int __sched rt_mutex_slowlock(str
+ static __always_inline int __rt_mutex_lock(struct rt_mutex_base *lock,
+ 					   unsigned int state)
+ {
+-	if (likely(rt_mutex_cmpxchg_acquire(lock, NULL, current)))
++	if (likely(rt_mutex_try_acquire(lock)))
+ 		return 0;
+ 
+ 	return rt_mutex_slowlock(lock, NULL, state);
+--- a/kernel/locking/ww_rt_mutex.c
++++ b/kernel/locking/ww_rt_mutex.c
+@@ -62,7 +62,7 @@ static int __sched
+ 	}
+ 	mutex_acquire_nest(&rtm->dep_map, 0, 0, nest_lock, ip);
+ 
+-	if (likely(rt_mutex_cmpxchg_acquire(&rtm->rtmutex, NULL, current))) {
++	if (likely(rt_mutex_try_acquire(&rtm->rtmutex))) {
+ 		if (ww_ctx)
+ 			ww_mutex_set_context_fastpath(lock, ww_ctx);
+ 		return 0;

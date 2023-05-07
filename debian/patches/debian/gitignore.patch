@@ -9,8 +9,8 @@ Index: linux/.gitignore
 ===================================================================
 --- linux.orig/.gitignore
 +++ linux/.gitignore
-@@ -76,11 +76,6 @@ modules.order
- /*.spec
+@@ -81,11 +81,6 @@ modules.order
+ /rpmbuild/
  
  #
 -# Debian directory (make deb-pkg)
@@ -21,7 +21,7 @@ Index: linux/.gitignore
  # Snap directory (make snap-pkg)
  #
  /snap/
-@@ -91,17 +86,6 @@ modules.order
+@@ -96,17 +91,6 @@ modules.order
  /tar-install/
  
  #
@@ -39,7 +39,7 @@ Index: linux/.gitignore
  # Generated include files
  #
  /include/config/
-@@ -168,3 +152,10 @@ sphinx_*/
+@@ -175,3 +157,10 @@ sphinx_*/
  
  # Rust analyzer configuration
  /rust-project.json

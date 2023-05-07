@@ -220,11 +220,6 @@ CONFIG_SPI_PXA2XX=m
 CONFIG_MOXA_INTELLIO=m
 
 ##
-## file: drivers/vfio/mdev/Kconfig
-##
-CONFIG_VFIO_MDEV=m
-
-##
 ## file: drivers/video/fbdev/Kconfig
 ##
 CONFIG_FB_MATROX_G=y

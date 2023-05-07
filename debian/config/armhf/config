@@ -427,7 +427,7 @@ CONFIG_DRM_EXYNOS_HDMI=y
 CONFIG_DRM_I2C_NXP_TDA998X=m
 
 ##
-## file: drivers/gpu/drm/imx/Kconfig
+## file: drivers/gpu/drm/imx/ipuv3/Kconfig
 ##
 CONFIG_DRM_IMX=m
 CONFIG_DRM_IMX_PARALLEL_DISPLAY=m
@@ -904,11 +904,6 @@ CONFIG_B53_MDIO_DRIVER=m
 CONFIG_NET_DSA_MV88E6XXX=m
 
 ##
-## file: drivers/net/ethernet/Kconfig
-##
-CONFIG_FEALNX=m
-
-##
 ## file: drivers/net/ethernet/3com/Kconfig
 ##
 CONFIG_NET_VENDOR_3COM=y
@@ -1007,7 +1002,6 @@ CONFIG_8139TOO=m
 CONFIG_NET_VENDOR_SMSC=y
 CONFIG_SMC91X=m
 CONFIG_EPIC100=m
-CONFIG_SMC911X=m
 CONFIG_SMSC911X=m
 
 ##
@@ -1050,7 +1044,6 @@ CONFIG_BRCMFMAC_SDIO=y
 ## file: drivers/net/wireless/ti/Kconfig
 ##
 CONFIG_WLAN_VENDOR_TI=y
-CONFIG_WILINK_PLATFORM_DATA=y
 
 ##
 ## file: drivers/net/wireless/ti/wl1251/Kconfig
@@ -1100,7 +1093,8 @@ CONFIG_PCI_HOST_GENERIC=y
 ## file: drivers/pci/controller/dwc/Kconfig
 ##
 CONFIG_PCI_DRA7XX_HOST=y
-CONFIG_PCI_IMX6=y
+CONFIG_PCI_IMX6_HOST=y
+CONFIG_PCI_IMX6_EP=y
 
 ##
 ## file: drivers/phy/allwinner/Kconfig
@@ -1536,7 +1530,6 @@ CONFIG_USB_MUSB_DUAL_ROLE=y
 CONFIG_USB_MUSB_SUNXI=m
 CONFIG_USB_MUSB_TUSB6010=m
 CONFIG_USB_MUSB_OMAP2PLUS=m
-CONFIG_USB_MUSB_AM35X=m
 CONFIG_USB_MUSB_DSPS=m
 # CONFIG_MUSB_PIO_ONLY is not set
 CONFIG_USB_INVENTRA_DMA=y
