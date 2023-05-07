@@ -1,7 +1,9 @@
-linux (6.3-1~exp1) UNRELEASED; urgency=medium
+linux (6.3.1-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_6.2
   * New upstream release: https://kernelnewbies.org/Linux_6.3
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.1
 
   [ Diederik de Haas ]
   * Update for 6.2:
