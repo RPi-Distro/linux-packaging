@@ -62,7 +62,7 @@ class Gencontrol(Base):
         ('DEBIAN_KERNEL_DISABLE_SIGNED', 'disable_signed', 'signed code'),
     ]
 
-    def __init__(self, config_dirs=["debian/config"],
+    def __init__(self, config_dirs=["debian/config", "debian/config.local"],
                  template_dirs=["debian/templates"]):
         super(Gencontrol, self).__init__(
             config.ConfigCoreHierarchy(self.config_schema, config_dirs),
@@ -148,11 +148,11 @@ class Gencontrol(Base):
                     # convince debhelper and kernel-wedge to go
                     # part way to building them.
                     package['Build-Profiles'] = (
-                        '<pkg.linux.udeb-unsigned-test-build !stage1'
+                        '<pkg.linux.udeb-unsigned-test-build !noudeb !stage1'
                         ' !pkg.linux.nokernel !pkg.linux.quick>')
                 else:
                     package['Build-Profiles'] = (
-                        '<!stage1 !pkg.linux.nokernel !pkg.linux.quick>')
+                        '<!noudeb !stage1 !pkg.linux.nokernel !pkg.linux.quick>')
 
                 for arch in package['Architecture']:
                     self.installer_packages.setdefault(arch, []) \
