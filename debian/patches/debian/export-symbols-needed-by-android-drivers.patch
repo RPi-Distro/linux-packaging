@@ -32,7 +32,7 @@ Export the currently un-exported symbols they depend on.
  {
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -7180,6 +7180,7 @@ static bool is_nice_reduction(const stru
+@@ -7227,6 +7227,7 @@ static bool is_nice_reduction(const stru
  
  	return (nice_rlim <= task_rlimit(p, RLIMIT_NICE));
  }
@@ -62,7 +62,7 @@ Export the currently un-exported symbols they depend on.
   * task_work_cancel_match - cancel a pending work added by task_work_add()
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -1728,6 +1728,7 @@ void zap_page_range_single(struct vm_area_struc
+@@ -1755,6 +1755,7 @@ void zap_page_range_single(struct vm_area_struc
  	mmu_notifier_invalidate_range_end(&range);
  	tlb_finish_mmu(&tlb);
  }
@@ -72,7 +72,7 @@ Export the currently un-exported symbols they depend on.
   * zap_vma_ptes - remove ptes mapping the vma
 --- a/mm/shmem.c
 +++ b/mm/shmem.c
-@@ -4318,6 +4318,7 @@ int shmem_zero_setup(struct vm_area_stru
+@@ -4351,6 +4351,7 @@ int shmem_zero_setup(struct vm_area_stru
  
  	return 0;
  }
@@ -82,32 +82,35 @@ Export the currently un-exported symbols they depend on.
   * shmem_read_folio_gfp - read into page cache, using specified page allocation flags.
 --- a/security/security.c
 +++ b/security/security.c
-@@ -782,24 +782,28 @@ int security_binder_set_context_mgr(cons
+@@ -798,6 +798,7 @@ int security_binder_set_context_mgr(const struct cred *mgr)
  {
  	return call_int_hook(binder_set_context_mgr, 0, mgr);
  }
 +EXPORT_SYMBOL_GPL(security_binder_set_context_mgr);
- 
- int security_binder_transaction(const struct cred *from,
- 				const struct cred *to)
+
+ /**
+  * security_binder_transaction() - Check if a binder transaction is allowed
+@@ -813,6 +814,7 @@ int security_binder_transaction(const struct cred *from,
  {
  	return call_int_hook(binder_transaction, 0, from, to);
  }
 +EXPORT_SYMBOL_GPL(security_binder_transaction);
- 
- int security_binder_transfer_binder(const struct cred *from,
- 				    const struct cred *to)
+
+ /**
+  * security_binder_transfer_binder() - Check if a binder transfer is allowed
+@@ -828,6 +830,7 @@ int security_binder_transfer_binder(const struct cred *from,
  {
  	return call_int_hook(binder_transfer_binder, 0, from, to);
  }
 +EXPORT_SYMBOL_GPL(security_binder_transfer_binder);
- 
- int security_binder_transfer_file(const struct cred *from,
- 				  const struct cred *to, struct file *file)
+
+ /**
+  * security_binder_transfer_file() - Check if a binder file xfer is allowed
+@@ -844,6 +847,7 @@ int security_binder_transfer_file(const struct cred *from,
  {
  	return call_int_hook(binder_transfer_file, 0, from, to, file);
  }
 +EXPORT_SYMBOL_GPL(security_binder_transfer_file);
- 
- int security_ptrace_access_check(struct task_struct *child, unsigned int mode)
- {
+
+ /**
+  * security_ptrace_access_check() - Check if tracing is allowed
