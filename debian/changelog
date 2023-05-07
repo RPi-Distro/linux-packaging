@@ -1,4 +1,4 @@
-linux (6.3.1-1~exp1) UNRELEASED; urgency=medium
+linux (6.3.1-1~exp1) experimental; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_6.2
   * New upstream release: https://kernelnewbies.org/Linux_6.3
@@ -20,7 +20,7 @@ linux (6.3.1-1~exp1) UNRELEASED; urgency=medium
   * iwlwifi: Enable device tracing
   * [arm*] Enable NVMEM_RMEM which is useful (at least) on raspberry pi
 
- -- Uwe Kleine-König <ukleinek@debian.org>  Sun, 23 Apr 2023 16:54:47 +0200
+ -- Ben Hutchings <benh@debian.org>  Mon, 08 May 2023 01:01:58 +0200
 
 linux (6.1.25-1) unstable; urgency=medium
 
