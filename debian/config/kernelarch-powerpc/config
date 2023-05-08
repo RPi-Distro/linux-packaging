@@ -546,12 +546,6 @@ CONFIG_WANXL=m
 CONFIG_FARSYNC=m
 
 ##
-## file: drivers/net/wireless/Kconfig
-##
-CONFIG_PCMCIA_RAYCS=m
-CONFIG_PCMCIA_WL3501=m
-
-##
 ## file: drivers/net/wireless/atmel/Kconfig
 ##
 CONFIG_ATMEL=m
@@ -577,6 +571,12 @@ CONFIG_PLX_HERMES=m
 CONFIG_TMD_HERMES=m
 CONFIG_PCI_HERMES=m
 CONFIG_PCMCIA_HERMES=m
+
+##
+## file: drivers/net/wireless/legacy/Kconfig
+##
+CONFIG_PCMCIA_RAYCS=m
+CONFIG_PCMCIA_WL3501=m
 
 ##
 ## file: drivers/net/wireless/marvell/mwifiex/Kconfig
