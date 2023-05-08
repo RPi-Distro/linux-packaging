@@ -1,4 +1,4 @@
-linux (6.1.27-1) UNRELEASED; urgency=medium
+linux (6.1.27-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.26
@@ -126,7 +126,7 @@ linux (6.1.27-1) UNRELEASED; urgency=medium
   * Bump ABI to 9
   * [rt] Update to 6.1.26-rt8
 
- -- Aurelien Jarno <aurel32@debian.org>  Sun, 23 Apr 2023 17:06:46 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 08 May 2023 22:16:50 +0200
 
 linux (6.1.25-1) unstable; urgency=medium
 
