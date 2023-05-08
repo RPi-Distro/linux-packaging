@@ -4269,6 +4269,8 @@ CONFIG_RTW88_8821CE=m
 ##
 CONFIG_RTW89=m
 CONFIG_RTW89_8852AE=m
+CONFIG_RTW89_8852BE=m
+CONFIG_RTW89_8852CE=m
 
 ##
 ## file: drivers/net/wireless/rsi/Kconfig
