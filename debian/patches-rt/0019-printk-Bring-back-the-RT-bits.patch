@@ -1,8 +1,8 @@
-From f5c5bef52b10125a692293370e5302c82915ff1c Mon Sep 17 00:00:00 2001
+From 891b5f038931ee92a554939ffacdc871d2958c19 Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue, 19 Jul 2022 20:08:01 +0200
 Subject: [PATCH 19/52] printk: Bring back the RT bits.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.26-rt8.tar.xz
 
 This is a revert of the commits:
 | 07a22b61946f0 Revert "printk: add functions to prefer direct printing"
@@ -15,8 +15,6 @@ This is a revert of the commits:
 which is needed for the atomic consoles which are used on PREEMPT_RT.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-(cherry picked from commit b120e8718e32736723555e6f7996831b0244f155)
-Signed-off-by: Clark Williams <clark.williams@gmail.com>
 ---
  drivers/tty/sysrq.c         |   2 +
  include/linux/console.h     |  17 ++
@@ -1238,5 +1236,5 @@ index 247bf0b1582c..701f35f0e2d4 100644
  		return;
  	}
 -- 
-2.39.2
+2.40.0
 

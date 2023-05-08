@@ -1,8 +1,8 @@
-From 5c3e21448bbf00025a73f5031d208bb814a030c0 Mon Sep 17 00:00:00 2001
+From e153c7189b09feacfa14509b2b0c2142d4382e7d Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 1 Dec 2021 17:41:09 +0100
 Subject: [PATCH 12/52] softirq: Use a dedicated thread for timer wakeups.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.26-rt8.tar.xz
 
 A timer/hrtimer softirq is raised in-IRQ context. With threaded
 interrupts enabled or on PREEMPT_RT this leads to waking the ksoftirqd
@@ -38,8 +38,6 @@ but this can already happen by a PI-boost by a force-threaded interrupt.
 
 Reported-by: kernel test robot <lkp@intel.com> [ static timer_threads ]
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-(cherry picked from commit 913fcde1e6b28c9042e934ce4a387e6a2a136c4f)
-Signed-off-by: Clark Williams <clark.williams@gmail.com>
 ---
  include/linux/interrupt.h | 16 +++++++
  kernel/softirq.c          | 92 +++++++++++++++++++++++++++++++++++++--
@@ -232,5 +230,5 @@ index 717fcb9fb14a..e6219da89933 100644
  
  /*
 -- 
-2.39.2
+2.40.0
 

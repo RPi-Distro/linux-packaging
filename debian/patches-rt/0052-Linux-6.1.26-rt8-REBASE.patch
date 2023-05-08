@@ -1,8 +1,8 @@
-From 85298cf6bc1c885ad51adcc927560cd99bd1eb82 Mon Sep 17 00:00:00 2001
+From 2e729c00d02b6f7bf336386fa42d233827ad334e Mon Sep 17 00:00:00 2001
 From: Clark Williams <clrkwllms@kernel.org>
-Date: Thu, 16 Mar 2023 15:37:28 -0500
-Subject: [PATCH 52/52] 'Linux 6.1.19-rt8'
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+Date: Sun, 30 Apr 2023 14:30:44 -0500
+Subject: [PATCH 52/52] 'Linux 6.1.26-rt8 REBASE'
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.26-rt8.tar.xz
 
 Signed-off-by: Clark Williams <clrkwllms@kernel.org>
 ---
@@ -17,5 +17,5 @@ index 045478966e9f..700c857efd9b 100644
 --rt7
 +-rt8
 -- 
-2.39.2
+2.40.0
 

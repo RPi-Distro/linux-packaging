@@ -49,4 +49,4 @@
 0049-POWERPC-Allow-to-enable-RT.patch
 0050-sysfs-Add-sys-kernel-realtime-entry.patch
 0051-Add-localversion-for-RT-release.patch
-0052-Linux-6.1.19-rt8.patch
+0052-Linux-6.1.26-rt8-REBASE.patch

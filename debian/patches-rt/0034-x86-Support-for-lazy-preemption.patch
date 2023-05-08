@@ -1,15 +1,12 @@
-From 41c6a780f740a65cc6f5f57b77bbffd30d4d9b68 Mon Sep 17 00:00:00 2001
+From d27e8835af4a843573c936a27a4c85364eb1ca3b Mon Sep 17 00:00:00 2001
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 1 Nov 2012 11:03:47 +0100
 Subject: [PATCH 34/52] x86: Support for lazy preemption
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.19-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.26-rt8.tar.xz
 
 Implement the x86 pieces for lazy preempt.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-
-(cherry picked from commit 7a850e6214a9f38de2181bf43783a605ddff1e69)
-Signed-off-by: Clark Williams <clark.williams@gmail.com>
 ---
  arch/x86/Kconfig                   |  1 +
  arch/x86/include/asm/preempt.h     | 33 +++++++++++++++++++++++++++++-
@@ -144,7 +141,7 @@ index d95ab85f96ba..93cc1ae12125 100644
  
  /**
 diff --git a/kernel/entry/common.c b/kernel/entry/common.c
-index eda8f71067c7..51de1080cb93 100644
+index 97ff5faad4fb..c6301e520d47 100644
 --- a/kernel/entry/common.c
 +++ b/kernel/entry/common.c
 @@ -155,7 +155,7 @@ static unsigned long exit_to_user_mode_loop(struct pt_regs *regs,
@@ -157,5 +154,5 @@ index eda8f71067c7..51de1080cb93 100644
  
  		if (ti_work & _TIF_UPROBE)
 -- 
-2.39.2
+2.40.0
 
