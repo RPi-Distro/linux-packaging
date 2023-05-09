@@ -10,6 +10,11 @@ linux (6.3.1-1~exp2) UNRELEASED; urgency=medium
     - drivers/pinctrl: Enable PINCTRL_ROCKCHIP as module
     - drivers/power/reset: Enable SYSCON_REBOOT_MODE as module
     - drivers/soc/rockchip: Enable ROCKCHIP_GRF
+  * [arm64] Improve support for rk3399 devices
+    - drivers/clk/rockchip: Enable CLK_RK3399
+    - drivers/mmc/core: Enable PWRSEQ_SIMPLE
+    - drivers/soc/rockchip: Enable ROCKCHIP_DTPM as module
+    - drivers/usb/dwc3: Enable USB_DWC3_OF_SIMPLE as module
 
   [ Yoann Congal ]
   * net/hsr: Enable PRP/HSR protocols as module (Closes: #1034506)

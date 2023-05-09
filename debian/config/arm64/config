@@ -233,6 +233,7 @@ CONFIG_QCOM_HFPLL=y
 ## file: drivers/clk/rockchip/Kconfig
 ##
 CONFIG_CLK_RK3328=y
+CONFIG_CLK_RK3399=y
 
 ##
 ## file: drivers/clk/sunxi-ng/Kconfig
@@ -839,6 +840,11 @@ CONFIG_TI_ST=m
 ## file: drivers/mmc/Kconfig
 ##
 CONFIG_MMC=y
+
+##
+## file: drivers/mmc/core/Kconfig
+##
+CONFIG_PWRSEQ_SIMPLE=y
 
 ##
 ## file: drivers/mmc/host/Kconfig
@@ -1541,6 +1547,7 @@ CONFIG_ARCH_R8A774A1=y
 CONFIG_ROCKCHIP_GRF=y
 CONFIG_ROCKCHIP_IODOMAIN=m
 CONFIG_ROCKCHIP_PM_DOMAINS=y
+CONFIG_ROCKCHIP_DTPM=m
 
 ##
 ## file: drivers/soc/tegra/Kconfig
@@ -1727,6 +1734,7 @@ CONFIG_USB_DWC3_ULPI=y
 ## choice: DWC3 Mode Selection
 CONFIG_USB_DWC3_DUAL_ROLE=y
 ## end choice
+CONFIG_USB_DWC3_OF_SIMPLE=m
 
 ##
 ## file: drivers/usb/gadget/Kconfig
