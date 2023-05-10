@@ -690,11 +690,17 @@ CONFIG_MAILBOX=y
 CONFIG_OMAP2PLUS_MBOX=y
 CONFIG_OMAP_MBOX_KFIFO_SIZE=256
 CONFIG_BCM2835_MBOX=y
+CONFIG_STM32_IPCC=m
 
 ##
 ## file: drivers/media/Kconfig
 ##
 CONFIG_MEDIA_CONTROLLER=y
+
+##
+## file: drivers/media/cec/platform/Kconfig
+##
+CONFIG_CEC_STM32=m
 
 ##
 ## file: drivers/media/platform/Kconfig
@@ -1265,6 +1271,13 @@ CONFIG_REMOTEPROC=y
 CONFIG_STM32_RPROC=m
 
 ##
+## file: drivers/rpmsg/Kconfig
+##
+CONFIG_RPMSG_CHAR=m
+CONFIG_RPMSG_CTRL=m
+CONFIG_RPMSG_VIRTIO=m
+
+##
 ## file: drivers/rtc/Kconfig
 ##
 CONFIG_RTC_DRV_AC100=y
@@ -1410,6 +1423,11 @@ CONFIG_TI_THERMAL=y
 CONFIG_OMAP4_THERMAL=y
 CONFIG_OMAP5_THERMAL=y
 CONFIG_DRA752_THERMAL=y
+
+##
+## file: drivers/tty/Kconfig
+##
+CONFIG_RPMSG_TTY=m
 
 ##
 ## file: drivers/tty/serial/Kconfig

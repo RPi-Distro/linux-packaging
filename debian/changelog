@@ -36,6 +36,136 @@ linux (6.3.1-1~exp1) experimental; urgency=medium
 
  -- Ben Hutchings <benh@debian.org>  Mon, 08 May 2023 01:01:58 +0200
 
+linux (6.1.27-1) unstable; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.26
+    - [arm64] dts: qcom: ipq8074-hk01: enable QMP device, not the PHY node
+    - netfilter: br_netfilter: fix recent physdev match breakage
+    - netfilter: nf_tables: Modify nla_memdup's flag to GFP_KERNEL_ACCOUNT
+    - [arm64,armhf] regulator: fan53555: Explicitly include bits header
+    - [arm64,armhf] regulator: fan53555: Fix wrong TCS_SLEW_MASK
+    - net: sched: sch_qfq: prevent slab-out-of-bounds in qfq_activate_agg
+      (CVE-2023-31436)
+    - virtio_net: bugfix overflow inside xdp_linearize_page()
+    - sfc: Fix use-after-free due to selftest_work
+    - netfilter: nf_tables: fix ifdef to also consider nf_tables=m
+    - i40e: fix accessing vsi->active_filters without holding lock
+    - i40e: fix i40e_setup_misc_vector() error handling
+    - netfilter: nf_tables: validate catch-all set elements
+    - netfilter: nf_tables: tighten netlink attribute requirements for catch-all
+      elements
+    - bnxt_en: Do not initialize PTP on older P3/P4 chips
+    - mlxfw: fix null-ptr-deref in mlxfw_mfa2_tlv_next()
+    - bonding: Fix memory leak when changing bond type to Ethernet
+    - net: rpl: fix rpl header size calculation
+    - [arm64] spi: spi-rockchip: Fix missing unwind goto in rockchip_sfc_probe()
+    - bpf: Fix incorrect verifier pruning due to missing register precision
+      taints
+    - e1000e: Disable TSO on i219-LM card to increase speed
+    - net: bridge: switchdev: don't notify FDB entries with "master dynamic"
+    - f2fs: Fix f2fs_truncate_partial_nodes ftrace event
+    - [x86] platform/x86/intel: vsec: Fix a memory leak in intel_vsec_add_aux
+    - [x86] platform/x86 (gigabyte-wmi): Add support for A320M-S2H V2
+    - scsi: megaraid_sas: Fix fw_crash_buffer_show()
+    - scsi: core: Improve scsi_vpd_inquiry() checks
+    - [x86] platform/x86: gigabyte-wmi: add support for B650 AORUS ELITE AX
+    - [s390x] ptrace: fix PTRACE_GET_LAST_BREAK error handling
+    - drm: buddy_allocator: Fix buddy allocator init on 32-bit systems
+    - nvme-tcp: fix a possible UAF when failing to allocate an io queue
+    - xen/netback: use same error messages for same errors
+    - [x86] platform/x86: gigabyte-wmi: add support for X570S AORUS ELITE
+    - [x86] platform/x86: asus-nb-wmi: Add quirk_asus_tablet_mode to other ROG
+      Flow X13 models
+    - mtd: spi-nor: fix memory leak when using debugfs_lookup()
+    - Revert "userfaultfd: don't fail on unrecognized features"
+    - drm/amdgpu/vcn: Disable indirect SRAM on Vangogh broken BIOSes
+    - iio: dac: ad5755: Add missing fwnode_handle_put()
+    - iio: light: tsl2772: fix reading proximity-diodes from device tree
+    - ALSA: hda/realtek: fix mute/micmute LEDs for a HP ProBook
+    - btrfs: get the next extent map during fiemap/lseek more efficiently
+    - maple_tree: make maple state reusable after mas_empty_area_rev()
+    - maple_tree: fix mas_empty_area() search
+    - maple_tree: fix a potential memory leak, OOB access, or other
+      unpredictable bug
+    - nilfs2: initialize unused bytes in segment summary blocks
+    - memstick: fix memory leak if card device is never registered
+    - kernel/sys.c: fix and improve control flow in __sys_setres[ug]id()
+    - writeback, cgroup: fix null-ptr-deref write in bdi_split_work_to_wbs
+    - [arm64] mmc: sdhci_am654: Set HIGH_SPEED_ENA for SDR12 and SDR25
+    - [x86] drm/i915: Fix fast wake AUX sync len
+    - drm/amdgpu: Fix desktop freezed after gpu-reset
+    - drm/amd/display: set dcn315 lb bpp to 48
+    - [arm64] drm/rockchip: vop2: fix suspend/resume
+    - [arm64] drm/rockchip: vop2: Use regcache_sync() to fix suspend/resume
+    - mm/userfaultfd: fix uffd-wp handling for THP migration entries
+    - mm/khugepaged: check again on anon uffd-wp during isolation
+    - mm/huge_memory.c: warn with pr_warn_ratelimited instead of
+      VM_WARN_ON_ONCE_FOLIO
+    - mm: kmsan: handle alloc failures in kmsan_ioremap_page_range()
+    - mm: kmsan: handle alloc failures in kmsan_vmap_pages_range_noflush()
+    - mm: page_alloc: skip regions with hugetlbfs pages when allocating 1G pages
+    - mm/mmap: regression fix for unmapped_area{_topdown}
+    - sched/fair: Detect capacity inversion
+    - sched/fair: Consider capacity inversion in util_fits_cpu()
+    - sched/fair: Fixes for capacity inversion detection
+    - [arm64] KVM: arm64: Make vcpu flag updates non-preemptible
+    - [arm64] KVM: arm64: Fix buffer overflow in kvm_arm_set_fw_reg()
+    - [mips*] Define RUNTIME_DISCARD_EXIT in LD script
+    - fuse: always revalidate rename target dentry
+    - inet6: Remove inet6_destroy_sock() in sk->sk_prot->destroy().
+    - dccp: Call inet6_destroy_sock() via sk->sk_destruct().
+    - sctp: Call inet6_destroy_sock() via sk->sk_destruct().
+    - Input: pegasus-notetaker - check pipe type when probing
+    - mm/page_alloc: fix potential deadlock on zonelist_update_seq seqlock
+    - [x86] ASoC: SOF: pm: Tear down pipelines only if DSP was active
+    - ASN.1: Fix check for strdup() success
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.27
+    - [arm64] KVM: arm64: Retry fault if vma_lookup() results become invalid
+    - mm/mempolicy: fix use-after-free of VMA iterator
+    - mptcp: stops worker on unaccepted sockets at listener close
+    - mptcp: fix accept vs worker race
+    - wifi: brcmfmac: slab-out-of-bounds read in brcmf_get_assoc_ies()
+      (CVE-2023-1380)
+    - drm/fb-helper: set x/yres_virtual in drm_fb_helper_check_var
+    - gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xNU
+    - bluetooth: Perform careful capability checks in hci_sock_ioctl()
+      (CVE-2023-2002)
+    - btrfs: fix uninitialized variable warnings
+    - USB: serial: option: add UNISOC vendor and TOZED LT70C product
+    - driver core: Don't require dynamic_debug for initcall_debug probe timing
+    - [riscv64] Move early dtb mapping into the fixmap region
+    - [riscv64] Do not set initial_boot_params to the linear address of the dtb
+    - [riscv64] No need to relocate the dtb as it lies in the fixmap region
+
+  [ Aurelien Jarno ]
+  * [armhf] Asymmetric Multi Processing on STM32MP1: Enable STM32_IPCC,
+    RPMSG_CHAR, RPMSG_CTRL, RPMSG_VIRTIO, CONFIG_RPMSG_TTY as module.
+  * [armhf] Enable CEC_STM32 as module.
+
+  [ Emanuele Rocca ]
+  * [arm64] Enable support for RZ/G2M-HiHope. Set ARCH_RENESAS, ARCH_R8A774A1,
+    and SERIAL_SH_SCI. Enable GPIO_RCAR, MMC_SDHI, PHY_RCAR_GEN3_USB2 as
+    modules. (Closes: #1033232)
+
+  [ Ben Hutchings ]
+  * d/b/gencontrol.py: Add optional extra config dir debian/config.local
+  * d/b/gencontrol.py: Add support for noudeb build profile
+  * d/b/test-patches: Change ABI name to make packages co-installable
+  * d/b/test-patches: Make debug info optional and disabled by default
+  * d/b/test-patches: Build a linux-headers-common package as well
+    (Closes: #871216)
+  * d/b/test-patches: Tolerate missing d/control, d/rules.gen, or d/p/test
+  * d/b/test-patches: Detect flavour correctly when running backported kernel
+
+  [ Salvatore Bonaccorso ]
+  * netfilter: nf_tables: deactivate anonymous set from preparation phase
+    (CVE-2023-32233)
+  * Bump ABI to 9
+  * [rt] Update to 6.1.26-rt8
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 08 May 2023 22:16:50 +0200
+
 linux (6.1.25-1) unstable; urgency=medium
 
   * New upstream stable update:
