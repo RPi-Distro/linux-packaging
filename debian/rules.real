@@ -345,7 +345,7 @@ binary_support:
 	dh_link $(PACKAGE_ROOT) /usr/src/$(PACKAGE_NAME)
 	+$(MAKE_SELF) install-base
 
-setup_image: $(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR))
+setup_image: $(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 
 build_image: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 
