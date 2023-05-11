@@ -23,6 +23,7 @@ linux (6.3.2-1~exp1) UNRELEASED; urgency=medium
     - drivers/firmware/arm_scmi: Enable ARM_SCMI_TRANSPORT_SMC
     - drivers/gpu/drm/bridge: Enable DRM_DISPLAY_CONNECTOR as module
     - drivers/misc: Enable SRAM
+  * [rt] Update to 6.3.1-rt13
 
   [ Yoann Congal ]
   * net/hsr: Enable PRP/HSR protocols as module (Closes: #1034506)
