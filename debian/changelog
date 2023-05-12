@@ -19,6 +19,10 @@ linux (6.3.1-1~exp2) UNRELEASED; urgency=medium
     - USB: Change USB, USB_EHCI_HCD, USB_R8A66597_HCD,_USB_STORAGE from
       built-in to modular
     - udeb: Add ata-modules, scsi-core-modules, usb-modules packages
+  * [armel/marvell]: Disable features to shrink kernel image (fixes FTBFS):
+    - security: Disable SECURITY_APPARMOR_EXPORT_BINARY
+    - tcp: Disable MPTCP
+    - tracing: Disable FUNCTION_TRACER
 
  -- Yoann Congal <yoann.congal@smile.fr>  Mon, 08 May 2023 17:49:24 +0200
 
