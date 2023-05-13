@@ -1,5 +1,26 @@
 linux (6.3.1-1~exp2) UNRELEASED; urgency=medium
 
+  [ Diederik de Haas ]
+  * [arm64] Improve support for rk3328 devices
+    - drivers/clk: Enable COMMON_CLK
+    - drivers/clk/rockchip: Enable CLK_RK3328
+    - drivers/cpuidle[arm]: Enable ARM_PSCI_CPUIDLE_DOMAIN
+    - drivers/gpio: Enable GPIO_ROCKCHIP as module
+    - drivers/gpio: Enable GPIO_SYSCON as module
+    - drivers/pinctrl: Enable PINCTRL_ROCKCHIP as module
+    - drivers/power/reset: Enable SYSCON_REBOOT_MODE as module
+    - drivers/soc/rockchip: Enable ROCKCHIP_GRF
+  * [arm64] Improve support for rk3399 devices
+    - drivers/clk/rockchip: Enable CLK_RK3399
+    - drivers/mmc/core: Enable PWRSEQ_SIMPLE
+    - drivers/soc/rockchip: Enable ROCKCHIP_DTPM as module
+    - drivers/usb/dwc3: Enable USB_DWC3_OF_SIMPLE as module
+  * [arm64] Improve support for rk356x devices
+    - drivers/clk/rockchip: Enable CLK_RK3568
+    - drivers/firmware/arm_scmi: Enable ARM_SCMI_TRANSPORT_SMC
+    - drivers/gpu/drm/bridge: Enable DRM_DISPLAY_CONNECTOR as module
+    - drivers/misc: Enable SRAM
+
   [ Yoann Congal ]
   * net/hsr: Enable PRP/HSR protocols as module (Closes: #1034506)
 

@@ -177,6 +177,7 @@ CONFIG_TCG_TIS_I2C_INFINEON=m
 ##
 ## file: drivers/clk/Kconfig
 ##
+CONFIG_COMMON_CLK=y
 CONFIG_COMMON_CLK_RK808=y
 CONFIG_COMMON_CLK_HI655X=y
 CONFIG_COMMON_CLK_SCMI=y
@@ -229,6 +230,13 @@ CONFIG_SDM_DISPCC_845=m
 CONFIG_QCOM_HFPLL=y
 
 ##
+## file: drivers/clk/rockchip/Kconfig
+##
+CONFIG_CLK_RK3328=y
+CONFIG_CLK_RK3399=y
+CONFIG_CLK_RK3568=y
+
+##
 ## file: drivers/clk/sunxi-ng/Kconfig
 ##
 CONFIG_SUN8I_DE2_CCU=y
@@ -262,6 +270,7 @@ CONFIG_ARM_RASPBERRYPI_CPUFREQ=m
 ## file: drivers/cpuidle/Kconfig.arm
 ##
 CONFIG_ARM_PSCI_CPUIDLE=y
+CONFIG_ARM_PSCI_CPUIDLE_DOMAIN=y
 
 ##
 ## file: drivers/crypto/Kconfig
@@ -374,6 +383,7 @@ CONFIG_TURRIS_MOX_RWTM=m
 ## file: drivers/firmware/arm_scmi/Kconfig
 ##
 CONFIG_ARM_SCMI_PROTOCOL=y
+CONFIG_ARM_SCMI_TRANSPORT_SMC=y
 
 ##
 ## file: drivers/firmware/google/Kconfig
@@ -391,6 +401,8 @@ CONFIG_GPIO_MPC8XXX=y
 CONFIG_GPIO_MXC=y
 CONFIG_GPIO_PL061=y
 CONFIG_GPIO_RCAR=m
+CONFIG_GPIO_ROCKCHIP=m
+CONFIG_GPIO_SYSCON=m
 CONFIG_GPIO_XGENE=y
 CONFIG_GPIO_XGENE_SB=m
 CONFIG_GPIO_XLP=y
@@ -426,6 +438,7 @@ CONFIG_DRM_AST=m
 ##
 ## file: drivers/gpu/drm/bridge/Kconfig
 ##
+CONFIG_DRM_DISPLAY_CONNECTOR=m
 CONFIG_DRM_LVDS_CODEC=m
 CONFIG_DRM_NWL_MIPI_DSI=m
 CONFIG_DRM_NXP_PTN3460=m
@@ -820,6 +833,7 @@ CONFIG_MFD_KHADAS_MCU=m
 ## file: drivers/misc/Kconfig
 ##
 CONFIG_QCOM_COINCELL=m
+CONFIG_SRAM=y
 
 ##
 ## file: drivers/misc/ti-st/Kconfig
@@ -830,6 +844,11 @@ CONFIG_TI_ST=m
 ## file: drivers/mmc/Kconfig
 ##
 CONFIG_MMC=y
+
+##
+## file: drivers/mmc/core/Kconfig
+##
+CONFIG_PWRSEQ_SIMPLE=y
 
 ##
 ## file: drivers/mmc/host/Kconfig
@@ -1332,6 +1351,7 @@ CONFIG_PINCTRL_AMD=y
 CONFIG_PINCTRL_AXP209=m
 CONFIG_PINCTRL_MAX77620=y
 CONFIG_PINCTRL_RK805=y
+CONFIG_PINCTRL_ROCKCHIP=m
 CONFIG_PINCTRL_SINGLE=y
 
 ##
@@ -1371,6 +1391,7 @@ CONFIG_POWER_RESET_VEXPRESS=y
 CONFIG_POWER_RESET_XGENE=y
 CONFIG_POWER_RESET_SYSCON=y
 CONFIG_POWER_RESET_SYSCON_POWEROFF=y
+CONFIG_SYSCON_REBOOT_MODE=m
 
 ##
 ## file: drivers/power/supply/Kconfig
@@ -1527,8 +1548,10 @@ CONFIG_ARCH_R8A774A1=y
 ##
 ## file: drivers/soc/rockchip/Kconfig
 ##
+CONFIG_ROCKCHIP_GRF=y
 CONFIG_ROCKCHIP_IODOMAIN=m
 CONFIG_ROCKCHIP_PM_DOMAINS=y
+CONFIG_ROCKCHIP_DTPM=m
 
 ##
 ## file: drivers/soc/tegra/Kconfig
@@ -1715,6 +1738,7 @@ CONFIG_USB_DWC3_ULPI=y
 ## choice: DWC3 Mode Selection
 CONFIG_USB_DWC3_DUAL_ROLE=y
 ## end choice
+CONFIG_USB_DWC3_OF_SIMPLE=m
 
 ##
 ## file: drivers/usb/gadget/Kconfig
