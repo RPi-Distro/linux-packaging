@@ -73,6 +73,9 @@ linux (6.3.2-1~exp1) UNRELEASED; urgency=medium
     - [amd64] drivers/gpu/drm/i915: Enable DRM_I915_PXP
     - [x86] drivers/misc/mei: Enable INTEL_MEI_GSC as module
     - [x86] drivers/misc/mei/pxp: Enable INTEL_MEI_PXP as module
+  * Enable Intel Trust Domain Extensions - Guest Support (Closes: #1032437)
+    - [amd64] arch/x86: Enable INTEL_TDX_GUEST
+    - [amd64] drivers/virt/coco/tdx-guest: Enable TDX_GUEST_DRIVER as module
 
  -- Yoann Congal <yoann.congal@smile.fr>  Mon, 08 May 2023 17:49:24 +0200
 
