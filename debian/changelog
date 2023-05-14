@@ -65,6 +65,9 @@ linux (6.3.2-1~exp1) UNRELEASED; urgency=medium
   [ Martyn Welch ]
   * d/rules.real: Enable limiting of compression threading
 
+  [ Punit Agrawal ]
+  * [arm64,armhf] drivers/hwtracing/coresight: Enable components
+
  -- Yoann Congal <yoann.congal@smile.fr>  Mon, 08 May 2023 17:49:24 +0200
 
 linux (6.3.1-1~exp1) experimental; urgency=medium
