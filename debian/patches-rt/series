@@ -21,8 +21,10 @@ locking-rwbase-Mitigate-indefinite-writer-starvation.patch
 signal-Let-tasks-cache-one-sigqueue-struct.patch
 0001-signal-Add-proper-comment-about-the-preempt-disable-.patch
 0002-signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
-tick-common-Align-tick-period-with-the-HZ-tick.patch
 tracing-timer-Add-missing-hrtimer-modes-to-decode_hr.patch
+revert-softirq-Let-ksoftirqd-do-its-job.patch
+0001-posix-timers-Prevent-RT-livelock-in-itimer_delete.patch
+0002-posix-timers-Ensure-timer-ID-search-loop-limit-is-va.patch
 
 ###########################################################################
 # Post
