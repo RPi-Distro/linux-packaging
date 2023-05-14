@@ -120,6 +120,7 @@ CONFIG_EDAC_IGEN6=m
 ## file: drivers/gpu/drm/i915/Kconfig
 ##
 CONFIG_DRM_I915_GVT_KVMGT=m
+CONFIG_DRM_I915_PXP=y
 
 ##
 ## file: drivers/hid/amd-sfh-hid/Kconfig
