@@ -76,6 +76,8 @@ linux (6.3.2-1~exp1) UNRELEASED; urgency=medium
   * Enable Intel Trust Domain Extensions - Guest Support (Closes: #1032437)
     - [amd64] arch/x86: Enable INTEL_TDX_GUEST
     - [amd64] drivers/virt/coco/tdx-guest: Enable TDX_GUEST_DRIVER as module
+  * [amd64] drivers/platform/x86/intel/ifs: Enable Intel In-Field Scan (IFS)
+    INTEL_IFS as module (Closes: #1033061)
 
  -- Yoann Congal <yoann.congal@smile.fr>  Mon, 08 May 2023 17:49:24 +0200
 
