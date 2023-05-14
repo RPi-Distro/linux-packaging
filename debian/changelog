@@ -52,6 +52,8 @@ linux (6.3.1-1~exp2) UNRELEASED; urgency=medium
     - security: Disable SECURITY_APPARMOR_EXPORT_BINARY
     - tcp: Disable MPTCP
     - tracing: Disable FUNCTION_TRACER
+  * linux-kbuild: Fix cross-build regression in objtool in 6.3
+  * linux-kbuild: Add support for objtool powerpc target
 
  -- Yoann Congal <yoann.congal@smile.fr>  Mon, 08 May 2023 17:49:24 +0200
 
