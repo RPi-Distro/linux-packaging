@@ -732,6 +732,8 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
 ##
 ## file: kernel/trace/Kconfig
 ##
+#. Adds ~90K to image
+# CONFIG_FUNCTION_TRACER is not set
 # CONFIG_FUNCTION_GRAPH_TRACER is not set
 # CONFIG_STACK_TRACER is not set
 # CONFIG_FTRACE_SYSCALLS is not set
@@ -790,6 +792,12 @@ CONFIG_IPV6=m
 # CONFIG_NET_MPLS_GSO is not set
 
 ##
+## file: net/mptcp/Kconfig
+##
+#. Adds ~40K to image
+# CONFIG_MPTCP is not set
+
+##
 ## file: net/packet/Kconfig
 ##
 CONFIG_PACKET=m
@@ -803,6 +811,12 @@ CONFIG_PACKET=m
 ## file: net/xdp/Kconfig
 ##
 # CONFIG_XDP_SOCKETS is not set
+
+##
+## file: security/apparmor/Kconfig
+##
+#. Selects ZSTD_COMPRESS which adds ~50K to image
+# CONFIG_SECURITY_APPARMOR_EXPORT_BINARY is not set
 
 ##
 ## file: security/integrity/Kconfig

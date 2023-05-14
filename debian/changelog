@@ -40,6 +40,19 @@ linux (6.3.1-1~exp2) UNRELEASED; urgency=medium
     REGULATOR_FIXED_VOLTAGE, RTC_DRV_SUN6I, SERIAL_SH_SCI, SPI_SUN6I,
     STMMAC_ETH, SUN50I_IOMMU, SUNXI_WATCHDOG, USB_MUSB_HDRC, USB_MUSB_SUNXI.
 
+  [ Ben Hutchings ]
+  * [mips*] Increase RELOCATION_TABLE_SIZE to 0x1d0000 (fixes FTBFS)
+  * [sh4/sh7785lcr] Modularise drivers to shrink kernel image (fixes FTBFS):
+    - ata: Change ATA, SATA_SIL from built-in to modular
+    - SCSI: Change SCSI, BLK_DEV_SD from built-in to modular
+    - USB: Change USB, USB_EHCI_HCD, USB_R8A66597_HCD,_USB_STORAGE from
+      built-in to modular
+    - udeb: Add ata-modules, scsi-core-modules, usb-modules packages
+  * [armel/marvell]: Disable features to shrink kernel image (fixes FTBFS):
+    - security: Disable SECURITY_APPARMOR_EXPORT_BINARY
+    - tcp: Disable MPTCP
+    - tracing: Disable FUNCTION_TRACER
+
  -- Yoann Congal <yoann.congal@smile.fr>  Mon, 08 May 2023 17:49:24 +0200
 
 linux (6.3.1-1~exp1) experimental; urgency=medium
