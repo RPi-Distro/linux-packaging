@@ -10,11 +10,6 @@ MAKE_PERF += feature-jvmti=0
 
 MAKE_PERF += perfexecdir=lib/perf-core plugindir=/usr/lib/traceevent/plugins tipdir=share/doc/linux-perf perf_include_dir=include/perf perf_examples_dir=share/doc/linux-perf/examples
 
-# perf can link against libbfd if available, but the result is
-# undistributable as they are licenced under GPL v2 and v3+
-# respectively.  Override detection of libbfd.
-MAKE_PERF += NO_LIBBFD=1
-
 # perf can link against libdebuginfod if available, but the result is
 # undistributable for the same reason.  Override detection of
 # libdebuginfod.
@@ -57,8 +52,8 @@ endif
 # Check that perf didn't get linked against incompatibly-licensed libraries
 	type ldd
 	! ldd $(CURDIR)/perf | grep -E '\blib(bfd|crypto|debuginfod)'
-# Check that it includes cplus_demangle from libiberty
-	grep cplus_demangle $(CURDIR)/perf
+# Check that it links against abi::__cxa_demangle from libstdc++
+	grep __cxa_demangle $(CURDIR)/perf
 
 install:
 	+$(MAKE_PERF) -C $(top_srcdir)/tools/perf -f Makefile.perf install install-python_ext
