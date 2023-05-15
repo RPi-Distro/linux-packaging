@@ -1,6 +1,6 @@
 include $(top_rulesdir)/Makefile.inc
 
-MAKE_PERF := $(MAKE) O=$(CURDIR) prefix=/usr V=1 VF=1 ARCH=$(KERNEL_ARCH) WERROR=0 EXTRA_CFLAGS='$(CFLAGS) $(CPPFLAGS)' LDFLAGS='$(LDFLAGS)'
+MAKE_PERF := $(MAKE) O=$(CURDIR) prefix=/usr V=1 VF=1 ARCH=$(KERNEL_ARCH) WERROR=0 EXTRA_CFLAGS='$(CFLAGS) $(CPPFLAGS)' EXTRA_CXXFLAGS='$(CXXFLAGS) $(CPPFLAGS)' LDFLAGS='$(LDFLAGS)'
 
 # Disable Gtk UI until it's more usable
 MAKE_PERF += NO_GTK2=1
