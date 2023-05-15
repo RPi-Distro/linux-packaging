@@ -1,4 +1,4 @@
-linux (6.3.2-1~exp1) UNRELEASED; urgency=medium
+linux (6.3.2-1~exp1) experimental; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.2
@@ -79,7 +79,7 @@ linux (6.3.2-1~exp1) UNRELEASED; urgency=medium
   * [amd64] drivers/platform/x86/intel/ifs: Enable Intel In-Field Scan (IFS)
     INTEL_IFS as module (Closes: #1033061)
 
- -- Yoann Congal <yoann.congal@smile.fr>  Mon, 08 May 2023 17:49:24 +0200
+ -- Ben Hutchings <benh@debian.org>  Mon, 15 May 2023 02:12:25 +0200
 
 linux (6.3.1-1~exp1) experimental; urgency=medium
 
