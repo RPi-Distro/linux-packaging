@@ -11,6 +11,9 @@ linux (6.3.4-1~exp1) UNRELEASED; urgency=medium
   * [riscv64] rtc: Enable RTC_DRV_DS1307, RTC_DRV_PCF85063 and RTC_DRV_PCF8563
     as modules.
 
+  [ Diederik de Haas ]
+  * [arm64,armhf] drivers/mailbox: Enable ROCKCHIP_MBOX
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 24 May 2023 20:57:44 +0200
 
 linux (6.3.2-1~exp1) experimental; urgency=medium
