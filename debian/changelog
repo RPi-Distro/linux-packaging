@@ -5,6 +5,7 @@ linux (6.4~rc5-1~exp1) UNRELEASED; urgency=medium
   [ Diederik de Haas ]
   * Update for 6.4:
     - d/copyright: Remove vs6624.c; removed upstream
+  * [rt] Update to 6.4-rc5-rt4
 
   [ Ben Hutchings ]
   * linux-perf: Update build rules and dependencies for change to

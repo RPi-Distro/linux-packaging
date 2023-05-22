@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Fri, 3 Mar 2023 12:27:31 +0000
 Subject: [PATCH 24/24] serial: 8250: implement non-BKL console
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rc5-rt4.tar.xz
 
 Implement the necessary callbacks to allow the 8250 console driver
 to perform as a non-BKL console. Remove the implementation for the
