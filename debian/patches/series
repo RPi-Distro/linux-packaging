@@ -93,6 +93,10 @@ features/all/db-mok-keyring/0003-MODSIGN-checking-the-blacklisted-hash-before-lo
 features/all/db-mok-keyring/KEYS-Make-use-of-platform-keyring-for-module-signature.patch
 features/all/db-mok-keyring/trust-machine-keyring-by-default.patch
 
+# Add symbol information to raspberry pi's device tree
+features/arm64/arm64-dts-broadcom-Enable-device-tree-overlay-suppor.patch
+features/arm/arm-dts-Enable-device-tree-overlay-support-for-RPi-d.patch
+
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
