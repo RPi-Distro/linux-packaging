@@ -25,6 +25,9 @@ tracing-timer-Add-missing-hrtimer-modes-to-decode_hr.patch
 revert-softirq-Let-ksoftirqd-do-its-job.patch
 0001-posix-timers-Prevent-RT-livelock-in-itimer_delete.patch
 0002-posix-timers-Ensure-timer-ID-search-loop-limit-is-va.patch
+0003-ARM-vfp-Provide-vfp_lock-for-VFP-locking.patch
+0004-ARM-vfp-Use-vfp_lock-in-vfp_sync_hwstate.patch
+0005-ARM-vfp-Use-vfp_lock-in-vfp_entry.patch
 
 ###########################################################################
 # Post
