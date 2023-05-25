@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 24 Mar 2023 17:14:11 +0100
 Subject: [PATCH] signal: Let tasks cache one sigqueue struct.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.1-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
 
 The sigqueue caching originated in the PREEMPT_RT tree. A few of the
 applications, that were ported to Linux, were ported from OS-9. Sending

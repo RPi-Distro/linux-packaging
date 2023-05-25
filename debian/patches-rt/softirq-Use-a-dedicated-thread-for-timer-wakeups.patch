@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 1 Dec 2021 17:41:09 +0100
 Subject: [PATCH] softirq: Use a dedicated thread for timer wakeups.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.1-rt13.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
 
 A timer/hrtimer softirq is raised in-IRQ context. With threaded
 interrupts enabled or on PREEMPT_RT this leads to waking the ksoftirqd
@@ -71,7 +71,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  static inline struct task_struct *this_cpu_ksoftirqd(void)
 --- a/kernel/softirq.c
 +++ b/kernel/softirq.c
-@@ -637,6 +637,29 @@ static inline void tick_irq_exit(void)
+@@ -619,6 +619,29 @@ static inline void tick_irq_exit(void)
  #endif
  }
  
@@ -101,7 +101,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  static inline void __irq_exit_rcu(void)
  {
  #ifndef __ARCH_IRQ_EXIT_IRQS_DISABLED
-@@ -646,8 +669,13 @@ static inline void __irq_exit_rcu(void)
+@@ -628,8 +651,13 @@ static inline void __irq_exit_rcu(void)
  #endif
  	account_hardirq_exit(current);
  	preempt_count_sub(HARDIRQ_OFFSET);
@@ -117,7 +117,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	tick_irq_exit();
  }
-@@ -976,12 +1004,70 @@ static struct smp_hotplug_thread softirq
+@@ -958,12 +986,70 @@ static struct smp_hotplug_thread softirq
  	.thread_comm		= "ksoftirqd/%u",
  };
  
