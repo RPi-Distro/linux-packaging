@@ -6,6 +6,8 @@ linux (6.3.4-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 6.3.3-rt15
+  * drivers/ptp: Make PTP_1588_CLOCK builtin (except armel/marvell)
+    (Closes: #1036744)
 
   [ Aurelien Jarno ]
   * [riscv64] rtc: Enable RTC_DRV_DS1307, RTC_DRV_PCF85063 and RTC_DRV_PCF8563
