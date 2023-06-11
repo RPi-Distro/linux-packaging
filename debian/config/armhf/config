@@ -1391,6 +1391,11 @@ CONFIG_VIDEO_IMX_MEDIA=m
 CONFIG_VIDEO_IMX_CSI=m
 
 ##
+## file: drivers/staging/media/rkvdec/Kconfig
+##
+CONFIG_VIDEO_ROCKCHIP_VDEC=m
+
+##
 ## file: drivers/staging/media/sunxi/Kconfig
 ##
 CONFIG_VIDEO_SUNXI=y

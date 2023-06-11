@@ -8,6 +8,9 @@ linux (6.3.7-1~exp1) UNRELEASED; urgency=medium
   * [arm*] Add symbol information to raspberry pi device trees. This is useful
     when device tree overlays are used.
 
+  [ Zhang Ning ]
+  * [armhf] drivers/staging/media/rkvdec: enable rkvdec as module
+
  -- Uwe Kleine-König <ukleinek@debian.org>  Wed, 24 May 2023 19:03:22 +0200
 
 linux (6.3.5-1~exp1) experimental; urgency=medium
