@@ -593,12 +593,6 @@ CONFIG_C101=m
 CONFIG_FARSYNC=m
 
 ##
-## file: drivers/net/wireless/Kconfig
-##
-CONFIG_PCMCIA_RAYCS=m
-CONFIG_PCMCIA_WL3501=m
-
-##
 ## file: drivers/net/wireless/atmel/Kconfig
 ##
 CONFIG_ATMEL=m
@@ -623,6 +617,12 @@ CONFIG_PLX_HERMES=m
 CONFIG_TMD_HERMES=m
 CONFIG_PCI_HERMES=m
 CONFIG_PCMCIA_HERMES=m
+
+##
+## file: drivers/net/wireless/legacy/Kconfig
+##
+CONFIG_PCMCIA_RAYCS=m
+CONFIG_PCMCIA_WL3501=m
 
 ##
 ## file: drivers/net/wireless/marvell/mwifiex/Kconfig
@@ -742,7 +742,6 @@ CONFIG_SERIAL_8250_RSA=y
 ## file: drivers/usb/Kconfig
 ##
 CONFIG_USB=m
-CONFIG_USB_USS720=m
 
 ##
 ## file: drivers/usb/atm/Kconfig
@@ -758,6 +757,11 @@ CONFIG_USB_OHCI_HCD=m
 CONFIG_USB_UHCI_HCD=m
 CONFIG_USB_SL811_HCD=m
 CONFIG_USB_SL811_CS=m
+
+##
+## file: drivers/usb/misc/Kconfig
+##
+CONFIG_USB_USS720=m
 
 ##
 ## file: drivers/video/backlight/Kconfig
