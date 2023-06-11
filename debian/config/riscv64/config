@@ -15,8 +15,10 @@ CONFIG_KEXEC=y
 ## file: arch/riscv/Kconfig.socs
 ##
 CONFIG_SOC_MICROCHIP_POLARFIRE=y
+CONFIG_ARCH_RENESAS=y
 CONFIG_SOC_SIFIVE=y
 CONFIG_SOC_STARFIVE=y
+CONFIG_ARCH_SUNXI=y
 CONFIG_SOC_VIRT=y
 
 ##
@@ -35,11 +37,18 @@ CONFIG_AHCI_DWC=m
 ## file: drivers/char/hw_random/Kconfig
 ##
 CONFIG_HW_RANDOM_POLARFIRE_SOC=m
+CONFIG_HW_RANDOM_JH7110=m
 
 ##
 ## file: drivers/cxl/Kconfig
 ##
 CONFIG_CXL_BUS=y
+
+##
+## file: drivers/dma/Kconfig
+##
+CONFIG_DMADEVICES=y
+CONFIG_DMA_SUN6I=m
 
 ##
 ## file: drivers/gpio/Kconfig
@@ -51,8 +60,21 @@ CONFIG_GPIO_SIFIVE=y
 ## file: drivers/gpu/drm/Kconfig
 ##
 CONFIG_DRM=m
-CONFIG_DRM_RADEON=m
+
+##
+## file: drivers/gpu/drm/amd/amdgpu/Kconfig
+##
 CONFIG_DRM_AMDGPU=m
+
+##
+## file: drivers/gpu/drm/radeon/Kconfig
+##
+CONFIG_DRM_RADEON=m
+
+##
+## file: drivers/gpu/drm/sun4i/Kconfig
+##
+CONFIG_DRM_SUN4I=m
 
 ##
 ## file: drivers/hwmon/Kconfig
@@ -68,11 +90,17 @@ CONFIG_I2C=y
 ## file: drivers/i2c/busses/Kconfig
 ##
 CONFIG_I2C_DESIGNWARE_PLATFORM=m
+CONFIG_I2C_MV64XXX=m
 
 ##
 ## file: drivers/input/misc/Kconfig
 ##
 CONFIG_INPUT_DA9063_ONKEY=m
+
+##
+## file: drivers/iommu/Kconfig
+##
+CONFIG_SUN50I_IOMMU=y
 
 ##
 ## file: drivers/mailbox/Kconfig
@@ -97,11 +125,22 @@ CONFIG_MMC=m
 CONFIG_MMC_SDHCI_PLTFM=m
 CONFIG_MMC_SDHCI_CADENCE=m
 CONFIG_MMC_SPI=m
+CONFIG_MMC_SUNXI=m
 
 ##
 ## file: drivers/net/ethernet/cadence/Kconfig
 ##
 CONFIG_MACB=m
+
+##
+## file: drivers/net/ethernet/stmicro/stmmac/Kconfig
+##
+CONFIG_STMMAC_ETH=m
+
+##
+## file: drivers/nvmem/Kconfig
+##
+CONFIG_NVMEM_SUNXI_SID=m
 
 ##
 ## file: drivers/pci/Kconfig
@@ -122,6 +161,11 @@ CONFIG_PCIE_DW_PLAT_HOST=y
 CONFIG_PCIE_FU740=y
 
 ##
+## file: drivers/phy/allwinner/Kconfig
+##
+CONFIG_PHY_SUN4I_USB=m
+
+##
 ## file: drivers/power/reset/Kconfig
 ##
 CONFIG_POWER_RESET=y
@@ -138,13 +182,19 @@ CONFIG_PWM_SIFIVE=m
 ##
 ## file: drivers/regulator/Kconfig
 ##
+CONFIG_REGULATOR=y
+CONFIG_REGULATOR_FIXED_VOLTAGE=m
 CONFIG_REGULATOR_DA9063=m
 CONFIG_REGULATOR_TPS65086=m
 
 ##
 ## file: drivers/rtc/Kconfig
 ##
+CONFIG_RTC_DRV_DS1307=m
+CONFIG_RTC_DRV_PCF85063=m
+CONFIG_RTC_DRV_PCF8563=m
 CONFIG_RTC_DRV_DA9063=m
+CONFIG_RTC_DRV_SUN6I=y
 CONFIG_RTC_DRV_POLARFIRE_SOC=m
 
 ##
@@ -153,9 +203,15 @@ CONFIG_RTC_DRV_POLARFIRE_SOC=m
 CONFIG_POLARFIRE_SOC_SYS_CTRL=m
 
 ##
+## file: drivers/soc/renesas/Kconfig
+##
+CONFIG_ARCH_R9A07G043=y
+
+##
 ## file: drivers/spi/Kconfig
 ##
 CONFIG_SPI_SIFIVE=m
+CONFIG_SPI_SUN6I=m
 
 ##
 ## file: drivers/tty/hvc/Kconfig
@@ -166,6 +222,7 @@ CONFIG_HVC_RISCV_SBI=y
 ## file: drivers/tty/serial/Kconfig
 ##
 CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
+CONFIG_SERIAL_SH_SCI=m
 
 ##
 ## file: drivers/tty/serial/8250/Kconfig
@@ -190,6 +247,18 @@ CONFIG_USB_OHCI_HCD=m
 CONFIG_USB_OHCI_HCD_PLATFORM=m
 
 ##
+## file: drivers/usb/musb/Kconfig
+##
+CONFIG_USB_MUSB_HDRC=m
+CONFIG_USB_MUSB_SUNXI=m
+
+##
+## file: drivers/usb/phy/Kconfig
+##
+CONFIG_NOP_USB_XCEIV=m
+
+##
 ## file: drivers/watchdog/Kconfig
 ##
 CONFIG_DA9063_WATCHDOG=m
+CONFIG_SUNXI_WATCHDOG=m

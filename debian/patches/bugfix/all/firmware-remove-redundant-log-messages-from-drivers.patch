@@ -13,7 +13,7 @@ Index: linux/arch/x86/kernel/cpu/microcode/amd.c
 ===================================================================
 --- linux.orig/arch/x86/kernel/cpu/microcode/amd.c
 +++ linux/arch/x86/kernel/cpu/microcode/amd.c
-@@ -907,10 +907,8 @@ static enum ucode_state request_microcod
+@@ -914,10 +914,8 @@ static enum ucode_state request_microcod
  	if (c->x86 >= 0x15)
  		snprintf(fw_name, sizeof(fw_name), "amd-ucode/microcode_amd_fam%.2xh.bin", c->x86);
  
@@ -165,7 +165,7 @@ Index: linux/drivers/dma/imx-sdma.c
 ===================================================================
 --- linux.orig/drivers/dma/imx-sdma.c
 +++ linux/drivers/dma/imx-sdma.c
-@@ -1910,11 +1910,8 @@ static void sdma_load_firmware(const str
+@@ -1934,11 +1934,8 @@ static void sdma_load_firmware(const str
  	const struct sdma_script_start_addrs *addr;
  	unsigned short *ram_code;
  
@@ -178,28 +178,11 @@ Index: linux/drivers/dma/imx-sdma.c
  
  	if (fw->size < sizeof(*header))
  		goto err_firmware;
-Index: linux/drivers/gpu/drm/mga/mga_warp.c
-===================================================================
---- linux.orig/drivers/gpu/drm/mga/mga_warp.c
-+++ linux/drivers/gpu/drm/mga/mga_warp.c
-@@ -77,11 +77,8 @@ int mga_warp_install_microcode(drm_mga_p
- 	}
- 	rc = request_ihex_firmware(&fw, firmware_name, &pdev->dev);
- 	platform_device_unregister(pdev);
--	if (rc) {
--		DRM_ERROR("mga: Failed to load microcode \"%s\"\n",
--			  firmware_name);
-+	if (rc)
- 		return rc;
--	}
- 
- 	size = 0;
- 	where = 0;
 Index: linux/drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c
 ===================================================================
 --- linux.orig/drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c
 +++ linux/drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c
-@@ -2445,10 +2445,8 @@ gf100_gr_load_fw(struct gf100_gr *gr, co
+@@ -2567,10 +2567,8 @@ gf100_gr_load_fw(struct gf100_gr *gr, co
  	if (ret) {
  		snprintf(f, sizeof(f), "nouveau/%s", name);
  		ret = request_firmware(&fw, f, device->dev);
@@ -211,23 +194,6 @@ Index: linux/drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c
  	}
  
  	blob->size = fw->size;
-Index: linux/drivers/gpu/drm/r128/r128_cce.c
-===================================================================
---- linux.orig/drivers/gpu/drm/r128/r128_cce.c
-+++ linux/drivers/gpu/drm/r128/r128_cce.c
-@@ -161,11 +161,8 @@ static int r128_cce_load_microcode(drm_r
- 	}
- 	rc = request_firmware(&fw, FIRMWARE_NAME, &pdev->dev);
- 	platform_device_unregister(pdev);
--	if (rc) {
--		pr_err("r128_cce: Failed to load firmware \"%s\"\n",
--		       FIRMWARE_NAME);
-+	if (rc)
- 		return rc;
--	}
- 
- 	if (fw->size != 256 * 8) {
- 		pr_err("r128_cce: Bogus length %zu in firmware \"%s\"\n",
 Index: linux/drivers/gpu/drm/radeon/ni.c
 ===================================================================
 --- linux.orig/drivers/gpu/drm/radeon/ni.c
@@ -854,7 +820,7 @@ Index: linux/drivers/media/usb/dvb-usb/dib0700_devices.c
 ===================================================================
 --- linux.orig/drivers/media/usb/dvb-usb/dib0700_devices.c
 +++ linux/drivers/media/usb/dvb-usb/dib0700_devices.c
-@@ -2408,12 +2408,9 @@ static int stk9090m_frontend_attach(stru
+@@ -2401,12 +2401,9 @@ static int stk9090m_frontend_attach(stru
  
  	dib9000_i2c_enumeration(&adap->dev->i2c_adap, 1, 0x10, 0x80);
  
@@ -869,7 +835,7 @@ Index: linux/drivers/media/usb/dvb-usb/dib0700_devices.c
  	stk9090m_config.microcode_B_fe_size = state->frontend_firmware->size;
  	stk9090m_config.microcode_B_fe_buffer = state->frontend_firmware->data;
  
-@@ -2478,12 +2475,9 @@ static int nim9090md_frontend_attach(str
+@@ -2471,12 +2468,9 @@ static int nim9090md_frontend_attach(str
  	msleep(20);
  	dib0700_set_gpio(adap->dev, GPIO0, GPIO_OUT, 1);
  
@@ -1256,7 +1222,7 @@ Index: linux/drivers/net/ethernet/broadcom/tg3.c
 ===================================================================
 --- linux.orig/drivers/net/ethernet/broadcom/tg3.c
 +++ linux/drivers/net/ethernet/broadcom/tg3.c
-@@ -11398,11 +11398,8 @@ static int tg3_request_firmware(struct t
+@@ -11390,11 +11390,8 @@ static int tg3_request_firmware(struct t
  {
  	const struct tg3_firmware_hdr *fw_hdr;
  
@@ -1347,7 +1313,7 @@ Index: linux/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
 ===================================================================
 --- linux.orig/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
 +++ linux/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
-@@ -580,8 +580,6 @@ static int myri10ge_load_hotplug_firmwar
+@@ -579,8 +579,6 @@ static int myri10ge_load_hotplug_firmwar
  	unsigned i;
  
  	if (request_firmware(&fw, mgp->fw_name, dev) < 0) {
@@ -1376,7 +1342,7 @@ Index: linux/drivers/net/ethernet/sun/cassini.c
 ===================================================================
 --- linux.orig/drivers/net/ethernet/sun/cassini.c
 +++ linux/drivers/net/ethernet/sun/cassini.c
-@@ -794,11 +794,8 @@ static void cas_saturn_firmware_init(str
+@@ -792,11 +792,8 @@ static void cas_saturn_firmware_init(str
  		return;
  
  	err = request_firmware(&fw, fw_name, &cp->pdev->dev);
@@ -1426,7 +1392,7 @@ Index: linux/drivers/net/wireless/ath/ath9k/hif_usb.c
 ===================================================================
 --- linux.orig/drivers/net/wireless/ath/ath9k/hif_usb.c
 +++ linux/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -1222,9 +1222,6 @@ static void ath9k_hif_usb_firmware_cb(co
+@@ -1233,9 +1233,6 @@ static void ath9k_hif_usb_firmware_cb(co
  		if (!ret)
  			return;
  
@@ -1471,7 +1437,7 @@ Index: linux/drivers/net/wireless/atmel/atmel.c
 ===================================================================
 --- linux.orig/drivers/net/wireless/atmel/atmel.c
 +++ linux/drivers/net/wireless/atmel/atmel.c
-@@ -3896,12 +3896,8 @@ static int reset_atmel_card(struct net_d
+@@ -3892,12 +3892,8 @@ static int reset_atmel_card(struct net_d
  					strcpy(priv->firmware_id, "atmel_at76c502.bin");
  				}
  				err = request_firmware(&fw_entry, priv->firmware_id, priv->sys_dev);
@@ -1557,7 +1523,7 @@ Index: linux/drivers/net/wireless/intel/ipw2x00/ipw2100.c
 ===================================================================
 --- linux.orig/drivers/net/wireless/intel/ipw2x00/ipw2100.c
 +++ linux/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-@@ -8370,12 +8370,8 @@ static int ipw2100_get_firmware(struct i
+@@ -8359,12 +8359,8 @@ static int ipw2100_get_firmware(struct i
  
  	rc = request_firmware(&fw->fw_entry, fw_name, &priv->pci_dev->dev);
  
@@ -1575,7 +1541,7 @@ Index: linux/drivers/net/wireless/intel/ipw2x00/ipw2200.c
 ===================================================================
 --- linux.orig/drivers/net/wireless/intel/ipw2x00/ipw2200.c
 +++ linux/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-@@ -3393,10 +3393,8 @@ static int ipw_get_fw(struct ipw_priv *p
+@@ -3379,10 +3379,8 @@ static int ipw_get_fw(struct ipw_priv *p
  
  	/* ask firmware_class module to get the boot firmware off disk */
  	rc = request_firmware(raw, name, &priv->pci_dev->dev);
@@ -1591,7 +1557,7 @@ Index: linux/drivers/net/wireless/intel/iwlegacy/3945-mac.c
 ===================================================================
 --- linux.orig/drivers/net/wireless/intel/iwlegacy/3945-mac.c
 +++ linux/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-@@ -1835,7 +1835,6 @@ il3945_read_ucode(struct il_priv *il)
+@@ -1829,7 +1829,6 @@ il3945_read_ucode(struct il_priv *il)
  		sprintf(buf, "%s%u%s", name_pre, idx, ".ucode");
  		ret = request_firmware(&ucode_raw, buf, &il->pci_dev->dev);
  		if (ret < 0) {
@@ -1603,8 +1569,8 @@ Index: linux/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
 ===================================================================
 --- linux.orig/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
 +++ linux/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -183,8 +183,6 @@ static int iwl_request_firmware(struct i
- 	}
+@@ -179,8 +179,6 @@ static int iwl_request_firmware(struct i
+ 		drv->fw_index--;
  
  	if (drv->fw_index < cfg->ucode_api_min) {
 -		IWL_ERR(drv, "no suitable firmware found!\n");
@@ -1734,7 +1700,7 @@ Index: linux/drivers/net/wireless/marvell/mwl8k.c
 ===================================================================
 --- linux.orig/drivers/net/wireless/marvell/mwl8k.c
 +++ linux/drivers/net/wireless/marvell/mwl8k.c
-@@ -5735,16 +5735,12 @@ static int mwl8k_firmware_load_success(s
+@@ -5736,16 +5736,12 @@ static int mwl8k_firmware_load_success(s
  static void mwl8k_fw_state_machine(const struct firmware *fw, void *context)
  {
  	struct mwl8k_priv *priv = context;
@@ -1752,7 +1718,7 @@ Index: linux/drivers/net/wireless/marvell/mwl8k.c
  		priv->fw_helper = fw;
  		rc = mwl8k_request_fw(priv, priv->fw_pref, &priv->fw_ucode,
  				      true);
-@@ -5779,11 +5775,8 @@ static void mwl8k_fw_state_machine(const
+@@ -5780,11 +5776,8 @@ static void mwl8k_fw_state_machine(const
  		break;
  
  	case FW_STATE_LOADING_ALT:
@@ -1765,7 +1731,7 @@ Index: linux/drivers/net/wireless/marvell/mwl8k.c
  		priv->fw_ucode = fw;
  		rc = mwl8k_firmware_load_success(priv);
  		if (rc)
-@@ -5821,10 +5814,8 @@ retry:
+@@ -5822,10 +5815,8 @@ retry:
  
  	/* Ask userland hotplug daemon for the device firmware */
  	rc = mwl8k_request_firmware(priv, fw_image, nowait);
@@ -1988,7 +1954,7 @@ Index: linux/drivers/scsi/ipr.c
 ===================================================================
 --- linux.orig/drivers/scsi/ipr.c
 +++ linux/drivers/scsi/ipr.c
-@@ -4102,10 +4102,8 @@ static ssize_t ipr_store_update_fw(struc
+@@ -4098,10 +4098,8 @@ static ssize_t ipr_store_update_fw(struc
  	if (endline)
  		*endline = '\0';
  
@@ -2004,7 +1970,7 @@ Index: linux/drivers/scsi/pm8001/pm8001_ctl.c
 ===================================================================
 --- linux.orig/drivers/scsi/pm8001/pm8001_ctl.c
 +++ linux/drivers/scsi/pm8001/pm8001_ctl.c
-@@ -846,9 +846,6 @@ static ssize_t pm8001_store_update_fw(st
+@@ -842,9 +842,6 @@ static ssize_t pm8001_store_update_fw(st
  			       pm8001_ha->dev);
  
  	if (ret) {
@@ -2031,7 +1997,7 @@ Index: linux/drivers/scsi/qla2xxx/qla_init.c
 ===================================================================
 --- linux.orig/drivers/scsi/qla2xxx/qla_init.c
 +++ linux/drivers/scsi/qla2xxx/qla_init.c
-@@ -8316,10 +8316,6 @@ qla2x00_load_risc(scsi_qla_host_t *vha,
+@@ -8279,10 +8279,6 @@ qla2x00_load_risc(scsi_qla_host_t *vha,
  	/* Load firmware blob. */
  	blob = qla2x00_request_firmware(vha);
  	if (!blob) {
@@ -2042,7 +2008,7 @@ Index: linux/drivers/scsi/qla2xxx/qla_init.c
  		return QLA_FUNCTION_FAILED;
  	}
  
-@@ -8422,9 +8418,6 @@ qla24xx_load_risc_blob(scsi_qla_host_t *
+@@ -8385,9 +8381,6 @@ qla24xx_load_risc_blob(scsi_qla_host_t *
  
  	blob = qla2x00_request_firmware(vha);
  	if (!blob) {
@@ -2073,7 +2039,7 @@ Index: linux/drivers/scsi/qla2xxx/qla_os.c
 ===================================================================
 --- linux.orig/drivers/scsi/qla2xxx/qla_os.c
 +++ linux/drivers/scsi/qla2xxx/qla_os.c
-@@ -7651,8 +7651,6 @@ qla2x00_request_firmware(scsi_qla_host_t
+@@ -7657,8 +7657,6 @@ qla2x00_request_firmware(scsi_qla_host_t
  		goto out;
  
  	if (request_firmware(&blob->fw, blob->name, &ha->pdev->dev)) {
@@ -2196,7 +2162,7 @@ Index: linux/drivers/tty/serial/ucc_uart.c
 ===================================================================
 --- linux.orig/drivers/tty/serial/ucc_uart.c
 +++ linux/drivers/tty/serial/ucc_uart.c
-@@ -1151,10 +1151,8 @@ static void uart_firmware_cont(const str
+@@ -1150,10 +1150,8 @@ static void uart_firmware_cont(const str
  	struct device *dev = context;
  	int ret;
  
@@ -2586,7 +2552,7 @@ Index: linux/sound/pci/hda/hda_intel.c
 ===================================================================
 --- linux.orig/sound/pci/hda/hda_intel.c
 +++ linux/sound/pci/hda/hda_intel.c
-@@ -2017,8 +2017,6 @@ static void azx_firmware_cb(const struct
+@@ -2021,8 +2021,6 @@ static void azx_firmware_cb(const struct
  
  	if (fw)
  		chip->fw = fw;

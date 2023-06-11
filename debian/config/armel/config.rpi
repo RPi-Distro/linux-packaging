@@ -101,6 +101,11 @@ CONFIG_MMC_BCM2835=y
 CONFIG_BRCMFMAC_SDIO=y
 
 ##
+## file: drivers/nvmem/Kconfig
+##
+CONFIG_NVMEM_RMEM=m
+
+##
 ## file: drivers/pwm/Kconfig
 ##
 CONFIG_PWM=y

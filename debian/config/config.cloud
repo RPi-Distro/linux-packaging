@@ -399,7 +399,7 @@ CONFIG_INPUT_MOUSEDEV=m
 ##
 ## file: drivers/input/joystick/Kconfig
 ##
-# CONFIG_INPUT_JOYSTICK is not set
+CONFIG_INPUT_JOYSTICK=n
 
 ##
 ## file: drivers/input/keyboard/Kconfig
@@ -580,7 +580,6 @@ CONFIG_XEN_NETDEV_FRONTEND=m
 ## file: drivers/net/ethernet/Kconfig
 ##
 # CONFIG_JME is not set
-# CONFIG_FEALNX is not set
 
 ##
 ## file: drivers/net/ethernet/3com/Kconfig
@@ -1064,7 +1063,6 @@ CONFIG_NVME_MULTIPATH=y
 # CONFIG_RTC_DRV_MSM6242 is not set
 # CONFIG_RTC_DRV_BQ4802 is not set
 # CONFIG_RTC_DRV_RP5C01 is not set
-# CONFIG_RTC_DRV_V3020 is not set
 # CONFIG_RTC_DRV_WM831X is not set
 # CONFIG_RTC_DRV_WM8350 is not set
 # CONFIG_RTC_DRV_PCF50633 is not set
@@ -1272,11 +1270,6 @@ CONFIG_HYPERV_STORAGE=m
 ## file: drivers/usb/Kconfig
 ##
 # CONFIG_USB_SUPPORT is not set
-
-##
-## file: drivers/vfio/mdev/Kconfig
-##
-# CONFIG_VFIO_MDEV is not set
 
 ##
 ## file: drivers/vfio/pci/Kconfig

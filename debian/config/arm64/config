@@ -177,6 +177,7 @@ CONFIG_TCG_TIS_I2C_INFINEON=m
 ##
 ## file: drivers/clk/Kconfig
 ##
+CONFIG_COMMON_CLK=y
 CONFIG_COMMON_CLK_RK808=y
 CONFIG_COMMON_CLK_HI655X=y
 CONFIG_COMMON_CLK_SCMI=y
@@ -229,6 +230,13 @@ CONFIG_SDM_DISPCC_845=m
 CONFIG_QCOM_HFPLL=y
 
 ##
+## file: drivers/clk/rockchip/Kconfig
+##
+CONFIG_CLK_RK3328=y
+CONFIG_CLK_RK3399=y
+CONFIG_CLK_RK3568=y
+
+##
 ## file: drivers/clk/sunxi-ng/Kconfig
 ##
 CONFIG_SUN8I_DE2_CCU=y
@@ -262,6 +270,7 @@ CONFIG_ARM_RASPBERRYPI_CPUFREQ=m
 ## file: drivers/cpuidle/Kconfig.arm
 ##
 CONFIG_ARM_PSCI_CPUIDLE=y
+CONFIG_ARM_PSCI_CPUIDLE_DOMAIN=y
 
 ##
 ## file: drivers/crypto/Kconfig
@@ -374,13 +383,7 @@ CONFIG_TURRIS_MOX_RWTM=m
 ## file: drivers/firmware/arm_scmi/Kconfig
 ##
 CONFIG_ARM_SCMI_PROTOCOL=y
-
-##
-## file: drivers/firmware/efi/Kconfig
-##
-#. Enable until support for loading initrd from a device path is supported
-#. in bootloaders, cf. #997907 for details.
-CONFIG_EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER=y
+CONFIG_ARM_SCMI_TRANSPORT_SMC=y
 
 ##
 ## file: drivers/firmware/google/Kconfig
@@ -398,6 +401,8 @@ CONFIG_GPIO_MPC8XXX=y
 CONFIG_GPIO_MXC=y
 CONFIG_GPIO_PL061=y
 CONFIG_GPIO_RCAR=m
+CONFIG_GPIO_ROCKCHIP=m
+CONFIG_GPIO_SYSCON=m
 CONFIG_GPIO_XGENE=y
 CONFIG_GPIO_XGENE_SB=m
 CONFIG_GPIO_XLP=y
@@ -412,9 +417,12 @@ CONFIG_GPIO_MOXTET=m
 ## file: drivers/gpu/drm/Kconfig
 ##
 CONFIG_DRM=m
-CONFIG_DRM_RADEON=m
-CONFIG_DRM_AMDGPU=m
 CONFIG_DRM_HYPERV=m
+
+##
+## file: drivers/gpu/drm/amd/amdgpu/Kconfig
+##
+CONFIG_DRM_AMDGPU=m
 
 ##
 ## file: drivers/gpu/drm/arm/Kconfig
@@ -430,6 +438,7 @@ CONFIG_DRM_AST=m
 ##
 ## file: drivers/gpu/drm/bridge/Kconfig
 ##
+CONFIG_DRM_DISPLAY_CONNECTOR=m
 CONFIG_DRM_LVDS_CODEC=m
 CONFIG_DRM_NWL_MIPI_DSI=m
 CONFIG_DRM_NXP_PTN3460=m
@@ -521,6 +530,11 @@ CONFIG_DRM_PANEL_SITRONIX_ST7703=m
 CONFIG_DRM_PANFROST=m
 
 ##
+## file: drivers/gpu/drm/radeon/Kconfig
+##
+CONFIG_DRM_RADEON=m
+
+##
 ## file: drivers/gpu/drm/rockchip/Kconfig
 ##
 CONFIG_DRM_ROCKCHIP=m
@@ -560,7 +574,6 @@ CONFIG_DRM_VC4_HDMI_CEC=y
 ## file: drivers/gpu/drm/vmwgfx/Kconfig
 ##
 CONFIG_DRM_VMWGFX=m
-CONFIG_DRM_VMWGFX_FBCON=y
 
 ##
 ## file: drivers/gpu/host1x/Kconfig
@@ -605,7 +618,15 @@ CONFIG_HWSPINLOCK_QCOM=m
 ## file: drivers/hwtracing/coresight/Kconfig
 ##
 CONFIG_CORESIGHT=m
+CONFIG_CORESIGHT_LINKS_AND_SINKS=m
+CONFIG_CORESIGHT_LINK_AND_SINK_TMC=m
+CONFIG_CORESIGHT_CATU=m
+CONFIG_CORESIGHT_SINK_TPIU=m
+CONFIG_CORESIGHT_SINK_ETBV10=m
 CONFIG_CORESIGHT_SOURCE_ETM4X=m
+CONFIG_CORESIGHT_STM=m
+CONFIG_CORESIGHT_CPU_DEBUG=m
+CONFIG_CORESIGHT_CTI=m
 CONFIG_CORESIGHT_TRBE=m
 
 ##
@@ -753,6 +774,7 @@ CONFIG_IMX_MBOX=m
 CONFIG_PLATFORM_MHU=m
 CONFIG_ARMADA_37XX_RWTM_MBOX=m
 CONFIG_OMAP2PLUS_MBOX=y
+CONFIG_ROCKCHIP_MBOX=y
 CONFIG_BCM2835_MBOX=y
 CONFIG_HI6220_MBOX=y
 CONFIG_QCOM_APCS_IPC=m
@@ -820,6 +842,7 @@ CONFIG_MFD_KHADAS_MCU=m
 ## file: drivers/misc/Kconfig
 ##
 CONFIG_QCOM_COINCELL=m
+CONFIG_SRAM=y
 
 ##
 ## file: drivers/misc/ti-st/Kconfig
@@ -830,6 +853,11 @@ CONFIG_TI_ST=m
 ## file: drivers/mmc/Kconfig
 ##
 CONFIG_MMC=y
+
+##
+## file: drivers/mmc/core/Kconfig
+##
+CONFIG_PWRSEQ_SIMPLE=y
 
 ##
 ## file: drivers/mmc/host/Kconfig
@@ -848,6 +876,7 @@ CONFIG_MMC_SDHCI_IPROC=m
 CONFIG_MMC_MESON_GX=m
 CONFIG_MMC_SDHCI_MSM=m
 CONFIG_MMC_SPI=m
+CONFIG_MMC_SDHI=m
 CONFIG_MMC_CAVIUM_THUNDERX=m
 CONFIG_MMC_DW=m
 CONFIG_MMC_DW_K3=m
@@ -856,7 +885,6 @@ CONFIG_MMC_SUNXI=m
 CONFIG_MMC_BCM2835=m
 CONFIG_MMC_SDHCI_XENON=m
 CONFIG_MMC_SDHCI_AM654=m
-CONFIG_MMC_SDHI=m
 
 ##
 ## file: drivers/mtd/spi-nor/controllers/Kconfig
@@ -905,11 +933,6 @@ CONFIG_NET_DSA_MV88E6XXX=m
 ## file: drivers/net/dsa/ocelot/Kconfig
 ##
 CONFIG_NET_DSA_MSCC_FELIX=m
-
-##
-## file: drivers/net/ethernet/Kconfig
-##
-CONFIG_FEALNX=m
 
 ##
 ## file: drivers/net/ethernet/3com/Kconfig
@@ -1146,7 +1169,6 @@ CONFIG_MWIFIEX_PCIE=m
 ## file: drivers/net/wireless/ti/Kconfig
 ##
 CONFIG_WLAN_VENDOR_TI=y
-CONFIG_WILINK_PLATFORM_DATA=y
 
 ##
 ## file: drivers/net/wireless/ti/wl1251/Kconfig
@@ -1178,6 +1200,7 @@ CONFIG_WLCORE_SDIO=m
 CONFIG_NVMEM_IMX_OCOTP=m
 CONFIG_NVMEM_MESON_EFUSE=m
 CONFIG_NVMEM_QCOM_QFPROM=m
+CONFIG_NVMEM_RMEM=m
 CONFIG_NVMEM_ROCKCHIP_EFUSE=m
 CONFIG_NVMEM_SUNXI_SID=m
 
@@ -1211,7 +1234,8 @@ CONFIG_PCI_J721E_EP=y
 ##
 ## file: drivers/pci/controller/dwc/Kconfig
 ##
-CONFIG_PCI_IMX6=y
+CONFIG_PCI_IMX6_HOST=y
+CONFIG_PCI_IMX6_EP=y
 CONFIG_PCI_LAYERSCAPE=y
 CONFIG_PCI_HISI=y
 CONFIG_PCIE_QCOM=y
@@ -1336,6 +1360,7 @@ CONFIG_PINCTRL_AMD=y
 CONFIG_PINCTRL_AXP209=m
 CONFIG_PINCTRL_MAX77620=y
 CONFIG_PINCTRL_RK805=y
+CONFIG_PINCTRL_ROCKCHIP=m
 CONFIG_PINCTRL_SINGLE=y
 
 ##
@@ -1375,6 +1400,7 @@ CONFIG_POWER_RESET_VEXPRESS=y
 CONFIG_POWER_RESET_XGENE=y
 CONFIG_POWER_RESET_SYSCON=y
 CONFIG_POWER_RESET_SYSCON_POWEROFF=y
+CONFIG_SYSCON_REBOOT_MODE=m
 
 ##
 ## file: drivers/power/supply/Kconfig
@@ -1531,8 +1557,10 @@ CONFIG_ARCH_R8A774A1=y
 ##
 ## file: drivers/soc/rockchip/Kconfig
 ##
+CONFIG_ROCKCHIP_GRF=y
 CONFIG_ROCKCHIP_IODOMAIN=m
 CONFIG_ROCKCHIP_PM_DOMAINS=y
+CONFIG_ROCKCHIP_DTPM=m
 
 ##
 ## file: drivers/soc/tegra/Kconfig
@@ -1662,11 +1690,11 @@ CONFIG_SERIAL_MESON_CONSOLE=y
 CONFIG_SERIAL_TEGRA=y
 CONFIG_SERIAL_IMX=y
 CONFIG_SERIAL_IMX_CONSOLE=y
+CONFIG_SERIAL_SH_SCI=y
 CONFIG_SERIAL_MSM=y
 CONFIG_SERIAL_MSM_CONSOLE=y
 CONFIG_SERIAL_QCOM_GENI=y
 CONFIG_SERIAL_QCOM_GENI_CONSOLE=y
-CONFIG_SERIAL_SH_SCI=y
 CONFIG_SERIAL_XILINX_PS_UART=y
 CONFIG_SERIAL_XILINX_PS_UART_CONSOLE=y
 CONFIG_SERIAL_FSL_LPUART=y
@@ -1719,6 +1747,7 @@ CONFIG_USB_DWC3_ULPI=y
 ## choice: DWC3 Mode Selection
 CONFIG_USB_DWC3_DUAL_ROLE=y
 ## end choice
+CONFIG_USB_DWC3_OF_SIMPLE=m
 
 ##
 ## file: drivers/usb/gadget/Kconfig

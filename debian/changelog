@@ -1,3 +1,159 @@
+linux (6.3.7-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.6
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.7
+
+  [ Uwe Kleine-König ]
+  * [arm*] Add symbol information to raspberry pi device trees. This is useful
+    when device tree overlays are used.
+
+  [ Zhang Ning ]
+  * [armhf] drivers/staging/media/rkvdec: enable rkvdec as module
+
+ -- Uwe Kleine-König <ukleinek@debian.org>  Wed, 24 May 2023 19:03:22 +0200
+
+linux (6.3.5-1~exp1) experimental; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.5
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 31 May 2023 22:32:55 +0200
+
+linux (6.3.4-1~exp1) experimental; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.3
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.4
+    - maple_tree: make maple state reusable after mas_empty_area()
+      (Closes: #1036755)
+
+  [ Salvatore Bonaccorso ]
+  * [rt] Update to 6.3.3-rt15
+  * drivers/ptp: Make PTP_1588_CLOCK builtin (except armel/marvell)
+    (Closes: #1036744)
+
+  [ Aurelien Jarno ]
+  * [riscv64] rtc: Enable RTC_DRV_DS1307, RTC_DRV_PCF85063 and RTC_DRV_PCF8563
+    as modules.
+
+  [ Diederik de Haas ]
+  * [arm64,armhf] drivers/mailbox: Enable ROCKCHIP_MBOX
+  * [armhf] drivers/mailbox: Drop OMAP_MBOX_KFIFO_SIZE setting
+
+  [ Johannes Schauer Marin Rodrigues ]
+  * drivers/input/joystick: Enable INPUT_JOYSTICK by default (except for s390x
+    and cloud configuration) (Closes: #1035063)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 25 May 2023 23:32:33 +0200
+
+linux (6.3.2-1~exp1) experimental; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.2
+
+  [ Diederik de Haas ]
+  * [arm64] Improve support for rk3328 devices
+    - drivers/clk: Enable COMMON_CLK
+    - drivers/clk/rockchip: Enable CLK_RK3328
+    - drivers/cpuidle[arm]: Enable ARM_PSCI_CPUIDLE_DOMAIN
+    - drivers/gpio: Enable GPIO_ROCKCHIP as module
+    - drivers/gpio: Enable GPIO_SYSCON as module
+    - drivers/pinctrl: Enable PINCTRL_ROCKCHIP as module
+    - drivers/power/reset: Enable SYSCON_REBOOT_MODE as module
+    - drivers/soc/rockchip: Enable ROCKCHIP_GRF
+  * [arm64] Improve support for rk3399 devices
+    - drivers/clk/rockchip: Enable CLK_RK3399
+    - drivers/mmc/core: Enable PWRSEQ_SIMPLE
+    - drivers/soc/rockchip: Enable ROCKCHIP_DTPM as module
+    - drivers/usb/dwc3: Enable USB_DWC3_OF_SIMPLE as module
+  * [arm64] Improve support for rk356x devices
+    - drivers/clk/rockchip: Enable CLK_RK3568
+    - drivers/firmware/arm_scmi: Enable ARM_SCMI_TRANSPORT_SMC
+    - drivers/gpu/drm/bridge: Enable DRM_DISPLAY_CONNECTOR as module
+    - drivers/misc: Enable SRAM
+  * [rt] Update to 6.3.1-rt13
+
+  [ Yoann Congal ]
+  * net/hsr: Enable PRP/HSR protocols as module (Closes: #1034506)
+
+  [ Vincent Blut ]
+  * drivers/net/wireless/realtek/rtw89: Enable RTW89_8852BE and RTW89_8852CE
+    as modules (Closes: #1035569)
+
+  [ Salvatore Bonaccorso ]
+  * drivers/tty: Unset LEGACY_TIOCSTI (Closes: #1033095)
+  * d/rules.real: Fix typo in setup_image target.
+
+  [ Aurelien Jarno ]
+  * [riscv64] Enable support for hardware added in Linux 6.2 and 6.3 based on
+    the upstream defconfig update: ARCH_R9A07G043, ARCH_RENESAS, ARCH_SUNXI,
+    DMADEVICES, DMA_SUN6I, DRM_SUN4I, HW_RANDOM_JH7110, I2C_MV64XXX,
+    MMC_SUNXI, NOP_USB_XCEIV, NVMEM_SUNXI_SID, PHY_SUN4I_USB, REGULATOR,
+    REGULATOR_FIXED_VOLTAGE, RTC_DRV_SUN6I, SERIAL_SH_SCI, SPI_SUN6I,
+    STMMAC_ETH, SUN50I_IOMMU, SUNXI_WATCHDOG, USB_MUSB_HDRC, USB_MUSB_SUNXI.
+
+  [ Ben Hutchings ]
+  * [mips*] Increase RELOCATION_TABLE_SIZE to 0x1d0000 (fixes FTBFS)
+  * [sh4/sh7785lcr] Modularise drivers to shrink kernel image (fixes FTBFS):
+    - ata: Change ATA, SATA_SIL from built-in to modular
+    - SCSI: Change SCSI, BLK_DEV_SD from built-in to modular
+    - USB: Change USB, USB_EHCI_HCD, USB_R8A66597_HCD,_USB_STORAGE from
+      built-in to modular
+    - udeb: Add ata-modules, scsi-core-modules, usb-modules packages
+  * [armel/marvell]: Disable features to shrink kernel image (fixes FTBFS):
+    - security: Disable SECURITY_APPARMOR_EXPORT_BINARY
+    - tcp: Disable MPTCP
+    - tracing: Disable FUNCTION_TRACER
+  * linux-kbuild: Fix cross-build regression in objtool in 6.3
+  * linux-kbuild: Add support for objtool powerpc target
+
+  [ Andreas Hübner ]
+  * d/templates: Improve package description for "header" packages
+
+  [ Martyn Welch ]
+  * d/rules.real: Enable limiting of compression threading
+
+  [ Punit Agrawal ]
+  * [arm64,armhf] drivers/hwtracing/coresight: Enable components
+
+  [ Miguel Bernal Marin ]
+  * Enable MEI options for Intel ARC GPUs as modules (Closes: #1028463)
+    - [amd64] drivers/gpu/drm/i915: Enable DRM_I915_PXP
+    - [x86] drivers/misc/mei: Enable INTEL_MEI_GSC as module
+    - [x86] drivers/misc/mei/pxp: Enable INTEL_MEI_PXP as module
+  * Enable Intel Trust Domain Extensions - Guest Support (Closes: #1032437)
+    - [amd64] arch/x86: Enable INTEL_TDX_GUEST
+    - [amd64] drivers/virt/coco/tdx-guest: Enable TDX_GUEST_DRIVER as module
+  * [amd64] drivers/platform/x86/intel/ifs: Enable Intel In-Field Scan (IFS)
+    INTEL_IFS as module (Closes: #1033061)
+
+ -- Ben Hutchings <benh@debian.org>  Mon, 15 May 2023 02:12:25 +0200
+
+linux (6.3.1-1~exp1) experimental; urgency=medium
+
+  * New upstream release: https://kernelnewbies.org/Linux_6.2
+  * New upstream release: https://kernelnewbies.org/Linux_6.3
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.1
+
+  [ Diederik de Haas ]
+  * Update for 6.2:
+    - libcpupower1: Update symbols file
+    - d/patches: Forward and add patches to fix hardening issues
+    - d/rules: Let blhc ignore perf tests binaries that are compiled without
+      fortification (by Uwe Kleine-König)
+    - [rt] Update to 6.2-rt3
+  * Update for 6.3:
+    - linux-kbuild: Stop building bin2c
+    - [rt] Update to 6.3-rt11
+
+  [ Uwe Kleine-König ]
+  * iwlwifi: Enable device tracing
+  * [arm*] Enable NVMEM_RMEM which is useful (at least) on raspberry pi
+
+ -- Ben Hutchings <benh@debian.org>  Mon, 08 May 2023 01:01:58 +0200
+
 linux (6.1.27-1) unstable; urgency=medium
 
   * New upstream stable update:

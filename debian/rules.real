@@ -51,6 +51,12 @@ MAKEOVERRIDES =
 
 BUILDDEB_ARGS := -Zxz $(if $(filter pkg.linux.quick,$(DEB_BUILD_PROFILES)),-z0)
 
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+  THREAD_COUNT = $(subst parallel=,,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+else
+  THREAD_COUNT = 0
+endif
+
 #
 # Targets
 #
@@ -88,7 +94,7 @@ $(BUILD_DIR)/$(SOURCE_BASENAME)-source-$(UPSTREAMVERSION).tar.xz: $(STAMPS_DIR)/
 		-print0 | \
 		sort -z | \
 		tar --owner=root --group=root --numeric-owner \
-			--no-recursion --null -T - -c | xz -T0 > '$(SOURCE_BASENAME)-source-$(UPSTREAMVERSION).tar.xz'
+			--no-recursion --null -T - -c | xz -T$(THREAD_COUNT) > '$(SOURCE_BASENAME)-source-$(UPSTREAMVERSION).tar.xz'
 	rm -rf '$(DIR)'
 
 $(BUILD_DIR)/linux-patch-$(UPSTREAMVERSION)-%.patch.xz: $(STAMPS_DIR)/source_none $(STAMPS_DIR)/source_%
@@ -345,7 +351,7 @@ binary_support:
 	dh_link $(PACKAGE_ROOT) /usr/src/$(PACKAGE_NAME)
 	+$(MAKE_SELF) install-base
 
-setup_image: $(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR))
+setup_image: $(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 
 build_image: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 

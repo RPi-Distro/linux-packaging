@@ -1,54 +1,34 @@
-From e84c7607413dde4260edb3d3fab97d641cae1a7a Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Date: Wed, 22 Jun 2022 11:36:17 +0200
-Subject: [PATCH 02/52] signal: Don't disable preemption in ptrace_stop() on
+Date: Thu, 30 Mar 2023 21:07:54 +0200
+Subject: [PATCH 2/2] signal: Don't disable preemption in ptrace_stop() on
  PREEMPT_RT.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.1/older/patches-6.1.26-rt8.tar.xz
-
-Commit
-   53da1d9456fe7 ("fix ptrace slowness")
-
-is just band aid around the problem.
-The invocation of do_notify_parent_cldstop() wakes the parent and makes
-it runnable. The scheduler then wants to replace this still running task
-with the parent. With the read_lock() acquired this is not possible
-because preemption is disabled and so this is deferred until read_unlock().
-This scheduling point is undesired and is avoided by disabling preemption
-around the unlock operation enabled again before the schedule() invocation
-without a preemption point.
-This is only undesired because the parent sleeps a cycle in
-wait_task_inactive() until the traced task leaves the run-queue in
-schedule(). It is not a correctness issue, it is just band aid to avoid the
-visbile delay which sums up over multiple invocations.
-The task can still be preempted if an interrupt occurs between
-preempt_enable_no_resched() and freezable_schedule() because on the IRQ-exit
-path of the interrupt scheduling _will_ happen. This is ignored since it does
-not happen very often.
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
 
 On PREEMPT_RT keeping preemption disabled during the invocation of
-cgroup_enter_frozen() becomes a problem because the function acquires
-css_set_lock which is a sleeping lock on PREEMPT_RT and must not be
-acquired with disabled preemption.
+cgroup_enter_frozen() is a problem because the function acquires css_set_lock
+which is a sleeping lock on PREEMPT_RT and must not be acquired with disabled
+preemption.
+The preempt-disabled section is only for performance optimisation
+reasons and can be avoided.
 
-Don't disable preemption on PREEMPT_RT. Remove the TODO regarding adding
-read_unlock_no_resched() as there is no need for it and will cause harm.
+Extend the comment and don't disable preemption before scheduling on
+PREEMPT_RT.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lkml.kernel.org/r/20220720154435.232749-2-bigeasy@linutronix.de
+Link: https://lore.kernel.org/20230406205713.1843072-3-bigeasy@linutronix.de
 ---
- kernel/signal.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/signal.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index d140672185a4..aebe0d5b2006 100644
 --- a/kernel/signal.c
 +++ b/kernel/signal.c
-@@ -2298,13 +2298,13 @@ static int ptrace_stop(int exit_code, int why, unsigned long message,
- 	/*
- 	 * Don't want to allow preemption here, because
- 	 * sys_ptrace() needs this task to be inactive.
--	 *
--	 * XXX: implement read_unlock_no_resched().
+@@ -2351,11 +2351,16 @@ static int ptrace_stop(int exit_code, in
+ 	 * The preempt-disable section ensures that there will be no preemption
+ 	 * between unlock and schedule() and so improving the performance since
+ 	 * the ptracer has no reason to sleep.
++	 *
++	 * This optimisation is not doable on PREEMPT_RT due to the spinlock_t
++	 * within the preempt-disable section.
  	 */
 -	preempt_disable();
 +	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
@@ -61,6 +41,3 @@ index d140672185a4..aebe0d5b2006 100644
  	schedule();
  	cgroup_leave_frozen(true);
  
--- 
-2.40.0
-

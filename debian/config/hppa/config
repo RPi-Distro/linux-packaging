@@ -92,11 +92,6 @@ CONFIG_USB_HID=m
 # CONFIG_GAMEPORT is not set
 
 ##
-## file: drivers/input/joystick/Kconfig
-##
-# CONFIG_INPUT_JOYSTICK is not set
-
-##
 ## file: drivers/input/keyboard/Kconfig
 ##
 CONFIG_INPUT_KEYBOARD=y
@@ -159,11 +154,6 @@ CONFIG_SERIO_RAW=m
 ## file: drivers/net/arcnet/Kconfig
 ##
 # CONFIG_ARCNET is not set
-
-##
-## file: drivers/net/ethernet/Kconfig
-##
-CONFIG_FEALNX=m
 
 ##
 ## file: drivers/net/ethernet/3com/Kconfig
