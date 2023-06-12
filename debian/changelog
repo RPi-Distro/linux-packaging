@@ -14,7 +14,7 @@ linux (6.4~rc6-1~exp1) UNRELEASED; urgency=medium
 
  -- Diederik de Haas <didi.debian@cknow.org>  Sun, 04 Jun 2023 20:44:07 +0200
 
-linux (6.3.7-1~exp1) UNRELEASED; urgency=medium
+linux (6.3.7-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.6
@@ -27,7 +27,7 @@ linux (6.3.7-1~exp1) UNRELEASED; urgency=medium
   [ Zhang Ning ]
   * [armhf] drivers/staging/media/rkvdec: enable rkvdec as module
 
- -- Uwe Kleine-König <ukleinek@debian.org>  Wed, 24 May 2023 19:03:22 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 12 Jun 2023 08:25:26 +0200
 
 linux (6.3.5-1~exp1) experimental; urgency=medium
 
