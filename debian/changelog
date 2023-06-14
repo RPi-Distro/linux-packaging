@@ -1,4 +1,133 @@
-linux (6.3.7-2) UNRELEASED; urgency=medium
+linux (6.3.8-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.8
+    - [x86] platform/surface: aggregator: Allow completion work-items to be
+      executed in parallel
+    - [x86] platform/surface: aggregator_tabletsw: Add support for book mode in
+      KIP subsystem
+    - [arm64] spi: qup: Request DMA before enabling clocks
+    - afs: Fix setting of mtime when creating a file/dir/symlink
+    - wifi: mt76: mt7615: fix possible race in mt7615_mac_sta_poll
+    - bpf, sockmap: Avoid potential NULL dereference in
+      sk_psock_verdict_data_ready()
+    - neighbour: fix unaligned access to pneigh_entry
+    - net/ipv4: ping_group_range: allow GID from 2147483648 to 4294967294
+    - bpf: Fix UAF in task local storage
+    - bpf: Fix elem_size not being set for inner maps
+    - net/ipv6: fix bool/int mismatch for skip_notify_on_dev_down
+    - net/smc: Avoid to access invalid RMBs' MRs in SMCRv1 ADD LINK CONT
+    - [arm64] net: enetc: correct the statistics of rx bytes
+    - [arm64] net: enetc: correct rx_bytes statistics of XDP
+    - net/sched: fq_pie: ensure reasonable TCA_FQ_PIE_QUANTUM values
+    - [x86] drm/i915: Explain the magic numbers for AUX SYNC/precharge length
+    - [x86] drm/i915: Use 18 fast wake AUX sync len
+    - Bluetooth: Split bt_iso_qos into dedicated structures
+    - Bluetooth: ISO: consider right CIS when removing CIG at cleanup
+    - Bluetooth: ISO: Fix CIG auto-allocation to select configurable CIG
+    - Bluetooth: hci_sync: add lock to protect HCI_UNREGISTER
+    - Bluetooth: Fix l2cap_disconnect_req deadlock
+    - Bluetooth: ISO: don't try to remove CIG if there are bound CIS left
+    - Bluetooth: hci_conn: Add support for linking multiple hcon
+    - Bluetooth: hci_conn: Fix not matching by CIS ID
+    - Bluetooth: ISO: use correct CIS order in Set CIG Parameters event
+    - Bluetooth: L2CAP: Add missing checks for invalid DCID
+    - wifi: mac80211: use correct iftype HE cap
+    - wifi: cfg80211: reject bad AP MLD address
+    - wifi: mac80211: mlme: fix non-inheritence element
+    - wifi: mac80211: don't translate beacon/presp addrs
+    - qed/qede: Fix scheduling while atomic
+    - wifi: cfg80211: fix locking in sched scan stop work
+    - netfilter: nf_tables: Add null check for nla_nest_start_noflag() in
+      nft_dump_basechain_hook()
+    - netfilter: nft_bitwise: fix register tracking
+    - netfilter: conntrack: fix NULL pointer dereference in nf_confirm_cthelper
+    - netfilter: ipset: Add schedule point in call_ad().
+    - netfilter: nf_tables: out-of-bound check in chain blob
+    - [arm64,armhf] drm/lima: fix sched context destroy
+    - ipv6: rpl: Fix Route of Death. (CVE-2023-2156)
+    - tcp: gso: really support BIG TCP
+    - rfs: annotate lockless accesses to sk->sk_rxhash
+    - rfs: annotate lockless accesses to RFS sock flow table
+    - net: sched: add rcu annotations around qdisc->qdisc_sleeping
+    - ice: make writes to /dev/gnssX synchronous
+    - net: sched: move rtm_tca_policy declaration to include file
+    - net: openvswitch: fix upcall counter access before allocation
+    - net: sched: act_police: fix sparse errors in tcf_police_dump()
+    - net: sched: fix possible refcount leak in tc_chain_tmplt_add()
+    - bpf: Add extra path pointer check to d_path helper
+    - drm/amdgpu: fix Null pointer dereference error in
+      amdgpu_device_recover_vram
+    - lib: cpu_rmap: Fix potential use-after-free in irq_cpu_rmap_release()
+    - [arm64] net: bcmgenet: Fix EEE implementation
+    - bnxt_en: Fix bnxt_hwrm_update_rss_hash_cfg()
+    - bnxt_en: Don't issue AP reset during ethtool's reset operation
+    - bnxt_en: Query default VLAN before VNIC setup on a VF
+    - bnxt_en: Skip firmware fatal error recovery if chip is not accessible
+    - bnxt_en: Prevent kernel panic when receiving unexpected PHC_UPDATE event
+    - bnxt_en: Implement .set_port / .unset_port UDP tunnel callbacks
+    - [arm64] drm/msm/a6xx: initialize GMU mutex earlier
+    - batman-adv: Broken sync while rescheduling delayed work
+    - Input: xpad - delete a Razer DeathAdder mouse VID/PID entry
+    - Input: psmouse - fix OOB access in Elantech protocol
+    - Input: fix open count when closing inhibited device
+    - ALSA: hda: Fix kctl->id initialization
+    - ALSA: ymfpci: Fix kctl->id initialization
+    - [i386] ALSA: gus: Fix kctl->id initialization
+    - ALSA: cmipci: Fix kctl->id initialization
+    - ALSA: hda/realtek: Add quirk for Clevo NS50AU
+    - ALSA: ice1712,ice1724: fix the kcontrol->id initialization
+    - ALSA: hda/realtek: Add a quirk for HP Slim Desktop S01
+    - ALSA: hda/realtek: Add Lenovo P3 Tower platform
+    - ALSA: hda/realtek: Add quirks for Asus ROG 2024 laptops using CS35L41
+    - [x86] drm/i915/gt: Use the correct error value when kernel_context() fails
+    - drm/amd/pm: conditionally disable pcie lane switching for some
+      sienna_cichlid SKUs
+    - drm/amdgpu: fix xclk freq on CHIP_STONEY
+    - drm/amdgpu: change reserved vram info print
+    - drm/amd: Disallow s0ix without BIOS support again
+    - drm/amd/pm: Fix power context allocation in SMU13
+    - drm/amd/display: Reduce sdp bw after urgent to 90%
+    - drm/amd/display: add ODM case when looking for first split pipe
+    - wifi: iwlwifi: mvm: Fix -Warray-bounds bug in iwl_mvm_wait_d3_notif()
+    - can: j1939: j1939_sk_send_loop_abort(): improved error queue handling in
+      J1939 Socket
+    - can: j1939: change j1939_netdev_lock type to mutex
+    - can: j1939: avoid possible use-after-free when j1939_can_rx_register fails
+    - mptcp: only send RM_ADDR in nl_cmd_remove
+    - mptcp: add address into userspace pm list
+    - mptcp: update userspace pm infos
+    - ceph: fix use-after-free bug for inodes when flushing capsnaps
+    - [s390x] dasd: Use correct lock while counting channel queue length
+    - Bluetooth: Fix use-after-free in hci_remove_ltk/hci_remove_irk
+    - Bluetooth: fix debugfs registration
+    - Bluetooth: hci_qca: fix debugfs registration
+    - rbd: move RBD_OBJ_FLAG_COPYUP_ENABLED flag setting
+    - rbd: get snapshot context after exclusive lock is ensured to be held
+    - virtio_net: use control_buf for coalesce params
+    - [arm64] pinctrl: meson-axg: add missing GPIOA_18 gpio group
+    - usb: usbfs: Enforce page requirements for mmap
+    - usb: usbfs: Use consistent mmap functions
+    - [arm64] soc: qcom: rpmh-rsc: drop redundant unsigned >=0 comparision
+    - [arm64] dts: imx8qm-mek: correct GPIOs for USDHC2 CD and WP signals
+    - [arm*] ASoC: simple-card-utils: fix PCM constraint error check
+    - blk-mq: fix blk_mq_hw_ctx active request accounting
+    - [arm*] i2c: mv64xxx: Fix reading invalid status value in atomic mode
+    - soundwire: stream: Add missing clear of alloc_slave_rt
+    - vhost: support PACKED when setting-getting vring_base
+    - ksmbd: fix out-of-bound read in deassemble_neg_contexts()
+    - ksmbd: fix out-of-bound read in parse_lease_state()
+    - ksmbd: fix posix_acls and acls dereferencing possible ERR_PTR()
+    - ksmbd: check the validation of pdu_size in ksmbd_conn_handler_loop
+    - Bluetooth: Fix potential double free caused by hci_conn_unlink
+    - Bluetooth: Refcnt drop must be placed last in hci_conn_unlink
+    - Bluetooth: Fix UAF in hci_conn_hash_flush again
+    - Revert "ext4: don't clear SB_RDONLY when remounting r/w until quota is
+      re-enabled"
+    - ext4: only check dquot_initialize_needed() when debugging
+    - wifi: rtw89: correct PS calculation for SUPPORTS_DYNAMIC_PS
+    - wifi: rtw88: correct PS calculation for SUPPORTS_DYNAMIC_PS
+    - Revert "staging: rtl8192e: Replace macro RTL_PCI_DEVICE with PCI_DEVICE"
 
   [ Salvatore Bonaccorso ]
   * Ignore ABI changes for xfrm_bpf_md_dst (only for use in xfrm subsystem)
