@@ -164,6 +164,7 @@ endif
 ifdef COMPAT_DEB_ARCH
 	echo 'ifneq ($$(DEB_BUILD_ARCH),$(COMPAT_DEB_ARCH))' >> '$(DIR)/.kernelvariables'
 	echo 'override CROSS_COMPILE_COMPAT = $(COMPAT_GNU_TYPE)-' >> '$(DIR)/.kernelvariables'
+	echo 'override CROSS32_COMPILE = $(COMPAT_GNU_TYPE)-' >> '$(DIR)/.kernelvariables'
 	echo 'endif' >> '$(DIR)/.kernelvariables'
 endif
 	echo 'DEBIAN_KERNEL_NO_CC_VERSION_CHECK = y' >> '$(DIR)/.kernelvariables'
