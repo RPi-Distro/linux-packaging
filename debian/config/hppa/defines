@@ -16,7 +16,9 @@ hardware-long: HP PA-RISC 32-bit systems with max 4 GB RAM
 
 [parisc64_base]
 cflags: -fno-cse-follow-jumps
-override-host-type: hppa64-linux-gnu
+# no Debian architecture defined; force cross-build
+kernel-deb-arch: undefined
+kernel-gnu-type: hppa64-linux-gnu
 
 [parisc64_description]
 hardware: 64-bit PA-RISC

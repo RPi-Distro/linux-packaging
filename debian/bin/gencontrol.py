@@ -298,8 +298,10 @@ class Gencontrol(Base):
         ('compiler-filename', 'COMPILER', True),
         ('kernel-arch', 'KERNEL_ARCH', False),
         ('cflags', 'KCFLAGS', True),
-        ('override-host-type', 'OVERRIDE_HOST_TYPE', True),
-        ('cross-compile-compat', 'CROSS_COMPILE_COMPAT', True),
+        ('kernel-deb-arch', 'KERNEL_DEB_ARCH', True),
+        ('kernel-gnu-type', 'KERNEL_GNU_TYPE', True),
+        ('compat-deb-arch', 'COMPAT_DEB_ARCH', True),
+        ('compat-gnu-type', 'COMPAT_GNU_TYPE', True),
     )
 
     flavour_makeflags_build = (

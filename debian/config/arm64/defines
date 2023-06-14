@@ -1,5 +1,6 @@
 [base]
-cross-compile-compat: arm-linux-gnueabihf-
+compat-deb-arch: armhf
+compat-gnu-type: arm-linux-gnueabihf
 kernel-arch: arm64
 featuresets:
  none
