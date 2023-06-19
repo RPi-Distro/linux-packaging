@@ -5,6 +5,8 @@ linux (6.3.7-2) UNRELEASED; urgency=medium
 
   [ Ben Hutchings ]
   * Add pkg.linux.mintools profile for building minimal userland tools
+  * d/b/test-patches: Build linux-{kbuild,bootwrapper} packages
+    (Closes: #871216, #1035359)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 19 Jun 2023 18:07:23 +0200
 
