@@ -13,6 +13,9 @@ linux (6.4~rc6-1~exp2) UNRELEASED; urgency=medium
   * [hppa] Make cross-builds work
   * [m68k] Fix invalid .section syntax (fixes FTBFS)
 
+  [ Diederik de Haas ]
+  * d/rules.real: Also remove executable bit from dtbo files
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 13 Jun 2023 10:42:48 +0200
 
 linux (6.4~rc6-1~exp1) experimental; urgency=medium
