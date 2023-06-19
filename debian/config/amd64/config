@@ -240,6 +240,11 @@ CONFIG_FB_MATROX_MAVEN=m
 CONFIG_TDX_GUEST_DRIVER=m
 
 ##
+## file: drivers/virtio/Kconfig
+##
+CONFIG_VIRTIO_MEM=m
+
+##
 ## file: init/Kconfig
 ##
 CONFIG_KALLSYMS_ALL=y
