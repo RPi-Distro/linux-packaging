@@ -106,6 +106,8 @@ ignore-changes:
  uv_info
 # Not used in OOT
  xhci_init_driver
+# Not used in OOT, symbol is only defined when DEBUG_INFO_BTF is enabled
+ xfrm_bpf_md_dst
 
 [base]
 arches:
