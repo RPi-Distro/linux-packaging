@@ -16,6 +16,10 @@ linux (6.4~rc6-1~exp2) UNRELEASED; urgency=medium
   [ Diederik de Haas ]
   * d/rules.real: Also remove executable bit from dtbo files
 
+  [ Jiaxun Yang ]
+  * [mips*]: Enable more drivers for boston
+  * [mips*]: Install dtbs for mipsel and mips64el
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 13 Jun 2023 10:42:48 +0200
 
 linux (6.4~rc6-1~exp1) experimental; urgency=medium
