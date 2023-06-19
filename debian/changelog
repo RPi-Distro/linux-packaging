@@ -1,4 +1,4 @@
-linux (6.4~rc7-1~exp1) UNRELEASED; urgency=medium
+linux (6.4~rc7-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate:
     - [hppa] Delete redundant register definitions in <asm/assembly.h> (fixes
@@ -22,7 +22,7 @@ linux (6.4~rc7-1~exp1) UNRELEASED; urgency=medium
   * [mips*]: Enable more drivers for boston
   * [mips*]: Install dtbs for mipsel and mips64el
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 13 Jun 2023 10:42:48 +0200
+ -- Ben Hutchings <benh@debian.org>  Mon, 19 Jun 2023 17:30:46 +0200
 
 linux (6.4~rc6-1~exp1) experimental; urgency=medium
 
