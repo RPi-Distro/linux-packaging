@@ -230,7 +230,9 @@ Several build profiles are understood and supported:
 - nodoc: Exclude most documentation
 - noudeb: Exclude installer udeb packages
 - pkg.linux.notools: Exclude userland tool packages (linux-kbuild-<version>,
-  linux-perf-<version>, etc.)
+  linux-perf, etc.)
+- pkg.linux.mintools: Build minimal set of userland tool packages
+  (linux-kbuild-<version>, linux-bootwrapper-<abiname> on powerpc/ppc64)
 - pkg.linux.nokernel: Exclude kernel image and header packages
 - pkg.linux.nokerneldbg: Exclude kernel debug packages
 - pkg.linux.nokerneldbginfo: Build kernel without debug symbols (also disables
