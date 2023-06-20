@@ -132,6 +132,7 @@ linux (6.3.8-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Ignore ABI changes for xfrm_bpf_md_dst (only for use in xfrm subsystem)
   * [amd64,arm64] drivers/virtio: Enable VIRTIO_MEM as module (Closes: #1038665)
+  * Bump ABI to 2
 
   [ Ben Hutchings ]
   * Add pkg.linux.mintools profile for building minimal userland tools
