@@ -1,6 +1,7 @@
 linux (6.3.7-2) UNRELEASED; urgency=medium
 
   * Ignore ABI changes for xfrm_bpf_md_dst (only for use in xfrm subsystem)
+  * [amd64,arm64] drivers/virtio: Enable VIRTIO_MEM as module (Closes: #1038665)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 19 Jun 2023 18:07:23 +0200
 
