@@ -517,7 +517,6 @@ CONFIG_FB_TRIDENT=m
 CONFIG_FB_SMSCUFX=m
 CONFIG_FB_UDL=m
 # CONFIG_FB_IBM_GXT4500 is not set
-# end of Frame buffer Devices
 
 ##
 ## file: drivers/w1/Kconfig
