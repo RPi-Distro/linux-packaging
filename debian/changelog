@@ -13,6 +13,9 @@ linux (6.4-1~exp1) UNRELEASED; urgency=medium
   [ Uwe Kleine-König ]
   * Enable all RTW88 variants (USB + SDIO).
 
+  [ Ben Hutchings ]
+  * [rt] Update to 6.4-rt5
+
  -- Aurelien Jarno <aurel32@debian.org>  Wed, 21 Jun 2023 00:14:58 +0200
 
 linux (6.4~rc7-1~exp1) experimental; urgency=medium
