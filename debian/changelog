@@ -1,4 +1,6 @@
-linux (6.4~rc7-1~exp2) UNRELEASED; urgency=medium
+linux (6.4-1~exp1) UNRELEASED; urgency=medium
+
+  * New upstream release: https://kernelnewbies.org/Linux_6.4
 
   [ Aurelien Jarno ]
   * [riscv64] Enable devices added in 6.4 for StarFive JH7110 RISC-V SoC:
