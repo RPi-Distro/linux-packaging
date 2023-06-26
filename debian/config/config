@@ -5851,19 +5851,6 @@ CONFIG_CEPH_FSCACHE=y
 CONFIG_CEPH_FS_POSIX_ACL=y
 
 ##
-## file: fs/cifs/Kconfig
-##
-CONFIG_CIFS=m
-CONFIG_CIFS_UPCALL=y
-CONFIG_CIFS_XATTR=y
-CONFIG_CIFS_POSIX=y
-CONFIG_CIFS_DEBUG=y
-# CONFIG_CIFS_DEBUG2 is not set
-CONFIG_CIFS_DFS_UPCALL=y
-CONFIG_CIFS_NFSD_EXPORT=y
-CONFIG_CIFS_FSCACHE=y
-
-##
 ## file: fs/coda/Kconfig
 ##
 CONFIG_CODA_FS=m
@@ -6046,11 +6033,6 @@ CONFIG_JFS_POSIX_ACL=y
 CONFIG_JFS_SECURITY=y
 # CONFIG_JFS_DEBUG is not set
 # CONFIG_JFS_STATISTICS is not set
-
-##
-## file: fs/ksmbd/Kconfig
-##
-CONFIG_SMB_SERVER=m
 
 ##
 ## file: fs/minix/Kconfig
@@ -6246,6 +6228,24 @@ CONFIG_ROMFS_FS=m
 # CONFIG_ROMFS_BACKED_BY_MTD is not set
 CONFIG_ROMFS_BACKED_BY_BOTH=y
 ## end choice
+
+##
+## file: fs/smb/client/Kconfig
+##
+CONFIG_CIFS=m
+CONFIG_CIFS_UPCALL=y
+CONFIG_CIFS_XATTR=y
+CONFIG_CIFS_POSIX=y
+CONFIG_CIFS_DEBUG=y
+# CONFIG_CIFS_DEBUG2 is not set
+CONFIG_CIFS_DFS_UPCALL=y
+CONFIG_CIFS_NFSD_EXPORT=y
+CONFIG_CIFS_FSCACHE=y
+
+##
+## file: fs/smb/server/Kconfig
+##
+CONFIG_SMB_SERVER=m
 
 ##
 ## file: fs/squashfs/Kconfig
