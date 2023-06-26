@@ -70,7 +70,7 @@ CONFIG_S390_PRNG=m
 ##
 ## file: drivers/input/joystick/Kconfig
 ##
-CONFIG_INPUT_JOYSTICK=n
+# CONFIG_INPUT_JOYSTICK is not set
 
 ##
 ## file: drivers/input/touchscreen/Kconfig
