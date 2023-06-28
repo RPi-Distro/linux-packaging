@@ -239,6 +239,7 @@ linux (6.3.10-1) UNRELEASED; urgency=medium
     - ice: Don't dereference NULL in ice_gnss_read error path
     - ice: Fix XDP memory leak when NIC is brought up and down
     - netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE
+      (CVE-2023-3390)
     - [arm64] net: enetc: correct the indexes of highest and 2nd highest TCs
     - ping6: Fix send to link-local addresses with VRF.
     - igb: Fix extts capture value format for 82580/i354/i350
