@@ -1,4 +1,4 @@
-linux (6.3.9-1) UNRELEASED; urgency=medium
+linux (6.3.10-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.8
@@ -294,6 +294,147 @@ linux (6.3.9-1) UNRELEASED; urgency=medium
     - neighbour: delete neigh_lookup_nodev as not used
     - scsi: target: core: Fix error path in target_setup_session()
     - blk-cgroup: Flush stats before releasing blkcg_gq
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.10
+    - cifs: fix status checks in cifs_tree_connect
+    - drm/amd/display: Use dc_update_planes_and_stream
+    - drm/amd/display: Add wrapper to call planes and stream update
+    - drm/amd/display: fix the system hang while disable PSR
+    - ata: libata-scsi: Avoid deadlock on rescan after device resume
+    - mm: Fix copy_from_user_nofault(). (Closes: #1033398)
+    - tpm, tpm_tis: Claim locality in interrupt handler
+    - ksmbd: validate command payload size
+    - ksmbd: fix out-of-bound read in smb2_write
+    - ksmbd: validate session id and tree id in the compound request
+    - Revert "efi: random: refresh non-volatile random seed when RNG is
+      initialized"
+    - afs: Fix dangling folio ref counts in writeback
+    - afs: Fix waiting for writeback then skipping folio
+    - tick/common: Align tick period during sched_timer setup
+    - Revert "virtio-blk: support completion batching for the IRQ path"
+    - memfd: check for non-NULL file_seals in memfd_create() syscall
+    - writeback: fix dereferencing NULL mapping->host on writeback_page_template
+    - nilfs2: fix buffer corruption due to concurrent device reads
+    - nilfs2: prevent general protection fault in nilfs_clear_dirty_page()
+    - ACPI: sleep: Avoid breaking S3 wakeup due to might_sleep()
+    - [x86] thermal/intel/intel_soc_dts_iosf: Fix reporting wrong temperatures
+    - KVM: Avoid illegal stage2 mapping on invalid memory slot
+    - mm/vmalloc: do not output a spurious warning when huge vmalloc() fails
+    - mm/mprotect: fix do_mprotect_pkey() limit check
+    - Drivers: hv: vmbus: Call hv_synic_free() if hv_synic_alloc() fails
+    - Drivers: hv: vmbus: Fix vmbus_wait_for_unload() to scan present CPUs
+    - PCI: hv: Fix a race condition bug in hv_pci_query_relations()
+    - Revert "PCI: hv: Fix a timing issue which causes kdump to fail
+      occasionally"
+    - PCI: hv: Remove the useless hv_pcichild_state from struct hv_pci_dev
+    - PCI: hv: Fix a race condition in hv_irq_unmask() that can cause panic
+    - PCI: hv: Add a per-bus mutex state_lock
+    - io_uring/net: clear msg_controllen on partial sendmsg retry
+    - io_uring/net: disable partial retries for recvmsg with cmsg
+    - mptcp: handle correctly disconnect() failures
+    - mptcp: fix possible divide by zero in recvmsg()
+    - mptcp: fix possible list corruption on passive MPJ
+    - mptcp: consolidate fallback and non fallback state machine
+    - mptcp: ensure listener is unhashed before updating the sk status
+    - cgroup: Do not corrupt task iteration when rebinding subsystem
+    - cgroup,freezer: hold cpu_hotplug_lock before freezer_mutex in
+      freezer_css_{online,offline}()
+    - net: mdio: fix the wrong parameters
+    - [arm64] mmc: sdhci-msm: Disable broken 64-bit DMA on MSM8916
+    - [arm64] mmc: meson-gx: remove redundant mmc_request_done() call from irq
+      context
+    - [arm64,armhf] mmc: mmci: stm32: fix max busy timeout calculation
+    - [arm64,armhf] mmc: bcm2835: fix deferred probing
+    - mmc: sunxi: fix deferred probing
+    - [arm64] mmc: meson-gx: fix deferred probing
+    - bpf: ensure main program has an extable
+    - wifi: iwlwifi: pcie: Handle SO-F device for PCI id 0x7AF0
+    - ksmbd: remove internal.h include
+    - fs: introduce lock_rename_child() helper
+    - ksmbd: fix racy issue from using ->d_parent and ->d_name
+    - ksmbd: add mnt_want_write to ksmbd vfs functions
+    - block: make sure local irq is disabled when calling __blkcg_rstat_flush
+    - io_uring/poll: serialize poll linked timer start with poll removal
+    - [x86] mm: Avoid using set_pgd() outside of real PGD pages
+    - ieee802154: hwsim: Fix possible memory leaks
+    - xfrm: Treat already-verified secpath entries as optional
+    - xfrm: Ensure policies always checked on XFRM-I input path
+    - [arm64] KVM: arm64: PMU: Restore the host's PMUSERENR_EL0
+    - xfrm: add missed call to delete offloaded policies
+    - bpf: Fix verifier id tracking of scalars on spill
+    - xfrm: fix inbound ipv4/udp/esp packets to UDPv6 dualstack sockets
+    - bpf: Fix a bpf_jit_dump issue for x86_64 with sysctl bpf_jit_enable.
+    - xfrm: Linearize the skb after offloading if needed.
+    - net/mlx5: DR, Fix wrong action data allocation in decap action
+    - sfc: use budget for TX completions
+    - [armel,armhf] mmc: mvsdio: fix deferred probing
+    - [armhf] mmc: omap: fix deferred probing
+    - [armhf] mmc: omap_hsmmc: fix deferred probing
+    - mmc: sdhci-acpi: fix deferred probing
+    - ipvs: align inner_mac_header for encapsulation
+    - be2net: Extend xmit workaround to BE3 chip
+    - netfilter: nf_tables: fix chain binding transaction logic
+    - netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound
+      set/chain
+    - netfilter: nf_tables: drop map element references from preparation phase
+    - netfilter: nft_set_pipapo: .walk does not deal with generations
+    - netfilter: nf_tables: disallow element updates of bound anonymous sets
+    - netfilter: nf_tables: reject unbound anonymous set before commit phase
+    - netfilter: nf_tables: reject unbound chain set before commit phase
+    - netfilter: nf_tables: disallow updates of anonymous sets
+    - netfilter: nfnetlink_osf: fix module autoload
+    - Revert "net: phy: dp83867: perform soft reset and retain established link"
+    - bpf/btf: Accept function names that contain dots
+    - bpf: Force kprobe multi expected_attach_type for kprobe_multi link
+    - io_uring/net: use the correct msghdr union member in io_sendmsg_copy_hdr
+    - sch_netem: acquire qdisc lock in netem_change()
+    - revert "net: align SO_RCVMARK required privileges with SO_MARK"
+    - [arm64] dts: rockchip: fix nEXTRST on SOQuartz
+    - gpiolib: Fix GPIO chip IRQ initialization restriction
+    - [amd64] iommu/amd: Fix possible memory leak of 'domain'
+    - gpiolib: Fix irq_domain resource tracking for
+      gpiochip_irqchip_add_domain()
+    - scsi: target: iscsi: Fix hang in the iSCSI login code
+    - scsi: target: iscsi: Remove unused transport_timer
+    - scsi: target: iscsi: Prevent login threads from racing between each other
+    - HID: wacom: Add error check to wacom_parse_and_register()
+    - [arm64] Add missing Set/Way CMO encodings
+    - smb3: missing null check in SMB2_change_notify
+    - media: cec: core: disable adapter in cec_devnode_unregister
+    - media: cec: core: don't set last_initiator if tx in progress
+    - nfcsim.c: Fix error checking for debugfs_create_dir
+    - btrfs: fix an uninitialized variable warning in btrfs_log_inode
+    - [i386] usb: gadget: udc: fix NULL dereference in remove()
+    - nvme: fix miss command type check
+    - nvme: double KA polling frequency to avoid KATO with TBKAS on
+    - nvme: check IO start time when deciding to defer KA
+    - nvme: improve handling of long keep alives
+    - [x86] Input: soc_button_array - add invalid acpi_index DMI quirk handling
+    - [s390x] cio: unregister device when the only path is gone
+    - [arm*] ASoC: simple-card: Add missing of_node_put() in case of error
+    - soundwire: dmi-quirks: add new mapping for HP Spectre x360
+    - soundwire: qcom: add proper error paths in qcom_swrm_startup()
+    - [x86] ASoC: nau8824: Add quirk to active-high jack-detect
+    - [x86] ASoC: amd: yc: Add Thinkpad Neo14 to quirks list for acp6x
+    - gfs2: Don't get stuck writing page onto itself under direct I/O
+    - [arm64] ASoC: fsl_sai: Enable BCI bit if SAI works on synchronous mode
+      with BYP asserted
+    - net: sched: wrap tc_skip_wrapper with CONFIG_RETPOLINE
+    - ALSA: hda/realtek: Add "Intel Reference board" and "NUC 13" SSID in the
+      ALC256
+    - [armhf] dts: Fix erroneous ADS touchscreen polarities
+    - null_blk: Fix: memory release when memory_backed=1
+    - drm/radeon: fix race condition UAF in radeon_gem_set_domain_ioctl
+    - vhost_net: revert upend_idx only on retriable error
+    - [x86] unwind/orc: Add ELF section with ORC version identifier
+    - [x86] apic: Fix kernel panic when booting with intremap=off and
+      x2apic_phys
+    - [arm64] i2c: imx-lpi2c: fix type char overflow issue when calculating the
+      clock cycle
+    - netfilter: nf_tables: drop module reference after updating chain
+    - [arm64] KVM: arm64: Restore GICv2-on-GICv3 functionality
+    - ksmbd: fix uninitialized pointer read in ksmbd_vfs_rename()
+    - ksmbd: fix uninitialized pointer read in smb2_create_link()
+    - ksmbd: call putname after using the last component
 
   [ Salvatore Bonaccorso ]
   * Ignore ABI changes for xfrm_bpf_md_dst (only for use in xfrm subsystem)
