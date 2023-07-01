@@ -280,7 +280,7 @@ linux (6.3.10-1) UNRELEASED; urgency=medium
     - cifs: fix lease break oops in xfstest generic/098
     - RDMA/rxe: Fix rxe_cq_post
     - Revert "media: dvb-core: Fix use-after-free on race condition at
-      dvb_frontend"
+      dvb_frontend" (Closes: #1038068)
     - ext4: drop the call to ext4_error() from ext4_get_group_info()
     - ice: Fix ice module unload
     - net/sched: cls_api: Fix lockup on flushing explicitly created chain
