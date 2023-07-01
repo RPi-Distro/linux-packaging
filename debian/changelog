@@ -310,7 +310,7 @@ linux (6.3.11-1) UNRELEASED; urgency=medium
       initialized"
     - afs: Fix dangling folio ref counts in writeback
     - afs: Fix waiting for writeback then skipping folio
-    - tick/common: Align tick period during sched_timer setup
+    - tick/common: Align tick period during sched_timer setup (Closes: #1038754)
     - Revert "virtio-blk: support completion batching for the IRQ path"
     - memfd: check for non-NULL file_seals in memfd_create() syscall
     - writeback: fix dereferencing NULL mapping->host on writeback_page_template
