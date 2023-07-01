@@ -1521,6 +1521,7 @@ CONFIG_DELL_WMI_LED=m
 ##
 ## file: drivers/platform/x86/hp/Kconfig
 ##
+CONFIG_X86_PLATFORM_DRIVERS_HP=y
 CONFIG_HP_ACCEL=m
 CONFIG_HP_WMI=m
 

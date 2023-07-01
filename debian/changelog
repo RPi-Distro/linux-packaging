@@ -20,6 +20,8 @@ linux (6.4.1-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 6.4-rt6
+  * [x86] drivers/platform/x86/hp: Enable X86_PLATFORM_DRIVERS_HP
+    (Closes: #1038799)
 
  -- Aurelien Jarno <aurel32@debian.org>  Wed, 21 Jun 2023 00:14:58 +0200
 
