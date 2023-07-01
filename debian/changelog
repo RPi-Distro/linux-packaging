@@ -1,4 +1,4 @@
-linux (6.3.11-1) UNRELEASED; urgency=medium
+linux (6.3.11-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.8
@@ -480,7 +480,7 @@ linux (6.3.11-1) UNRELEASED; urgency=medium
   [ Helge Deller ]
   * [hppa] Allow up to 16 CPUs with 32-bit kernel
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 19 Jun 2023 18:07:23 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 01 Jul 2023 20:23:53 +0200
 
 linux (6.3.7-1) unstable; urgency=medium
 
