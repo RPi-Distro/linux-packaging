@@ -13,7 +13,7 @@ linux (6.4.1-1~exp1) UNRELEASED; urgency=medium
   * [hppa] Build some more fbdev graphic card drivers as modules
 
   [ Uwe Kleine-König ]
-  * Enable all RTW88 variants (USB + SDIO).
+  * Enable all RTW88 variants (USB + SDIO). (Closes: #1038409)
 
   [ Ben Hutchings ]
   * [rt] Update to 6.4-rt5
