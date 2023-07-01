@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue, 18 Apr 2023 16:38:54 +0200
 Subject: [PATCH] tracing/timer: Add missing hrtimer modes to
  decode_hrtimer_mode().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 The trace output for the HRTIMER_MODE_.*_HARD modes is seen as a number
 since these modes are not decoded. The author was not aware of the fancy

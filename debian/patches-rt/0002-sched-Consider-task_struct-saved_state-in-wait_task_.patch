@@ -2,7 +2,7 @@ From: Peter Zijlstra <peterz@infradead.org>
 Date: Thu, 1 Jun 2023 11:12:34 +0200
 Subject: [PATCH 2/2] sched: Consider task_struct::saved_state in
  wait_task_inactive()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 With the introduction of task_struct::saved_state in commit
 5f220be21418 ("sched/wakeup: Prepare for RT sleeping spin/rwlocks")
@@ -23,14 +23,12 @@ Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Link: https://lore.kernel.org/20230601091234.GW83892@hirez.programming.kicks-ass.net
 ---
- kernel/sched/core.c | 59 ++++++++++++++++++++++++++++++++++++---------
+ kernel/sched/core.c |   59 ++++++++++++++++++++++++++++++++++++++++++----------
  1 file changed, 48 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 88a48f0360192..d9a04faa48a1a 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -2213,6 +2213,39 @@ void check_preempt_curr(struct rq *rq, struct task_struct *p, int flags)
+@@ -2213,6 +2213,39 @@ void check_preempt_curr(struct rq *rq, s
  		rq_clock_skip_update(rq);
  }
  
@@ -70,7 +68,7 @@ index 88a48f0360192..d9a04faa48a1a 100644
  /*
   * wait_task_inactive - wait for a thread to unschedule.
   *
-@@ -2231,7 +2264,7 @@ void check_preempt_curr(struct rq *rq, struct task_struct *p, int flags)
+@@ -2231,7 +2264,7 @@ void check_preempt_curr(struct rq *rq, s
   */
  unsigned long wait_task_inactive(struct task_struct *p, unsigned int match_state)
  {
@@ -79,7 +77,7 @@ index 88a48f0360192..d9a04faa48a1a 100644
  	struct rq_flags rf;
  	unsigned long ncsw;
  	struct rq *rq;
-@@ -2257,7 +2290,7 @@ unsigned long wait_task_inactive(struct task_struct *p, unsigned int match_state
+@@ -2257,7 +2290,7 @@ unsigned long wait_task_inactive(struct
  		 * is actually now running somewhere else!
  		 */
  		while (task_on_cpu(rq, p)) {
@@ -88,7 +86,7 @@ index 88a48f0360192..d9a04faa48a1a 100644
  				return 0;
  			cpu_relax();
  		}
-@@ -2272,8 +2305,15 @@ unsigned long wait_task_inactive(struct task_struct *p, unsigned int match_state
+@@ -2272,8 +2305,15 @@ unsigned long wait_task_inactive(struct
  		running = task_on_cpu(rq, p);
  		queued = task_on_rq_queued(p);
  		ncsw = 0;
@@ -105,7 +103,7 @@ index 88a48f0360192..d9a04faa48a1a 100644
  		task_rq_unlock(rq, p, &rf);
  
  		/*
-@@ -4003,15 +4043,14 @@ static void ttwu_queue(struct task_struct *p, int cpu, int wake_flags)
+@@ -4003,15 +4043,14 @@ static void ttwu_queue(struct task_struc
  static __always_inline
  bool ttwu_state_match(struct task_struct *p, unsigned int state, int *success)
  {
@@ -124,7 +122,7 @@ index 88a48f0360192..d9a04faa48a1a 100644
  
  #ifdef CONFIG_PREEMPT_RT
  	/*
-@@ -4027,12 +4066,10 @@ bool ttwu_state_match(struct task_struct *p, unsigned int state, int *success)
+@@ -4027,12 +4066,10 @@ bool ttwu_state_match(struct task_struct
  	 * p::saved_state to TASK_RUNNING so any further tests will
  	 * not result in false positives vs. @success
  	 */
@@ -139,6 +137,3 @@ index 88a48f0360192..d9a04faa48a1a 100644
  }
  
  /*
--- 
-2.40.1
-
