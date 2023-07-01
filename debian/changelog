@@ -1,4 +1,4 @@
-linux (6.3.10-1) UNRELEASED; urgency=medium
+linux (6.3.11-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.8
@@ -436,6 +436,35 @@ linux (6.3.10-1) UNRELEASED; urgency=medium
     - ksmbd: fix uninitialized pointer read in ksmbd_vfs_rename()
     - ksmbd: fix uninitialized pointer read in smb2_create_link()
     - ksmbd: call putname after using the last component
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.3.11
+    - mm/mmap: Fix error path in do_vmi_align_munmap()
+    - mm/mmap: Fix error return in do_vmi_align_munmap()
+    - [x86] microcode/AMD: Load late on both threads too
+    - [x86] smp: Make stop_other_cpus() more robust
+    - [x86] smp: Dont access non-existing CPUID leaf
+    - [x86] smp: Remove pointless wmb()s from native_stop_other_cpus()
+    - [x86] smp: Use dedicated cache-line for mwait_play_dead()
+    - [x86] smp: Cure kexec() vs. mwait_play_dead() breakage
+    - [x86] cpufreq: amd-pstate: Make amd-pstate EPP driver name hyphenated
+    - can: isotp: isotp_sendmsg(): fix return error fix on TX path
+    - maple_tree: fix potential out-of-bounds access in mas_wr_end_piv()
+    - mm: introduce new 'lock_mm_and_find_vma()' page fault helper
+    - mm: make the page fault mmap locking killable
+    - [arm64] mm: Convert to using lock_mm_and_find_vma()
+    - [powerpc*] mm: Convert to using lock_mm_and_find_vma()
+    - [mips*] mm: Convert to using lock_mm_and_find_vma()
+    - [riscv64] mm: Convert to using lock_mm_and_find_vma()
+    - [armel,armhf] mm: Convert to using lock_mm_and_find_vma()
+    - mm/fault: convert remaining simple cases to lock_mm_and_find_vma()
+    - [powerpc*] mm: convert coprocessor fault to lock_mm_and_find_vma()
+    - mm: make find_extend_vma() fail if write lock not held
+    - execve: expand new process stack manually ahead of time
+    - mm: always expand the stack with the mmap write lock held
+    - gup: add warning if some caller would seem to want stack expansion
+    - fbdev: fix potential OOB read in fast_imageblit()
+    - HID: hidraw: fix data race on device refcount
+    - HID: wacom: Use ktime_t rather than int when dealing with timestamps
+    - HID: logitech-hidpp: add HIDPP_QUIRK_DELAYED_INIT for the T651.
 
   [ Salvatore Bonaccorso ]
   * Ignore ABI changes for xfrm_bpf_md_dst (only for use in xfrm subsystem)
