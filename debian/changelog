@@ -1,4 +1,4 @@
-linux (6.4.1-1~exp1) UNRELEASED; urgency=medium
+linux (6.4.1-1~exp1) experimental; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_6.4
   * New upstream stable update:
@@ -23,7 +23,7 @@ linux (6.4.1-1~exp1) UNRELEASED; urgency=medium
   * [x86] drivers/platform/x86/hp: Enable X86_PLATFORM_DRIVERS_HP
     (Closes: #1038799)
 
- -- Aurelien Jarno <aurel32@debian.org>  Wed, 21 Jun 2023 00:14:58 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 01 Jul 2023 20:41:23 +0200
 
 linux (6.4~rc7-1~exp1) experimental; urgency=medium
 
