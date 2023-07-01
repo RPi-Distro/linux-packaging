@@ -465,6 +465,7 @@ linux (6.3.11-1) UNRELEASED; urgency=medium
     - HID: hidraw: fix data race on device refcount
     - HID: wacom: Use ktime_t rather than int when dealing with timestamps
     - HID: logitech-hidpp: add HIDPP_QUIRK_DELAYED_INIT for the T651.
+      (Closes: #1038271)
 
   [ Salvatore Bonaccorso ]
   * Ignore ABI changes for xfrm_bpf_md_dst (only for use in xfrm subsystem)
