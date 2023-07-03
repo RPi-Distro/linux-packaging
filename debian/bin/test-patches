@@ -54,7 +54,7 @@ if [ -z "$flavour" ]; then
     exit 2
 fi
 
-profiles=nodoc,noudeb,pkg.linux.nosource,pkg.linux.notools
+profiles=nodoc,noudeb,pkg.linux.nosource,pkg.linux.mintools
 if [ -z "$dbginfo" ]; then
     profiles="$profiles,pkg.linux.nokerneldbg,pkg.linux.nokerneldbginfo"
 fi
