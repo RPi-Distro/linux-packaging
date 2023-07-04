@@ -102,6 +102,7 @@ linux (6.6.1-1~exp1) UNRELEASED; urgency=medium
       SND_SOC_INTEL_SOF_DA7219_MAX98373_MACH, SND_SOC_INTEL_SOF_SSP_AMP_MACH,
       SND_SOC_INTEL_CML_LP_DA7219_MAX98357A_MACH, SND_SOC_CS35L41_I2C and
       SND_SOC_NAU8315 as modules
+  * [x86] Enable TOUCHSCREEN_ELAN as module
 
   [ John Paul Adrian Glaubitz ]
   * [ia64] Compile with gcc-12 to work around ICE (PR target/111425)
