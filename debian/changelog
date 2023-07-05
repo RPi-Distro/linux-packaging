@@ -9,6 +9,9 @@ linux (6.4.2-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Revert "drm/amd/display: edp do not add non-edid timings" (Closes: #1040346)
 
+  [ Benjamin Poirier ]
+  * kernel/trace: Enable FPROBE
+
  -- Vincent Pelletier <plr.vincent@gmail.com>  Thu, 06 Jul 2023 08:30:43 +0900
 
 linux (6.4.1-1~exp1) experimental; urgency=medium
