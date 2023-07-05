@@ -250,7 +250,7 @@ endif
 
 build_headers-common:
 
-binary_headers-common: PACKAGE_NAME_KBUILD = linux-kbuild-$(VERSION)
+binary_headers-common: PACKAGE_NAME_KBUILD = linux-kbuild-$(ABINAME)
 binary_headers-common: BASE_DIR = /usr/src/$(PACKAGE_NAME)
 binary_headers-common: SOURCE_DIR = $(BUILD_DIR)/source_$(FEATURESET)
 binary_headers-common: DIR = $(DESTDIR)/$(BASE_DIR)
@@ -282,7 +282,7 @@ build_headers:
 
 binary_headers: REAL_VERSION = $(ABINAME)$(LOCALVERSION)
 binary_headers: PACKAGE_NAME_COMMON = linux-headers-$(ABINAME)-common$(LOCALVERSION_HEADERS)
-binary_headers: PACKAGE_NAME_KBUILD = linux-kbuild-$(VERSION)
+binary_headers: PACKAGE_NAME_KBUILD = linux-kbuild-$(ABINAME)
 binary_headers: BASE_DIR = /usr/src/$(PACKAGE_NAME)
 binary_headers: BASE_DIR_COMMON = /usr/src/$(PACKAGE_NAME_COMMON)
 binary_headers: SOURCE_DIR = $(BUILD_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
