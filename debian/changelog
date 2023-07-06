@@ -3,6 +3,9 @@ linux (6.4.1-1~exp2) UNRELEASED; urgency=medium
   [ Vincent Pelletier ]
   * [riscv64] enable CONFIG_SND_HDA_INTEL as module
 
+  [ Salvatore Bonaccorso ]
+  * Revert "drm/amd/display: edp do not add non-edid timings" (Closes: #1040346)
+
  -- Vincent Pelletier <plr.vincent@gmail.com>  Thu, 06 Jul 2023 08:30:43 +0900
 
 linux (6.4.1-1~exp1) experimental; urgency=medium
