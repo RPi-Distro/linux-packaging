@@ -19,6 +19,7 @@ linux (6.4.3-1~exp1) UNRELEASED; urgency=medium
 
   [ Bastian Blank ]
   * Include kbuild package into ABI. (closes: #1040178)
+  * [powerpc,riscv64,s390x] Enable DEBUG_INFO_BTF.
 
  -- Vincent Pelletier <plr.vincent@gmail.com>  Thu, 06 Jul 2023 08:30:43 +0900
 
