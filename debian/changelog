@@ -13,6 +13,9 @@ linux (6.5-1~exp1) UNRELEASED; urgency=medium
     MFD_AXP20X_I2C and REGULATOR_AXP20X as modules, and CPUFREQ_DT_PLATDEV as
     built-in.
 
+  [ Bastian Blank ]
+  * Use pytest to test some of the code.
+
  -- Diederik de Haas <didi.debian@cknow.org>  Sat, 26 Aug 2023 11:01:09 +0200
 
 linux (6.5~rc7-1~exp1) experimental; urgency=medium
