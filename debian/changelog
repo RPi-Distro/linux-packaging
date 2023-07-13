@@ -9,6 +9,8 @@ linux (6.4.3-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Revert "drm/amd/display: edp do not add non-edid timings" (Closes: #1040346)
+  * netfilter: nf_tables: do not ignore genmask when looking up chain by id
+    (CVE-2023-31248)
 
   [ Benjamin Poirier ]
   * kernel/trace: Enable FPROBE
