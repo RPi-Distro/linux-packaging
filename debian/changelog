@@ -13,6 +13,7 @@ linux (6.4.3-1~exp1) UNRELEASED; urgency=medium
     (CVE-2023-31248)
   * netfilter: nf_tables: prevent OOB access in nft_byteorder_eval
     (CVE-2023-35001)
+  * Compile with gcc-13 on all architectures
 
   [ Benjamin Poirier ]
   * kernel/trace: Enable FPROBE
