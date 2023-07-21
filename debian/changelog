@@ -16,6 +16,7 @@ linux (6.4.4-1~exp1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Compile with gcc-13 on all architectures
+  * [rt] Refresh "serial: 8250: implement non-BKL console"
 
   [ Benjamin Poirier ]
   * kernel/trace: Enable FPROBE
