@@ -1,18 +1,20 @@
-linux (6.4.3-1~exp1) UNRELEASED; urgency=medium
+linux (6.4.4-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.2
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.3
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.4
+    - Revert "drm/amd/display: edp do not add non-edid timings"
+      (Closes: #1040346)
+    - netfilter: nf_tables: do not ignore genmask when looking up chain by id
+      (CVE-2023-31248)
+    - netfilter: nf_tables: prevent OOB access in nft_byteorder_eval
+      (CVE-2023-35001)
 
   [ Vincent Pelletier ]
   * [riscv64] enable CONFIG_SND_HDA_INTEL as module
 
   [ Salvatore Bonaccorso ]
-  * Revert "drm/amd/display: edp do not add non-edid timings" (Closes: #1040346)
-  * netfilter: nf_tables: do not ignore genmask when looking up chain by id
-    (CVE-2023-31248)
-  * netfilter: nf_tables: prevent OOB access in nft_byteorder_eval
-    (CVE-2023-35001)
   * Compile with gcc-13 on all architectures
 
   [ Benjamin Poirier ]
