@@ -5,7 +5,6 @@
 ###########################################################################
 0001-sched-Unconditionally-use-full-fat-wait_task_inactiv.patch
 0002-sched-Consider-task_struct-saved_state-in-wait_task_.patch
-tracing-timer-Add-missing-hrtimer-modes-to-decode_hr.patch
 revert-softirq-Let-ksoftirqd-do-its-job.patch
 bpf-Remove-in_atomic-from-bpf_link_put.patch
 
@@ -23,7 +22,6 @@ bpf-Remove-in_atomic-from-bpf_link_put.patch
 0001-signal-Add-proper-comment-about-the-preempt-disable-.patch
 0002-signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
 
-0001-posix-timers-Prevent-RT-livelock-in-itimer_delete.patch
 0002-posix-timers-Ensure-timer-ID-search-loop-limit-is-va.patch
 0003-ARM-vfp-Provide-vfp_lock-for-VFP-locking.patch
 0004-ARM-vfp-Use-vfp_lock-in-vfp_sync_hwstate.patch
