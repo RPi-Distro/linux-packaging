@@ -1,4 +1,4 @@
-linux (6.4.4-1~exp1) UNRELEASED; urgency=medium
+linux (6.4.4-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.2
@@ -17,6 +17,7 @@ linux (6.4.4-1~exp1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Compile with gcc-13 on all architectures
   * [rt] Refresh "serial: 8250: implement non-BKL console"
+  * Set ABI to 1
 
   [ Benjamin Poirier ]
   * kernel/trace: Enable FPROBE
