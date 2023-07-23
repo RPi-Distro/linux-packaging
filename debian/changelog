@@ -1,4 +1,4 @@
-linux (6.4.4-1) UNRELEASED; urgency=medium
+linux (6.4.4-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.2
@@ -30,7 +30,7 @@ linux (6.4.4-1) UNRELEASED; urgency=medium
   * Include kbuild package into ABI. (closes: #1040178)
   * [powerpc,riscv64,s390x] Enable DEBUG_INFO_BTF.
 
- -- Vincent Pelletier <plr.vincent@gmail.com>  Thu, 06 Jul 2023 08:30:43 +0900
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 23 Jul 2023 08:53:20 +0200
 
 linux (6.4.1-1~exp1) experimental; urgency=medium
 
