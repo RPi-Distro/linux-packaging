@@ -2,7 +2,7 @@ From: John Ogness <john.ogness@linutronix.de>
 Date: Tue, 28 Feb 2023 13:55:00 +0000
 Subject: [PATCH 20/24] printk: Perform atomic flush in
  console_flush_on_panic()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Typically the panic() function will take care of atomic flushing the
 non-BKL consoles on panic. However, there are several users of
@@ -40,7 +40,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -3160,6 +3160,28 @@ void console_unblank(void)
+@@ -3151,6 +3151,28 @@ void console_unblank(void)
   */
  void console_flush_on_panic(enum con_flush_mode mode)
  {
@@ -69,7 +69,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	if (!have_bkl_console)
  		return;
  
-@@ -3178,12 +3200,6 @@ void console_flush_on_panic(enum con_flu
+@@ -3169,12 +3191,6 @@ void console_flush_on_panic(enum con_flu
  	console_may_schedule = 0;
  
  	if (mode == CONSOLE_REPLAY_ALL) {

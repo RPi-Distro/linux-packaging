@@ -80,6 +80,7 @@ CONFIG_DRM_SUN4I=m
 ## file: drivers/hwmon/Kconfig
 ##
 CONFIG_SENSORS_LM90=m
+CONFIG_SENSORS_SFCTEMP=m
 
 ##
 ## file: drivers/i2c/Kconfig
@@ -125,6 +126,8 @@ CONFIG_MMC=m
 CONFIG_MMC_SDHCI_PLTFM=m
 CONFIG_MMC_SDHCI_CADENCE=m
 CONFIG_MMC_SPI=m
+CONFIG_MMC_DW=m
+CONFIG_MMC_DW_STARFIVE=m
 CONFIG_MMC_SUNXI=m
 
 ##
@@ -151,8 +154,8 @@ CONFIG_PCI=y
 ## file: drivers/pci/controller/Kconfig
 ##
 CONFIG_PCI_HOST_GENERIC=y
-CONFIG_PCIE_XILINX=y
 CONFIG_PCIE_MICROCHIP_HOST=y
+CONFIG_PCIE_XILINX=y
 
 ##
 ## file: drivers/pci/controller/dwc/Kconfig
@@ -262,3 +265,17 @@ CONFIG_NOP_USB_XCEIV=m
 ##
 CONFIG_DA9063_WATCHDOG=m
 CONFIG_SUNXI_WATCHDOG=m
+CONFIG_STARFIVE_WATCHDOG=m
+
+##
+## file: lib/Kconfig.debug
+##
+CONFIG_DEBUG_INFO_BTF=y
+#. Workaround module loading of different builds of on-disk modules
+#. vs booted kernel when keeping same ABI, cf. #1003210, #1022202
+CONFIG_MODULE_ALLOW_BTF_MISMATCH=y
+
+##
+## file: sound/pci/hda/Kconfig
+##
+CONFIG_SND_HDA_INTEL=m

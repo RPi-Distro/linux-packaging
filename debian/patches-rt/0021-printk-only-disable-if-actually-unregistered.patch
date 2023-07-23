@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Tue, 7 Mar 2023 18:22:26 +0000
 Subject: [PATCH 21/24] printk: only disable if actually unregistered
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Currently in unregister_console() a printk message is generated and
 the console is disabled, even it was never registered. There are
@@ -20,7 +20,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -3599,20 +3599,19 @@ static int unregister_console_locked(str
+@@ -3590,20 +3590,19 @@ static int unregister_console_locked(str
  
  	is_boot_con = console->flags & CON_BOOT;
  

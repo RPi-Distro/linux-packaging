@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 11 Sep 2022 00:28:12 +0200
 Subject: [PATCH 11/24] printk: nobkl: Introduce printer threads
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Add the infrastructure to create a printer thread per console along
 with the required thread function, which is takeover/handover aware.
@@ -141,7 +141,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -2719,45 +2719,6 @@ static bool abandon_console_lock_in_pani
+@@ -2710,45 +2710,6 @@ static bool abandon_console_lock_in_pani
  	return atomic_read(&panic_cpu) != raw_smp_processor_id();
  }
  
@@ -187,7 +187,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  static void __console_unlock(void)
  {
  	console_locked = 0;
-@@ -3578,10 +3539,14 @@ EXPORT_SYMBOL(register_console);
+@@ -3569,10 +3530,14 @@ EXPORT_SYMBOL(register_console);
  /* Must be called under console_list_lock(). */
  static int unregister_console_locked(struct console *console)
  {
@@ -202,7 +202,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	con_printk(KERN_INFO, console, "disabled\n");
  
  	res = _braille_unregister_console(console);
-@@ -3625,6 +3590,15 @@ static int unregister_console_locked(str
+@@ -3616,6 +3581,15 @@ static int unregister_console_locked(str
  	if (console->exit)
  		res = console->exit(console);
  

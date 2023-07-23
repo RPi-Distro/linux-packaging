@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Wed, 14 Sep 2022 08:17:13 +0206
 Subject: [PATCH 19/24] rcu: Add atomic write enforcement for rcu stalls
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Invoke the atomic write enforcement functions for rcu stalls to
 ensure that the information gets out to the consoles.

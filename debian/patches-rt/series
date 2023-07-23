@@ -3,31 +3,31 @@
 ###########################################################################
 # Posted and applied
 ###########################################################################
+0001-sched-Unconditionally-use-full-fat-wait_task_inactiv.patch
+0002-sched-Consider-task_struct-saved_state-in-wait_task_.patch
+revert-softirq-Let-ksoftirqd-do-its-job.patch
+bpf-Remove-in_atomic-from-bpf_link_put.patch
 
 # signal_x86__Delay_calling_signals_in_atomic.patch
 
 ###########################################################################
 # Posted
 ###########################################################################
-
-# Hacks to get ptrace to work.
-sched-Consider-task_struct-saved_state-in-wait_task_.patch
-io-mapping-Don-t-disable-preempt-on-RT-in-io_mapping.patch
-locking-rwbase-Mitigate-indefinite-writer-starvation.patch
 0001-sched-core-Provide-sched_rtmutex-and-expose-sched-wo.patch
 0002-locking-rtmutex-Submit-resume-work-explicitly-before.patch
 0003-locking-rtmutex-Avoid-pointless-blk_flush_plug-invoc.patch
 0004-locking-rtmutex-Add-a-lockdep-assert-to-catch-potent.patch
-signal-Let-tasks-cache-one-sigqueue-struct.patch
+
+# Hacks to get ptrace to work.
 0001-signal-Add-proper-comment-about-the-preempt-disable-.patch
 0002-signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
-tracing-timer-Add-missing-hrtimer-modes-to-decode_hr.patch
-revert-softirq-Let-ksoftirqd-do-its-job.patch
-0001-posix-timers-Prevent-RT-livelock-in-itimer_delete.patch
+
 0002-posix-timers-Ensure-timer-ID-search-loop-limit-is-va.patch
 0003-ARM-vfp-Provide-vfp_lock-for-VFP-locking.patch
 0004-ARM-vfp-Use-vfp_lock-in-vfp_sync_hwstate.patch
 0005-ARM-vfp-Use-vfp_lock-in-vfp_entry.patch
+seqlock-Do-the-lockdep-annotation-before-locking-in-.patch
+mm-page_alloc-Use-write_seqlock_irqsave-instead-writ.patch
 
 ###########################################################################
 # Post
@@ -47,7 +47,6 @@ softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
 rcutorture-Also-force-sched-priority-to-timersd-on-b.patch
 tick-Fix-timer-storm-since-introduction-of-timersd.patch
 softirq-Wake-ktimers-thread-also-in-softirq.patch
-tpm_tis-fix-stall-after-iowrite-s.patch
 zram-Replace-bit-spinlocks-with-spinlock_t-for-PREEM.patch
 preempt-Put-preempt_enable-within-an-instrumentation.patch
 
@@ -78,6 +77,7 @@ preempt-Put-preempt_enable-within-an-instrumentation.patch
 0022-printk-Add-threaded-printing-support-for-BKL-console.patch
 0023-printk-replace-local_irq_save-with-local_lock-for-sa.patch
 0024-serial-8250-implement-non-BKL-console.patch
+printk-Check-only-for-migration-in-printk_deferred_.patch
 
 ###########################################################################
 # DRM:

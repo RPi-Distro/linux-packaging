@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Mon, 27 Feb 2023 17:59:01 +0100
 Subject: [PATCH 15/24] printk: nobkl: Stop threads on shutdown/reboot
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Register a syscore_ops shutdown function to stop all threaded
 printers on shutdown/reboot. This allows printk to transition back

@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Fri, 17 Feb 2023 15:43:37 +0000
 Subject: [PATCH 04/24] printk: Add per-console suspended state
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Currently the global @console_suspended is used to determine if
 consoles are in a suspended state. Its primary purpose is to allow
@@ -44,7 +44,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  /**
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -2559,10 +2559,26 @@ MODULE_PARM_DESC(console_no_auto_verbose
+@@ -2550,10 +2550,26 @@ MODULE_PARM_DESC(console_no_auto_verbose
   */
  void suspend_console(void)
  {
@@ -71,7 +71,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	console_lock();
  	console_suspended = 1;
  	up_console_sem();
-@@ -2570,11 +2586,26 @@ void suspend_console(void)
+@@ -2561,11 +2577,26 @@ void suspend_console(void)
  
  void resume_console(void)
  {
@@ -98,7 +98,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	pr_flush(1000, true);
  }
  
-@@ -2677,6 +2708,9 @@ static inline bool console_is_usable(str
+@@ -2668,6 +2699,9 @@ static inline bool console_is_usable(str
  	if (!(flags & CON_ENABLED))
  		return false;
  
@@ -108,7 +108,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	if (!con->write)
  		return false;
  
-@@ -3700,8 +3734,7 @@ static bool __pr_flush(struct console *c
+@@ -3691,8 +3725,7 @@ static bool __pr_flush(struct console *c
  
  		/*
  		 * Hold the console_lock to guarantee safe access to
@@ -118,7 +118,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		 */
  		console_lock();
  
-@@ -3717,14 +3750,7 @@ static bool __pr_flush(struct console *c
+@@ -3708,14 +3741,7 @@ static bool __pr_flush(struct console *c
  		}
  		console_srcu_read_unlock(cookie);
  

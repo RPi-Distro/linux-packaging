@@ -2,7 +2,7 @@ From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 11 Sep 2022 00:28:13 +0200
 Subject: [PATCH 13/24] printk: nobkl: Add write context storage for atomic
  writes
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 The number of consoles is unknown at compile time and allocating
 write contexts on stack in emergency/panic situations is not desired

@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Thu, 2 Mar 2023 11:35:37 +0000
 Subject: [PATCH 03/24] printk: Consolidate console deferred printing
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Printig to consoles can be deferred for several reasons:
 
@@ -30,7 +30,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -2317,7 +2317,10 @@ asmlinkage int vprintk_emit(int facility
+@@ -2308,7 +2308,10 @@ asmlinkage int vprintk_emit(int facility
  		preempt_enable();
  	}
  
@@ -42,7 +42,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	return printed_len;
  }
  EXPORT_SYMBOL(vprintk_emit);
-@@ -3816,11 +3819,30 @@ static void __wake_up_klogd(int val)
+@@ -3807,11 +3810,30 @@ static void __wake_up_klogd(int val)
  	preempt_enable();
  }
  
@@ -73,7 +73,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  void defer_console_output(void)
  {
  	/*
-@@ -3837,12 +3859,7 @@ void printk_trigger_flush(void)
+@@ -3828,12 +3850,7 @@ void printk_trigger_flush(void)
  
  int vprintk_deferred(const char *fmt, va_list args)
  {

@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Fri, 10 Mar 2023 13:08:01 +0000
 Subject: [PATCH 16/24] tty: tty_io: Show non-BKL consoles as active
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 /sys/class/tty/console/active shows the consoles that are currently
 registered and enabled and are able to print (i.e. have implemented
@@ -22,7 +22,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/drivers/tty/tty_io.c
 +++ b/drivers/tty/tty_io.c
-@@ -3543,8 +3543,13 @@ static ssize_t show_cons_active(struct d
+@@ -3541,8 +3541,13 @@ static ssize_t show_cons_active(struct d
  	for_each_console(c) {
  		if (!c->device)
  			continue;

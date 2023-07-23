@@ -546,12 +546,6 @@ CONFIG_WANXL=m
 CONFIG_FARSYNC=m
 
 ##
-## file: drivers/net/wireless/Kconfig
-##
-CONFIG_PCMCIA_RAYCS=m
-CONFIG_PCMCIA_WL3501=m
-
-##
 ## file: drivers/net/wireless/atmel/Kconfig
 ##
 CONFIG_ATMEL=m
@@ -577,6 +571,12 @@ CONFIG_PLX_HERMES=m
 CONFIG_TMD_HERMES=m
 CONFIG_PCI_HERMES=m
 CONFIG_PCMCIA_HERMES=m
+
+##
+## file: drivers/net/wireless/legacy/Kconfig
+##
+CONFIG_PCMCIA_RAYCS=m
+CONFIG_PCMCIA_WL3501=m
 
 ##
 ## file: drivers/net/wireless/marvell/mwifiex/Kconfig
@@ -780,6 +780,10 @@ CONFIG_SGETMASK_SYSCALL=y
 ##
 ## file: lib/Kconfig.debug
 ##
+CONFIG_DEBUG_INFO_BTF=y
+#. Workaround module loading of different builds of on-disk modules
+#. vs booted kernel when keeping same ABI, cf. #1003210, #1022202
+CONFIG_MODULE_ALLOW_BTF_MISMATCH=y
 # CONFIG_DEBUG_STACK_USAGE is not set
 # CONFIG_DEBUG_STACKOVERFLOW is not set
 

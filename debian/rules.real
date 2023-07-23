@@ -24,10 +24,8 @@ ifdef ARCH
   endif
 endif
 
-ifdef OVERRIDE_HOST_TYPE
-  CROSS_COMPILE := $(OVERRIDE_HOST_TYPE)-
-else ifneq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
-  CROSS_COMPILE := $(DEB_HOST_GNU_TYPE)-
+ifneq ($(DEB_BUILD_ARCH),$(or $(KERNEL_DEB_ARCH),$(DEB_HOST_ARCH)))
+  CROSS_COMPILE := $(or $(KERNEL_GNU_TYPE),$(DEB_HOST_GNU_TYPE))-
 else
   CROSS_COMPILE :=
 endif
@@ -132,6 +130,8 @@ $(STAMPS_DIR)/source_none: $(STAMPS_DIR)/source
 $(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR): CONFIG=$(BUILD_DIR)/config.$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 $(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR): SOURCE_DIR=$(BUILD_DIR)/source_$(FEATURESET)
 $(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DIR=$(BUILD_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
+$(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR): KERNEL_DEB_ARCH?=$(DEB_HOST_ARCH)
+$(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR): KERNEL_GNU_TYPE?=$(DEB_HOST_GNU_TYPE)
 $(STAMPS_DIR)/setup_$(ARCH)_$(FEATURESET)_$(FLAVOUR): $(STAMPS_DIR)/source_$(FEATURESET) $(BUILD_DIR)/config.$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 	rm -rf '$(DIR)'
 	mkdir '$(DIR)'
@@ -152,15 +152,18 @@ else
 	echo 'CC = $$(if $$(DEBIAN_KERNEL_USE_CCACHE),$$(CCACHE)) $$(word 1,$$(foreach dir,$(dir $(COMPILER)) $$(subst :, ,$$(PATH)),$$(wildcard $$(dir)/$$(CROSS_COMPILE)$(notdir $(COMPILER)))))' >> '$(DIR)/.kernelvariables'
 endif
 # TODO: Should we set CROSS_COMPILE always?
-ifdef OVERRIDE_HOST_TYPE
-	echo 'override CROSS_COMPILE = $(OVERRIDE_HOST_TYPE)-' >> '$(DIR)/.kernelvariables'
-else
-	echo 'ifneq ($$(DEB_BUILD_ARCH),$$(DEB_HOST_ARCH))' >> '$(DIR)/.kernelvariables'
-	echo 'override CROSS_COMPILE = $$(DEB_HOST_GNU_TYPE)-' >> '$(DIR)/.kernelvariables'
+	echo 'DEB_BUILD_ARCH ?= $$(shell dpkg --print-architecture)' >> '$(DIR)/.kernelvariables'
+	echo 'ifneq ($$(DEB_BUILD_ARCH),$(KERNEL_DEB_ARCH))' >> '$(DIR)/.kernelvariables'
+	echo 'override CROSS_COMPILE = $(KERNEL_GNU_TYPE)-' >> '$(DIR)/.kernelvariables'
 	echo 'endif' >> '$(DIR)/.kernelvariables'
-endif
 ifdef KCFLAGS
 	echo 'KCFLAGS += $(KCFLAGS)' >> '$(DIR)/.kernelvariables'
+endif
+ifdef COMPAT_DEB_ARCH
+	echo 'ifneq ($$(DEB_BUILD_ARCH),$(COMPAT_DEB_ARCH))' >> '$(DIR)/.kernelvariables'
+	echo 'override CROSS_COMPILE_COMPAT = $(COMPAT_GNU_TYPE)-' >> '$(DIR)/.kernelvariables'
+	echo 'override CROSS32_COMPILE = $(COMPAT_GNU_TYPE)-' >> '$(DIR)/.kernelvariables'
+	echo 'endif' >> '$(DIR)/.kernelvariables'
 endif
 	echo 'DEBIAN_KERNEL_NO_CC_VERSION_CHECK = y' >> '$(DIR)/.kernelvariables'
 	+$(MAKE_CLEAN) -C '$(SOURCE_DIR)' O='$(CURDIR)/$(DIR)' listnewconfig
@@ -247,7 +250,7 @@ endif
 
 build_headers-common:
 
-binary_headers-common: PACKAGE_NAME_KBUILD = linux-kbuild-$(VERSION)
+binary_headers-common: PACKAGE_NAME_KBUILD = linux-kbuild-$(ABINAME)
 binary_headers-common: BASE_DIR = /usr/src/$(PACKAGE_NAME)
 binary_headers-common: SOURCE_DIR = $(BUILD_DIR)/source_$(FEATURESET)
 binary_headers-common: DIR = $(DESTDIR)/$(BASE_DIR)
@@ -279,7 +282,7 @@ build_headers:
 
 binary_headers: REAL_VERSION = $(ABINAME)$(LOCALVERSION)
 binary_headers: PACKAGE_NAME_COMMON = linux-headers-$(ABINAME)-common$(LOCALVERSION_HEADERS)
-binary_headers: PACKAGE_NAME_KBUILD = linux-kbuild-$(VERSION)
+binary_headers: PACKAGE_NAME_KBUILD = linux-kbuild-$(ABINAME)
 binary_headers: BASE_DIR = /usr/src/$(PACKAGE_NAME)
 binary_headers: BASE_DIR_COMMON = /usr/src/$(PACKAGE_NAME_COMMON)
 binary_headers: SOURCE_DIR = $(BUILD_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
@@ -401,11 +404,11 @@ endif
 
 binary_image_dt: DT_INSTALL_DIR = $(DESTDIR)/usr/lib/linux-image-$(REAL_VERSION)
 binary_image_dt:
-ifneq ($(filter arm64 armel armhf mipsr6 mipsr6el mips64r6 mips64r6el riscv64,$(ARCH)),)
+ifneq ($(filter arm64 armel armhf mipsel mips64el mipsr6 mipsr6el mips64r6 mips64r6el riscv64,$(ARCH)),)
 	+$(MAKE_CLEAN) -C $(DIR) dtbs
 	+$(MAKE_CLEAN) -C $(DIR) dtbs_install INSTALL_DTBS_PATH=$(DT_INSTALL_DIR)
-	# dtbs_install sets the executable bit on dtb files, which they shouldn't have
-	find $(DT_INSTALL_DIR) -type f -name '*.dtb' -exec chmod 644 {} \;
+	# dtbs_install sets the executable bit on dtb[o] files, which they shouldn't have
+	find $(DT_INSTALL_DIR) -type f \( -name '*.dtb' -o -name '*.dtbo' \) -exec chmod 644 {} \;
 endif
 ifneq ($(filter powerpc ppc64,$(ARCH)),)
 # Install wrapper code and DT source, but not the wrapper script or

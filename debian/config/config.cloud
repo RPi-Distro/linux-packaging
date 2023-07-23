@@ -399,7 +399,7 @@ CONFIG_INPUT_MOUSEDEV=m
 ##
 ## file: drivers/input/joystick/Kconfig
 ##
-CONFIG_INPUT_JOYSTICK=n
+# CONFIG_INPUT_JOYSTICK is not set
 
 ##
 ## file: drivers/input/keyboard/Kconfig
@@ -705,7 +705,6 @@ CONFIG_NET_VENDOR_INTEL=y
 # CONFIG_E1000E is not set
 # CONFIG_IGB is not set
 # CONFIG_IGBVF is not set
-# CONFIG_IXGB is not set
 # CONFIG_IXGBE is not set
 #. Amazon EC2 uses Intel Corporation 82599 Ethernet Controller Virtual Function
 CONFIG_IXGBEVF=m

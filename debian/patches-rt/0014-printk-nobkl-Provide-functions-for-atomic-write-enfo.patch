@@ -2,7 +2,7 @@ From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 11 Sep 2022 00:28:15 +0200
 Subject: [PATCH 14/24] printk: nobkl: Provide functions for atomic write
  enforcement
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Threaded printk is the preferred mechanism to tame the noisyness of
 printk, but WARN/OOPS/PANIC require printing out immediately since
@@ -82,7 +82,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  #ifdef CONFIG_SMP
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -2300,6 +2300,7 @@ asmlinkage int vprintk_emit(int facility
+@@ -2291,6 +2291,7 @@ asmlinkage int vprintk_emit(int facility
  			    const struct dev_printk_info *dev_info,
  			    const char *fmt, va_list args)
  {
@@ -90,7 +90,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	int printed_len;
  	bool in_sched = false;
  
-@@ -2320,17 +2321,26 @@ asmlinkage int vprintk_emit(int facility
+@@ -2311,17 +2312,26 @@ asmlinkage int vprintk_emit(int facility
  
  	printed_len = vprintk_store(facility, level, dev_info, fmt, args);
  
@@ -125,7 +125,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		 * Try to acquire and then immediately release the console
  		 * semaphore. The release will print out buffers. With the
  		 * spinning variant, this context tries to take over the
-@@ -2338,9 +2348,10 @@ asmlinkage int vprintk_emit(int facility
+@@ -2329,9 +2339,10 @@ asmlinkage int vprintk_emit(int facility
  		 */
  		if (console_trylock_spinning())
  			console_unlock();
@@ -137,7 +137,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	cons_wake_threads();
  	if (in_sched)
  		defer_console_output();
-@@ -3948,6 +3959,12 @@ void defer_console_output(void)
+@@ -3939,6 +3950,12 @@ void defer_console_output(void)
  
  void printk_trigger_flush(void)
  {

@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 25 Apr 2023 20:48:58 +0200
 Subject: [PATCH 2/2] posix-timers: Ensure timer ID search-loop limit is valid
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 posix_timer_add() tries to allocate a posix timer ID by starting from the
 cached ID which was stored by the last successful allocation.
@@ -47,7 +47,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/include/linux/sched/signal.h
 +++ b/include/linux/sched/signal.h
-@@ -136,7 +136,7 @@ struct signal_struct {
+@@ -135,7 +135,7 @@ struct signal_struct {
  #ifdef CONFIG_POSIX_TIMERS
  
  	/* POSIX.1b Interval Timers */

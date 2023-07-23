@@ -70,7 +70,7 @@ CONFIG_S390_PRNG=m
 ##
 ## file: drivers/input/joystick/Kconfig
 ##
-CONFIG_INPUT_JOYSTICK=n
+# CONFIG_INPUT_JOYSTICK is not set
 
 ##
 ## file: drivers/input/touchscreen/Kconfig
@@ -189,6 +189,14 @@ CONFIG_DIAG288_WATCHDOG=m
 ## choice: Cputime accounting
 CONFIG_VIRT_CPU_ACCOUNTING_NATIVE=y
 ## end choice
+
+##
+## file: lib/Kconfig.debug
+##
+CONFIG_DEBUG_INFO_BTF=y
+#. Workaround module loading of different builds of on-disk modules
+#. vs booted kernel when keeping same ABI, cf. #1003210, #1022202
+CONFIG_MODULE_ALLOW_BTF_MISMATCH=y
 
 ##
 ## file: mm/Kconfig

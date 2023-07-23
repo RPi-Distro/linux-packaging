@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 11 Sep 2022 00:28:07 +0200
 Subject: [PATCH 09/24] printk: nobkl: Add print state functions
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Provide three functions which are related to the safe handover
 mechanism and allow console drivers to denote takeover unsafe

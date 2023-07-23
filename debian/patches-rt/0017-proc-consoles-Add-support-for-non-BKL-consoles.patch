@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Fri, 10 Mar 2023 13:36:01 +0000
 Subject: [PATCH 17/24] proc: consoles: Add support for non-BKL consoles
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Show 'W' if a non-BKL console implements write_thread() or
 write_atomic().

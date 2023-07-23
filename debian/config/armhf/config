@@ -1105,16 +1105,16 @@ CONFIG_PCI=y
 ##
 ## file: drivers/pci/controller/Kconfig
 ##
+CONFIG_PCI_HOST_GENERIC=y
 CONFIG_PCI_MVEBU=y
 CONFIG_PCI_TEGRA=y
-CONFIG_PCI_HOST_GENERIC=y
 
 ##
 ## file: drivers/pci/controller/dwc/Kconfig
 ##
-CONFIG_PCI_DRA7XX_HOST=y
 CONFIG_PCI_IMX6_HOST=y
 CONFIG_PCI_IMX6_EP=y
+CONFIG_PCI_DRA7XX_HOST=y
 
 ##
 ## file: drivers/phy/allwinner/Kconfig

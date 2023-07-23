@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Fri, 24 Feb 2023 15:23:51 +0000
 Subject: [PATCH 01/24] kdb: do not assume write() callback available
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 It is allowed for consoles to provide no write() callback. For
 example ttynull does this.

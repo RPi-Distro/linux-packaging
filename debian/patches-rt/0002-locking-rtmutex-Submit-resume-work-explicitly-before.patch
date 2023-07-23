@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 27 Apr 2023 13:19:35 +0200
 Subject: [PATCH 2/4] locking/rtmutex: Submit/resume work explicitly
  before/after blocking
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 schedule() invokes sched_submit_work() before scheduling and
 sched_resume_work() afterwards to ensure that queued block requests are

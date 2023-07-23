@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 11 Sep 2022 00:28:02 +0200
 Subject: [PATCH 06/24] printk: nobkl: Add acquire/release logic
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Add per console acquire/release functionality. The console 'locked'
 state is a combination of several state fields:

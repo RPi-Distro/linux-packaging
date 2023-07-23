@@ -1,7 +1,7 @@
 Subject: x86/entry: Use should_resched() in idtentry_exit_cond_resched()
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue Jun 30 11:45:14 2020 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 

@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Sun, 11 Sep 2022 00:28:12 +0200
 Subject: [PATCH 22/24] printk: Add threaded printing support for BKL consoles.
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Add threaded printing support for BKL consoles on PREEMPT_RT.
 
@@ -42,7 +42,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
   * In !PRINTK builds we still export console_sem
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -446,7 +446,7 @@ static DEFINE_MUTEX(syslog_lock);
+@@ -448,7 +448,7 @@ static DEFINE_MUTEX(syslog_lock);
   * Specifies if a BKL console was ever registered. Used to determine if the
   * console lock/unlock dance is needed for console printing.
   */
@@ -51,7 +51,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  /*
   * Specifies if a boot console is registered. Used to determine if NOBKL
-@@ -2339,7 +2339,7 @@ asmlinkage int vprintk_emit(int facility
+@@ -2330,7 +2330,7 @@ asmlinkage int vprintk_emit(int facility
  	cons_atomic_flush(&wctxt, true);
  
  	/* If called from the scheduler, we can not call up(). */
@@ -60,7 +60,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		/*
  		 * Try to acquire and then immediately release the console
  		 * semaphore. The release will print out buffers. With the
-@@ -2652,6 +2652,9 @@ void resume_console(void)
+@@ -2643,6 +2643,9 @@ void resume_console(void)
  	}
  	console_srcu_read_unlock(cookie);
  
@@ -70,7 +70,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	pr_flush(1000, true);
  }
  
-@@ -3032,30 +3035,13 @@ static bool console_flush_all(bool do_co
+@@ -3023,30 +3026,13 @@ static bool console_flush_all(bool do_co
  	return false;
  }
  
@@ -102,7 +102,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	/*
  	 * Console drivers are called with interrupts disabled, so
  	 * @console_may_schedule should be cleared before; however, we may
-@@ -3092,6 +3078,39 @@ void console_unlock(void)
+@@ -3083,6 +3069,39 @@ void console_unlock(void)
  		 * fails, another context is already handling the printing.
  		 */
  	} while (prb_read_valid(prb, next_seq, NULL) && console_trylock());
@@ -142,7 +142,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  EXPORT_SYMBOL(console_unlock);
  
-@@ -3285,11 +3304,102 @@ void console_start(struct console *conso
+@@ -3276,11 +3295,102 @@ void console_start(struct console *conso
  
  	if (flags & CON_NO_BKL)
  		cons_kthread_wake(console);
@@ -245,7 +245,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  static int __read_mostly keep_bootcon;
  
  static int __init keep_bootcon_setup(char *str)
-@@ -3528,10 +3638,12 @@ void register_console(struct console *ne
+@@ -3519,10 +3629,12 @@ void register_console(struct console *ne
  	newcon->dropped = 0;
  	console_init_seq(newcon, bootcon_registered);
  
@@ -260,7 +260,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	if (newcon->flags & CON_BOOT)
  		have_boot_console = true;
-@@ -3898,9 +4010,17 @@ static void wake_up_klogd_work_func(stru
+@@ -3889,9 +4001,17 @@ static void wake_up_klogd_work_func(stru
  	int pending = this_cpu_xchg(printk_pending, 0);
  
  	if (pending & PRINTK_PENDING_OUTPUT) {

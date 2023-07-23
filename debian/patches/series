@@ -3,7 +3,6 @@ debian/gitignore.patch
 # Disable features broken by exclusion of upstream files
 debian/dfsg/arch-powerpc-platforms-8xx-ucode-disable.patch
 debian/dfsg/drivers-media-dvb-dvb-usb-af9005-disable.patch
-debian/dfsg/vs6624-disable.patch
 debian/dfsg/drivers-net-appletalk-cops.patch
 debian/dfsg/video-remove-nvidiafb-and-rivafb.patch
 debian/dfsg/documentation-fix-broken-link-to-cipso-draft.patch
@@ -71,6 +70,7 @@ bugfix/arm/arm-mm-export-__sync_icache_dcache-for-xen-privcmd.patch
 bugfix/powerpc/powerpc-boot-fix-missing-crc32poly.h-when-building-with-kernel_xz.patch
 bugfix/arm64/arm64-acpi-Add-fixup-for-HPE-m400-quirks.patch
 bugfix/alpha/alpha-fix-missing-symbol-versions-for-str-n-cat-cpy.patch
+bugfix/m68k/m68k-Fix-invalid-.section-syntax.patch
 
 # Arch features
 features/x86/x86-memtest-WARN-if-bad-RAM-found.patch
@@ -113,11 +113,11 @@ bugfix/x86/revert-perf-build-fix-libunwind-feature-detection-on.patch
 bugfix/all/tools-build-remove-bpf-run-time-check-at-build-time.patch
 bugfix/all/cpupower-bump-soname-version.patch
 bugfix/all/cpupower-fix-checks-for-cpu-existence.patch
-bugfix/all/tools-perf-pmu-events-fix-reproducibility.patch
 bugfix/all/libapi-define-_fortify_source-as-2-not-empty.patch
 bugfix/all/tools-perf-fix-missing-ldflags-for-some-programs.patch
 bugfix/all/tools_lib_symbol_use_d_fortify_source_2_for_non_debug_builds.patch
 bugfix/all/usbip_use__fortify_source_2_instead_of_implicitly_1.patch
+bugfix/all/perf-tools-support-extra-cxxflags.patch
 
 # debian-installer fixes
 bugfix/powerpc/fbdev-offb-Update-expected-device-name.patch

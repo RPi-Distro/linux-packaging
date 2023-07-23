@@ -2,7 +2,7 @@ From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 27 Apr 2023 13:19:37 +0200
 Subject: [PATCH 4/4] locking/rtmutex: Add a lockdep assert to catch potential
  nested blocking
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 There used to be a BUG_ON(current->pi_blocked_on) in the lock acquisition
 functions, but that vanished in one of the rtmutex overhauls.

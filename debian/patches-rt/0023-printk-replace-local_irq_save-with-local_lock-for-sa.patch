@@ -2,7 +2,7 @@ From: Sebastian Siewior <bigeasy@linutronix.de>
 Date: Tue, 14 Mar 2023 16:51:44 +0100
 Subject: [PATCH 23/24] printk: replace local_irq_save with local_lock for safe
  mode
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.3/older/patches-6.3.3-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
 
 Safe mode disables interrupts in order to minimize the window where
 printk calls use deferred printing. Currently local_irq_save() is
