@@ -1,3 +1,25 @@
+linux (6.5~rc3-1~exp1) UNRELEASED; urgency=medium
+
+  * New upstream release candidate
+
+  [ Ben Hutchings ]
+  * Drop patches applied upstream:
+    - Drop "usbip: Use _FORTIFY_SOURCE=2 instead of (implicitly) =1"
+    - Drop "arm: dts: Enable device-tree overlay support for RPi devices"
+    - Drop "arm64: dts: broadcom: Enable device-tree overlay support for RPi
+      devices"
+  * Refresh patches:
+    - Adjust context in "firmware: Remove redundant log messages from drivers"
+    - Adjust filename in "ARM: dts: kirkwood: Fix SATA pinmux-ing for TS419"
+    - Adjust context in "Include package version along with kernel release in
+      stack traces"
+    - Adjust context in "efi: Lock down the kernel if booted in secure boot
+      mode"
+  * Set ABI to 0
+  * [rt] Disable until it is updated for 6.5
+
+ -- Ben Hutchings <benh@debian.org>  Sun, 23 Jul 2023 02:42:18 +0200
+
 linux (6.4.4-1) unstable; urgency=medium
 
   * New upstream stable update:

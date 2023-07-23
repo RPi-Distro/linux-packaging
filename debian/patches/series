@@ -93,10 +93,6 @@ features/all/db-mok-keyring/0003-MODSIGN-checking-the-blacklisted-hash-before-lo
 features/all/db-mok-keyring/KEYS-Make-use-of-platform-keyring-for-module-signature.patch
 features/all/db-mok-keyring/trust-machine-keyring-by-default.patch
 
-# Add symbol information to raspberry pi's device tree
-features/arm64/arm64-dts-broadcom-Enable-device-tree-overlay-suppor.patch
-features/arm/arm-dts-Enable-device-tree-overlay-support-for-RPi-d.patch
-
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
@@ -116,7 +112,6 @@ bugfix/all/cpupower-fix-checks-for-cpu-existence.patch
 bugfix/all/libapi-define-_fortify_source-as-2-not-empty.patch
 bugfix/all/tools-perf-fix-missing-ldflags-for-some-programs.patch
 bugfix/all/tools_lib_symbol_use_d_fortify_source_2_for_non_debug_builds.patch
-bugfix/all/usbip_use__fortify_source_2_instead_of_implicitly_1.patch
 bugfix/all/perf-tools-support-extra-cxxflags.patch
 
 # debian-installer fixes
