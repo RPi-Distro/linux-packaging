@@ -101,6 +101,7 @@ features/arm/arm-dts-Enable-device-tree-overlay-support-for-RPi-d.patch
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
 bugfix/x86/x86-cpu-amd-Move-the-errata-checking-functionality-u.patch
+bugfix/x86/x86-cpu-amd-Add-a-Zenbleed-fix.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch

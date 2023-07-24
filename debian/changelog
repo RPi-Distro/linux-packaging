@@ -1,6 +1,7 @@
 linux (6.4.4-2) UNRELEASED; urgency=medium
 
   * [x86] cpu/amd: Move the errata checking functionality up
+  * [x86] cpu/amd: Add a Zenbleed fix (CVE-2023-20593)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 24 Jul 2023 23:52:07 +0200
 
