@@ -17,6 +17,9 @@ linux (6.5~rc3-1~exp1) UNRELEASED; urgency=medium
       mode"
   * Set ABI to 0
   * [rt] Disable until it is updated for 6.5
+  * d/config: Update with the help of kconfigeditor2:
+    - [arm64,armhf] mfd: Enable MFD_RK8XX_I2C as built-in instead of MFD_RK808
+    - media: Enable VIDEO_STK1160 as module instead of VIDEO_STK1160_COMMON
 
  -- Ben Hutchings <benh@debian.org>  Sun, 23 Jul 2023 02:42:18 +0200
 
