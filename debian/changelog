@@ -1,5 +1,9 @@
 linux (6.4.4-2) UNRELEASED; urgency=medium
 
+  [ John Paul Adrian Glaubitz ]
+  * [sh4] Add i2c-modules udeb for sh7785lcr flavor
+
+  [ Salvatore Bonaccorso ]
   * [x86] cpu/amd: Move the errata checking functionality up
   * [x86] cpu/amd: Add a Zenbleed fix (CVE-2023-20593)
 
