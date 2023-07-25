@@ -1545,6 +1545,11 @@ CONFIG_INTEL_VSEC=m
 CONFIG_INTEL_ATOMISP2_PM=m
 
 ##
+## file: drivers/platform/x86/intel/int3472/Kconfig
+##
+CONFIG_INTEL_SKL_INT3472=m
+
+##
 ## file: drivers/platform/x86/intel/pmc/Kconfig
 ##
 CONFIG_INTEL_PMC_CORE=m
