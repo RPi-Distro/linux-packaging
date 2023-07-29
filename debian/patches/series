@@ -103,6 +103,7 @@ debian/ntfs-mark-it-as-broken.patch
 bugfix/x86/x86-cpu-amd-Move-the-errata-checking-functionality-u.patch
 bugfix/x86/x86-cpu-amd-Add-a-Zenbleed-fix.patch
 bugfix/all/net-sched-cls_fw-Fix-improper-refcount-update-leads-.patch
+bugfix/all/net-sched-sch_qfq-account-for-stab-overhead-in-qfq_e.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
