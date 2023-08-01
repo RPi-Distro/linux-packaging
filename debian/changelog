@@ -1,3 +1,9 @@
+linux (6.4.4-3) UNRELEASED; urgency=medium
+
+  * io_uring: gate iowait schedule on having pending requests (Closes: #1041855)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 01 Aug 2023 15:12:37 +0200
+
 linux (6.4.4-2) unstable; urgency=high
 
   [ John Paul Adrian Glaubitz ]
