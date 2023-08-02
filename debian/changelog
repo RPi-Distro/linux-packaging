@@ -21,6 +21,15 @@ linux (6.5~rc3-1~exp1) UNRELEASED; urgency=medium
     - [arm64,armhf] mfd: Enable MFD_RK8XX_I2C as built-in instead of MFD_RK808
     - media: Enable VIDEO_STK1160 as module instead of VIDEO_STK1160_COMMON
 
+  [ Vincent Blut ]
+  * [arm64] Improve support for Allwinner H6 and affiliated SoCs
+    (Closes: #1038986)
+    - drivers/cpufreq: Enable ARM_ALLWINNER_SUN50I_CPUFREQ_NVMEM as module
+    - drivers/iommu: Enable SUN50I_IOMMU
+    - drivers/media/rc: Enable IR_SUNXI as module
+    - drivers/phy/allwinner: Enable PHY_SUN50I_USB3 as module
+    - sound/soc/sunxi: Enable SND_SUN50I_DMIC as module
+
  -- Ben Hutchings <benh@debian.org>  Sun, 23 Jul 2023 02:42:18 +0200
 
 linux (6.4.4-1) unstable; urgency=medium
