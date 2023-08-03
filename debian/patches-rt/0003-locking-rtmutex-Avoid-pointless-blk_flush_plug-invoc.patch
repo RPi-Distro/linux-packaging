@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 27 Apr 2023 13:19:36 +0200
 Subject: [PATCH 3/4] locking/rtmutex: Avoid pointless blk_flush_plug()
  invocations
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rc4-rt1.tar.xz
 
 With DEBUG_RT_MUTEXES enabled the fast-path rt_mutex_cmpxchg_acquire()
 always fails and all lock operations take the slow path, which leads to the
@@ -69,7 +69,7 @@ Link: https://lore.kernel.org/r/20230427111937.2745231-4-bigeasy@linutronix.de
  static __always_inline bool rt_mutex_cmpxchg_release(struct rt_mutex_base *lock,
  						     struct task_struct *old,
  						     struct task_struct *new)
-@@ -1704,7 +1727,7 @@ static int __sched rt_mutex_slowlock(str
+@@ -1762,7 +1785,7 @@ static int __sched rt_mutex_slowlock(str
  static __always_inline int __rt_mutex_lock(struct rt_mutex_base *lock,
  					   unsigned int state)
  {

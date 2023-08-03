@@ -17,10 +17,10 @@ linux (6.5~rc4-1~exp1) UNRELEASED; urgency=medium
     - Adjust context in "efi: Lock down the kernel if booted in secure boot
       mode"
   * Set ABI to 0
-  * [rt] Disable until it is updated for 6.5
   * d/config: Update with the help of kconfigeditor2:
     - [arm64,armhf] mfd: Enable MFD_RK8XX_I2C as built-in instead of MFD_RK808
     - media: Enable VIDEO_STK1160 as module instead of VIDEO_STK1160_COMMON
+  * [rt] Update to 6.5-rc4-rt1
 
   [ Vincent Blut ]
   * [arm64] Improve support for Allwinner H6 and affiliated SoCs

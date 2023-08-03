@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 27 Apr 2023 13:19:35 +0200
 Subject: [PATCH 2/4] locking/rtmutex: Submit/resume work explicitly
  before/after blocking
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rc4-rt1.tar.xz
 
 schedule() invokes sched_submit_work() before scheduling and
 sched_resume_work() afterwards to ensure that queued block requests are
@@ -40,7 +40,7 @@ Link: https://lore.kernel.org/r/20230427111937.2745231-3-bigeasy@linutronix.de
 
 --- a/kernel/locking/rtmutex.c
 +++ b/kernel/locking/rtmutex.c
-@@ -1555,7 +1555,7 @@ static int __sched rt_mutex_slowlock_blo
+@@ -1613,7 +1613,7 @@ static int __sched rt_mutex_slowlock_blo
  		raw_spin_unlock_irq(&lock->wait_lock);
  
  		if (!owner || !rtmutex_spin_on_owner(lock, waiter, owner))
@@ -49,7 +49,7 @@ Link: https://lore.kernel.org/r/20230427111937.2745231-3-bigeasy@linutronix.de
  
  		raw_spin_lock_irq(&lock->wait_lock);
  		set_current_state(state);
-@@ -1584,7 +1584,7 @@ static void __sched rt_mutex_handle_dead
+@@ -1642,7 +1642,7 @@ static void __sched rt_mutex_handle_dead
  	WARN(1, "rtmutex deadlock detected\n");
  	while (1) {
  		set_current_state(TASK_INTERRUPTIBLE);
@@ -58,7 +58,7 @@ Link: https://lore.kernel.org/r/20230427111937.2745231-3-bigeasy@linutronix.de
  	}
  }
  
-@@ -1680,6 +1680,12 @@ static int __sched rt_mutex_slowlock(str
+@@ -1738,6 +1738,12 @@ static int __sched rt_mutex_slowlock(str
  	int ret;
  
  	/*
@@ -71,7 +71,7 @@ Link: https://lore.kernel.org/r/20230427111937.2745231-3-bigeasy@linutronix.de
  	 * Technically we could use raw_spin_[un]lock_irq() here, but this can
  	 * be called in early boot if the cmpxchg() fast path is disabled
  	 * (debug, no architecture support). In this case we will acquire the
-@@ -1691,6 +1697,7 @@ static int __sched rt_mutex_slowlock(str
+@@ -1749,6 +1755,7 @@ static int __sched rt_mutex_slowlock(str
  	ret = __rt_mutex_slowlock_locked(lock, ww_ctx, state);
  	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
  

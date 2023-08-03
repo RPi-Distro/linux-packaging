@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 19 May 2023 16:57:31 +0200
 Subject: [PATCH 5/5] ARM: vfp: Use vfp_lock() in vfp_entry().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rc4-rt1.tar.xz
 
 vfp_entry() is invoked from exception handler and is fully preemptible.
 It uses local_bh_disable() to remain uninterrupted while checking the
@@ -50,7 +50,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	DBGSTR	"bounce"
 --- a/arch/arm/vfp/vfpmodule.c
 +++ b/arch/arm/vfp/vfpmodule.c
-@@ -267,7 +267,7 @@ static void vfp_panic(char *reason, u32
+@@ -268,7 +268,7 @@ static void vfp_panic(char *reason, u32
  /*
   * Process bitmask of exception conditions.
   */
@@ -59,7 +59,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  {
  	int si_code = 0;
  
-@@ -275,8 +275,7 @@ static void vfp_raise_exceptions(u32 exc
+@@ -276,8 +276,7 @@ static void vfp_raise_exceptions(u32 exc
  
  	if (exceptions == VFP_EXCEPTION_ERROR) {
  		vfp_panic("unhandled bounce", inst);
@@ -69,7 +69,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	}
  
  	/*
-@@ -304,8 +303,7 @@ static void vfp_raise_exceptions(u32 exc
+@@ -305,8 +304,7 @@ static void vfp_raise_exceptions(u32 exc
  	RAISE(FPSCR_OFC, FPSCR_OFE, FPE_FLTOVF);
  	RAISE(FPSCR_IOC, FPSCR_IOE, FPE_FLTINV);
  
@@ -79,7 +79,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  /*
-@@ -350,6 +348,8 @@ static u32 vfp_emulate_instruction(u32 i
+@@ -351,6 +349,8 @@ static u32 vfp_emulate_instruction(u32 i
  void VFP_bounce(u32 trigger, u32 fpexc, struct pt_regs *regs)
  {
  	u32 fpscr, orig_fpscr, fpsid, exceptions;
@@ -88,7 +88,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	pr_debug("VFP: bounce: trigger %08x fpexc %08x\n", trigger, fpexc);
  
-@@ -397,7 +397,7 @@ void VFP_bounce(u32 trigger, u32 fpexc,
+@@ -398,7 +398,7 @@ void VFP_bounce(u32 trigger, u32 fpexc,
  		 * unallocated VFP instruction but with FPSCR.IXE set and not
  		 * on VFP subarch 1.
  		 */
@@ -97,7 +97,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		goto exit;
  	}
  
-@@ -422,7 +422,7 @@ void VFP_bounce(u32 trigger, u32 fpexc,
+@@ -423,7 +423,7 @@ void VFP_bounce(u32 trigger, u32 fpexc,
  	 */
  	exceptions = vfp_emulate_instruction(trigger, fpscr, regs);
  	if (exceptions)
@@ -106,7 +106,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	/*
  	 * If there isn't a second FP instruction, exit now. Note that
-@@ -441,9 +441,14 @@ void VFP_bounce(u32 trigger, u32 fpexc,
+@@ -442,9 +442,14 @@ void VFP_bounce(u32 trigger, u32 fpexc,
   emulate:
  	exceptions = vfp_emulate_instruction(trigger, orig_fpscr, regs);
  	if (exceptions)
@@ -123,7 +123,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  static void vfp_enable(void *unused)
-@@ -684,10 +689,15 @@ asmlinkage void vfp_entry(u32 trigger, s
+@@ -685,10 +690,15 @@ asmlinkage void vfp_entry(u32 trigger, s
  	if (unlikely(!have_vfp))
  		return;
  
