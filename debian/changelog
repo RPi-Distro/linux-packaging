@@ -1,4 +1,4 @@
-linux (6.5~rc4-1~exp1) UNRELEASED; urgency=medium
+linux (6.5~rc4-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
 
@@ -31,7 +31,7 @@ linux (6.5~rc4-1~exp1) UNRELEASED; urgency=medium
     - drivers/phy/allwinner: Enable PHY_SUN50I_USB3 as module
     - sound/soc/sunxi: Enable SND_SUN50I_DMIC as module
 
- -- Ben Hutchings <benh@debian.org>  Sun, 23 Jul 2023 02:42:18 +0200
+ -- Ben Hutchings <benh@debian.org>  Fri, 04 Aug 2023 03:45:57 +0200
 
 linux (6.4.4-1) unstable; urgency=medium
 
