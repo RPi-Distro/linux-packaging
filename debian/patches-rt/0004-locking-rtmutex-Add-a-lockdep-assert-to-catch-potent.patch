@@ -2,7 +2,7 @@ From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 27 Apr 2023 13:19:37 +0200
 Subject: [PATCH 4/4] locking/rtmutex: Add a lockdep assert to catch potential
  nested blocking
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rc4-rt1.tar.xz
 
 There used to be a BUG_ON(current->pi_blocked_on) in the lock acquisition
 functions, but that vanished in one of the rtmutex overhauls.
@@ -22,7 +22,7 @@ Link: https://lore.kernel.org/r/20230427111937.2745231-5-bigeasy@linutronix.de
 
 --- a/kernel/locking/rtmutex.c
 +++ b/kernel/locking/rtmutex.c
-@@ -1727,6 +1727,8 @@ static int __sched rt_mutex_slowlock(str
+@@ -1785,6 +1785,8 @@ static int __sched rt_mutex_slowlock(str
  static __always_inline int __rt_mutex_lock(struct rt_mutex_base *lock,
  					   unsigned int state)
  {

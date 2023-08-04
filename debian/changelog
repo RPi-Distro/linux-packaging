@@ -1,4 +1,4 @@
-linux (6.5~rc3-1~exp1) UNRELEASED; urgency=medium
+linux (6.5~rc4-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream release candidate
 
@@ -8,6 +8,7 @@ linux (6.5~rc3-1~exp1) UNRELEASED; urgency=medium
     - Drop "arm: dts: Enable device-tree overlay support for RPi devices"
     - Drop "arm64: dts: broadcom: Enable device-tree overlay support for RPi
       devices"
+    - Drop "m68k: Fix invalid .section syntax"
   * Refresh patches:
     - Adjust context in "firmware: Remove redundant log messages from drivers"
     - Adjust filename in "ARM: dts: kirkwood: Fix SATA pinmux-ing for TS419"
@@ -16,10 +17,10 @@ linux (6.5~rc3-1~exp1) UNRELEASED; urgency=medium
     - Adjust context in "efi: Lock down the kernel if booted in secure boot
       mode"
   * Set ABI to 0
-  * [rt] Disable until it is updated for 6.5
   * d/config: Update with the help of kconfigeditor2:
     - [arm64,armhf] mfd: Enable MFD_RK8XX_I2C as built-in instead of MFD_RK808
     - media: Enable VIDEO_STK1160 as module instead of VIDEO_STK1160_COMMON
+  * [rt] Update to 6.5-rc4-rt1
 
   [ Vincent Blut ]
   * [arm64] Improve support for Allwinner H6 and affiliated SoCs
