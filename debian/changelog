@@ -34,7 +34,7 @@ linux (6.4.4-3) UNRELEASED; urgency=medium
     - x86/srso: Add IBPB on VMEXIT
     - x86/srso: Fix return thunks in generated code
     - x86/srso: Add a forgotten NOENDBR annotation
-    - x86/srso: Tie SBPB bit setting to microcode patch detection
+  * Bump ABI to 2
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 01 Aug 2023 15:12:37 +0200
 
