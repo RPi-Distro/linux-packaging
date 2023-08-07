@@ -28,6 +28,11 @@ CONFIG_VIRTUALIZATION=y
 CONFIG_KVM=m
 
 ##
+## file: drivers/acpi/Kconfig
+##
+CONFIG_ACPI=y
+
+##
 ## file: drivers/ata/Kconfig
 ##
 CONFIG_SATA_AHCI_PLATFORM=m

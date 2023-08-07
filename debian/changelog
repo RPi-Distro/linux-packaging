@@ -1,3 +1,10 @@
+linux (6.5~rc4-1~exp2) UNRELEASED; urgency=medium
+
+  [ Aurelien Jarno ]
+  * [riscv64] enable CONFIG_ACPI
+
+ -- Aurelien Jarno <aurel32@debian.org>  Mon, 07 Aug 2023 13:18:57 +0200
+
 linux (6.5~rc4-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
