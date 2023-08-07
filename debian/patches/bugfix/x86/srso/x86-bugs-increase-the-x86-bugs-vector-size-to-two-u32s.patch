@@ -1,7 +1,9 @@
-From 357c6421464c5c2e9e7d05fa4fbaedd3cf71fa26 Mon Sep 17 00:00:00 2001
+From 81299478c88c84d0d3b02f28803ee9fb30ac423e Mon Sep 17 00:00:00 2001
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 Date: Sat, 8 Jul 2023 10:21:35 +0200
-Subject: [PATCH 1/8] x86/bugs: Increase the x86 bugs vector size to two u32s
+Subject: x86/bugs: Increase the x86 bugs vector size to two u32s
+
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
 Upstream commit: 0e52740ffd10c6c316837c6c128f460f1aaba1ea
 
@@ -9,13 +11,12 @@ There was never a doubt in my mind that they would not fit into a single
 u32 eventually.
 
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeatures.h       | 2 +-
- tools/arch/x86/include/asm/cpufeatures.h | 2 +-
+ arch/x86/include/asm/cpufeatures.h       |    2 +-
+ tools/arch/x86/include/asm/cpufeatures.h |    2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index cb8ca46213be..1f6d904c6481 100644
 --- a/arch/x86/include/asm/cpufeatures.h
 +++ b/arch/x86/include/asm/cpufeatures.h
 @@ -14,7 +14,7 @@
@@ -27,8 +28,6 @@ index cb8ca46213be..1f6d904c6481 100644
  
  /*
   * Note: If the comment begins with a quoted string, that string is used
-diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
-index cb8ca46213be..1f6d904c6481 100644
 --- a/tools/arch/x86/include/asm/cpufeatures.h
 +++ b/tools/arch/x86/include/asm/cpufeatures.h
 @@ -14,7 +14,7 @@
@@ -40,6 +39,3 @@ index cb8ca46213be..1f6d904c6481 100644
  
  /*
   * Note: If the comment begins with a quoted string, that string is used
--- 
-2.40.1
-

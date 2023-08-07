@@ -1,7 +1,9 @@
-From ff50d7bede120e07d381551ebf1c00c3f81ca0e4 Mon Sep 17 00:00:00 2001
+From 3102b30a758da0528aea83f334faf79df74fe950 Mon Sep 17 00:00:00 2001
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 Date: Fri, 7 Jul 2023 13:53:41 +0200
-Subject: [PATCH 6/8] x86/srso: Add IBPB on VMEXIT
+Subject: x86/srso: Add IBPB on VMEXIT
+
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
 Upstream commit: d893832d0e1ef41c72cdae444268c1d64a2be8ad
 
@@ -10,15 +12,14 @@ malicious guests but one otherwise trusts the software that runs on the
 hypervisor.
 
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeatures.h |  1 +
- arch/x86/kernel/cpu/bugs.c         | 19 +++++++++++++++++++
- arch/x86/kvm/svm/svm.c             |  4 +++-
- arch/x86/kvm/svm/vmenter.S         |  3 +++
+ arch/x86/include/asm/cpufeatures.h |    1 +
+ arch/x86/kernel/cpu/bugs.c         |   19 +++++++++++++++++++
+ arch/x86/kvm/svm/svm.c             |    4 +++-
+ arch/x86/kvm/svm/vmenter.S         |    3 +++
  4 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 93070aabbb2f..7600a8a1589f 100644
 --- a/arch/x86/include/asm/cpufeatures.h
 +++ b/arch/x86/include/asm/cpufeatures.h
 @@ -311,6 +311,7 @@
@@ -29,11 +30,9 @@ index 93070aabbb2f..7600a8a1589f 100644
  
  /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
  #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* AVX VNNI instructions */
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 4b5841da22fc..5df4b8c0fc64 100644
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2247,6 +2247,7 @@ enum srso_mitigation {
+@@ -2345,6 +2345,7 @@ enum srso_mitigation {
  	SRSO_MITIGATION_MICROCODE,
  	SRSO_MITIGATION_SAFE_RET,
  	SRSO_MITIGATION_IBPB,
@@ -41,7 +40,7 @@ index 4b5841da22fc..5df4b8c0fc64 100644
  };
  
  enum srso_mitigation_cmd {
-@@ -2254,6 +2255,7 @@ enum srso_mitigation_cmd {
+@@ -2352,6 +2353,7 @@ enum srso_mitigation_cmd {
  	SRSO_CMD_MICROCODE,
  	SRSO_CMD_SAFE_RET,
  	SRSO_CMD_IBPB,
@@ -49,7 +48,7 @@ index 4b5841da22fc..5df4b8c0fc64 100644
  };
  
  static const char * const srso_strings[] = {
-@@ -2261,6 +2263,7 @@ static const char * const srso_strings[] = {
+@@ -2359,6 +2361,7 @@ static const char * const srso_strings[]
  	[SRSO_MITIGATION_MICROCODE]      = "Mitigation: microcode",
  	[SRSO_MITIGATION_SAFE_RET]	 = "Mitigation: safe RET",
  	[SRSO_MITIGATION_IBPB]		 = "Mitigation: IBPB",
@@ -57,7 +56,7 @@ index 4b5841da22fc..5df4b8c0fc64 100644
  };
  
  static enum srso_mitigation srso_mitigation __ro_after_init = SRSO_MITIGATION_NONE;
-@@ -2279,6 +2282,8 @@ static int __init srso_parse_cmdline(char *str)
+@@ -2377,6 +2380,8 @@ static int __init srso_parse_cmdline(cha
  		srso_cmd = SRSO_CMD_SAFE_RET;
  	else if (!strcmp(str, "ibpb"))
  		srso_cmd = SRSO_CMD_IBPB;
@@ -66,7 +65,7 @@ index 4b5841da22fc..5df4b8c0fc64 100644
  	else
  		pr_err("Ignoring unknown SRSO option (%s).", str);
  
-@@ -2362,6 +2367,20 @@ static void __init srso_select_mitigation(void)
+@@ -2460,6 +2465,20 @@ static void __init srso_select_mitigatio
  			pr_err("WARNING: kernel not compiled with CPU_IBPB_ENTRY.\n");
  			goto pred_cmd;
  		}
@@ -87,11 +86,9 @@ index 4b5841da22fc..5df4b8c0fc64 100644
  	default:
  		break;
  	}
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 54089f990c8f..47cb7c646cdd 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -1511,7 +1511,9 @@ static void svm_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+@@ -1511,7 +1511,9 @@ static void svm_vcpu_load(struct kvm_vcp
  
  	if (sd->current_vmcb != svm->vmcb) {
  		sd->current_vmcb = svm->vmcb;
@@ -102,8 +99,6 @@ index 54089f990c8f..47cb7c646cdd 100644
  	}
  	if (kvm_vcpu_apicv_active(vcpu))
  		avic_vcpu_load(vcpu, cpu);
-diff --git a/arch/x86/kvm/svm/vmenter.S b/arch/x86/kvm/svm/vmenter.S
-index 8e8295e774f0..265452fc9ebe 100644
 --- a/arch/x86/kvm/svm/vmenter.S
 +++ b/arch/x86/kvm/svm/vmenter.S
 @@ -224,6 +224,9 @@ SYM_FUNC_START(__svm_vcpu_run)
@@ -116,6 +111,3 @@ index 8e8295e774f0..265452fc9ebe 100644
  	/*
  	 * Clear all general purpose registers except RSP and RAX to prevent
  	 * speculative use of the guest's values, even those that are reloaded
--- 
-2.40.1
-

@@ -1,7 +1,9 @@
-From 14c56e04ad4b9fe0bf5e0b9473ee62db3e64ffd4 Mon Sep 17 00:00:00 2001
+From ed8daa0749de9f3a0a2bead5b68787d7fab58d89 Mon Sep 17 00:00:00 2001
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 Date: Thu, 29 Jun 2023 17:43:40 +0200
-Subject: [PATCH 4/8] x86/srso: Add SRSO_NO support
+Subject: x86/srso: Add SRSO_NO support
+
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
 Upstream commit: 1b5277c0ea0b247393a9c426769fde18cff5e2f6
 
@@ -9,14 +11,15 @@ Add support for the CPUID flag which denotes that the CPU is not
 affected by SRSO.
 
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeatures.h   |  2 ++
- arch/x86/include/asm/msr-index.h     |  1 +
- arch/x86/include/asm/nospec-branch.h |  6 +++---
- arch/x86/kernel/cpu/amd.c            | 12 ++++++------
- arch/x86/kernel/cpu/bugs.c           | 24 ++++++++++++++++++++----
- arch/x86/kernel/cpu/common.c         |  6 ++++--
- arch/x86/kvm/cpuid.c                 |  3 +++
+ arch/x86/include/asm/cpufeatures.h   |    2 ++
+ arch/x86/include/asm/msr-index.h     |    1 +
+ arch/x86/include/asm/nospec-branch.h |    6 +++---
+ arch/x86/kernel/cpu/amd.c            |   12 ++++++------
+ arch/x86/kernel/cpu/bugs.c           |   24 ++++++++++++++++++++----
+ arch/x86/kernel/cpu/common.c         |    6 ++++--
+ arch/x86/kvm/cpuid.c                 |    3 +++
  7 files changed, 39 insertions(+), 15 deletions(-)
 
 --- a/arch/x86/include/asm/cpufeatures.h
@@ -93,7 +96,7 @@ Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
  static DEFINE_MUTEX(spec_ctrl_mutex);
  
  /* Update SPEC_CTRL MSR and its cached copy unconditionally */
-@@ -2381,7 +2384,7 @@ static void __init srso_select_mitigatio
+@@ -2383,7 +2386,7 @@ static void __init srso_select_mitigatio
  	bool has_microcode;
  
  	if (!boot_cpu_has_bug(X86_BUG_SRSO) || cpu_mitigations_off())
@@ -102,7 +105,7 @@ Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
  
  	/*
  	 * The first check is for the kernel running as a guest in order
-@@ -2394,9 +2397,18 @@ static void __init srso_select_mitigatio
+@@ -2396,9 +2399,18 @@ static void __init srso_select_mitigatio
  	} else {
  		/*
  		 * Enable the synthetic (even if in a real CPUID leaf)
@@ -122,7 +125,7 @@ Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
  	}
  
  	switch (srso_cmd) {
-@@ -2419,16 +2431,20 @@ static void __init srso_select_mitigatio
+@@ -2421,16 +2433,20 @@ static void __init srso_select_mitigatio
  			srso_mitigation = SRSO_MITIGATION_SAFE_RET;
  		} else {
  			pr_err("WARNING: kernel not compiled with CPU_SRSO.\n");

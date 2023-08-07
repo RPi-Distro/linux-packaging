@@ -1,7 +1,9 @@
-From 5f0b9d7a8fb36defae7d65424bd70474efde157b Mon Sep 17 00:00:00 2001
+From de9967e90c4f4a383eba17a82dff922e7f0429ae Mon Sep 17 00:00:00 2001
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 Date: Wed, 28 Jun 2023 11:02:39 +0200
-Subject: [PATCH 2/8] x86/srso: Add a Speculative RAS Overflow mitigation
+Subject: x86/srso: Add a Speculative RAS Overflow mitigation
+
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
 Upstream commit: fb3bd914b3ec28f5fb697ac55c4846ac2d542855
 
@@ -26,33 +28,26 @@ technique similar to Retbleed one: srso_untrain_ret() and
 srso_safe_ret().
 
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/hw-vuln/index.rst   |   1 +
- Documentation/admin-guide/hw-vuln/srso.rst    | 133 ++++++++++++++++++
- .../admin-guide/kernel-parameters.txt         |  11 ++
- arch/x86/Kconfig                              |   7 +
- arch/x86/include/asm/cpufeatures.h            |   5 +
- arch/x86/include/asm/nospec-branch.h          |  15 +-
- arch/x86/include/asm/processor.h              |   2 +
- arch/x86/kernel/alternative.c                 |   4 +-
- arch/x86/kernel/cpu/amd.c                     |  14 ++
- arch/x86/kernel/cpu/bugs.c                    | 106 ++++++++++++++
- arch/x86/kernel/cpu/common.c                  |   8 +-
- arch/x86/kernel/vmlinux.lds.S                 |  31 +++-
- arch/x86/lib/retpoline.S                      |  82 ++++++++++-
- drivers/base/cpu.c                            |   8 ++
- include/linux/cpu.h                           |   2 +
- tools/objtool/arch/x86/decode.c               |   5 +-
- 16 files changed, 425 insertions(+), 9 deletions(-)
+ Documentation/admin-guide/hw-vuln/srso.rst      |  133 ++++++++++++++++++++++++
+ Documentation/admin-guide/kernel-parameters.txt |   11 +
+ arch/x86/Kconfig                                |    7 +
+ arch/x86/include/asm/cpufeatures.h              |    5 
+ arch/x86/include/asm/nospec-branch.h            |   15 ++
+ arch/x86/include/asm/processor.h                |    2 
+ arch/x86/kernel/alternative.c                   |    4 
+ arch/x86/kernel/cpu/amd.c                       |   14 ++
+ arch/x86/kernel/cpu/bugs.c                      |  106 +++++++++++++++++++
+ arch/x86/kernel/cpu/common.c                    |    8 +
+ arch/x86/kernel/vmlinux.lds.S                   |   31 +++++
+ arch/x86/lib/retpoline.S                        |   82 ++++++++++++++
+ drivers/base/cpu.c                              |    8 +
+ include/linux/cpu.h                             |    2 
+ tools/objtool/arch/x86/decode.c                 |    5 
+ 15 files changed, 424 insertions(+), 9 deletions(-)
  create mode 100644 Documentation/admin-guide/hw-vuln/srso.rst
 
---- a/Documentation/admin-guide/hw-vuln/index.rst
-+++ b/Documentation/admin-guide/hw-vuln/index.rst
-@@ -20,3 +20,4 @@ are configurable at compile, boot or run
-    processor_mmio_stale_data.rst
-    cross-thread-rsb.rst
-    gather_data_sampling.rst
-+   srso
 --- /dev/null
 +++ b/Documentation/admin-guide/hw-vuln/srso.rst
 @@ -0,0 +1,133 @@
@@ -118,7 +113,7 @@ Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 +
 + - 'Mitigation: safe RET'       Software-only mitigation. It complements
 +                                the extended IBPB microcode patch
-+                                functionality by addressing User->Kernel 
++                                functionality by addressing User->Kernel
 +                                and Guest->Host transitions protection.
 +
 +                                Selected by default or by
@@ -191,7 +186,7 @@ Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 +srso_safe_ret().
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5862,6 +5862,17 @@
+@@ -5860,6 +5860,17 @@
  			Not specifying this option is equivalent to
  			spectre_v2_user=auto.
  
@@ -357,7 +352,7 @@ Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
  }
  
  /*
-@@ -2331,6 +2333,95 @@ static int __init l1tf_cmdline(char *str
+@@ -2333,6 +2335,95 @@ static int __init l1tf_cmdline(char *str
  early_param("l1tf", l1tf_cmdline);
  
  #undef pr_fmt
@@ -453,7 +448,7 @@ Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
  #define pr_fmt(fmt) fmt
  
  #ifdef CONFIG_SYSFS
-@@ -2532,6 +2623,13 @@ static ssize_t gds_show_state(char *buf)
+@@ -2535,6 +2626,13 @@ static ssize_t gds_show_state(char *buf)
  	return sysfs_emit(buf, "%s\n", gds_strings[gds_mitigation]);
  }
  
@@ -467,7 +462,7 @@ Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
  static ssize_t cpu_show_common(struct device *dev, struct device_attribute *attr,
  			       char *buf, unsigned int bug)
  {
-@@ -2584,6 +2682,9 @@ static ssize_t cpu_show_common(struct de
+@@ -2587,6 +2685,9 @@ static ssize_t cpu_show_common(struct de
  	case X86_BUG_GDS:
  		return gds_show_state(buf);
  
@@ -477,7 +472,7 @@ Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
  	default:
  		break;
  	}
-@@ -2653,4 +2754,9 @@ ssize_t cpu_show_gds(struct device *dev,
+@@ -2656,4 +2757,9 @@ ssize_t cpu_show_gds(struct device *dev,
  {
  	return cpu_show_common(dev, attr, buf, X86_BUG_GDS);
  }
@@ -494,7 +489,7 @@ Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
  /* CPU is affected by GDS */
  #define GDS		BIT(5)
 +/* CPU is affected by SRSO */
-+#define SRSO		BIT(5)
++#define SRSO		BIT(6)
  
  static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
  	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),

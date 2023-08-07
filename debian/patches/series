@@ -129,15 +129,15 @@ bugfix/x86/gds/kvm-add-gds_no-support-to-kvm.patch
 bugfix/x86/gds/x86-mem_encrypt-unbreak-the-amd_mem_encrypt-n-build.patch
 bugfix/x86/gds/x86-xen-fix-secondary-processors-fpu-initialization.patch
 bugfix/x86/gds/documentation-x86-fix-backwards-on-off-logic-about-ymm-support.patch
-bugfix/x86/srso/0001-x86-bugs-Increase-the-x86-bugs-vector-size-to-two-u3.patch
-bugfix/x86/srso/0002-x86-srso-Add-a-Speculative-RAS-Overflow-mitigation.patch
-bugfix/x86/srso/0003-x86-srso-Add-IBPB_BRTYPE-support.patch
-bugfix/x86/srso/0004-x86-srso-Add-SRSO_NO-support.patch
-bugfix/x86/srso/0005-x86-srso-Add-IBPB.patch
-bugfix/x86/srso/0006-x86-srso-Add-IBPB-on-VMEXIT.patch
-bugfix/x86/srso/0007-x86-srso-Fix-return-thunks-in-generated-code.patch
-bugfix/x86/srso/0008-x86-srso-Add-a-forgotten-NOENDBR-annotation.patch
-bugfix/x86/srso/0009-x86-srso-Tie-SBPB-bit-setting-to-microcode-patch-det.patch
+bugfix/x86/srso/x86-bugs-increase-the-x86-bugs-vector-size-to-two-u32s.patch
+bugfix/x86/srso/x86-srso-add-a-speculative-ras-overflow-mitigation.patch
+bugfix/x86/srso/x86-srso-add-ibpb_brtype-support.patch
+bugfix/x86/srso/x86-srso-add-srso_no-support.patch
+bugfix/x86/srso/x86-srso-add-ibpb.patch
+bugfix/x86/srso/x86-srso-add-ibpb-on-vmexit.patch
+bugfix/x86/srso/x86-srso-fix-return-thunks-in-generated-code.patch
+bugfix/x86/srso/x86-srso-add-a-forgotten-noendbr-annotation.patch
+bugfix/x86/srso/x86-srso-tie-sbpb-bit-setting-to-microcode-patch-detection.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch

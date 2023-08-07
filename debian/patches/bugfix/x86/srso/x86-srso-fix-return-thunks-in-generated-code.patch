@@ -1,7 +1,9 @@
-From 4c99fd68b4b1be87b3196882ea0c75c182491fe3 Mon Sep 17 00:00:00 2001
+From 4b1b4045a8941a7b11820c016182e7df74a07e3e Mon Sep 17 00:00:00 2001
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 Date: Fri, 28 Jul 2023 17:28:43 -0500
-Subject: [PATCH 7/8] x86/srso: Fix return thunks in generated code
+Subject: x86/srso: Fix return thunks in generated code
+
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
 Upstream commit: 238ec850b95a02dcdff3edc86781aa913549282f
 
@@ -14,16 +16,15 @@ __x86_return_thunk" instead of RET.
 Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/alternative.c | 4 +---
- arch/x86/kernel/cpu/bugs.c    | 6 ++++++
+ arch/x86/kernel/alternative.c |    4 +---
+ arch/x86/kernel/cpu/bugs.c    |    6 ++++++
  2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index d516781e5756..f615e0cb6d93 100644
 --- a/arch/x86/kernel/alternative.c
 +++ b/arch/x86/kernel/alternative.c
-@@ -590,9 +590,7 @@ static int patch_return(void *addr, struct insn *insn, u8 *bytes)
+@@ -590,9 +590,7 @@ static int patch_return(void *addr, stru
  {
  	int i = 0;
  
@@ -34,11 +35,9 @@ index d516781e5756..f615e0cb6d93 100644
  		if (x86_return_thunk == __x86_return_thunk)
  			return -1;
  
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 5df4b8c0fc64..f4937e1e4db1 100644
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2346,6 +2346,12 @@ static void __init srso_select_mitigation(void)
+@@ -2444,6 +2444,12 @@ static void __init srso_select_mitigatio
  
  	case SRSO_CMD_SAFE_RET:
  		if (IS_ENABLED(CONFIG_CPU_SRSO)) {
@@ -51,6 +50,3 @@ index 5df4b8c0fc64..f4937e1e4db1 100644
  			if (boot_cpu_data.x86 == 0x19)
  				setup_force_cpu_cap(X86_FEATURE_SRSO_ALIAS);
  			else
--- 
-2.40.1
-

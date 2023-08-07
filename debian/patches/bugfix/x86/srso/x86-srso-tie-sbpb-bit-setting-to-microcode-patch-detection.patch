@@ -1,7 +1,11 @@
 From 5a15d8348881e9371afdf9f5357a135489496955 Mon Sep 17 00:00:00 2001
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 Date: Mon, 7 Aug 2023 10:46:04 +0200
-Subject: [PATCH] x86/srso: Tie SBPB bit setting to microcode patch detection
+Subject: x86/srso: Tie SBPB bit setting to microcode patch detection
+
+From: Borislav Petkov (AMD) <bp@alien8.de>
+
+commit 5a15d8348881e9371afdf9f5357a135489496955 upstream.
 
 The SBPB bit in MSR_IA32_PRED_CMD is supported only after a microcode
 patch has been applied so set X86_FEATURE_SBPB only then. Otherwise,
@@ -16,9 +20,10 @@ Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
 Reported-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
 Reported-by: Salvatore Bonaccorso <carnil@debian.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c  | 19 ++++++++++++-------
- arch/x86/kernel/cpu/bugs.c |  7 +++----
+ arch/x86/kernel/cpu/amd.c  |   19 ++++++++++++-------
+ arch/x86/kernel/cpu/bugs.c |    7 +++----
  2 files changed, 15 insertions(+), 11 deletions(-)
 
 --- a/arch/x86/kernel/cpu/amd.c
@@ -54,7 +59,7 @@ Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
  static void zenbleed_check_cpu(void *unused)
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2410,14 +2410,13 @@ static void __init srso_select_mitigatio
+@@ -2412,14 +2412,13 @@ static void __init srso_select_mitigatio
  		 * flags for guests.
  		 */
  		setup_force_cpu_cap(X86_FEATURE_IBPB_BRTYPE);
@@ -70,7 +75,7 @@ Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
  			setup_force_cpu_cap(X86_FEATURE_SRSO_NO);
  	}
  
-@@ -2490,8 +2489,8 @@ static void __init srso_select_mitigatio
+@@ -2492,8 +2491,8 @@ static void __init srso_select_mitigatio
  	pr_info("%s%s\n", srso_strings[srso_mitigation], (has_microcode ? "" : ", no microcode"));
  
  pred_cmd:
