@@ -428,7 +428,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  #define pr_fmt(fmt)     "Spectre V1 : " fmt
  
  enum spectre_v1_mitigation {
-@@ -2382,6 +2498,11 @@ static ssize_t retbleed_show_state(char
+@@ -2385,6 +2501,11 @@ static ssize_t retbleed_show_state(char
  	return sysfs_emit(buf, "%s\n", retbleed_strings[retbleed_mitigation]);
  }
  
@@ -440,7 +440,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  static ssize_t cpu_show_common(struct device *dev, struct device_attribute *attr,
  			       char *buf, unsigned int bug)
  {
-@@ -2431,6 +2552,9 @@ static ssize_t cpu_show_common(struct de
+@@ -2434,6 +2555,9 @@ static ssize_t cpu_show_common(struct de
  	case X86_BUG_RETBLEED:
  		return retbleed_show_state(buf);
  
@@ -450,7 +450,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	default:
  		break;
  	}
-@@ -2495,4 +2619,9 @@ ssize_t cpu_show_retbleed(struct device
+@@ -2498,4 +2622,9 @@ ssize_t cpu_show_retbleed(struct device
  {
  	return cpu_show_common(dev, attr, buf, X86_BUG_RETBLEED);
  }

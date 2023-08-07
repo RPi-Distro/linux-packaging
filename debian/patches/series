@@ -128,6 +128,7 @@ bugfix/x86/gds/x86-speculation-add-kconfig-option-for-gds.patch
 bugfix/x86/gds/kvm-add-gds_no-support-to-kvm.patch
 bugfix/x86/gds/x86-mem_encrypt-unbreak-the-amd_mem_encrypt-n-build.patch
 bugfix/x86/gds/x86-xen-fix-secondary-processors-fpu-initialization.patch
+bugfix/x86/gds/documentation-x86-fix-backwards-on-off-logic-about-ymm-support.patch
 bugfix/x86/srso/0001-x86-bugs-Increase-the-x86-bugs-vector-size-to-two-u3.patch
 bugfix/x86/srso/0002-x86-srso-Add-a-Speculative-RAS-Overflow-mitigation.patch
 bugfix/x86/srso/0003-x86-srso-Add-IBPB_BRTYPE-support.patch
