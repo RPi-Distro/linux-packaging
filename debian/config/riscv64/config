@@ -28,6 +28,11 @@ CONFIG_VIRTUALIZATION=y
 CONFIG_KVM=m
 
 ##
+## file: drivers/acpi/Kconfig
+##
+CONFIG_ACPI=y
+
+##
 ## file: drivers/ata/Kconfig
 ##
 CONFIG_SATA_AHCI_PLATFORM=m
@@ -38,6 +43,11 @@ CONFIG_AHCI_DWC=m
 ##
 CONFIG_HW_RANDOM_POLARFIRE_SOC=m
 CONFIG_HW_RANDOM_JH7110=m
+
+##
+## file: drivers/crypto/starfive/Kconfig
+##
+CONFIG_CRYPTO_DEV_JH7110=m
 
 ##
 ## file: drivers/cxl/Kconfig
@@ -279,3 +289,14 @@ CONFIG_MODULE_ALLOW_BTF_MISMATCH=y
 ## file: sound/pci/hda/Kconfig
 ##
 CONFIG_SND_HDA_INTEL=m
+
+##
+## file: sound/soc/Kconfig
+##
+CONFIG_SND_SOC=m
+
+##
+## file: sound/soc/starfive/Kconfig
+##
+CONFIG_SND_SOC_STARFIVE=m
+CONFIG_SND_SOC_JH7110_TDM=m

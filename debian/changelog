@@ -1,3 +1,12 @@
+linux (6.5~rc4-1~exp2) UNRELEASED; urgency=medium
+
+  [ Aurelien Jarno ]
+  * [riscv64] enable CONFIG_ACPI
+  * [riscv64] improve Starfive JH7110 support: enable CRYPTO_DEV_JH7110,
+    SND_SOC, SND_SOC_STARFIVE and SND_SOC_JH7110_TDM as modules
+
+ -- Aurelien Jarno <aurel32@debian.org>  Mon, 07 Aug 2023 13:18:57 +0200
+
 linux (6.5~rc4-1~exp1) experimental; urgency=medium
 
   * New upstream release candidate
