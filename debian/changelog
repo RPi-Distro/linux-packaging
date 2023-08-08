@@ -1,4 +1,4 @@
-linux (6.4.4-3) UNRELEASED; urgency=medium
+linux (6.4.4-3) unstable; urgency=high
 
   * io_uring: gate iowait schedule on having pending requests (Closes: #1041855)
   * [x86] Add mitigations for Gather Data Sampling (GDS) (CVE-2022-40982)
@@ -38,7 +38,7 @@ linux (6.4.4-3) UNRELEASED; urgency=medium
     - x86/srso: Tie SBPB bit setting to microcode patch detection
   * Bump ABI to 2
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 01 Aug 2023 15:12:37 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 08 Aug 2023 19:08:55 +0200
 
 linux (6.4.4-2) unstable; urgency=high
 
