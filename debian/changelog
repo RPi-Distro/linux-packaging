@@ -1,4 +1,4 @@
-linux (6.4.8-1) UNRELEASED; urgency=medium
+linux (6.4.9-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.5
@@ -767,6 +767,10 @@ linux (6.4.8-1) UNRELEASED; urgency=medium
     - mm/mempolicy: Take VMA lock before replacing policy
     - dma-buf: keep the signaling time of merged fences v3
     - dma-buf: fix an error pointer vs NULL bug
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.9
+    - xen/netback: Fix buffer overrun triggered by unusual packet
+      (CVE-2023-34319)
+    - [x86] fix backwards merge of GDS/SRSO bit
 
   [ Vincent Blut ]
   * [x86] drivers/platform/x86/intel/int3472: Enable INTEL_SKL_INT3472 as
