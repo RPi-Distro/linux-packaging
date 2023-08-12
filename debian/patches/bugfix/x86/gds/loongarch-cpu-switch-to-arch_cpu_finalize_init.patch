@@ -32,7 +32,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +	select ARCH_HAS_CPU_FINALIZE_INIT
  	select ARCH_HAS_FORTIFY_SOURCE
  	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
- 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
 --- a/arch/loongarch/include/asm/bugs.h
 +++ /dev/null
 @@ -1,15 +0,0 @@
