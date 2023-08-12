@@ -1,4 +1,4 @@
-linux (6.4.9-1) UNRELEASED; urgency=medium
+linux (6.4.10-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.5
@@ -771,6 +771,166 @@ linux (6.4.9-1) UNRELEASED; urgency=medium
     - xen/netback: Fix buffer overrun triggered by unusual packet
       (CVE-2023-34319)
     - [x86] fix backwards merge of GDS/SRSO bit
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.10
+    - mm: lock_vma_under_rcu() must check vma->anon_vma under vma lock
+    - [arm64] iommu/arm-smmu-v3: Work around MMU-600 erratum 1076982
+    - [arm64] iommu/arm-smmu-v3: Document MMU-700 erratum 2812531
+    - [arm64] iommu/arm-smmu-v3: Add explicit feature for nesting
+    - [arm64] iommu/arm-smmu-v3: Document nesting-related errata
+    - [arm64] dts: imx8mm-venice-gw7903: disable disp_blk_ctrl
+    - [arm64] dts: imx8mm-venice-gw7904: disable disp_blk_ctrl
+    - [arm64] dts: phycore-imx8mm: Label typo-fix of VPU
+    - [arm64] dts: phycore-imx8mm: Correction in gpio-line-names
+    - [arm64] dts: imx8mn-var-som: add missing pull-up for onboard PHY reset
+      pinmux
+    - [arm64] dts: freescale: Fix VPU G2 clock
+    - [arm64] firmware: smccc: Fix use of uninitialised results structure
+    - lib/bitmap: workaround const_eval test build failure
+    - [arm64] soc: imx: imx8mp-blk-ctrl: register HSIO PLL clock as
+      bus_power_dev child
+    - [arm64] firmware: arm_scmi: Fix chan_free cleanup on SMC
+    - word-at-a-time: use the same return type for has_zero regardless of
+      endianness
+    - [s390x] vmem: split pages when debug pagealloc is enabled
+    - [s390x] KVM: s390: fix sthyi error handling
+    - erofs: fix wrong primary bvec selection on deduplicated extents
+    - [arm64] perf pmu arm64: Fix reading the PMU cpu slots in sysfs
+    - wifi: cfg80211: Fix return value in scan logic
+    - net/mlx5e: fix double free in macsec_fs_tx_create_crypto_table_groups
+    - net/mlx5: DR, fix memory leak in mlx5dr_cmd_create_reformat_ctx
+    - net/mlx5: fix potential memory leak in mlx5e_init_rep_rx
+    - net/mlx5e: fix return value check in mlx5e_ipsec_remove_trailer()
+    - net/mlx5: Honor user input for migratable port fn attr
+    - net/mlx5e: Don't hold encap tbl lock if there is no encap action
+    - net/mlx5e: Fix crash moving to switchdev mode when ntuple offload is set
+    - net/mlx5e: Move representor neigh cleanup to profile cleanup_tx
+    - net/mlx5e: xsk: Fix invalid buffer access for legacy rq
+    - net/mlx5e: xsk: Fix crash on regular rq reactivation
+    - net/mlx5e: kTLS, Fix protection domain in use syndrome when devlink reload
+    - net/mlx5: fs_chains: Fix ft prio if ignore_flow_level is not supported
+    - net/mlx5: Unregister devlink params in case interface is down
+    - bpf: Add length check for SK_DIAG_BPF_STORAGE_REQ_MAP_FD parsing
+    - rtnetlink: let rtnl_bridge_setlink checks IFLA_BRIDGE_MODE length
+    - net: sched: cls_u32: Fix match key mis-addressing
+    - mISDN: hfcpci: Fix potential deadlock on &hc->lock
+    - net: stmmac: tegra: Properly allocate clock bulk data
+    - qed: Fix scheduling in a tasklet while getting stats
+    - net: move gso declarations and functions to their own files
+    - net: gro: fix misuse of CB in udp socket lookup
+    - net: annotate data-races around sk->sk_reserved_mem
+    - net: annotate data-race around sk->sk_txrehash
+    - net: annotate data-races around sk->sk_max_pacing_rate
+    - net: add missing READ_ONCE(sk->sk_rcvlowat) annotation
+    - net: add missing READ_ONCE(sk->sk_sndbuf) annotation
+    - net: add missing READ_ONCE(sk->sk_rcvbuf) annotation
+    - net: annotate data-races around sk->sk_mark
+    - net: add missing data-race annotations around sk->sk_peek_off
+    - net: add missing data-race annotation for sk_ll_usec
+    - net: annotate data-races around sk->sk_priority
+    - net/sched: taprio: Limit TCA_TAPRIO_ATTR_SCHED_CYCLE_TIME to INT_MAX.
+    - net: usb: lan78xx: reorder cleanup operations to avoid UAF bugs
+    - ice: Fix RDMA VSI removal during queue rebuild
+    - bnxt: don't handle XDP in netpoll
+    - octeon_ep: initialize mbox mutexes
+    - bpf: Move unprivileged checks into map_create() and bpf_prog_load()
+    - bpf: Inline map creation logic in map_create() function
+    - bpf: Centralize permissions checks for all BPF map types
+    - bpf, cpumap: Make sure kthread is running before map update returns
+    - bpf, cpumap: Handle skb as well when clean up ptr_ring
+    - net/sched: cls_u32: No longer copy tcf_result on update to avoid
+      use-after-free (CVE-2023-4128)
+    - net/sched: cls_fw: No longer copy tcf_result on update to avoid
+      use-after-free (CVE-2023-4128)
+    - net/sched: cls_route: No longer copy tcf_result on update to avoid
+      use-after-free (CVE-2023-4128)
+    - bpf: sockmap: Remove preempt_disable in sock_map_sk_acquire
+    - net: ll_temac: fix error checking of irq_of_parse_and_map()
+    - net: korina: handle clk prepare error in korina_probe()
+    - net: netsec: Ignore 'phy-mode' on SynQuacer in DT mode
+    - bnxt_en: Fix page pool logic for page size >= 64K
+    - bnxt_en: Fix max_mtu setting for multi-buf XDP
+    - net: dcb: choose correct policy to parse DCB_ATTR_BCN
+    - [s390x] qeth: Don't call dev_close/dev_open (DOWN/UP)
+    - ip6mr: Fix skb_under_panic in ip6mr_cache_report()
+    - vxlan: Fix nexthop hash size
+    - net/mlx5: fs_core: Make find_closest_ft more generic
+    - net/mlx5: fs_core: Skip the FTs in the same FS_TYPE_PRIO_CHAINS fs_prio
+    - net/mlx5e: Set proper IPsec source port in L4 selector
+    - prestera: fix fallback to previous version on same major version
+    - tcp_metrics: fix addr_same() helper
+    - tcp_metrics: annotate data-races around tm->tcpm_stamp
+    - tcp_metrics: annotate data-races around tm->tcpm_lock
+    - tcp_metrics: annotate data-races around tm->tcpm_vals[]
+    - tcp_metrics: annotate data-races around tm->tcpm_net
+    - tcp_metrics: fix data-race in tcpm_suck_dst() vs fastopen
+    - scsi: zfcp: Defer fc_rport blocking until after ADISC response
+    - scsi: storvsc: Limit max_sectors for virtual Fibre Channel devices
+    - Documentation: kdump: Add va_kernel_pa_offset for RISCV64
+    - libceph: fix potential hang in ceph_osdc_notify()
+    - USB: zaurus: Add ID for A-300/B-500/C-700
+    - ceph: defer stopping mdsc delayed_work
+    - [arm64] firmware: arm_scmi: Drop OF node reference in the transport
+      channel setup
+    - exfat: use kvmalloc_array/kvfree instead of kmalloc_array/kfree
+    - exfat: check if filename entries exceeds max filename length
+      (CVE-2023-4273)
+    - exfat: release s_lock before calling dir_emit()
+    - mtd: spinand: toshiba: Fix ecc_get_status
+    - mtd: spinand: winbond: Fix ecc_get_status
+    - mtd: rawnand: meson: fix OOB available bytes for ECC
+    - bpf: Disable preemption in bpf_perf_event_output
+    - [arm64] dts: stratix10: fix incorrect I2C property for SCL signal
+    - net: tun_chr_open(): set sk_uid from current_fsuid() (CVE-2023-4194)
+    - net: tap_open(): set sk_uid from current_fsuid() (CVE-2023-4194)
+    - wifi: mt76: mt7615: do not advertise 5 GHz on first phy of MT7615D (DBDC)
+    - [x86] hyperv: Disable IBT when hypercall page lacks ENDBR instruction
+    - rbd: prevent busy loop when requesting exclusive lock
+    - bpf: Disable preemption in bpf_event_output
+    - smb: client: fix dfs link mount against w2k8
+    - [powerpc*] ftrace: Create a dummy stackframe to fix stack unwind
+    - [arm64] fpsimd: Sync and zero pad FPSIMD state for streaming SVE
+    - [arm64] fpsimd: Clear SME state in the target task when setting the VL
+    - [arm64] fpsimd: Sync FPSIMD state with SVE for SME only systems
+    - [arm64] ptrace: Flush FP state when setting ZT0
+    - [arm64] ptrace: Don't enable SVE when setting streaming SVE
+    - open: make RESOLVE_CACHED correctly test for O_TMPFILE
+    - drm/ttm: check null pointer before accessing when swapping
+    - [x86] drm/i915: Fix premature release of request's reusable memory
+    - [x86] drm/i915/gt: Cleanup aux invalidation registers
+    - Revert "page cache: fix page_cache_next/prev_miss off by one"
+    - sunvnet: fix sparc64 build error after gso code split
+    - clk: imx93: Propagate correct error in imx93_clocks_probe()
+    - file: reinstate f_pos locking optimization for regular files
+    - mm: kmem: fix a NULL pointer dereference in obj_stock_flush_required()
+    - fs/sysv: Null check to prevent null-ptr-deref bug
+    - Bluetooth: L2CAP: Fix use-after-free in l2cap_sock_ready_cb
+    - debugobjects: Recheck debug_objects_enabled before reporting
+    - net: usbnet: Fix WARNING in usbnet_start_xmit/usb_submit_urb
+    - fs: Protect reconfiguration of sb read-write from racing writes
+    - mm/gup: do not return 0 from pin_user_pages_fast() for bad args
+    - btrfs: remove BUG_ON()'s in add_new_free_space()
+    - f2fs: fix to do sanity check on direct node in truncate_dnode()
+    - io_uring: annotate offset timeout races
+    - mtd: rawnand: omap_elm: Fix incorrect type in assignment
+    - mtd: rawnand: rockchip: fix oobfree offset and description
+    - mtd: rawnand: rockchip: Align hwecc vs. raw page helper layouts
+    - clk: mediatek: mt8183: Add back SSPM related clocks
+    - mtd: spi-nor: avoid holes in struct spi_mem_op
+    - mtd: rawnand: fsl_upm: Fix an off-by one test in fun_exec_op()
+    - [powerpc*] mm/altmap: Fix altmap boundary check
+    - drm/imx/ipuv3: Fix front porch adjustment upon hactive aligning
+    - drm/amdgpu: Use apt name for FW reserved region
+    - [x86] drm/i915: Add the gen12_needs_ccs_aux_inv helper
+    - [x86] drm/i915/gt: Ensure memory quiesced before invalidation
+    - [x86] drm/i915/gt: Add workaround 14016712196
+    - [x86] drm/i915/gt: Rename flags with bit_group_X according to the
+      datasheet
+    - [x86] drm/i915/gt: Poll aux invalidation register bit on invalidation
+    - [x86] drm/i915/gt: Support aux invalidation on all engines
+    - [x86] drm/i915/gt: Enable the CCS_FLUSH bit in the pipe control and in the
+      CS
+    - [x86] CPU/AMD: Do not leak quotient data after a division by 0
+      (CVE-2023-20588)
 
   [ Vincent Blut ]
   * [x86] drivers/platform/x86/intel/int3472: Enable INTEL_SKL_INT3472 as
