@@ -20,9 +20,6 @@
 0001-signal-Add-proper-comment-about-the-preempt-disable-.patch
 0002-signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
 
-0003-ARM-vfp-Provide-vfp_lock-for-VFP-locking.patch
-0004-ARM-vfp-Use-vfp_lock-in-vfp_sync_hwstate.patch
-0005-ARM-vfp-Use-vfp_lock-in-vfp_entry.patch
 seqlock-Do-the-lockdep-annotation-before-locking-in-.patch
 mm-page_alloc-Use-write_seqlock_irqsave-instead-writ.patch
 
@@ -40,12 +37,23 @@ x86__Enable_RT_also_on_32bit.patch
 ###########################################################################
 # For later, not essencial
 ###########################################################################
+# Posted
+sched-rt-Don-t-try-push-tasks-if-there-are-none.patch
+x86-microcode-Remove-microcode_mutex.patch
+ASoC-mediatek-mt8186-Remove-unused-mutex.patch
+
+# Needs discussion first.
 softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
 rcutorture-Also-force-sched-priority-to-timersd-on-b.patch
 tick-Fix-timer-storm-since-introduction-of-timersd.patch
 softirq-Wake-ktimers-thread-also-in-softirq.patch
 zram-Replace-bit-spinlocks-with-spinlock_t-for-PREEM.patch
 preempt-Put-preempt_enable-within-an-instrumentation.patch
+
+# Sched
+0001-sched-core-Provide-a-method-to-check-if-a-task-is-PI.patch
+0002-softirq-Add-function-to-preempt-serving-softirqs.patch
+0003-time-Allow-to-preempt-after-a-callback.patch
 
 ###########################################################################
 # John's printk queue
@@ -109,6 +117,9 @@ ARM__enable_irq_in_translation_section_permission_fault_handlers.patch
 # arm64-signal-Use-ARCH_RT_DELAYS_SIGNAL_SEND.patch
 tty_serial_omap__Make_the_locking_RT_aware.patch
 tty_serial_pl011__Make_the_locking_work_on_RT.patch
+0003-ARM-vfp-Provide-vfp_lock-for-VFP-locking.patch
+0004-ARM-vfp-Use-vfp_lock-in-vfp_sync_hwstate.patch
+0005-ARM-vfp-Use-vfp_lock-in-vfp_entry.patch
 ARM__Allow_to_enable_RT.patch
 ARM64__Allow_to_enable_RT.patch
 

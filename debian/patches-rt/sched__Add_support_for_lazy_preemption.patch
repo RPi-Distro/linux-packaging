@@ -1,7 +1,7 @@
 Subject: sched: Add support for lazy preemption
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Fri Oct 26 18:50:54 2012 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rc4-rt1.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rc4-rt2.tar.xz
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
@@ -178,7 +178,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -2066,6 +2066,43 @@ static inline int test_tsk_need_resched(
+@@ -2067,6 +2067,43 @@ static inline int test_tsk_need_resched(
  	return unlikely(test_tsk_thread_flag(tsk,TIF_NEED_RESCHED));
  }
  
@@ -492,7 +492,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
  	do {
  		/*
  		 * Because the function tracer can trace preempt_count_sub()
-@@ -9312,7 +9387,9 @@ void __init init_idle(struct task_struct
+@@ -9327,7 +9402,9 @@ void __init init_idle(struct task_struct
  
  	/* Set the preempt count _outside_ the spinlocks! */
  	init_idle_preempt_count(idle, cpu);
