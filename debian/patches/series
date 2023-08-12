@@ -103,8 +103,6 @@ debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
 bugfix/x86/x86-cpu-amd-Move-the-errata-checking-functionality-u.patch
 bugfix/x86/x86-cpu-amd-Add-a-Zenbleed-fix.patch
-bugfix/all/net-sched-cls_fw-Fix-improper-refcount-update-leads-.patch
-bugfix/all/net-sched-sch_qfq-account-for-stab-overhead-in-qfq_e.patch
 bugfix/x86/gds/init-provide-arch_cpu_finalize_init.patch
 bugfix/x86/gds/x86-cpu-switch-to-arch_cpu_finalize_init.patch
 bugfix/x86/gds/arm-cpu-switch-to-arch_cpu_finalize_init.patch
