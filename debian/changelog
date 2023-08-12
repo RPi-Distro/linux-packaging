@@ -530,6 +530,8 @@ linux (6.4.7-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 3
+  * [rt] Drop "posix-timers: Ensure timer ID search-loop limit is valid"
+    (applied upstream)
 
  -- Vincent Blut <vincent.debian@free.fr>  Wed, 09 Aug 2023 14:08:55 +0200
 
