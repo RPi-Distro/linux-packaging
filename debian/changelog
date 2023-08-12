@@ -777,6 +777,8 @@ linux (6.4.8-1) UNRELEASED; urgency=medium
   * [rt] Drop "posix-timers: Ensure timer ID search-loop limit is valid"
     (applied upstream)
   * [rt] Update to 6.4.6-rt8
+  * [rt] Drop "locking/rtmutex: Fix task->pi_waiters integrity" (applied
+    upstream)
 
  -- Vincent Blut <vincent.debian@free.fr>  Wed, 09 Aug 2023 14:08:55 +0200
 

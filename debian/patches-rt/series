@@ -30,7 +30,6 @@ bpf-Remove-in_atomic-from-bpf_link_put.patch
 0005-ARM-vfp-Use-vfp_lock-in-vfp_entry.patch
 seqlock-Do-the-lockdep-annotation-before-locking-in-.patch
 mm-page_alloc-Use-write_seqlock_irqsave-instead-writ.patch
-locking-rtmutex-Fix-task-pi_waiters-integrity.patch
 
 ###########################################################################
 # Post
