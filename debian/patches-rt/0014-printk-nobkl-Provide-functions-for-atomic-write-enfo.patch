@@ -2,7 +2,7 @@ From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 11 Sep 2022 00:28:15 +0200
 Subject: [PATCH 14/24] printk: nobkl: Provide functions for atomic write
  enforcement
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
 
 Threaded printk is the preferred mechanism to tame the noisyness of
 printk, but WARN/OOPS/PANIC require printing out immediately since

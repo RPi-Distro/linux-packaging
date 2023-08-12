@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Fri, 17 Feb 2023 15:43:37 +0000
 Subject: [PATCH 04/24] printk: Add per-console suspended state
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
 
 Currently the global @console_suspended is used to determine if
 consoles are in a suspended state. Its primary purpose is to allow

@@ -2,7 +2,7 @@ From: Peter Zijlstra <peterz@infradead.org>
 Date: Thu, 1 Jun 2023 11:12:34 +0200
 Subject: [PATCH 2/2] sched: Consider task_struct::saved_state in
  wait_task_inactive()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
 
 With the introduction of task_struct::saved_state in commit
 5f220be21418 ("sched/wakeup: Prepare for RT sleeping spin/rwlocks")

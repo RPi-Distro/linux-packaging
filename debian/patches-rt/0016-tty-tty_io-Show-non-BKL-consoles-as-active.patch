@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Fri, 10 Mar 2023 13:08:01 +0000
 Subject: [PATCH 16/24] tty: tty_io: Show non-BKL consoles as active
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
 
 /sys/class/tty/console/active shows the consoles that are currently
 registered and enabled and are able to print (i.e. have implemented

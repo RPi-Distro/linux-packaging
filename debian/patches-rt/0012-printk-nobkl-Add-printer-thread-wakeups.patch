@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Tue, 28 Feb 2023 10:01:59 +0000
 Subject: [PATCH 12/24] printk: nobkl: Add printer thread wakeups
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
 
 Add a function to wakeup the printer threads. Use the new function
 when:
