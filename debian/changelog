@@ -293,6 +293,9 @@ linux (6.4.5-1) UNRELEASED; urgency=medium
   * [x86] drivers/platform/x86/intel/int3472: Enable INTEL_SKL_INT3472 as
     module (Closes: #1038385)
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 3
+
  -- Vincent Blut <vincent.debian@free.fr>  Wed, 09 Aug 2023 14:08:55 +0200
 
 linux (6.4.4-3) unstable; urgency=high
