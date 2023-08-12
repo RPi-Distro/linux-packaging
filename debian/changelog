@@ -1,4 +1,4 @@
-linux (6.4.6-1) UNRELEASED; urgency=medium
+linux (6.4.7-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.5
@@ -289,6 +289,240 @@ linux (6.4.6-1) UNRELEASED; urgency=medium
     - net/ncsi: make one oem_gma function for all mfr id
     - net/ncsi: change from ndo_set_mac_address to dev_set_mac_address
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.6
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.7
+    - io_uring: treat -EAGAIN for REQ_F_NOWAIT as final for io-wq
+    - io_uring: Fix io_uring mmap() by using architecture-provided
+      get_unmapped_area()
+    - ALSA: hda/realtek - remove 3k pull low procedure
+    - ALSA: hda/realtek: Add quirk for Clevo NS70AU
+    - ALSA: hda/realtek: Enable Mute LED on HP Laptop 15s-eq2xxx
+    - maple_tree: set the node limit when creating a new root node
+    - mm/mlock: fix vma iterator conversion of apply_vma_lock_flags()
+    - maple_tree: fix node allocation testing on 32 bit
+    - keys: Fix linking a duplicate key to a keyring's assoc_array
+    - prctl: move PR_GET_AUXV out of PR_MCE_KILL
+    - perf probe: Add test for regression introduced by switch to
+      die_get_decl_file()
+    - perf probe: Read DWARF files from the correct CU
+    - btrfs: fix iput() on error pointer after error during orphan cleanup
+    - btrfs: fix warning when putting transaction with qgroups enabled after
+      abort
+    - fuse: revalidate: don't invalidate if interrupted
+    - fuse: add feature flag for expire-only
+    - fuse: Apply flags2 only when userspace set the FUSE_INIT_EXT
+    - btrfs: raid56: always verify the P/Q contents for scrub
+    - btrfs: set_page_extent_mapped after read_folio in btrfs_cont_expand
+    - btrfs: fix double iput() on inode after an error during orphan cleanup
+    - btrfs: zoned: fix memory leak after finding block group with super blocks
+    - fuse: ioctl: translate ENOSYS in outarg
+    - btrfs: fix race between balance and cancel/pause
+    - regmap: Drop initial version of maximum transfer length fixes
+    - [s390x] zcrypt: fix reply buffer calculations for CCA replies
+    - of: Preserve "of-display" device name for compatibility
+    - regmap: Account for register length in SMBus I/O limits
+    - [ia64] mmap: Consider pgoff when searching for free mapping
+    - [arm64] fpsimd: Ensure SME storage is allocated after SVE VL changes
+    - can: mcp251xfd: __mcp251xfd_chip_set_mode(): increase poll timeout
+    - can: bcm: Fix UAF in bcm_proc_show()
+    - can: gs_usb: gs_can_open(): improve error handling
+    - can: gs_usb: fix time stamp counter initialization
+    - Revert "r8169: disable ASPM during NAPI poll"
+    - dma-buf/dma-resv: Stop leaking on krealloc() failure
+    - drm/amdgpu/vkms: relax timer deactivation by hrtimer_try_to_cancel
+    - drm/amdgpu/pm: make gfxclock consistent for sienna cichlid
+    - drm/amdgpu/pm: make mclk consistent for smu 13.0.7
+    - drm/nouveau/disp: PIOR DP uses GPIO for HPD, not PMGR AUX interrupts
+    - drm/nouveau/kms/nv50-: init hpd_irq_lock for PIOR DP
+    - drm/nouveau/i2c: fix number of aux event slots
+    - drm/client: Fix memory leak in drm_client_target_cloned
+    - drm/client: Fix memory leak in drm_client_modeset_probe
+    - drm/amd/display: only accept async flips for fast updates
+    - drm/amd/display: Disable MPC split by default on special asic
+    - drm/amd/display: check TG is non-null before checking if enabled
+    - drm/amd/display: Keep PHY active for DP displays on DCN31
+    - [arm64] ASoC: fsl_sai: Disable bit clock with transmitter
+    - [arm64] ASoC: fsl_sai: Revert "ASoC: fsl_sai: Enable MCTL_MCLK_EN bit for
+      master mode"
+    - ASoC: rt5640: Fix sleep in atomic context
+    - ASoC: cs42l51: fix driver to properly autoload with automatic module
+      loading
+    - ASoC: codecs: wcd938x: fix missing clsh ctrl error handling
+    - ASoC: cs35l45: Select REGMAP_IRQ
+    - ASoC: codecs: wcd-mbhc-v2: fix resource leaks on component remove
+    - ASoC: qdsp6: audioreach: fix topology probe deferral
+    - ASoC: tegra: Fix AMX byte map
+    - ASoC: codecs: wcd938x: fix resource leaks on component remove
+    - ASoC: codecs: wcd938x: fix missing mbhc init error handling
+    - ASoC: codecs: wcd934x: fix resource leaks on component remove
+    - ASoC: codecs: wcd938x: fix codec initialisation race
+    - ASoC: codecs: wcd938x: fix soundwire initialisation race
+    - [arm64] KVM: arm64: timers: Use CNTHCTL_EL2 when setting non-CNTKCTL_EL1
+      bits
+    - [arm64] KVM: arm64: Correctly handle page aging notifiers for unaligned
+      memslot
+    - [arm64] KVM: arm64: Disable preemption in kvm_arch_hardware_enable()
+    - [arm64] KVM: arm64: vgic-v4: Make the doorbell request robust w.r.t
+      preemption
+    - ext4: correct inline offset when handling xattrs in inode body
+    - drm/radeon: Fix integer overflow in radeon_cs_parser_init
+    - ALSA: emu10k1: roll up loops in DSP setup code for Audigy
+    - quota: Properly disable quotas when add_dquot_ref() fails
+    - quota: fix warning in dqgrab()
+    - HID: add quirk for 03f0:464a HP Elite Presenter Mouse
+    - ovl: check type and offset of struct vfsmount in ovl_entry
+    - udf: Fix uninitialized array access for some pathnames
+    - ALSA: hda/realtek: Add quirks for ROG ALLY CS35l41 audio
+    - fs: jfs: Fix UBSAN: array-index-out-of-bounds in dbAllocDmapLev
+    - [mips*] dec: prom: Address -Warray-bounds warning
+    - FS: JFS: Fix null-ptr-deref Read in txBegin
+    - FS: JFS: Check for read-only mounted filesystem in txBegin
+    - md: fix data corruption for raid456 when reshape restart while grow up
+    - md/raid10: prevent soft lockup while flush writes
+    - scsi: sg: fix blktrace debugfs entries leakage
+    - blk-mq: fix NULL dereference on q->elevator in blk_mq_elv_switch_none
+    - posix-timers: Ensure timer ID search-loop limit is valid
+    - btrfs: add xxhash to fast checksum implementations
+    - btrfs: don't check PageError in __extent_writepage
+    - btrfs: abort transaction at update_ref_for_cow() when ref count is zero
+    - erofs: Fix detection of atomic context
+    - [x86] ACPI: x86: Add skip i2c clients quirk for Nextbook Ares 8A
+    - ACPI: button: Add lid disable DMI quirk for Nextbook Ares 8A
+    - [x86] ACPI: x86: Add ACPI_QUIRK_UART1_SKIP for Lenovo Yoga Book yb1-x90f/l
+    - ACPI: video: Add backlight=native DMI quirk for Apple iMac11,3
+    - ACPI: video: Add backlight=native DMI quirk for Lenovo ThinkPad X131e
+      (3371 AMD version)
+    - ACPI: resource: Remove "Zen" specific match and quirks
+    - [arm64] set __exception_irq_entry with __irq_entry as a default
+    - [arm64] mm: fix VA-range sanity check
+    - ACPI: video: Add backlight=native DMI quirk for Dell Studio 1569
+    - rcu-tasks: Avoid pr_info() with spin lock in cblist_init_generic()
+    - rcu: Mark additional concurrent load from ->cpu_no_qs.b.exp
+    - tools/nolibc: ensure stack protector guard is never zero
+    - sched/fair: Don't balance task to its current running CPU
+    - wifi: ath11k: fix registration of 6Ghz-only phy without the full channel
+      range
+    - bpf: Print a warning only if writing to unprivileged_bpf_disabled.
+    - bpf: Address KCSAN report on bpf_lru_list
+    - spi: cadence-quadspi: Add compatible for AMD Pensando Elba SoC
+    - bpf: drop unnecessary user-triggerable WARN_ONCE in verifierl log
+    - bpf: tcp: Avoid taking fast sock lock in iterator
+    - wifi: rtw88: sdio: Check the HISR RX_REQUEST bit in rtw_sdio_rx_isr()
+    - bpf: Silence a warning in btf_type_id_size()
+    - devlink: make health report on unregistered instance warn just once
+    - wifi: ath11k: add support default regdb while searching board-2.bin for
+      WCN6855
+    - wifi: mac80211_hwsim: Fix possible NULL dereference
+    - spi: dw: Add compatible for Intel Mount Evans SoC
+    - wifi: ath12k: Avoid NULL pointer access during management transmit cleanup
+    - wifi: ath11k: fix memory leak in WMI firmware stats
+    - wifi: iwlwifi: mvm: fix potential array out of bounds access
+    - net: ethernet: litex: add support for 64 bit stats
+    - devlink: report devlink_port_type_warn source device
+    - wifi: iwlwifi: mvm: Add NULL check before dereferencing the pointer
+    - wifi: wext-core: Fix -Wstringop-overflow warning in
+      ioctl_standard_iw_point()
+    - wifi: iwlwifi: Add support for new PCI Id
+    - wifi: iwlwifi: mvm: avoid baid size integer overflow
+    - wifi: iwlwifi: pcie: add device id 51F1 for killer 1675
+    - igb: Fix igb_down hung on surprise removal
+    - [arm64] net: hns3: fix strncpy() not using dest-buf length as length issue
+    - ASoC: codecs: wcd938x: fix mbhc impedance loglevel
+    - ASoC: codecs: wcd938x: fix dB range for HPHL and HPHR
+    - ASoC: qcom: q6apm: do not close GPR port before closing graph
+    - iov_iter: Mark copy_iovec_from_user() noclone
+    - sched/fair: Use recent_used_cpu to test p->cpus_ptr
+    - sched/psi: use kernfs polling functions for PSI trigger polling
+    - spi: bcm63xx: fix max prepend length
+    - fbdev: imxfb: warn about invalid left/right margin
+    - fbdev: imxfb: Removed unneeded release_mem_region
+    - perf build: Fix library not found error when using CSLIBS
+    - btrfs: be a bit more careful when setting mirror_num_ret in
+      btrfs_map_block
+    - spi: s3c64xx: clear loopback bit after loopback test
+    - kallsyms: strip LTO-only suffixes from promoted global functions
+    - smb: client: fix missed ses refcounting
+    - [arm64] Fix HFGxTR_EL2 field naming
+    - [arm64] dsa: mv88e6xxx: Do a final check before timing out
+    - net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()
+    - bridge: Add extack warning when enabling STP in netns.
+    - net: ethernet: mtk_eth_soc: handle probe deferral
+    - gso: fix dodgy bit handling for GSO_UDP_L4
+    - [amd64] iommu/sva: Fix signedness bug in iommu_sva_alloc_pasid()
+    - cifs: fix mid leak during reconnection after timeout threshold
+    - ice: Unregister netdev and devlink_port only once
+    - ice: prevent NULL pointer deref during reload
+    - ASoC: SOF: ipc3-dtrace: uninitialized data in
+      dfsentry_trace_filter_write()
+    - regulator: da9063: fix null pointer deref with partial DT config
+    - net: sched: cls_matchall: Undo tcf_bind_filter in case of failure after
+      mall_set_parms
+    - net: sched: cls_u32: Undo tcf_bind_filter if u32_replace_hw_knode
+    - net: sched: cls_u32: Undo refcount decrement in case update failed
+    - net: sched: cls_bpf: Undo tcf_bind_filter in case of an error
+    - net: dsa: microchip: correct KSZ8795 static MAC table access
+    - r8169: fix ASPM-related problem for chip version 42 and 43
+    - [x86] drm/i915/perf: add sentinel to xehp_oa_b_counters
+    - iavf: Fix use-after-free in free_netdev
+    - iavf: Fix out-of-bounds when setting channels on remove
+    - iavf: use internal state to free traffic IRQs
+    - iavf: make functions static where possible
+    - iavf: Wait for reset in callbacks which trigger it
+    - iavf: fix a deadlock caused by rtnl and driver's lock circular
+      dependencies
+    - iavf: fix reset task race with iavf_remove()
+    - security: keys: Modify mismatched function name
+    - vrf: Fix lockdep splat in output path
+    - octeontx2-pf: Dont allocate BPIDs for LBK interfaces
+    - bpf: Fix subprog idx logic in check_max_stack_depth
+    - bpf: Repeat check_max_stack_depth for async callbacks
+    - bpf, arm64: Fix BTI type used for freplace attached functions
+    - igc: Avoid transmit queue timeout for XDP
+    - igc: Prevent garbled TX queue with XDP ZEROCOPY
+    - net: ipv4: use consistent txhash in TIME_WAIT and SYN_RECV
+    - tcp: annotate data-races around tcp_rsk(req)->txhash
+    - tcp: annotate data-races around tcp_rsk(req)->ts_recent
+    - net: ipv4: Use kfree_sensitive instead of kfree
+    - net:ipv6: check return value of pskb_trim()
+    - Revert "tcp: avoid the lookup process failing to get sk in ehash table"
+    - net: ethernet: mtk_eth_soc: always mtk_get_ib1_pkt_type
+    - fbdev: au1200fb: Fix missing IRQ check in au1200fb_drv_probe
+    - llc: Don't drop packet from non-root netns.
+    - ALSA: hda/realtek: Fix generic fixup definition for cs35l41 amp
+    - netfilter: nf_tables: fix spurious set element insertion failure
+    - netfilter: nf_tables: can't schedule in nft_chain_validate
+    - netfilter: nft_set_pipapo: fix improper element removal (CVE-2023-4004)
+    - netfilter: nf_tables: skip bound chain in netns release path
+    - netfilter: nf_tables: skip bound chain on rule flush
+    - Bluetooth: use RCU for hci_conn_params and iterate safely in hci_sync
+    - Bluetooth: hci_event: call disconnect callback before deleting conn
+    - Bluetooth: ISO: fix iso_conn related locking and validity issues
+    - Bluetooth: hci_sync: Avoid use-after-free in dbg for
+      hci_remove_adv_monitor()
+    - Bluetooth: hci_conn: return ERR_PTR instead of NULL when there is no link
+    - Bluetooth: SCO: fix sco_conn related locking and validity issues
+    - Bluetooth: btusb: Fix bluetooth on Intel Macbook 2014
+    - tcp: annotate data-races around tp->tcp_tx_delay
+    - tcp: annotate data-races around tp->tsoffset
+    - tcp: annotate data-races around tp->keepalive_time
+    - tcp: annotate data-races around tp->keepalive_intvl
+    - tcp: annotate data-races around tp->keepalive_probes
+    - tcp: annotate data-races around icsk->icsk_syn_retries
+    - tcp: annotate data-races around tp->linger2
+    - tcp: annotate data-races around rskq_defer_accept
+    - tcp: annotate data-races around tp->notsent_lowat
+    - tcp: annotate data-races around icsk->icsk_user_timeout
+    - tcp: annotate data-races around fastopenq.max_qlen
+    - net: phy: prevent stale pointer dereference in phy_init()
+    - jbd2: recheck chechpointing non-dirty buffer
+    - tracing/histograms: Return an error if we fail to add histogram to
+      hist_vars list
+    - drm/ttm: fix bulk_move corruption when adding a entry
+    - spi: dw: Remove misleading comment for Mount Evans SoC
+    - scsi/sg: don't grab scsi host module reference
+    - scsi: sg: Fix checking return value of blk_get_queue()
+    - drm/amd/display: Clean up errors & warnings in amdgpu_dm.c
+    - drm/amd/display: Add polling method to handle MST reply packet
+    - Revert "drm/amd/display: edp do not add non-edid timings"
 
   [ Vincent Blut ]
   * [x86] drivers/platform/x86/intel/int3472: Enable INTEL_SKL_INT3472 as
