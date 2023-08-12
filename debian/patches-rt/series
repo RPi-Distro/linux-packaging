@@ -8,6 +8,9 @@
 revert-softirq-Let-ksoftirqd-do-its-job.patch
 bpf-Remove-in_atomic-from-bpf_link_put.patch
 
+0001-kernel-fork-beware-of-__put_task_struct-calling-cont.patch
+0002-sched-avoid-false-lockdep-splat-in-put_task_struct.patch
+
 # signal_x86__Delay_calling_signals_in_atomic.patch
 
 ###########################################################################
@@ -22,7 +25,6 @@ bpf-Remove-in_atomic-from-bpf_link_put.patch
 0001-signal-Add-proper-comment-about-the-preempt-disable-.patch
 0002-signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
 
-0002-posix-timers-Ensure-timer-ID-search-loop-limit-is-va.patch
 0003-ARM-vfp-Provide-vfp_lock-for-VFP-locking.patch
 0004-ARM-vfp-Use-vfp_lock-in-vfp_sync_hwstate.patch
 0005-ARM-vfp-Use-vfp_lock-in-vfp_entry.patch
@@ -90,6 +92,7 @@ printk-Check-only-for-migration-in-printk_deferred_.patch
 0008-drm-i915-gt-Queue-and-wait-for-the-irq_work-item.patch
 0009-drm-i915-gt-Use-spin_lock_irq-instead-of-local_irq_d.patch
 0010-drm-i915-Drop-the-irqs_disabled-check.patch
+drm-i915-Do-not-disable-preemption-for-resets.patch
 Revert-drm-i915-Depend-on-PREEMPT_RT.patch
 
 ###########################################################################

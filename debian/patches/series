@@ -79,7 +79,6 @@ features/x86/x86-make-x32-syscall-support-conditional.patch
 # Miscellaneous bug fixes
 bugfix/all/disable-some-marvell-phys.patch
 bugfix/all/fs-add-module_softdep-declarations-for-hard-coded-cr.patch
-bugfix/all/io_uring-gate-iowait-schedule-on-having-pending-requ.patch
 
 # Miscellaneous features
 
@@ -101,43 +100,6 @@ features/arm/arm-dts-Enable-device-tree-overlay-support-for-RPi-d.patch
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
-bugfix/x86/x86-cpu-amd-Move-the-errata-checking-functionality-u.patch
-bugfix/x86/x86-cpu-amd-Add-a-Zenbleed-fix.patch
-bugfix/all/net-sched-cls_fw-Fix-improper-refcount-update-leads-.patch
-bugfix/all/net-sched-sch_qfq-account-for-stab-overhead-in-qfq_e.patch
-bugfix/x86/gds/init-provide-arch_cpu_finalize_init.patch
-bugfix/x86/gds/x86-cpu-switch-to-arch_cpu_finalize_init.patch
-bugfix/x86/gds/arm-cpu-switch-to-arch_cpu_finalize_init.patch
-bugfix/x86/gds/ia64-cpu-switch-to-arch_cpu_finalize_init.patch
-bugfix/x86/gds/loongarch-cpu-switch-to-arch_cpu_finalize_init.patch
-bugfix/x86/gds/m68k-cpu-switch-to-arch_cpu_finalize_init.patch
-bugfix/x86/gds/mips-cpu-switch-to-arch_cpu_finalize_init.patch
-bugfix/x86/gds/sh-cpu-switch-to-arch_cpu_finalize_init.patch
-bugfix/x86/gds/sparc-cpu-switch-to-arch_cpu_finalize_init.patch
-bugfix/x86/gds/um-cpu-switch-to-arch_cpu_finalize_init.patch
-bugfix/x86/gds/init-remove-check_bugs-leftovers.patch
-bugfix/x86/gds/init-invoke-arch_cpu_finalize_init-earlier.patch
-bugfix/x86/gds/init-x86-move-mem_encrypt_init-into-arch_cpu_finalize_init.patch
-bugfix/x86/gds/x86-init-initialize-signal-frame-size-late.patch
-bugfix/x86/gds/x86-fpu-remove-cpuinfo-argument-from-init-functions.patch
-bugfix/x86/gds/x86-fpu-mark-init-functions-__init.patch
-bugfix/x86/gds/x86-fpu-move-fpu-initialization-into-arch_cpu_finalize_init.patch
-bugfix/x86/gds/x86-speculation-add-gather-data-sampling-mitigation.patch
-bugfix/x86/gds/x86-speculation-add-force-option-to-gds-mitigation.patch
-bugfix/x86/gds/x86-speculation-add-kconfig-option-for-gds.patch
-bugfix/x86/gds/kvm-add-gds_no-support-to-kvm.patch
-bugfix/x86/gds/x86-mem_encrypt-unbreak-the-amd_mem_encrypt-n-build.patch
-bugfix/x86/gds/x86-xen-fix-secondary-processors-fpu-initialization.patch
-bugfix/x86/gds/documentation-x86-fix-backwards-on-off-logic-about-ymm-support.patch
-bugfix/x86/srso/x86-bugs-increase-the-x86-bugs-vector-size-to-two-u32s.patch
-bugfix/x86/srso/x86-srso-add-a-speculative-ras-overflow-mitigation.patch
-bugfix/x86/srso/x86-srso-add-ibpb_brtype-support.patch
-bugfix/x86/srso/x86-srso-add-srso_no-support.patch
-bugfix/x86/srso/x86-srso-add-ibpb.patch
-bugfix/x86/srso/x86-srso-add-ibpb-on-vmexit.patch
-bugfix/x86/srso/x86-srso-fix-return-thunks-in-generated-code.patch
-bugfix/x86/srso/x86-srso-add-a-forgotten-noendbr-annotation.patch
-bugfix/x86/srso/x86-srso-tie-sbpb-bit-setting-to-microcode-patch-detection.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch

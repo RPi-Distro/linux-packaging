@@ -2,7 +2,7 @@ From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 11 Sep 2022 00:28:10 +0200
 Subject: [PATCH 10/24] printk: nobkl: Add emit function and callback functions
  for atomic printing
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
 
 Implement an emit function for non-BKL consoles to output printk
 messages. It utilizes the lockless printk_get_next_message() and

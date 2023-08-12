@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sun, 11 Sep 2022 00:28:01 +0200
 Subject: [PATCH 05/24] printk: Add non-BKL console basic infrastructure
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
 
 The current console/printk subsystem is protected by a Big Kernel Lock,
 (aka console_lock) which has ill defined semantics and is more or less

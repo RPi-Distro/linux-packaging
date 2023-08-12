@@ -1,7 +1,7 @@
 From: Peter Zijlstra <peterz@infradead.org>
 Date: Fri, 2 Jun 2023 12:37:31 +0200
 Subject: [PATCH 1/2] sched: Unconditionally use full-fat wait_task_inactive()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
 
 While modifying wait_task_inactive() for PREEMPT_RT; the build robot
 noted that UP got broken. This led to audit and consideration of the

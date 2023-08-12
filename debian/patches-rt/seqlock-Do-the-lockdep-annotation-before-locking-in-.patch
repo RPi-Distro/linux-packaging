@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 23 Jun 2023 19:12:31 +0200
 Subject: [PATCH] seqlock: Do the lockdep annotation before locking in
  do_write_seqcount_begin_nested()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
 
 It was brought up by Tetsuo that the following sequence
    write_seqlock_irqsave()

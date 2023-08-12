@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri, 23 Jun 2023 15:58:51 +0200
 Subject: [PATCH] printk: Check only for migration in printk_deferred_*().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
 
 Atomic context is not required by the implementation. The only
 requirement is that the caller does not migrate to another CPU between

@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Wed, 14 Jun 2023 10:34:30 +0200
 Subject: [PATCH] bpf: Remove in_atomic() from bpf_link_put().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
 
 bpf_free_inode() is invoked as a RCU callback. Usually RCU callbacks are
 invoked within softirq context. By setting rcutree.use_softirq=0 boot

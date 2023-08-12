@@ -2,7 +2,7 @@ From: John Ogness <john.ogness@linutronix.de>
 Date: Fri, 30 Dec 2022 15:49:42 +0106
 Subject: [PATCH 02/24] printk: Add NMI check to console_flush_on_panic() and
  console_unblank()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
 
 The printk path is NMI safe because it only adds content to the
 buffer and then triggers the delayed output via irq_work. If the
