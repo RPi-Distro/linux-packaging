@@ -10,6 +10,9 @@ linux (6.5~rc5-1~exp1) UNRELEASED; urgency=medium
   [ Stuart Hayhurst ]
   * [x86] drivers/platform/x86/lenovo-ymc: Enable LENOVO_YMC as module
 
+  [ Diederik de Haas ]
+  * [rt] Update to 6.5-rc4-rt2
+
  -- Aurelien Jarno <aurel32@debian.org>  Mon, 07 Aug 2023 13:18:57 +0200
 
 linux (6.5~rc4-1~exp1) experimental; urgency=medium
