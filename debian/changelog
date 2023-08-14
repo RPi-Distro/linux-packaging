@@ -50,6 +50,62 @@ linux (6.5~rc4-1~exp1) experimental; urgency=medium
 
  -- Ben Hutchings <benh@debian.org>  Fri, 04 Aug 2023 03:45:57 +0200
 
+linux (6.4.4-3) unstable; urgency=high
+
+  * io_uring: gate iowait schedule on having pending requests (Closes: #1041855)
+  * [x86] Add mitigations for Gather Data Sampling (GDS) (CVE-2022-40982)
+    - init: Provide arch_cpu_finalize_init()
+    - x86/cpu: Switch to arch_cpu_finalize_init()
+    - ARM: cpu: Switch to arch_cpu_finalize_init()
+    - ia64/cpu: Switch to arch_cpu_finalize_init()
+    - loongarch/cpu: Switch to arch_cpu_finalize_init()
+    - m68k/cpu: Switch to arch_cpu_finalize_init()
+    - mips/cpu: Switch to arch_cpu_finalize_init()
+    - sh/cpu: Switch to arch_cpu_finalize_init()
+    - sparc/cpu: Switch to arch_cpu_finalize_init()
+    - um/cpu: Switch to arch_cpu_finalize_init()
+    - init: Remove check_bugs() leftovers
+    - init: Invoke arch_cpu_finalize_init() earlier
+    - init, x86: Move mem_encrypt_init() into arch_cpu_finalize_init()
+    - x86/init: Initialize signal frame size late
+    - x86/fpu: Remove cpuinfo argument from init functions
+    - x86/fpu: Mark init functions __init
+    - x86/fpu: Move FPU initialization into arch_cpu_finalize_init()
+    - x86/speculation: Add Gather Data Sampling mitigation
+    - x86/speculation: Add force option to GDS mitigation
+    - x86/speculation: Add Kconfig option for GDS
+    - KVM: Add GDS_NO support to KVM
+    - x86/mem_encrypt: Unbreak the AMD_MEM_ENCRYPT=n build
+    - x86/xen: Fix secondary processors' FPU initialization
+    - Documentation/x86: Fix backwards on/off logic about YMM support
+  * [x86] Add a Speculative RAS Overflow (SRSO) mitigation (CVE-2023-20569)
+    - x86/bugs: Increase the x86 bugs vector size to two u32s
+    - x86/srso: Add a Speculative RAS Overflow mitigation
+    - x86/srso: Add IBPB_BRTYPE support
+    - x86/srso: Add SRSO_NO support
+    - x86/srso: Add IBPB
+    - x86/srso: Add IBPB on VMEXIT
+    - x86/srso: Fix return thunks in generated code
+    - x86/srso: Add a forgotten NOENDBR annotation
+    - x86/srso: Tie SBPB bit setting to microcode patch detection
+  * Bump ABI to 2
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 08 Aug 2023 19:08:55 +0200
+
+linux (6.4.4-2) unstable; urgency=high
+
+  [ John Paul Adrian Glaubitz ]
+  * [sh4] Add i2c-modules udeb for sh7785lcr flavor
+
+  [ Salvatore Bonaccorso ]
+  * [x86] cpu/amd: Move the errata checking functionality up
+  * [x86] cpu/amd: Add a Zenbleed fix (CVE-2023-20593)
+  * net/sched: cls_fw: Fix improper refcount update leads to use-after-free
+    (CVE-2023-3776)
+  * net/sched: sch_qfq: account for stab overhead in qfq_enqueue (CVE-2023-3611)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 30 Jul 2023 06:50:27 +0200
+
 linux (6.4.4-1) unstable; urgency=medium
 
   * New upstream stable update:
