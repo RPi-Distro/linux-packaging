@@ -904,6 +904,7 @@ linux (6.4.10-1) UNRELEASED; urgency=medium
     - mm: kmem: fix a NULL pointer dereference in obj_stock_flush_required()
     - fs/sysv: Null check to prevent null-ptr-deref bug
     - Bluetooth: L2CAP: Fix use-after-free in l2cap_sock_ready_cb
+      (CVE-2023-40283)
     - debugobjects: Recheck debug_objects_enabled before reporting
     - net: usbnet: Fix WARNING in usbnet_start_xmit/usb_submit_urb
     - fs: Protect reconfiguration of sb read-write from racing writes
