@@ -231,6 +231,10 @@ linux (6.4.12-1) UNRELEASED; urgency=medium
   [ Salvatore Bonaccorso ]
   * Bump ABI to 4
 
+  [ Emanuele Rocca ]
+  * [arm64] Enable support for Renesas RZ/G2L-SMARC. Set ARCH_R9A07G044 for SoC
+    support and enable RESET_RZG2L_USBPHY_CTRL as module for USB2. (Closes: #1049346)
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 25 Aug 2023 22:28:33 +0200
 
 linux (6.4.11-1) unstable; urgency=medium
