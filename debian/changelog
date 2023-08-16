@@ -1,6 +1,11 @@
 linux (6.5~rc6-1~exp2) UNRELEASED; urgency=medium
 
+  [ Salvatore Bonaccorso ]
   * linux-image: bug: Update taint list and use upstream descriptions
+
+  [ Miguel Bernal Marin ]
+  * [amd64] mm: Enable MEMORY_HOTPLUG_DEFAULT_ONLINE: Enable Online the newly
+    added memory blocks by default (Closes: #1049901)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 15 Aug 2023 21:48:18 +0200
 
