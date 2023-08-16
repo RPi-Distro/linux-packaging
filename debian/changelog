@@ -603,7 +603,7 @@ linux (6.4.10-1) UNRELEASED; urgency=medium
     - ipv6 addrconf: fix bug where deleting a mngtmpaddr can create a new
       temporary address
     - net: fec: avoid tx queue timeout when XDP is enabled
-    - tcp: Reduce chance of collisions in inet6_hashfn().
+    - tcp: Reduce chance of collisions in inet6_hashfn(). (CVE-2023-1206)
     - ice: Fix memory management in ice_ethtool_fdir.c
     - bonding: reset bond's flags when down link is P2P device
     - team: reset team's flags when down link is P2P device
