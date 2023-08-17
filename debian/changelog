@@ -1,4 +1,4 @@
-linux (6.4.10-1) UNRELEASED; urgency=medium
+linux (6.4.11-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.5
@@ -932,6 +932,196 @@ linux (6.4.10-1) UNRELEASED; urgency=medium
       CS
     - [x86] CPU/AMD: Do not leak quotient data after a division by 0
       (CVE-2023-20588)
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.11
+    - tpm/tpm_tis: Disable interrupts for TUXEDO InfinityBook S 15/17 Gen7
+    - tpm: Disable RNG for all AMD fTPMs
+    - tpm/tpm_tis: Disable interrupts for Lenovo P620 devices
+    - tpm: Add a helper for checking hwrng enabled
+    - ksmbd: validate command request size
+    - ksmbd: fix wrong next length validation of ea buffer in smb2_set_ea()
+    - [x86] KVM: SEV: snapshot the GHCB before accessing it
+    - [x86] KVM: SEV: only access GHCB fields once (CVE-2023-4155)
+    - wifi: nl80211: fix integer overflow in nl80211_parse_mbssid_elems()
+    - wifi: rtw89: fix 8852AE disconnection caused by RX full flags
+    - wireguard: allowedips: expand maximum node depth
+    - mmc: sdhci-f-sdh30: Replace with sdhci_pltfm
+    - ipv6: adjust ndisc_is_useropt() to also return true for PIO
+    - mptcp: avoid bogus reset on fallback close
+    - mptcp: fix disconnect vs accept race
+    - dmaengine: pl330: Return DMA_PAUSED when transaction is paused
+    - dmaengine: xilinx: xdma: Fix interrupt vector setting
+    - net: mana: Fix MANA VF unload when hardware is unresponsive
+    - ACPI: resource: revert "Remove "Zen" specific match and quirks"
+    - ACPI: resource: Always use MADT override IRQ settings for all legacy non
+      i8042 IRQs
+    - ACPI: resource: Honor MADT INT_SRC_OVR settings for IRQ1 on AMD Zen
+    - ACPI: resource: Add IRQ override quirk for PCSpecialist Elimina Pro 16 M
+    - zram: take device and not only bvec offset into account
+    - [riscv64] Start of DRAM should at least be aligned on PMD size for the
+      direct mapping
+    - [riscv64] kexec: load initrd high in available memory
+    - [riscv64] mmio: Fix readX()-to-delay() ordering
+    - [riscv64] kexec: handle R_RISCV_CALL_PLT relocation type
+    - riscv: mm: fix 2 instances of -Wmissing-variable-declarations
+    - nvme: fix possible hang when removing a controller during error recovery
+    - nvme-tcp: fix potential unbalanced freeze & unfreeze
+    - nvme-rdma: fix potential unbalanced freeze & unfreeze
+    - nvme-pci: add NVME_QUIRK_BOGUS_NID for Samsung PM9B1 256G and 512G
+    - drm/nouveau/gr: enable memory loads on helper invocation on all channels
+    - drm/nouveau/nvkm/dp: Add workaround to fix DP 1.3+ DPCD issues
+    - drm/shmem-helper: Reset vma->vm_ops before calling dma_buf_mmap()
+    - drm/amdgpu: fix possible UAF in amdgpu_cs_pass1()
+    - drm/amd/pm: correct the pcie width for smu 13.0.0
+    - drm/amd/display: Fix a regression on Polaris cards
+    - drm/amd/display: check attr flag before set cursor degamma on DCN3+
+    - drm/amd: Disable S/G for APUs when 64GB or more host memory
+    - tpm: tpm_tis: Fix UPX-i11 DMI_MATCH condition
+    - tpm_tis: Opt-in interrupts
+    - cpuidle: dt_idle_genpd: Add helper function to remove genpd topology
+    - cpuidle: psci: Move enabling OSI mode after power domains creation
+    - io_uring: correct check for O_TMPFILE
+    - zsmalloc: fix races between modifications of fullness and isolated
+    - hwmon: (pmbus/bel-pfe) Enable PMBUS_SKIP_STATUS_CHECK for pfe1100
+    - cpufreq: amd-pstate: fix global sysfs attribute type
+    - fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT regions
+    - nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
+    - accel/ivpu: Add set_pages_array_wc/uc for internal buffers
+    - hugetlb: do not clear hugetlb dtor until allocating vmemmap
+    - mm: memory-failure: fix potential unexpected return value from
+      unpoison_memory()
+    - mm: memory-failure: avoid false hwpoison page mapped error info
+    - drm/amd/pm: expose swctf threshold setting for legacy powerplay
+    - drm/amd/pm: avoid unintentional shutdown due to temperature momentary
+      fluctuation
+    - iio: cros_ec: Fix the allocation size for cros_ec_command
+    - iio: frequency: admv1013: propagate errors from regulator_get_voltage()
+    - iio: adc: ad7192: Fix ac excitation feature
+    - iio: adc: meson: fix core clock enable/disable moment
+    - iio: adc: ina2xx: avoid NULL pointer dereference on OF device match
+    - [arm*] binder: fix memory leak in binder_init()
+    - misc: rtsx: judge ASPM Mode to set PETXCFG Reg
+    - [x86] thunderbolt: Fix memory leak in tb_handle_dp_bandwidth_request()
+    - usb-storage: alauda: Fix uninit-value in alauda_check_media()
+    - usb: dwc3: Properly handle processing of pending events
+    - USB: Gadget: core: Help prevent panic during UVC unconfigure
+    - usb: common: usb-conn-gpio: Prevent bailing out if initial role is none
+    - usb: typec: tcpm: Fix response to vsafe0V event
+    - usb: typec: altmodes/displayport: Signal hpd when configuring pin
+      assignment
+    - [x86] srso: Fix build breakage with the LLVM linker
+    - [x86] vdso: Choose the right GDT_ENTRY_CPUNODE for 32-bit getcpu() on
+      64-bit kernel
+    - [x86] cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
+    - [x86] mm: Fix VDSO and VVAR placement on 5-level paging machines
+    - [x86] sev: Do not try to parse for the CC blob on non-AMD hardware
+    - [x86] linkage: Fix typo of BUILD_VDSO in asm/linkage.h
+    - [x86] speculation: Add cpu_show_gds() prototype
+    - [x86] Move gds_ucode_mitigated() declaration to header
+    - drm/nouveau/disp: Revert a NULL check inside nouveau_connector_get_modes
+    - netfilter: nf_tables: don't skip expired elements during walk
+    - netfilter: nf_tables: GC transaction API to avoid race with control plane
+    - netfilter: nf_tables: adapt set backend to use GC transaction API
+    - netfilter: nft_set_hash: mark set element as dead when deleting from
+      packet path
+    - iio: imu: lsm6dsx: Fix mount matrix retrieval
+    - iio: core: Prevent invalid memory access when there is no parent
+    - iio: light: bu27034: Fix scale format
+    - interconnect: qcom: Add support for mask-based BCMs
+    - interconnect: qcom: sa8775p: add enable_mask for bcm nodes
+    - interconnect: qcom: sm8450: add enable_mask for bcm nodes
+    - interconnect: qcom: sm8550: add enable_mask for bcm nodes
+    - [arm64] KVM: arm64: Fix hardware enable/disable flows for pKVM
+    - net: core: remove unnecessary frame_sz check in bpf_xdp_adjust_tail()
+    - bpf, sockmap: Fix map type error in sock_map_del_link
+    - bpf, sockmap: Fix bug that strp_done cannot be called
+    - hwmon: (aquacomputer_d5next) Add selective 200ms delay after sending ctrl
+      report
+    - mISDN: Update parameter type of dsp_cmx_send()
+    - macsec: use DEV_STATS_INC()
+    - mptcp: fix the incorrect judgment for msk->cb_flags
+    - igc: Add lock to safeguard global Qbv variables
+    - ionic: Add missing err handling for queue reconfig
+    - net/packet: annotate data-races around tp->status
+    - net/smc: Fix setsockopt and sysctl to specify same buffer size again
+    - net/smc: Use correct buffer sizes when switching between TCP and SMC
+    - PCI: move OF status = "disabled" detection to dev->match_driver
+    - tcp: add missing family to tcp_set_ca_state() tracepoint
+    - tunnels: fix kasan splat when generating ipv4 pmtu error
+    - xsk: fix refcount underflow in error path
+    - bonding: Fix incorrect deletion of ETH_P_8021AD protocol vid from slaves
+    - dccp: fix data-race around dp->dccps_mss_cache
+    - drivers: net: prevent tun_build_skb() to exceed the packet size limit
+    - drivers: vxlan: vnifilter: free percpu vni stats on error path
+    - iavf: fix potential races for FDIR filters
+    - [amd64] IB/hfi1: Fix possible panic during hotplug remove
+    - drm/amd/display: Don't show stack trace for missing eDP
+    - drm/bridge: it6505: Check power state with it6505->powered in IRQ handler
+    - drm/nouveau: remove unused tu102_gr_load() function
+    - drm/rockchip: Don't spam logs in atomic check
+    - wifi: brcm80211: handle params_v1 allocation failure
+    - wifi: cfg80211: fix sband iftype data lookup for AP_VLAN
+    - RDMA/umem: Set iova in ODP flow
+    - RDMA/bnxt_re: Properly order ib_device_unalloc() to avoid UAF
+    - RDMA/bnxt_re: Fix error handling in probe failure path
+    - net: tls: avoid discarding data on record close
+    - net: marvell: prestera: fix handling IPv4 routes with nhid
+    - net: phy: at803x: remove set/get wol callbacks for AR8032
+    - net: dsa: ocelot: call dsa_tag_8021q_unregister() under rtnl_lock() on
+      driver remove
+    - [arm64] net: hns3: refactor hclge_mac_link_status_wait for interface reuse
+    - [arm64] net: hns3: add wait until mac link down
+    - [arm64] net: hns3: fix deadlock issue when externel_lb and reset are
+      executed together
+    - net: enetc: reimplement RFS/RSS memory clearing as PCI quirk
+    - nexthop: Fix infinite nexthop dump when using maximum nexthop ID
+    - nexthop: Make nexthop bucket dump more efficient
+    - nexthop: Fix infinite nexthop bucket dump when using maximum nexthop ID
+    - [arm64] net: hns3: fix strscpy causing content truncation issue
+    - dmaengine: mcf-edma: Fix a potential un-allocated memory access
+    - dmaengine: idxd: Clear PRS disable flag when disabling IDXD device
+    - dmaengine: owl-dma: Modify mismatched function name
+    - net/mlx5e: Take RTNL lock when needed before calling xdp_set_features()
+    - net/mlx5e: TC, Fix internal port memory leak
+    - net/mlx5: DR, Fix wrong allocation of modify hdr pattern
+    - net/mlx5: Allow 0 for total host VFs
+    - net/mlx5e: Unoffload post act rule when handling FIB events
+    - net/mlx5: LAG, Check correct bucket when modifying LAG
+    - net/mlx5: Skip clock update work when device is in error state
+    - net/mlx5: Reload auxiliary devices in pci error handlers
+    - ibmvnic: Enforce stronger sanity checks on login response
+    - ibmvnic: Unmap DMA login rsp buffer on send login fail
+    - ibmvnic: Handle DMA unmapping of login buffs in release functions
+    - ibmvnic: Do partial reset on login failure
+    - ibmvnic: Ensure login failure recovery is safe from other resets
+    - gpio: ws16c48: Fix off-by-one error in WS16C48 resource region extent
+    - gpio: sim: mark the GPIO chip as a one that can sleep
+    - btrfs: wait for actual caching progress during allocation
+    - btrfs: don't stop integrity writeback too early
+    - btrfs: don't wait for writeback on clean pages in extent_write_cache_pages
+    - btrfs: properly clear end of the unreserved range in cow_file_range
+    - btrfs: exit gracefully if reloc roots don't match
+    - btrfs: reject invalid reloc tree root keys with stack dump
+    - btrfs: set cache_block_group_error if we find an error
+    - scsi: core: Fix legacy /proc parsing buffer overflow
+    - [x86] scsi: storvsc: Fix handling of virtual Fibre Channel timeouts
+    - scsi: ufs: renesas: Fix private allocation
+    - scsi: 53c700: Check that command slot is not NULL
+    - scsi: snic: Fix possible memory leak if device_add() fails
+    - scsi: core: Fix possible memory leak if device_add() fails
+    - scsi: fnic: Replace return codes in fnic_clean_pending_aborts()
+    - scsi: qedi: Fix firmware halt over suspend and resume
+    - scsi: qedf: Fix firmware halt over suspend and resume
+    - [x86] platform/x86: lenovo-ymc: Only bind on machines with a convertible
+      DMI chassis-type
+    - platform: mellanox: Change register offset addresses
+    - platform: mellanox: mlx-platform: Fix signals polarity and latch mask
+    - platform: mellanox: mlx-platform: Modify graceful shutdown callback and
+      power down mask
+    - platform: mellanox: Fix order in exit flow
+    - [x86] platform/x86: serial-multi-instantiate: Auto detect IRQ resource for
+      CSC3551
+    - ACPI: scan: Create platform device for CS35L56
+    - [alpha] remove __init annotation from exported page_is_ram()
 
   [ Vincent Blut ]
   * [x86] drivers/platform/x86/intel/int3472: Enable INTEL_SKL_INT3472 as
