@@ -1134,6 +1134,8 @@ linux (6.4.11-1) UNRELEASED; urgency=medium
   * [rt] Update to 6.4.6-rt8
   * [rt] Drop "locking/rtmutex: Fix task->pi_waiters integrity" (applied
     upstream)
+  * [x86] retpoline: Don't clobber RFLAGS during srso_safe_ret()
+    (Closes: #1043585)
 
  -- Vincent Blut <vincent.debian@free.fr>  Wed, 09 Aug 2023 14:08:55 +0200
 
