@@ -1,4 +1,4 @@
-linux (6.4.11-1) UNRELEASED; urgency=medium
+linux (6.4.11-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.5
@@ -1137,7 +1137,7 @@ linux (6.4.11-1) UNRELEASED; urgency=medium
   * [x86] retpoline: Don't clobber RFLAGS during srso_safe_ret()
     (Closes: #1043585)
 
- -- Vincent Blut <vincent.debian@free.fr>  Wed, 09 Aug 2023 14:08:55 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 17 Aug 2023 21:46:04 +0200
 
 linux (6.4.4-3) unstable; urgency=high
 
