@@ -15,6 +15,18 @@ linux (6.6.5-1~exp1) UNRELEASED; urgency=medium
     - drivers/virtio: Enable VIRTIO_VDPA as module
     - drivers/vhost: Enable VHOST_VDPA as module
 
+  [ Miguel Bernal Marin ]
+  * [amd64] Enable System Trace Modules and the Intel Trace Hub Software
+    Trace Hub support (Closes: #1050353)
+    - drivers/hwtracing/stm: Enable STM as module
+    - drivers/hwtracing/stm: Enable STM_PROTO_BASIC as module
+    - drivers/hwtracing/stm: Enable STM_PROTO_SYS_T as module
+    - drivers/hwtracing/stm: Enable STM_DUMMY as module
+    - drivers/hwtracing/stm: Enable STM_SOURCE_CONSOLE as module
+    - drivers/hwtracing/stm: Enable STM_SOURCE_HEARTBEAT as module
+    - drivers/hwtracing/stm: Enable STM_SOURCE_FTRACE as module
+    - drivers/hwtracing/intel_th: Enable INTEL_TH_STH as module
+
  -- Bastian Blank <waldi@debian.org>  Thu, 07 Dec 2023 19:44:53 +0100
 
 linux (6.6.4-1~exp1) experimental; urgency=medium
