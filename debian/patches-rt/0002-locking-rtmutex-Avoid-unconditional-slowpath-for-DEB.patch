@@ -1,34 +1,27 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Date: Thu, 27 Apr 2023 13:19:36 +0200
-Subject: [PATCH 3/4] locking/rtmutex: Avoid pointless blk_flush_plug()
- invocations
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rc4-rt2.tar.xz
+Date: Tue, 15 Aug 2023 13:01:23 +0200
+Subject: [PATCH 2/6] locking/rtmutex: Avoid unconditional slowpath for
+ DEBUG_RT_MUTEXES
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rc7-rt4.tar.xz
 
 With DEBUG_RT_MUTEXES enabled the fast-path rt_mutex_cmpxchg_acquire()
-always fails and all lock operations take the slow path, which leads to the
-invocation of blk_flush_plug() even if the lock is not contended which is
-unnecessary and avoids batch processing of requests.
+always fails and all lock operations take the slow path.
 
 Provide a new helper inline rt_mutex_try_acquire() which maps to
-rt_mutex_cmpxchg_acquire() in the non-debug case. For the debug case it
-invokes rt_mutex_slowtrylock() which can acquire a non-contended rtmutex
-under full debug coverage.
+rt_mutex_cmpxchg_acquire() in the non-debug case. For the debug case
+it invokes rt_mutex_slowtrylock() which can acquire a non-contended
+rtmutex under full debug coverage.
 
-Replace the rt_mutex_cmpxchg_acquire() invocations in __rt_mutex_lock() and
-__ww_rt_mutex_lock() with the new helper function, which avoid the
-blk_flush_plug() for the non-contended case and preserves the debug
-mechanism.
-
-[ tglx: Created a new helper and massaged changelog ]
-
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20230427111937.2745231-4-bigeasy@linutronix.de
+Signed-off-by: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20230427111937.2745231-4-bigeasy@linutronix.de
+Link: https://lore.kernel.org/r/20230815111430.220899937@infradead.org
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- kernel/locking/rtmutex.c     |   25 ++++++++++++++++++++++++-
+ kernel/locking/rtmutex.c     |   21 ++++++++++++++++++++-
  kernel/locking/ww_rt_mutex.c |    2 +-
- 2 files changed, 25 insertions(+), 2 deletions(-)
+ 2 files changed, 21 insertions(+), 2 deletions(-)
 
 --- a/kernel/locking/rtmutex.c
 +++ b/kernel/locking/rtmutex.c
@@ -44,7 +37,7 @@ Link: https://lore.kernel.org/r/20230427111937.2745231-4-bigeasy@linutronix.de
  static __always_inline bool rt_mutex_cmpxchg_release(struct rt_mutex_base *lock,
  						     struct task_struct *old,
  						     struct task_struct *new)
-@@ -297,6 +302,24 @@ static __always_inline bool rt_mutex_cmp
+@@ -297,6 +302,20 @@ static __always_inline bool rt_mutex_cmp
  
  }
  
@@ -53,15 +46,11 @@ Link: https://lore.kernel.org/r/20230427111937.2745231-4-bigeasy@linutronix.de
 +static __always_inline bool rt_mutex_try_acquire(struct rt_mutex_base *lock)
 +{
 +	/*
-+	 * With debug enabled rt_mutex_cmpxchg trylock() will always fail,
-+	 * which will unconditionally invoke sched_submit/resume_work() in
-+	 * the slow path of __rt_mutex_lock() and __ww_rt_mutex_lock() even
-+	 * in the non-contended case.
++	 * With debug enabled rt_mutex_cmpxchg trylock() will always fail.
 +	 *
-+	 * Avoid that by using rt_mutex_slow_trylock() which is covered by
-+	 * the debug code and can acquire a non-contended rtmutex. On
-+	 * success the callsite avoids the sched_submit/resume_work()
-+	 * dance.
++	 * Avoid unconditionally taking the slow path by using
++	 * rt_mutex_slow_trylock() which is covered by the debug code and can
++	 * acquire a non-contended rtmutex.
 +	 */
 +	return rt_mutex_slowtrylock(lock);
 +}
@@ -69,7 +58,7 @@ Link: https://lore.kernel.org/r/20230427111937.2745231-4-bigeasy@linutronix.de
  static __always_inline bool rt_mutex_cmpxchg_release(struct rt_mutex_base *lock,
  						     struct task_struct *old,
  						     struct task_struct *new)
-@@ -1762,7 +1785,7 @@ static int __sched rt_mutex_slowlock(str
+@@ -1755,7 +1774,7 @@ static int __sched rt_mutex_slowlock(str
  static __always_inline int __rt_mutex_lock(struct rt_mutex_base *lock,
  					   unsigned int state)
  {
