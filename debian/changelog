@@ -228,6 +228,9 @@ linux (6.4.12-1) UNRELEASED; urgency=medium
     - net: fix the RTO timer retransmitting skb every 1ms if linear option is
       enabled
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 4
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 25 Aug 2023 22:28:33 +0200
 
 linux (6.4.11-1) unstable; urgency=medium
