@@ -11,10 +11,12 @@
 ###########################################################################
 # Posted
 ###########################################################################
-0001-sched-core-Provide-sched_rtmutex-and-expose-sched-wo.patch
-0002-locking-rtmutex-Submit-resume-work-explicitly-before.patch
-0003-locking-rtmutex-Avoid-pointless-blk_flush_plug-invoc.patch
-0004-locking-rtmutex-Add-a-lockdep-assert-to-catch-potent.patch
+0001-sched-Constrain-locks-in-sched_submit_work.patch
+0002-locking-rtmutex-Avoid-unconditional-slowpath-for-DEB.patch
+0003-sched-Extract-__schedule_loop.patch
+0004-sched-Provide-rt_mutex-specific-scheduler-helpers.patch
+0005-locking-rtmutex-Use-rt_mutex-specific-scheduler-help.patch
+0006-locking-rtmutex-Add-a-lockdep-assert-to-catch-potent.patch
 
 # Hacks to get ptrace to work.
 0001-signal-Add-proper-comment-about-the-preempt-disable-.patch
