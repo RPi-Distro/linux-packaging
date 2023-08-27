@@ -454,7 +454,7 @@ CONFIG_TELCLOCK=m
 ##
 ## file: drivers/char/hw_random/Kconfig
 ##
-CONFIG_HW_RANDOM=m
+CONFIG_HW_RANDOM=y
 # CONFIG_HW_RANDOM_TIMERIOMEM is not set
 CONFIG_HW_RANDOM_VIRTIO=m
 
