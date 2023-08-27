@@ -6,6 +6,7 @@ linux (6.4.13-2) UNRELEASED; urgency=medium
   [ Vincent Blut ]
   * drivers/char/hw_random: Change HW_RANDOM from module to built-in
     (Closes: #1041007)
+  * drivers/char/tpm: Do not explicitly set HW_RANDOM_TPM
 
  -- Emanuele Rocca <ema@debian.org>  Thu, 07 Sep 2023 16:41:26 +0200
 
