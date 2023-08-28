@@ -5,6 +5,9 @@ linux (6.5-1~exp1) UNRELEASED; urgency=medium
   [ Diederik de Haas ]
   * [rt] Update to 6.5-rc7-rt4
 
+  [ Salvatore Bonaccorso ]
+  * [rt] Update to 6.5-rt5
+
  -- Diederik de Haas <didi.debian@cknow.org>  Sat, 26 Aug 2023 11:01:09 +0200
 
 linux (6.5~rc7-1~exp1) experimental; urgency=medium
