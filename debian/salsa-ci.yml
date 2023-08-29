@@ -176,7 +176,7 @@ python-static:
   script:
     - |
       apt-get update && eatmydata apt-get install --no-install-recommends -y \
-        python3 pycodestyle pyflakes3
+        python3 pycodestyle pyflakes3 python3-pytest
 
     # Check Python modules under debian/lib and Python scripts under
     # debian/bin or debian/rules.d.
@@ -200,6 +200,7 @@ python-static:
       xargs pycodestyle --max-line-length=100 --ignore E126,E127,E226,W291,W503 \
         < "$sources" || pass=false
     - xargs pyflakes3 < "$sources" || pass=false
+    - py.test debian/lib/python || pass=false
     - $pass
   needs: []
 
