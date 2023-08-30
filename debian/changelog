@@ -225,6 +225,7 @@ linux (6.4.12-1) UNRELEASED; urgency=medium
     - drm/amdgpu: keep irq count in amdgpu_irq_disable_all
     - Revert "perf report: Append inlines to non-DWARF callchains"
     - [x86] ASoC: SOF: intel: hda: Clean up link DMA for IPC3 during stop
+      (Closes: #1042543)
     - af_unix: Fix null-ptr-deref in unix_stream_sendpage().
     - net: fix the RTO timer retransmitting skb every 1ms if linear option is
       enabled
