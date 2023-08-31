@@ -1,4 +1,4 @@
-linux (6.4.12-1) UNRELEASED; urgency=medium
+linux (6.4.13-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.12
@@ -229,6 +229,131 @@ linux (6.4.12-1) UNRELEASED; urgency=medium
     - af_unix: Fix null-ptr-deref in unix_stream_sendpage().
     - net: fix the RTO timer retransmitting skb every 1ms if linear option is
       enabled
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.13
+    - NFSv4.2: fix error handling in nfs42_proc_getxattr
+    - NFSv4: fix out path in __nfs4_get_acl_uncached
+    - xprtrdma: Remap Receive buffers after a reconnect
+    - PCI: acpiphp: Reassign resources on bridge if necessary
+    - jbd2: remove t_checkpoint_io_list
+    - jbd2: remove journal_clean_one_cp_list()
+    - jbd2: fix a race when checking checkpoint buffer busy
+    - can: raw: fix receiver memory leak
+    - can: raw: fix lockdep issue in raw_release()
+    - wifi: iwlwifi: mvm: add dependency for PTP clock
+    - tracing: Fix cpu buffers unavailable due to 'record_disabled' missed
+    - tracing/synthetic: Use union instead of casts
+    - tracing/synthetic: Skip first entry for stack traces
+    - tracing/synthetic: Allocate one additional element for size
+    - tracing: Fix memleak due to race between current_tracer and trace
+    - devlink: add missing unregister linecard notification
+    - [arm64] net: dsa: felix: fix oversize frame dropping for always closed
+      tc-taprio gates
+    - sock: annotate data-races around prot->memory_pressure
+    - dccp: annotate data-races in dccp_poll()
+    - ipvlan: Fix a reference count leak warning in ipvlan_ns_exit()
+    - mlxsw: pci: Set time stamp fields also when its type is MIRROR_UTC
+    - mlxsw: reg: Fix SSPR register layout
+    - mlxsw: Fix the size of 'VIRT_ROUTER_MSB'
+    - [arm64] net: mdio: mdio-bitbang: Fix C45 read/write protocol
+    - net: bgmac: Fix return value check for fixed_phy_register()
+    - net: bcmgenet: Fix return value check for fixed_phy_register()
+    - net: validate veth and vxcan peer ifindexes
+    - ipv4: fix data-races around inet->inet_id
+    - ice: fix receive buffer size miscalculation
+    - Revert "ice: Fix ice VF reset during iavf initialization"
+    - ice: Fix NULL pointer deref during VF reset
+    - tg3: Use slab_build_skb() when needed
+    - net: ethernet: mtk_eth_soc: fix NULL pointer on hw reset
+    - can: isotp: fix support for transmission of SF without flow control
+    - igb: Avoid starting unnecessary workqueues
+    - igc: Fix the typo in the PTM Control macro
+    - net/sched: fix a qdisc modification with ambiguous command request
+    - i40e: fix potential NULL pointer dereferencing of pf->vf
+      i40e_sync_vsi_filters()
+    - netfilter: nf_tables: validate all pending tables
+    - netfilter: nf_tables: flush pending destroy work before netlink notifier
+    - netfilter: nf_tables: GC transaction race with abort path
+    - netfilter: nf_tables: use correct lock to protect gc_list
+    - netfilter: nf_tables: fix out of memory error handling
+    - netfilter: nf_tables: defer gc run if previous batch is still pending
+    - rtnetlink: Reject negative ifindexes in RTM_NEWLINK
+    - bonding: fix macvlan over alb bond support
+    - [x86] ASoC: amd: yc: Add VivoBook Pro 15 to quirks list for acp6x
+    - [x86] ASoC: cs35l41: Correct amp_gain_tlv values
+    - ibmveth: Use dcbf rather than dcbfl
+    - wifi: mac80211: limit reorder_buf_filtered to avoid UBSAN warning
+    - [x86] platform/x86: lenovo-ymc: Add Lenovo Yoga 7 14ACN6 to
+      ec_trigger_quirk_dmi_table
+    - [x86] platform/x86: ideapad-laptop: Add support for new hotkeys found on
+      ThinkBook 14s Yoga ITL
+    - NFSv4: Fix dropped lock for racing OPEN and delegation return
+    - clk: Fix slab-out-of-bounds error in devm_clk_release()
+    - mm,ima,kexec,of: use memblock_free_late from ima_free_kexec_buffer
+    - shmem: fix smaps BUG sleeping while atomic
+    - ALSA: ymfpci: Fix the missing snd_card_free() call at probe error
+    - mm: enable page walking API to lock vmas during the walk
+    - mm/gup: reintroduce FOLL_NUMA as FOLL_HONOR_NUMA_FAULT
+    - mm/gup: handle cont-PTE hugetlb pages correctly in gup_must_unshare() via
+      GUP-fast
+    - drm/vmwgfx: Fix shader stage validation
+    - drm/vmwgfx: Fix possible invalid drm gem put calls
+    - drm: Add an HPD poll helper to reschedule the poll work
+    - drm/panfrost: Skip speed binning on EOPNOTSUPP
+    - [x86] drm/i915/dgfx: Enable d3cold at s2idle
+    - drm/display/dp: Fix the DP DSC Receiver cap size
+    - [x86] drm/i915: Fix HPD polling, reenabling the output poll work as needed
+    - [x86] fpu: Invalidate FPU state correctly on exec()
+    - [x86] fpu: Set X86_FEATURE_OSXSAVE feature after enabling OSXSAVE in CR4
+      (Closes: #1050622)
+    - [x86] drm/i915/display: Handle GMD_ID identification in display code
+    - [x86] drm/i915: fix display probe for IVB Q and IVB D GT2 server
+    - cgroup/cpuset: Rename functions dealing with DEADLINE accounting
+    - sched/cpuset: Bring back cpuset_mutex
+    - sched/cpuset: Keep track of SCHED_DEADLINE task in cpusets
+    - cgroup/cpuset: Iterate only if DEADLINE tasks are present
+    - sched/deadline: Create DL BW alloc, free & check overflow interface
+    - cgroup/cpuset: Free DL BW in case can_attach() fails
+    - mm: add a call to flush_cache_vmap() in vmap_pfn()
+    - mm: memory-failure: fix unexpected return value in soft_offline_page()
+    - mm: multi-gen LRU: don't spin during memcg release
+    - nilfs2: fix general protection fault in nilfs_lookup_dirty_data_buffers()
+    - NFS: Fix a use after free in nfs_direct_join_group()
+    - nfsd: Fix race to FREE_STATEID and cl_revoked
+    - selinux: set next pointer before attaching to list
+    - batman-adv: Trigger events for auto adjusted MTU
+    - batman-adv: Don't increase MTU when set by user
+    - batman-adv: Do not get eth header before batadv_check_management_packet
+    - batman-adv: Fix TT global entry leak when client roamed back
+    - batman-adv: Fix batadv_v_ogm_aggr_send memory leak
+    - batman-adv: Hold rtnl lock during MTU update via netlink
+    - ACPI: resource: Fix IRQ override quirk for PCSpecialist Elimina Pro 16 M
+    - [riscv64] Handle zicsr/zifencei issue between gcc and binutils
+    - [riscv64] Fix build errors using binutils2.37 toolchains
+    - of: dynamic: Refactor action prints to not use "%pOF" inside devtree_lock
+    - pinctrl: amd: Mask wake bits on probe again
+    - media: vcodec: Fix potential array out-of-bounds in encoder queue_setup
+    - PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for
+      non-root bus
+    - [x86] thunderbolt: Fix Thunderbolt 3 display flickering issue on 2nd hot
+      plug onwards
+    - can: raw: add missing refcount for memory leak fix
+    - [x86] drm/i915: Fix error handling if driver creation fails during probe
+    - madvise:madvise_cold_or_pageout_pte_range(): don't use mapcount() against
+      large folio for sharing check
+    - madvise:madvise_free_pte_range(): don't use mapcount() against large folio
+      for sharing check
+    - scsi: snic: Fix double free in snic_tgt_create()
+    - scsi: ufs: ufs-qcom: Clear qunipro_g4_sel for HW major version > 5
+    - scsi: core: raid_class: Remove raid_component_add()
+    - clk: Fix undefined reference to `clk_rate_exclusive_{get,put}'
+    - [x86] ASoC: SOF: ipc4-pcm: fix possible null pointer deference
+    - dma-buf/sw_sync: Avoid recursive lock during fence signal
+    - gpio: sim: dispose of irq mappings before destroying the irq_sim domain
+    - gpio: sim: pass the GPIO device's software node to irq domain
+    - [x86] ASoC: amd: yc: Fix a non-functional mic on Lenovo 82SJ
+    - maple_tree: disable mas_wr_append() when other readers are possible
+    - TIOCSTI: Document CAP_SYS_ADMIN behaviour in Kconfig
+    - netfilter: nf_tables: fix kdoc warnings after gc rework
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 4
