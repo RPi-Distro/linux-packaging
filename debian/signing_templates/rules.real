@@ -9,6 +9,36 @@ export DEB_RULES_REQUIRES_ROOT ?= no
 GENCONTROL_ARGS := -v@signedtemplate_binaryversion@
 BUILDDEB_ARGS := -Zxz $(if $(filter pkg.linux.quick,$(DEB_BUILD_PROFILES)),-z0)
 
+define dh_binary_pre
+	dh_testroot
+	dh_prep
+	dh_installdirs
+endef
+
+define dh_binary_post
+	dh_install $(DH_INSTALL_ARGS)
+	dh_installdocs $(if $(INSTALLDOCS_LINK_DOC),--link-doc=$(INSTALLDOCS_LINK_DOC))
+	dh_installchangelogs
+	dh_installexamples
+	dh_installman
+	dh_installudev
+	dh_bugfiles
+	dh_ucf
+	dh_lintian
+	dh_icons
+	dh_link
+	dh_compress
+	dh_fixperms
+	dh_missing
+	dh_strip
+	dh_makeshlibs
+	dh_shlibdeps $(DH_SHLIBDEPS_ARGS)
+	dh_installdeb
+	dh_gencontrol -- $(GENCONTROL_ARGS)
+	dh_md5sums
+	dh_builddeb -- $(BUILDDEB_ARGS)
+endef
+
 build-indep:
 
 build_image:
@@ -19,6 +49,7 @@ binary_image: IMAGE_PACKAGE_NAME = linux-image-$(KERNEL_VERSION)-unsigned
 binary_image: PACKAGE_DIR = debian/$(PACKAGE_NAME)
 binary_image: SIGNATURE_DIR = debian/signatures/$(IMAGE_PACKAGE_NAME)
 binary_image:
+	$(dh_binary_pre)
 	mkdir -p $(PACKAGE_DIR)/boot
 	rsync -a $(patsubst %,/boot/%-$(KERNEL_VERSION),config System.map $(IMAGE_INSTALL_STEM)) \
 		$(PACKAGE_DIR)/boot/
@@ -45,31 +76,13 @@ binary_image:
 	sed -i -e 's/^PACKAGE_NAME=.*/PACKAGE_NAME=$(PACKAGE_NAME)/' \
 		-e 's/^PACKAGE_VERSION=.*/PACKAGE_VERSION=$(PACKAGE_VERSION)/' \
 		$(PACKAGE_DIR)/usr/share/bug/$(PACKAGE_NAME)/info
-	dh_install
-	dh_installchangelogs
-	dh_installdocs
-	dh_lintian
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_gencontrol -- $(GENCONTROL_ARGS)
-	dh_md5sums
-	dh_builddeb -- $(BUILDDEB_ARGS)
+	$(dh_binary_post)
 
 build_meta:
 
 binary_meta:
-	dh_testdir
-	dh_prep
-	dh_bugfiles
-	dh_installdocs --link-doc=$(INSTALLDOCS_LINK_DOC)
-	dh_lintian
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_gencontrol -- $(GENCONTROL_ARGS)
-	dh_md5sums
-	dh_builddeb -- $(BUILDDEB_ARGS)
+	$(dh_binary_pre)
+	$(dh_binary_post)
 
 build_installer:
 
@@ -80,8 +93,7 @@ binary_installer: export KW_CONFIG_DIR=debian/installer
 binary_installer: export SOURCEDIR = debian/linux-image-$(REAL_VERSION)
 binary_installer: DH_OPTIONS_IMAGE = -p$(IMAGE_PACKAGE_NAME) --sourcedir=$(SOURCEDIR)
 binary_installer:
-	dh_testdir
-	dh_prep
+	$(dh_binary_pre)
 	DH_OPTIONS="$(DH_OPTIONS_IMAGE)" dh_install boot/$(IMAGE_INSTALL_STEM)-$(REAL_VERSION)
 	DH_OPTIONS="$(DH_OPTIONS_IMAGE)" dh_install lib/modules/$(REAL_VERSION)/modules.builtin
 	DH_OPTIONS="$(DH_OPTIONS_IMAGE)" dh_install lib/modules/$(REAL_VERSION)/modules.order
