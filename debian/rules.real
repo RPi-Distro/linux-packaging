@@ -225,7 +225,7 @@ install-base:
 
 build_meta:
 
-binary_meta install-dummy:
+binary_meta:
 	dh_testdir
 	dh_testroot
 	dh_prep
