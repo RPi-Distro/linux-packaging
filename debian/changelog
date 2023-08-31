@@ -1,4 +1,4 @@
-linux (6.4.13-1) UNRELEASED; urgency=medium
+linux (6.4.13-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.4.12
@@ -363,7 +363,7 @@ linux (6.4.13-1) UNRELEASED; urgency=medium
     support and enable RESET_RZG2L_USBPHY_CTRL as module for USB2.
     (Closes: #1049346)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 25 Aug 2023 22:28:33 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 31 Aug 2023 22:24:51 +0200
 
 linux (6.4.11-1) unstable; urgency=medium
 
