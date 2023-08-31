@@ -15,6 +15,8 @@ linux (6.5-1~exp1) UNRELEASED; urgency=medium
 
   [ Bastian Blank ]
   * Use pytest to test some of the code.
+  * Re-add /usr/include/drm and /usr/include/scsi to linux-libc-dev; they
+    don't longer conflict with other packages. (closes: #1050368)
 
  -- Diederik de Haas <didi.debian@cknow.org>  Sat, 26 Aug 2023 11:01:09 +0200
 
