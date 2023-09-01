@@ -1,0 +1,87 @@
+From: Paul Gortmaker <paul.gortmaker@windriver.com>
+Date: Fri, 18 Aug 2023 16:07:57 -0400
+Subject: [PATCH] tick/rcu: fix false positive "softirq work is pending"
+ messages on RT
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rt6.tar.xz
+
+In commit 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
+the new function report_idle_softirq() was created by breaking code out
+of the existing can_stop_idle_tick() for kernels v5.18 and newer.
+
+In doing so, the code essentially went from a one conditional:
+
+	if (a && b && c)
+		warn();
+
+to a three conditional:
+
+	if (!a)
+		return;
+	if (!b)
+		return;
+	if (!c)
+		return;
+	warn();
+
+However, it seems one of the conditionals didn't get a "!" removed.
+Compare the instance of local_bh_blocked() in the old code:
+
+-               if (ratelimit < 10 && !local_bh_blocked() &&
+-                   (local_softirq_pending() & SOFTIRQ_STOP_IDLE_MASK)) {
+-                       pr_warn("NOHZ tick-stop error: Non-RCU local softirq work is pending, handler #%02x!!!\n",
+-                               (unsigned int) local_softirq_pending());
+-                       ratelimit++;
+-               }
+
+...to the usage in the new (5.18+) code:
+
++       /* On RT, softirqs handling may be waiting on some lock */
++       if (!local_bh_blocked())
++               return false;
+
+It seems apparent that the "!" should be removed from the new code.
+
+This issue lay dormant until another fixup for the same commit was added
+in commit a7e282c77785 ("tick/rcu: Fix bogus ratelimit condition").
+This commit realized the ratelimit was essentially set to zero instead
+of ten, and hence *no* softirq pending messages would ever be issued.
+
+Once this commit was backported via linux-stable, both the v6.1 and v6.4
+preempt-rt kernels started printing out 10 instances of this at boot:
+
+  NOHZ tick-stop error: local softirq work is pending, handler #80!!!
+
+Just to double check my understanding of things, I confirmed that the
+v5.18-rt did print the pending-80 messages with a cherry pick of the
+ratelimit fix, and then confirmed no pending softirq messages were
+printed with a revert of mainline's 034569 on a v5.18-rt baseline.
+
+Finally I confirmed it fixed the issue on v6.1-rt and v6.4-rt, and
+also didn't break anything on a defconfig of mainline master of today.
+
+Fixes: 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
+Cc: Wen Yang <wenyang.linux@foxmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+Reviewed-by: Wen Yang <wenyang.linux@foxmail.com>
+Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20230818200757.1808398-1-paul.gortmaker@windriver.com
+---
+ kernel/time/tick-sched.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -1045,7 +1045,7 @@ static bool report_idle_softirq(void)
+ 		return false;
+ 
+ 	/* On RT, softirqs handling may be waiting on some lock */
+-	if (!local_bh_blocked())
++	if (local_bh_blocked())
+ 		return false;
+ 
+ 	pr_warn("NOHZ tick-stop error: local softirq work is pending, handler #%02x!!!\n",

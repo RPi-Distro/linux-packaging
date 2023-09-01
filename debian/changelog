@@ -4,6 +4,7 @@ linux (6.5-1~exp1) UNRELEASED; urgency=medium
 
   [ Diederik de Haas ]
   * [rt] Update to 6.5-rc7-rt4
+  * [rt] Update to 6.5-rt6
 
   [ Salvatore Bonaccorso ]
   * [rt] Update to 6.5-rt5
