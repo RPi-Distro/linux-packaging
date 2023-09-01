@@ -1,7 +1,7 @@
 From: Wander Lairson Costa <wander@redhat.com>
 Date: Wed, 14 Jun 2023 09:23:21 -0300
 Subject: [PATCH 1/2] kernel/fork: beware of __put_task_struct calling context
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rt5.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rt6.tar.xz
 
 Under PREEMPT_RT, __put_task_struct() indirectly acquires sleeping
 locks. Therefore, it can't be called from an non-preemptible context.

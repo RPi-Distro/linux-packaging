@@ -17,6 +17,7 @@
 0004-sched-Provide-rt_mutex-specific-scheduler-helpers.patch
 0005-locking-rtmutex-Use-rt_mutex-specific-scheduler-help.patch
 0006-locking-rtmutex-Add-a-lockdep-assert-to-catch-potent.patch
+locking-rtmutex-Acquire-the-hb-lock-via-trylock-afte.patch
 
 # Hacks to get ptrace to work.
 0001-signal-Add-proper-comment-about-the-preempt-disable-.patch
@@ -25,6 +26,7 @@
 seqlock-Do-the-lockdep-annotation-before-locking-in-.patch
 mm-page_alloc-Use-write_seqlock_irqsave-instead-writ.patch
 
+tick-rcu-fix-false-positive-softirq-work-is-pending-.patch
 ###########################################################################
 # Post
 ###########################################################################
