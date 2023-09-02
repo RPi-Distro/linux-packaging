@@ -13,6 +13,8 @@ linux (6.5-1~exp1) UNRELEASED; urgency=medium
   * [riscv64] enable cpufreq support for Starfive JH7110: enable CPUFREQ_DT,
     MFD_AXP20X_I2C and REGULATOR_AXP20X as modules, and CPUFREQ_DT_PLATDEV as
     built-in.
+  * [armel/rpi,armhf,arm64] enable CPUFREQ_DT_PLATDEV as built-in, as it does
+    not get autoloaded as a module (Closes: #1050587)
 
   [ Bastian Blank ]
   * Use pytest to test some of the code.
