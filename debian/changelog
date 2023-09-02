@@ -27,6 +27,9 @@ linux (6.5-1~exp1) UNRELEASED; urgency=medium
   * [amd64] arch/x86/ras: Enable RAS_CEC (Correctable Errors Collector)
     (Closes: #1050940)
 
+  [ Antonio Terceiro ]
+  * [arm64] sound/pci: Enable SND_CMIPCI as a module
+
  -- Diederik de Haas <didi.debian@cknow.org>  Sat, 26 Aug 2023 11:01:09 +0200
 
 linux (6.5~rc7-1~exp1) experimental; urgency=medium

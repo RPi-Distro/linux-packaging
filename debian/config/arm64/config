@@ -1920,6 +1920,11 @@ CONFIG_NET_DSA=m
 CONFIG_HYPERV_VSOCKETS=m
 
 ##
+## file: sound/pci/Kconfig
+##
+CONFIG_SND_CMIPCI=m
+
+##
 ## file: sound/pci/hda/Kconfig
 ##
 CONFIG_SND_HDA_INTEL=m
