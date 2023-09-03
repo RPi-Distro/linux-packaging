@@ -22,6 +22,7 @@ linux (6.5.1-1~exp1) UNRELEASED; urgency=medium
   * Use pytest to test some of the code.
   * Re-add /usr/include/drm and /usr/include/scsi to linux-libc-dev; they
     don't longer conflict with other packages. (closes: #1050368)
+  * Properly split host and build flags. (closes: #1050991)
 
   [ Miguel Bernal Marin ]
   * [x86] drivers/hwtracing/intel_th: Enable INTEL_TH_ACPI Intel Trace Hub
