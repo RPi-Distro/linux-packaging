@@ -6689,6 +6689,12 @@ CONFIG_TEST_STATIC_KEYS=m
 # CONFIG_KASAN is not set
 
 ##
+## file: lib/Kconfig.kfence
+##
+CONFIG_KFENCE=y
+CONFIG_KFENCE_SAMPLE_INTERVAL=0
+
+##
 ## file: lib/Kconfig.kgdb
 ##
 # CONFIG_KGDB is not set
