@@ -1,4 +1,4 @@
-linux (6.5.1-1~exp1) UNRELEASED; urgency=medium
+linux (6.5.1-1~exp1) experimental; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_6.5
   * New upstream stable update:
@@ -33,7 +33,7 @@ linux (6.5.1-1~exp1) UNRELEASED; urgency=medium
   [ Antonio Terceiro ]
   * [arm64] sound/pci: Enable SND_CMIPCI as a module
 
- -- Diederik de Haas <didi.debian@cknow.org>  Sat, 26 Aug 2023 11:01:09 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 03 Sep 2023 13:04:38 +0200
 
 linux (6.5~rc7-1~exp1) experimental; urgency=medium
 
