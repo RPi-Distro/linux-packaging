@@ -1,4 +1,4 @@
-linux (6.4.13-2) unstable; urgency=medium
+linux (6.4.13-2) UNRELEASED; urgency=medium
 
   * [arm64] Add reset-rzg2l-usbphy-ctrl to usb-modules udeb in order to enable
     USB support on Renesas RZ/G2L-SMARC boards.
