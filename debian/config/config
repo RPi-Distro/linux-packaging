@@ -7681,6 +7681,7 @@ CONFIG_CFG80211_WEXT=y
 ## file: net/xdp/Kconfig
 ##
 CONFIG_XDP_SOCKETS=y
+CONFIG_XDP_SOCKETS_DIAG=m
 
 ##
 ## file: net/xfrm/Kconfig
