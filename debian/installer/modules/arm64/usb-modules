@@ -9,3 +9,6 @@ extcon-usbc-cros-ec
 fusb302
 tcpm
 typec
+
+# For USB on Renesas RZ/G2L-SMARC
+reset-rzg2l-usbphy-ctrl
