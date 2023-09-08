@@ -18,6 +18,9 @@ linux (6.5.3-1~exp1) UNRELEASED; urgency=medium
   * Refresh "radeon, amdgpu: Firmware is required for DRM and KMS on R600
     onward"
 
+  [ Emanuele Rocca ]
+  * [arm64,armhf] drivers/hwspinlock: Enable CONFIG_HWSPINLOCK
+
  -- Christian Göttsche <cgzones@googlemail.com>  Sun, 03 Sep 2023 18:23:17 +0200
 
 linux (6.5.1-1~exp1) experimental; urgency=medium

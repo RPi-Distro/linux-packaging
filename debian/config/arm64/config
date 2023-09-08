@@ -614,6 +614,7 @@ CONFIG_SENSORS_XGENE=m
 ##
 ## file: drivers/hwspinlock/Kconfig
 ##
+CONFIG_HWSPINLOCK=y
 CONFIG_HWSPINLOCK_QCOM=m
 
 ##
