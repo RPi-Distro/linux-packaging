@@ -3,6 +3,14 @@ linux (6.4.13-2) UNRELEASED; urgency=medium
   * [arm64] Add reset-rzg2l-usbphy-ctrl to usb-modules udeb in order to enable
     USB support on Renesas RZ/G2L-SMARC boards.
 
+  [ Vincent Blut ]
+  * drivers/char/hw_random: Change HW_RANDOM from module to built-in
+    (Closes: #1041007)
+  * drivers/char/tpm: Do not explicitly set HW_RANDOM_TPM
+  * [arm64, cloud, x86] drivers/char/tpm: Do not explicitly enable TCG_TPM
+  * [arm*,ppc64*,sparc64,s390x] drivers/char/hw_random: Prevent some HW Random
+    Number Generator drivers from being built-in
+
  -- Emanuele Rocca <ema@debian.org>  Thu, 07 Sep 2023 16:41:26 +0200
 
 linux (6.4.13-1) unstable; urgency=medium
