@@ -8,7 +8,6 @@ CONFIG_SECCOMP=y
 ##
 CONFIG_SMP=y
 CONFIG_NUMA=y
-CONFIG_KEXEC=y
 # CONFIG_COMPAT is not set
 
 ##
@@ -284,6 +283,11 @@ CONFIG_NOP_USB_XCEIV=m
 CONFIG_DA9063_WATCHDOG=m
 CONFIG_SUNXI_WATCHDOG=m
 CONFIG_STARFIVE_WATCHDOG=m
+
+##
+## file: kernel/Kconfig.kexec
+##
+CONFIG_KEXEC=y
 
 ##
 ## file: lib/Kconfig.debug

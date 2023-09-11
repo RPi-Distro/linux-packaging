@@ -48,6 +48,12 @@ linux (6.6-1~exp1) UNRELEASED; urgency=medium
     - Adjust context in "trust machine keyring (MoK) by default"
     - Adjust context in "ntfs: mark it as broken"
   * [rt] Disable until it is updated for 6.6
+  * d/config: Update with the help of kconfigeditor2:
+    - [x86,amd64/cloud] arch/x86: Remove MICROCODE
+    - init: Remove EMBEDDED
+    - drivers/hwmon: Remove SENSORS_SMM665
+    - [armhf] drivers/staging/media/imx: Merge VIDEO_IMX_CSI into
+      VIDEO_IMX_MEDIA
 
  -- Vincent Blut <vincent.debian@free.fr>  Thu, 14 Sep 2023 13:53:48 +0200
 
