@@ -54,6 +54,7 @@ linux (6.6-1~exp1) UNRELEASED; urgency=medium
     - drivers/hwmon: Remove SENSORS_SMM665
     - [armhf] drivers/staging/media/imx: Merge VIDEO_IMX_CSI into
       VIDEO_IMX_MEDIA
+  * libcpupower1: Add is_valid_path to symbols file
 
  -- Vincent Blut <vincent.debian@free.fr>  Thu, 14 Sep 2023 13:53:48 +0200
 
