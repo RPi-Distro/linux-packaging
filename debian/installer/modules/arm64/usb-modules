@@ -9,3 +9,7 @@ extcon-usbc-cros-ec
 fusb302
 tcpm
 typec
+
+# Thinkpad X13s
+phy-qcom-snps-femto-v2
+gpio-sbu-mux
