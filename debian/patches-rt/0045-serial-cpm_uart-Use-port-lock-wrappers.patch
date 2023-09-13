@@ -1,0 +1,67 @@
+From: Thomas Gleixner <tglx@linutronix.de>
+Date: Tue, 12 Sep 2023 20:59:16 +0200
+Subject: [PATCH 045/108] serial: cpm_uart: Use port lock wrappers
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rc6-rt10.tar.xz
+
+When a serial port is used for kernel console output, then all
+modifications to the UART registers which are done from other contexts,
+e.g. getty, termios, are interference points for the kernel console.
+
+So far this has been ignored and the printk output is based on the
+principle of hope. The rework of the console infrastructure which aims to
+support threaded and atomic consoles, requires to mark sections which
+modify the UART registers as unsafe. This allows the atomic write function
+to make informed decisions and eventually to restore operational state. It
+also allows to prevent the regular UART code from modifying UART registers
+while printk output is in progress.
+
+All modifications of UART registers are guarded by the UART port lock,
+which provides an obvious synchronization point with the console
+infrastructure.
+
+To avoid adding this functionality to all UART drivers, wrap the
+spin_[un]lock*() invocations for uart_port::lock into helper functions
+which just contain the spin_[un]lock*() invocations for now. In a
+subsequent step these helpers will gain the console synchronization
+mechanisms.
+
+Converted with coccinelle. No functional change.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ drivers/tty/serial/cpm_uart.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+--- a/drivers/tty/serial/cpm_uart.c
++++ b/drivers/tty/serial/cpm_uart.c
+@@ -569,7 +569,7 @@ static void cpm_uart_set_termios(struct
+ 	if ((termios->c_cflag & CREAD) == 0)
+ 		port->read_status_mask &= ~BD_SC_EMPTY;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	if (IS_SMC(pinfo)) {
+ 		unsigned int bits = tty_get_frame_size(termios->c_cflag);
+@@ -609,7 +609,7 @@ static void cpm_uart_set_termios(struct
+ 		clk_set_rate(pinfo->clk, baud);
+ 	else
+ 		cpm_setbrg(pinfo->brg - 1, baud);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static const char *cpm_uart_type(struct uart_port *port)
+@@ -1386,9 +1386,9 @@ static void cpm_uart_console_write(struc
+ 		cpm_uart_early_write(pinfo, s, count, true);
+ 		local_irq_restore(flags);
+ 	} else {
+-		spin_lock_irqsave(&pinfo->port.lock, flags);
++		uart_port_lock_irqsave(&pinfo->port, &flags);
+ 		cpm_uart_early_write(pinfo, s, count, true);
+-		spin_unlock_irqrestore(&pinfo->port.lock, flags);
++		uart_port_unlock_irqrestore(&pinfo->port, flags);
+ 	}
+ }
+ 

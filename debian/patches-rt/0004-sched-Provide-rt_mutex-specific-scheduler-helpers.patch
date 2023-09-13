@@ -1,7 +1,7 @@
 From: Peter Zijlstra <peterz@infradead.org>
-Date: Tue, 15 Aug 2023 13:01:25 +0200
-Subject: [PATCH 4/6] sched: Provide rt_mutex specific scheduler helpers
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5.2-rt8.tar.xz
+Date: Fri, 8 Sep 2023 18:22:51 +0200
+Subject: [PATCH 4/7] sched: Provide rt_mutex specific scheduler helpers
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rc6-rt10.tar.xz
 
 With PREEMPT_RT there is a rt_mutex recursion problem where
 sched_submit_work() can use an rtlock (aka spinlock_t). More
@@ -32,9 +32,10 @@ wait.
    added ]]
 
 Originally-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230815111430.355375399@infradead.org
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20230908162254.999499-5-bigeasy@linutronix.de
 ---
  include/linux/sched.h    |    3 +++
  include/linux/sched/rt.h |    4 ++++
@@ -43,7 +44,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -906,6 +906,9 @@ struct task_struct {
+@@ -911,6 +911,9 @@ struct task_struct {
  	 * ->sched_remote_wakeup gets used, so it can be in this word.
  	 */
  	unsigned			sched_remote_wakeup:1;
@@ -68,7 +69,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
   */
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -6738,9 +6738,6 @@ static inline void sched_submit_work(str
+@@ -6723,9 +6723,6 @@ static inline void sched_submit_work(str
  	static DEFINE_WAIT_OVERRIDE_MAP(sched_map, LD_WAIT_CONFIG);
  	unsigned int task_flags;
  
@@ -78,7 +79,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	/*
  	 * Establish LD_WAIT_CONFIG context to ensure none of the code called
  	 * will use a blocking primitive -- which would lead to recursion.
-@@ -6798,7 +6795,12 @@ asmlinkage __visible void __sched schedu
+@@ -6783,7 +6780,12 @@ asmlinkage __visible void __sched schedu
  {
  	struct task_struct *tsk = current;
  
@@ -92,7 +93,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	__schedule_loop(SM_NONE);
  	sched_update_worker(tsk);
  }
-@@ -7059,6 +7061,32 @@ static void __setscheduler_prio(struct t
+@@ -7044,6 +7046,32 @@ static void __setscheduler_prio(struct t
  
  #ifdef CONFIG_RT_MUTEXES
  

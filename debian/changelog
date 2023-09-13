@@ -47,7 +47,6 @@ linux (6.6-1~exp1) UNRELEASED; urgency=medium
       boot mode"
     - Adjust context in "trust machine keyring (MoK) by default"
     - Adjust context in "ntfs: mark it as broken"
-  * [rt] Disable until it is updated for 6.6
   * d/config: Update with the help of kconfigeditor2:
     - [x86,amd64/cloud] arch/x86: Remove MICROCODE
     - init: Remove EMBEDDED
@@ -56,6 +55,7 @@ linux (6.6-1~exp1) UNRELEASED; urgency=medium
       VIDEO_IMX_MEDIA
   * libcpupower1: Add is_valid_path to symbols file
   * d/installer: Add crc-modules to nic-shared-modules Depends
+  * [rt] Update to 6.6-rc6-rt10
 
  -- Vincent Blut <vincent.debian@free.fr>  Thu, 14 Sep 2023 13:53:48 +0200
 

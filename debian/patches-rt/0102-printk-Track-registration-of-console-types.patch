@@ -1,0 +1,264 @@
+From: John Ogness <john.ogness@linutronix.de>
+Date: Tue, 26 Sep 2023 12:44:07 +0000
+Subject: [PATCH 102/108] printk: Track registration of console types
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rc6-rt10.tar.xz
+
+Currently the console lock is used to attempt legacy-type
+printing even if there are no legacy or boot consoles registered.
+Also, if boot consoles are registered, nbcon consoles must
+perform their atomic printing under the console lock in order
+to be synchronized with boot consoles.
+
+Add tracking of legacy and boot console registration to avoid
+unnecessary code paths:
+
+  - do not start nbcon kthreads until all boot consoles have
+    been unregistered
+
+  - do not use the console lock if there are no boot consoles
+    and no legacy consoles
+
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ kernel/printk/internal.h |   12 ++++++
+ kernel/printk/nbcon.c    |    7 +--
+ kernel/printk/printk.c   |   94 +++++++++++++++++++++++++++++++++++++++--------
+ 3 files changed, 93 insertions(+), 20 deletions(-)
+
+--- a/kernel/printk/internal.h
++++ b/kernel/printk/internal.h
+@@ -44,6 +44,17 @@ enum printk_info_flags {
+ };
+ 
+ extern struct printk_ringbuffer *prb;
++extern bool printk_threads_enabled;
++extern bool have_legacy_console;
++extern bool have_boot_console;
++
++/*
++ * Specifies if the console lock/unlock dance is needed for console
++ * printing. If @have_boot_console is true, the nbcon consoles will
++ * be printed serially along with the legacy consoles because nbcon
++ * consoles cannot print simultaneously with boot consoles.
++ */
++#define serialized_printing (have_legacy_console || have_boot_console)
+ 
+ __printf(4, 0)
+ int vprintk_store(int facility, int level,
+@@ -148,6 +159,7 @@ static inline void nbcon_kthread_wake(st
+ static inline void nbcon_kthread_wake(struct console *con) { }
+ static inline void nbcon_kthread_create(struct console *con) { }
+ #define printk_threads_enabled (false)
++#define serialized_printing (false)
+ 
+ /*
+  * In !PRINTK builds we still export console_sem
+--- a/kernel/printk/nbcon.c
++++ b/kernel/printk/nbcon.c
+@@ -1432,7 +1432,6 @@ static void nbcon_kthread_stop(struct co
+ void nbcon_kthread_create(struct console *con)
+ {
+ 	struct task_struct *kt;
+-	struct console *c;
+ 
+ 	lockdep_assert_console_list_lock_held();
+ 
+@@ -1447,10 +1446,8 @@ void nbcon_kthread_create(struct console
+ 	 * registered because there is no way to synchronize the hardware
+ 	 * registers between boot console code and regular console code.
+ 	 */
+-	for_each_console(c) {
+-		if (c->flags & CON_BOOT)
+-			return;
+-	}
++	if (have_boot_console)
++		return;
+ 
+ 	kt = kthread_run(nbcon_kthread_func, con, "pr/%s%d", con->name, con->index);
+ 	if (IS_ERR(kt)) {
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -440,6 +440,18 @@ static int console_msg_format = MSG_FORM
+ /* syslog_lock protects syslog_* variables and write access to clear_seq. */
+ static DEFINE_MUTEX(syslog_lock);
+ 
++/*
++ * Specifies if a legacy console is registered. See serialized_printing
++ * for details.
++ */
++bool have_legacy_console;
++
++/*
++ * Specifies if a boot console is registered. See serialized_printing
++ * for details.
++ */
++bool have_boot_console;
++
+ #ifdef CONFIG_PRINTK
+ /*
+  * During panic, heavy printk by other CPUs can delay the
+@@ -2289,7 +2301,7 @@ asmlinkage int vprintk_emit(int facility
+ 	nbcon_wake_threads();
+ 
+ 	/* If called from the scheduler, we can not call up(). */
+-	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && !in_sched) {
++	if (serialized_printing && !in_sched) {
+ 		/*
+ 		 * The caller may be holding system-critical or
+ 		 * timing-sensitive locks. Disable preemption during
+@@ -2605,7 +2617,7 @@ void resume_console(void)
+  */
+ static int console_cpu_notify(unsigned int cpu)
+ {
+-	if (!cpuhp_tasks_frozen) {
++	if (!cpuhp_tasks_frozen && serialized_printing) {
+ 		/* If trylock fails, someone else is doing the printing */
+ 		if (console_trylock())
+ 			console_unlock();
+@@ -3203,7 +3215,8 @@ void console_flush_on_panic(enum con_flu
+ 
+ 	nbcon_atomic_flush_all();
+ 
+-	console_flush_all(false, &next_seq, &handover);
++	if (serialized_printing)
++		console_flush_all(false, &next_seq, &handover);
+ }
+ 
+ /*
+@@ -3533,8 +3546,14 @@ void register_console(struct console *ne
+ 	newcon->dropped = 0;
+ 	console_init_seq(newcon, bootcon_registered);
+ 
+-	if (newcon->flags & CON_NBCON)
++	if (newcon->flags & CON_NBCON) {
+ 		nbcon_init(newcon);
++	} else {
++		have_legacy_console = true;
++	}
++
++	if (newcon->flags & CON_BOOT)
++		have_boot_console = true;
+ 
+ 	/*
+ 	 * Put this console in the list - keep the
+@@ -3588,6 +3607,9 @@ EXPORT_SYMBOL(register_console);
+ /* Must be called under console_list_lock(). */
+ static int unregister_console_locked(struct console *console)
+ {
++	bool is_legacy_con = !(console->flags & CON_NBCON);
++	bool is_boot_con = (console->flags & CON_BOOT);
++	struct console *c;
+ 	int res;
+ 
+ 	lockdep_assert_console_list_lock_held();
+@@ -3635,6 +3657,35 @@ static int unregister_console_locked(str
+ 	if (console->exit)
+ 		res = console->exit(console);
+ 
++	/*
++	 * If the current console was a boot and/or legacy console, the
++	 * related global flags might need to be updated.
++	 */
++	if (is_boot_con || is_legacy_con) {
++		bool found_boot_con = false;
++		bool found_legacy_con = false;
++
++		for_each_console(c) {
++			if (c->flags & CON_BOOT)
++				found_boot_con = true;
++			if (!(c->flags & CON_NBCON))
++				found_legacy_con = true;
++		}
++		if (!found_boot_con)
++			have_boot_console = false;
++		if (!found_legacy_con)
++			have_legacy_console = false;
++	}
++
++	/*
++	 * When the last boot console unregisters, start up the
++	 * printing threads.
++	 */
++	if (is_boot_con && !have_boot_console) {
++		for_each_console(c)
++			nbcon_kthread_create(c);
++	}
++
+ 	return res;
+ }
+ 
+@@ -3784,6 +3835,7 @@ static bool __pr_flush(struct console *c
+ 	u64 last_diff = 0;
+ 	u64 printk_seq;
+ 	short flags;
++	bool locked;
+ 	int cookie;
+ 	u64 diff;
+ 	u64 seq;
+@@ -3793,19 +3845,25 @@ static bool __pr_flush(struct console *c
+ 	seq = prb_next_seq(prb);
+ 
+ 	/* Flush the consoles so that records up to @seq are printed. */
+-	console_lock();
+-	console_unlock();
++	if (serialized_printing) {
++		console_lock();
++		console_unlock();
++	}
+ 
+ 	for (;;) {
++		locked = false;
+ 		diff = 0;
+ 
+-		/*
+-		 * Hold the console_lock to guarantee safe access to
+-		 * console->seq. Releasing console_lock flushes more
+-		 * records in case @seq is still not printed on all
+-		 * usable consoles.
+-		 */
+-		console_lock();
++		if (serialized_printing) {
++			/*
++			 * Hold the console_lock to guarantee safe access to
++			 * console->seq. Releasing console_lock flushes more
++			 * records in case @seq is still not printed on all
++			 * usable consoles.
++			 */
++			console_lock();
++			locked = true;
++		}
+ 
+ 		cookie = console_srcu_read_lock();
+ 		for_each_console_srcu(c) {
+@@ -3827,6 +3885,7 @@ static bool __pr_flush(struct console *c
+ 			if (flags & CON_NBCON) {
+ 				printk_seq = nbcon_seq_read(c);
+ 			} else {
++				WARN_ON_ONCE(!locked);
+ 				printk_seq = c->seq;
+ 			}
+ 
+@@ -3838,7 +3897,8 @@ static bool __pr_flush(struct console *c
+ 		if (diff != last_diff && reset_on_progress)
+ 			remaining = timeout_ms;
+ 
+-		console_unlock();
++		if (locked)
++			console_unlock();
+ 
+ 		/* Note: @diff is 0 if there are no usable consoles. */
+ 		if (diff == 0 || remaining == 0)
+@@ -3966,7 +4026,11 @@ void defer_console_output(void)
+ 	 * New messages may have been added directly to the ringbuffer
+ 	 * using vprintk_store(), so wake any waiters as well.
+ 	 */
+-	__wake_up_klogd(PRINTK_PENDING_WAKEUP | PRINTK_PENDING_OUTPUT);
++	int val = PRINTK_PENDING_WAKEUP;
++
++	if (serialized_printing)
++		val |= PRINTK_PENDING_OUTPUT;
++	__wake_up_klogd(val);
+ }
+ 
+ void printk_trigger_flush(void)

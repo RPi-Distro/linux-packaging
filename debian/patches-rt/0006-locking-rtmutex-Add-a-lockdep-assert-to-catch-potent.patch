@@ -1,8 +1,8 @@
 From: Thomas Gleixner <tglx@linutronix.de>
-Date: Tue, 15 Aug 2023 13:01:27 +0200
-Subject: [PATCH 6/6] locking/rtmutex: Add a lockdep assert to catch potential
+Date: Fri, 8 Sep 2023 18:22:53 +0200
+Subject: [PATCH 6/7] locking/rtmutex: Add a lockdep assert to catch potential
  nested blocking
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5.2-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rc6-rt10.tar.xz
 
 There used to be a BUG_ON(current->pi_blocked_on) in the lock acquisition
 functions, but that vanished in one of the rtmutex overhauls.
@@ -13,9 +13,9 @@ rtmutex based locks with current::pi_blocked_on != NULL.
 Reported-by: Crystal Wood <swood@redhat.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230427111937.2745231-5-bigeasy@linutronix.de
-Link: https://lore.kernel.org/r/20230815111430.488430699@infradead.org
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20230908162254.999499-7-bigeasy@linutronix.de
 ---
  kernel/locking/rtmutex.c     |    2 ++
  kernel/locking/rwbase_rt.c   |    2 ++
