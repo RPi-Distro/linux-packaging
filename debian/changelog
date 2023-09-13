@@ -1,7 +1,8 @@
-linux (6.5.2-1~exp1) UNRELEASED; urgency=medium
+linux (6.5.3-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.2
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.3
 
   [ Christian Göttsche ]
   * Enable KFENCE support (not enabled by default) (Closes: #1025845)
