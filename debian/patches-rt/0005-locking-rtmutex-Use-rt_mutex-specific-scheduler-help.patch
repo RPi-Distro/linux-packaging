@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Tue, 15 Aug 2023 13:01:26 +0200
 Subject: [PATCH 5/6] locking/rtmutex: Use rt_mutex specific scheduler helpers
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5.2-rt8.tar.xz
 
 Have rt_mutex use the rt_mutex specific scheduler helpers to avoid
 recursion vs rtlock on the PI state.
@@ -120,7 +120,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	/* Force readers into slow path */
  	atomic_sub(READER_BIAS, &rwb->readers);
  
-+	rt_mutex_pre_schedule();
++	rwbase_pre_schedule();
 +
  	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
  	if (__rwbase_write_trylock(rwb))
@@ -129,7 +129,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		if (rwbase_signal_pending_state(state, current)) {
  			rwbase_restore_current_state();
  			__rwbase_write_unlock(rwb, 0, flags);
-+			rt_mutex_post_schedule();
++			rwbase_post_schedule();
  			trace_contention_end(rwb, -EINTR);
  			return -EINTR;
  		}
@@ -137,7 +137,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  out_unlock:
  	raw_spin_unlock_irqrestore(&rtm->wait_lock, flags);
-+	rt_mutex_post_schedule();
++	rwbase_post_schedule();
  	return 0;
  }
  

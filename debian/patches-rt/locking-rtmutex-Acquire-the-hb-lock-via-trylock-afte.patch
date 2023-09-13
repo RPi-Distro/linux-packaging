@@ -5,7 +5,7 @@ Subject: [PATCH] locking/rtmutex: Acquire the hb lock via trylock after
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rt6.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5.2-rt8.tar.xz
 
 After rt_mutex_wait_proxy_lock() task_struct::pi_blocked_on is cleared
 if current owns the lock. If the operation has been interrupted by a
