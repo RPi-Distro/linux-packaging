@@ -26,7 +26,6 @@ locking-rtmutex-Acquire-the-hb-lock-via-trylock-afte.patch
 seqlock-Do-the-lockdep-annotation-before-locking-in-.patch
 mm-page_alloc-Use-write_seqlock_irqsave-instead-writ.patch
 
-tick-rcu-fix-false-positive-softirq-work-is-pending-.patch
 ###########################################################################
 # Post
 ###########################################################################

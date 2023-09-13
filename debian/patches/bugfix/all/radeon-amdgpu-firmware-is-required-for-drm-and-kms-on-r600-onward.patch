@@ -30,16 +30,16 @@ is missing, except for the pre-R600 case.
 
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -39,6 +39,8 @@
+@@ -38,6 +38,8 @@
+ #include <linux/pm_runtime.h>
  #include <linux/suspend.h>
- #include <linux/cc_platform.h>
- #include <linux/dynamic_debug.h>
+ #include <linux/vga_switcheroo.h>
 +#include <linux/namei.h>
 +#include <linux/path.h>
  
  #include "amdgpu.h"
- #include "amdgpu_irq.h"
-@@ -2054,6 +2056,28 @@ static void amdgpu_get_secondary_funcs(s
+ #include "amdgpu_amdkfd.h"
+@@ -2085,6 +2087,28 @@ static void amdgpu_get_secondary_funcs(s
  	}
  }
  
@@ -68,7 +68,7 @@ is missing, except for the pre-R600 case.
  static int amdgpu_pci_probe(struct pci_dev *pdev,
  			    const struct pci_device_id *ent)
  {
-@@ -2137,6 +2161,11 @@ static int amdgpu_pci_probe(struct pci_d
+@@ -2168,6 +2192,11 @@ static int amdgpu_pci_probe(struct pci_d
  	}
  #endif
  
