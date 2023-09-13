@@ -28,6 +28,11 @@ CONFIG_VIRTUALIZATION=y
 CONFIG_KVM=m
 
 ##
+## file: drivers/acpi/Kconfig
+##
+CONFIG_ACPI=y
+
+##
 ## file: drivers/ata/Kconfig
 ##
 CONFIG_SATA_AHCI_PLATFORM=m
@@ -38,6 +43,17 @@ CONFIG_AHCI_DWC=m
 ##
 CONFIG_HW_RANDOM_POLARFIRE_SOC=m
 CONFIG_HW_RANDOM_JH7110=m
+
+##
+## file: drivers/cpufreq/Kconfig
+##
+CONFIG_CPUFREQ_DT=m
+CONFIG_CPUFREQ_DT_PLATDEV=y
+
+##
+## file: drivers/crypto/starfive/Kconfig
+##
+CONFIG_CRYPTO_DEV_JH7110=m
 
 ##
 ## file: drivers/cxl/Kconfig
@@ -112,6 +128,7 @@ CONFIG_POLARFIRE_SOC_MAILBOX=m
 ##
 ## file: drivers/mfd/Kconfig
 ##
+CONFIG_MFD_AXP20X_I2C=m
 CONFIG_MFD_DA9063=m
 CONFIG_MFD_TPS65086=m
 
@@ -187,6 +204,7 @@ CONFIG_PWM_SIFIVE=m
 ##
 CONFIG_REGULATOR=y
 CONFIG_REGULATOR_FIXED_VOLTAGE=m
+CONFIG_REGULATOR_AXP20X=m
 CONFIG_REGULATOR_DA9063=m
 CONFIG_REGULATOR_TPS65086=m
 
@@ -279,3 +297,14 @@ CONFIG_MODULE_ALLOW_BTF_MISMATCH=y
 ## file: sound/pci/hda/Kconfig
 ##
 CONFIG_SND_HDA_INTEL=m
+
+##
+## file: sound/soc/Kconfig
+##
+CONFIG_SND_SOC=m
+
+##
+## file: sound/soc/starfive/Kconfig
+##
+CONFIG_SND_SOC_STARFIVE=m
+CONFIG_SND_SOC_JH7110_TDM=m

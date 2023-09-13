@@ -5,6 +5,7 @@ Section: devel
 Architecture: linux-any
 Build-Depends:
   python3-docutils <!stage1 !nodoc !pkg.linux.notools>,
+  binutils-dev [hppa],
   libelf-dev,
   zlib1g-dev,
 Depends: ${shlibs:Depends}, ${misc:Depends}

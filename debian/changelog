@@ -1,7 +1,40 @@
-linux (6.4.13-2) UNRELEASED; urgency=medium
+linux (6.5.3-1~exp1) UNRELEASED; urgency=medium
 
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.2
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.3
+
+  [ Christian Göttsche ]
+  * Enable KFENCE support (not enabled by default) (Closes: #1025845)
+
+  [ Diederik de Haas ]
+  * net/xdp: Enable XDP_SOCKETS_DIAG as module (Closes: #1051455)
+
+  [ Ben Hutchings ]
+  * udeb: Make MPT modules optional in scsi-modules (fixes FTBFS on s390x)
+    (Closes: #1051249)
+
+  [ Salvatore Bonaccorso ]
+  * Refresh "radeon, amdgpu: Firmware is required for DRM and KMS on R600
+    onward"
+
+  [ Emanuele Rocca ]
   * [arm64] Add reset-rzg2l-usbphy-ctrl to usb-modules udeb in order to enable
     USB support on Renesas RZ/G2L-SMARC boards.
+  * [arm64,armhf] drivers/hwspinlock: Enable CONFIG_HWSPINLOCK
+  * [arm64] Add support for Lenovo ThinkPad X13s: enable as modules
+    SC_DISPCC_8280XP, SC_GCC_8280XP, SC_GPUCC_8280XP, QCOM_SPMI_ADC5,
+    INTERCONNECT_QCOM_OSM_L3, INTERCONNECT_QCOM_SC8280XP, LEDS_QCOM_LPG,
+    QCOM_IPCC, QCOM_FASTRPC, NVMEM_SPMI_SDAM, PHY_QCOM_EDP, PHY_QCOM_QMP_PCIE,
+    PHY_QCOM_USB_SNPS_FEMTO_V2, PINCTRL_SC8280XP, PINCTRL_SC8280XP_LPASS_LPI,
+    PINCTRL_LPASS_LPI, POWER_RESET_QCOM_PON, BATTERY_QCOM_BATTMGR,
+    QCOM_Q6V5_ADSP, QCOM_Q6V5_PAS, QCOM_Q6V5_WCSS, QCOM_SYSMON, QCOM_LLCC,
+    QCOM_OCMEM, QCOM_PMIC_GLINK, QCOM_STATS, QCOM_APR, QCOM_ICC_BWMON,
+    SPI_QCOM_GENI, TYPEC_MUX_GPIO_SBU, QRTR_SMD, SND_SOC_WCD938X_SDW,
+    SND_SOC_LPASS_WSA_MACRO, SND_SOC_LPASS_VA_MACRO, SND_SOC_LPASS_RX_MACRO,
+    SND_SOC_LPASS_TX_MACRO, SND_SOC_QDSP6
+    (Thanks Steve Capper!)
+  * [arm64] Add Thinkpad X13s modules to udebs
 
   [ Vincent Blut ]
   * drivers/char/hw_random: Change HW_RANDOM from module to built-in
@@ -12,6 +45,113 @@ linux (6.4.13-2) UNRELEASED; urgency=medium
     Number Generator drivers from being built-in
 
  -- Emanuele Rocca <ema@debian.org>  Thu, 07 Sep 2023 16:41:26 +0200
+
+linux (6.5.1-1~exp1) experimental; urgency=medium
+
+  * New upstream release: https://kernelnewbies.org/Linux_6.5
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.1
+
+  [ Diederik de Haas ]
+  * [rt] Update to 6.5-rc7-rt4
+  * [rt] Update to 6.5-rt6
+
+  [ Salvatore Bonaccorso ]
+  * [rt] Update to 6.5-rt5
+
+  [ Aurelien Jarno ]
+  * [riscv64] enable cpufreq support for Starfive JH7110: enable CPUFREQ_DT,
+    MFD_AXP20X_I2C and REGULATOR_AXP20X as modules, and CPUFREQ_DT_PLATDEV as
+    built-in.
+  * [armel/rpi,armhf,arm64] enable CPUFREQ_DT_PLATDEV as built-in, as it does
+    not get autoloaded as a module (Closes: #1050587)
+
+  [ Bastian Blank ]
+  * Use pytest to test some of the code.
+  * Re-add /usr/include/drm and /usr/include/scsi to linux-libc-dev; they
+    don't longer conflict with other packages. (closes: #1050368)
+  * Properly split host and build flags. (closes: #1050991)
+
+  [ Miguel Bernal Marin ]
+  * [x86] drivers/hwtracing/intel_th: Enable INTEL_TH_ACPI Intel Trace Hub
+    ACPI controller as module (Closes: #1050342)
+  * [amd64] arch/x86/ras: Enable RAS_CEC (Correctable Errors Collector)
+    (Closes: #1050940)
+
+  [ Antonio Terceiro ]
+  * [arm64] sound/pci: Enable SND_CMIPCI as a module
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 03 Sep 2023 13:04:38 +0200
+
+linux (6.5~rc7-1~exp1) experimental; urgency=medium
+
+  * New upstream release candidate
+
+  [ Salvatore Bonaccorso ]
+  * linux-image: bug: Update taint list and use upstream descriptions
+  * [rt] Refresh "serial: 8250: implement non-BKL console"
+
+  [ Miguel Bernal Marin ]
+  * [amd64] mm: Enable MEMORY_HOTPLUG_DEFAULT_ONLINE: Enable Online the newly
+    added memory blocks by default (Closes: #1049901)
+
+  [ Helge Deller ]
+  * [hppa] Add build-dependency on binutils-dev to get bfd.h and thus allow
+    disassembly of jitted programs in bpftool
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 21 Aug 2023 21:49:11 +0200
+
+linux (6.5~rc6-1~exp1) experimental; urgency=medium
+
+  * New upstream release candidate
+
+  [ Aurelien Jarno ]
+  * [riscv64] enable CONFIG_ACPI
+  * [riscv64] improve Starfive JH7110 support: enable CRYPTO_DEV_JH7110,
+    SND_SOC, SND_SOC_STARFIVE and SND_SOC_JH7110_TDM as modules
+
+  [ Stuart Hayhurst ]
+  * [x86] drivers/platform/x86/lenovo-ymc: Enable LENOVO_YMC as module
+
+  [ Diederik de Haas ]
+  * [rt] Update to 6.5-rc4-rt2
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 15 Aug 2023 13:01:14 +0200
+
+linux (6.5~rc4-1~exp1) experimental; urgency=medium
+
+  * New upstream release candidate
+
+  [ Ben Hutchings ]
+  * Drop patches applied upstream:
+    - Drop "usbip: Use _FORTIFY_SOURCE=2 instead of (implicitly) =1"
+    - Drop "arm: dts: Enable device-tree overlay support for RPi devices"
+    - Drop "arm64: dts: broadcom: Enable device-tree overlay support for RPi
+      devices"
+    - Drop "m68k: Fix invalid .section syntax"
+  * Refresh patches:
+    - Adjust context in "firmware: Remove redundant log messages from drivers"
+    - Adjust filename in "ARM: dts: kirkwood: Fix SATA pinmux-ing for TS419"
+    - Adjust context in "Include package version along with kernel release in
+      stack traces"
+    - Adjust context in "efi: Lock down the kernel if booted in secure boot
+      mode"
+  * Set ABI to 0
+  * d/config: Update with the help of kconfigeditor2:
+    - [arm64,armhf] mfd: Enable MFD_RK8XX_I2C as built-in instead of MFD_RK808
+    - media: Enable VIDEO_STK1160 as module instead of VIDEO_STK1160_COMMON
+  * [rt] Update to 6.5-rc4-rt1
+
+  [ Vincent Blut ]
+  * [arm64] Improve support for Allwinner H6 and affiliated SoCs
+    (Closes: #1038986)
+    - drivers/cpufreq: Enable ARM_ALLWINNER_SUN50I_CPUFREQ_NVMEM as module
+    - drivers/iommu: Enable SUN50I_IOMMU
+    - drivers/media/rc: Enable IR_SUNXI as module
+    - drivers/phy/allwinner: Enable PHY_SUN50I_USB3 as module
+    - sound/soc/sunxi: Enable SND_SUN50I_DMIC as module
+
+ -- Ben Hutchings <benh@debian.org>  Fri, 04 Aug 2023 03:45:57 +0200
 
 linux (6.4.13-1) unstable; urgency=medium
 

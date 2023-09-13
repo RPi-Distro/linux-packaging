@@ -1,7 +1,7 @@
 From: Wander Lairson Costa <wander@redhat.com>
 Date: Wed, 14 Jun 2023 09:23:22 -0300
 Subject: [PATCH 2/2] sched: avoid false lockdep splat in put_task_struct()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.4/older/patches-6.4.6-rt8.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.5/older/patches-6.5-rt6.tar.xz
 
 In put_task_struct(), a spin_lock is indirectly acquired under the kernel
 stock. When running the kernel in real-time (RT) configuration, the
@@ -59,4 +59,4 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 +	call_rcu(&t->rcu, __put_task_struct_rcu_cb);
  }
  
- static inline void put_task_struct_many(struct task_struct *t, int nr)
+ DEFINE_FREE(put_task, struct task_struct *, if (_T) put_task_struct(_T))

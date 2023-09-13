@@ -3,11 +3,6 @@
 ###########################################################################
 # Posted and applied
 ###########################################################################
-0001-sched-Unconditionally-use-full-fat-wait_task_inactiv.patch
-0002-sched-Consider-task_struct-saved_state-in-wait_task_.patch
-revert-softirq-Let-ksoftirqd-do-its-job.patch
-bpf-Remove-in_atomic-from-bpf_link_put.patch
-
 0001-kernel-fork-beware-of-__put_task_struct-calling-cont.patch
 0002-sched-avoid-false-lockdep-splat-in-put_task_struct.patch
 
@@ -16,18 +11,18 @@ bpf-Remove-in_atomic-from-bpf_link_put.patch
 ###########################################################################
 # Posted
 ###########################################################################
-0001-sched-core-Provide-sched_rtmutex-and-expose-sched-wo.patch
-0002-locking-rtmutex-Submit-resume-work-explicitly-before.patch
-0003-locking-rtmutex-Avoid-pointless-blk_flush_plug-invoc.patch
-0004-locking-rtmutex-Add-a-lockdep-assert-to-catch-potent.patch
+0001-sched-Constrain-locks-in-sched_submit_work.patch
+0002-locking-rtmutex-Avoid-unconditional-slowpath-for-DEB.patch
+0003-sched-Extract-__schedule_loop.patch
+0004-sched-Provide-rt_mutex-specific-scheduler-helpers.patch
+0005-locking-rtmutex-Use-rt_mutex-specific-scheduler-help.patch
+0006-locking-rtmutex-Add-a-lockdep-assert-to-catch-potent.patch
+locking-rtmutex-Acquire-the-hb-lock-via-trylock-afte.patch
 
 # Hacks to get ptrace to work.
 0001-signal-Add-proper-comment-about-the-preempt-disable-.patch
 0002-signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
 
-0003-ARM-vfp-Provide-vfp_lock-for-VFP-locking.patch
-0004-ARM-vfp-Use-vfp_lock-in-vfp_sync_hwstate.patch
-0005-ARM-vfp-Use-vfp_lock-in-vfp_entry.patch
 seqlock-Do-the-lockdep-annotation-before-locking-in-.patch
 mm-page_alloc-Use-write_seqlock_irqsave-instead-writ.patch
 
@@ -45,12 +40,23 @@ x86__Enable_RT_also_on_32bit.patch
 ###########################################################################
 # For later, not essencial
 ###########################################################################
+# Posted
+sched-rt-Don-t-try-push-tasks-if-there-are-none.patch
+x86-microcode-Remove-microcode_mutex.patch
+ASoC-mediatek-mt8186-Remove-unused-mutex.patch
+
+# Needs discussion first.
 softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
 rcutorture-Also-force-sched-priority-to-timersd-on-b.patch
 tick-Fix-timer-storm-since-introduction-of-timersd.patch
 softirq-Wake-ktimers-thread-also-in-softirq.patch
 zram-Replace-bit-spinlocks-with-spinlock_t-for-PREEM.patch
 preempt-Put-preempt_enable-within-an-instrumentation.patch
+
+# Sched
+0001-sched-core-Provide-a-method-to-check-if-a-task-is-PI.patch
+0002-softirq-Add-function-to-preempt-serving-softirqs.patch
+0003-time-Allow-to-preempt-after-a-callback.patch
 
 ###########################################################################
 # John's printk queue
@@ -114,6 +120,9 @@ ARM__enable_irq_in_translation_section_permission_fault_handlers.patch
 # arm64-signal-Use-ARCH_RT_DELAYS_SIGNAL_SEND.patch
 tty_serial_omap__Make_the_locking_RT_aware.patch
 tty_serial_pl011__Make_the_locking_work_on_RT.patch
+0003-ARM-vfp-Provide-vfp_lock-for-VFP-locking.patch
+0004-ARM-vfp-Use-vfp_lock-in-vfp_sync_hwstate.patch
+0005-ARM-vfp-Use-vfp_lock-in-vfp_entry.patch
 ARM__Allow_to_enable_RT.patch
 ARM64__Allow_to_enable_RT.patch
 

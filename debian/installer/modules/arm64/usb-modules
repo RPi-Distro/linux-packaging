@@ -12,3 +12,7 @@ typec
 
 # For USB on Renesas RZ/G2L-SMARC
 reset-rzg2l-usbphy-ctrl
+
+# Thinkpad X13s
+phy-qcom-snps-femto-v2
+gpio-sbu-mux

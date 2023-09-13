@@ -6,7 +6,7 @@ PROGS = \
 include $(top_rulesdir)/Makefile.inc
 
 objtool.real-%:
-	mkdir $*
+	mkdir -p $*
 # objtool always uses HOSTCC, HOSTLD, and HOSTAR; we need to override
 # these on the command line to make cross-builds work.  But it also
 # builds fixdep which still needs to be native in a cross-build.  Set

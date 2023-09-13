@@ -674,8 +674,8 @@ CONFIG_GPIO_EXAR=m
 # CONFIG_GPIO_GENERIC_PLATFORM is not set
 # CONFIG_GPIO_GRGPIO is not set
 # CONFIG_GPIO_MB86S7X is not set
-# CONFIG_GPIO_VX855 is not set
 # CONFIG_GPIO_XILINX is not set
+# CONFIG_GPIO_VX855 is not set
 # CONFIG_GPIO_104_IDIO_16 is not set
 # CONFIG_GPIO_IT87 is not set
 # CONFIG_GPIO_SCH311X is not set
@@ -2684,7 +2684,7 @@ CONFIG_SMS_USB_DRV=m
 ##
 ## file: drivers/media/usb/stk1160/Kconfig
 ##
-CONFIG_VIDEO_STK1160_COMMON=m
+CONFIG_VIDEO_STK1160=m
 
 ##
 ## file: drivers/media/usb/ttusb-budget/Kconfig
@@ -2806,7 +2806,8 @@ CONFIG_PCF50633_GPIO=m
 # CONFIG_MFD_RDC321X is not set
 # CONFIG_MFD_RT5033 is not set
 # CONFIG_MFD_RC5T583 is not set
-# CONFIG_MFD_RK808 is not set
+# CONFIG_MFD_RK8XX_I2C is not set
+# CONFIG_MFD_RK8XX_SPI is not set
 # CONFIG_MFD_RN5T618 is not set
 # CONFIG_MFD_SEC_CORE is not set
 # CONFIG_MFD_SI476X_CORE is not set
@@ -6687,6 +6688,12 @@ CONFIG_TEST_STATIC_KEYS=m
 # CONFIG_KASAN is not set
 
 ##
+## file: lib/Kconfig.kfence
+##
+CONFIG_KFENCE=y
+CONFIG_KFENCE_SAMPLE_INTERVAL=0
+
+##
 ## file: lib/Kconfig.kgdb
 ##
 # CONFIG_KGDB is not set
@@ -6740,7 +6747,7 @@ CONFIG_Z3FOLD=m
 CONFIG_ZSMALLOC=m
 # CONFIG_ZSMALLOC_STAT is not set
 ## choice: Choose SLAB allocator
-# CONFIG_SLAB is not set
+# CONFIG_SLAB_DEPRECATED is not set
 CONFIG_SLUB=y
 ## end choice
 CONFIG_SLAB_MERGE_DEFAULT=y
@@ -7673,6 +7680,7 @@ CONFIG_CFG80211_WEXT=y
 ## file: net/xdp/Kconfig
 ##
 CONFIG_XDP_SOCKETS=y
+CONFIG_XDP_SOCKETS_DIAG=m
 
 ##
 ## file: net/xfrm/Kconfig
