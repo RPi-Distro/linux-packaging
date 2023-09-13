@@ -1,4 +1,4 @@
-linux (6.5.3-1) UNRELEASED; urgency=medium
+linux (6.5.3-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.2
@@ -46,7 +46,7 @@ linux (6.5.3-1) UNRELEASED; urgency=medium
   * [arm*,ppc64*,sparc64,s390x] drivers/char/hw_random: Prevent some HW Random
     Number Generator drivers from being built-in
 
- -- Emanuele Rocca <ema@debian.org>  Thu, 07 Sep 2023 16:41:26 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 13 Sep 2023 22:20:48 +0200
 
 linux (6.5.1-1~exp1) experimental; urgency=medium
 
