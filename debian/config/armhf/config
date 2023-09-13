@@ -562,6 +562,7 @@ CONFIG_SENSORS_MAX31785=m
 ##
 ## file: drivers/hwspinlock/Kconfig
 ##
+CONFIG_HWSPINLOCK=y
 CONFIG_HWSPINLOCK_OMAP=m
 
 ##
