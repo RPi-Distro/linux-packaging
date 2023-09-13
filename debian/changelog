@@ -32,6 +32,7 @@ linux (6.5.3-1~exp1) UNRELEASED; urgency=medium
     SND_SOC_LPASS_WSA_MACRO, SND_SOC_LPASS_VA_MACRO, SND_SOC_LPASS_RX_MACRO,
     SND_SOC_LPASS_TX_MACRO, SND_SOC_QDSP6
     (Thanks Steve Capper!)
+  * [arm64] Add Thinkpad X13s modules to udebs
 
  -- Christian Göttsche <cgzones@googlemail.com>  Sun, 03 Sep 2023 18:23:17 +0200
 
