@@ -18,6 +18,7 @@ linux (6.5.3-1) UNRELEASED; urgency=medium
   * Refresh "radeon, amdgpu: Firmware is required for DRM and KMS on R600
     onward"
   * Set ABI to 1
+  * [rt] Update to 6.5.2-rt8
 
   [ Emanuele Rocca ]
   * [arm64] Add reset-rzg2l-usbphy-ctrl to usb-modules udeb in order to enable
