@@ -16,6 +16,9 @@ install-stem: vmlinuz
 hardware: Itanium (Merced)
 hardware-long: systems with original Itanium (Merced) processors
 
+[itanium_packages]
+installer: true
+
 [mckinley_description]
 hardware: Itanium 2+
 hardware-long: systems with Itanium 2 or 9300/9500/9700-series processors

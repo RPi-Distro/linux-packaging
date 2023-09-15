@@ -14,6 +14,9 @@ install-stem: vmlinuz
 hardware: sh7751r
 hardware-long: Renesas SH7751R R2D plus board
 
+[sh7751r_packages]
+installer: true
+
 [sh7785lcr_description]
 hardware: sh7785lcr
 hardware-long: Renesas SH7785 reference board
@@ -23,3 +26,5 @@ recommends: u-boot-tools
 # Kernel partition size: 4MB
 check-size: 4194304
 
+[sh7785lcr_packages]
+installer: true

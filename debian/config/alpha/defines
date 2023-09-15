@@ -14,6 +14,9 @@ install-stem: vmlinuz
 hardware: Alpha
 hardware-long: DEC Alpha systems with extended kernel start address (Wildfire, Titan, Marvel)
 
+[alpha-generic_packages]
+installer: true
+
 [alpha-smp_description]
 hardware: Alpha SMP
 hardware-long: DEC Alpha SMP systems with extended kernel start address (Wildfire, Titan, Marvel)

@@ -19,6 +19,9 @@ headers%gcc-13: linux-compiler-gcc-13-arm
 hardware: Marvell Kirkwood/Orion
 hardware-long: Marvell Kirkwood and Orion based systems (https://wiki.debian.org/ArmEabiPort#Supported_hardware)
 
+[marvell_packages]
+installer: true
+
 [rpi_description]
 hardware: Raspberry Pi Zero, Zero W and 1
 hardware-long: Raspberry Pi Zero, Zero W and 1 based systems

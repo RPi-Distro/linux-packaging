@@ -5,6 +5,9 @@ flavours:
 default-flavour: amd64
 quick-flavour: cloud-amd64
 
+[amd64_packages]
+installer: true
+
 [cloud-amd64_image]
 configs:
  config.cloud

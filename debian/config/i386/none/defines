@@ -3,3 +3,9 @@ flavours:
  686
  686-pae
 default-flavour: 686-pae
+
+[686_packages]
+installer: true
+
+[686-pae_packages]
+installer: true

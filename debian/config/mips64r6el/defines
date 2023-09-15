@@ -18,3 +18,5 @@ configs:
  kernelarch-mips/config.boston
  kernelarch-mips/config.mips64r6
 
+[mips64r6el_packages]
+installer: true

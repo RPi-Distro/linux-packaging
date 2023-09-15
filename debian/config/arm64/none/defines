@@ -5,6 +5,9 @@ flavours:
 default-flavour: arm64
 quick-flavour: cloud-arm64
 
+[arm64_packages]
+installer: true
+
 [cloud-arm64_image]
 configs:
  config.cloud

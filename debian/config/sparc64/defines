@@ -20,6 +20,9 @@ hardware: uniprocessor 64-bit UltraSPARC
 [sparc64_image]
 configs: kernelarch-sparc/config-up
 
+[sparc64_packages]
+installer: true
+
 [sparc64-smp_description]
 hardware: multiprocessor 64-bit UltraSPARC
 
