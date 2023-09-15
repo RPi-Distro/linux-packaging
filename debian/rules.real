@@ -476,27 +476,41 @@ binary_signed-template:
 		$(CODE_SIGNING_DIR)/source-template/debian/
 	+$(MAKE_SELF) install-base
 
-build_udeb:
-build_udeb_test:
+build_installer:
+build_installer-test:
 
-binary_udeb binary_udeb_test: export KW_DEFCONFIG_DIR=debian/installer
-binary_udeb binary_udeb_test: export KW_CONFIG_DIR=debian/installer
+binary_installer binary_installer-test: export KW_DEFCONFIG_DIR=debian/installer
+binary_installer binary_installer-test: export KW_CONFIG_DIR=debian/installer
+binary_installer binary_installer-test: export SOURCEDIR = $(BUILD_DIR)/install_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
+binary_installer binary_installer-test: REAL_VERSION = $(ABINAME)$(LOCALVERSION)
 
-binary_udeb:
+binary_installer: DH_OPTIONS_IMAGE = -p$(IMAGE_PACKAGE_NAME) --sourcedir=$(SOURCEDIR)
+binary_installer: $(STAMPS_DIR)/install_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 	dh_testdir
 	dh_prep
-	kernel-wedge install-files $(ABINAME)
-	kernel-wedge check $(PACKAGE_NAMES)
+	DH_OPTIONS="$(DH_OPTIONS_IMAGE)" dh_install boot/$(IMAGE_INSTALL_STEM)-$(REAL_VERSION)
+	DH_OPTIONS="$(DH_OPTIONS_IMAGE)" dh_install lib/modules/$(REAL_VERSION)/modules.builtin
+	DH_OPTIONS="$(DH_OPTIONS_IMAGE)" dh_install lib/modules/$(REAL_VERSION)/modules.order
+ifneq ($(filter arm64 armel armhf mipsel mips64el mipsr6 mipsr6el mips64r6 mips64r6el riscv64,$(ARCH)),)
+	DH_OPTIONS="$(DH_OPTIONS_IMAGE)" dh_install usr/lib/linux-image-$(REAL_VERSION)
+endif
+	kernel-wedge copy-modules $(ABINAME) $(FLAVOUR) $(REAL_VERSION)
+	kernel-wedge find-dups $(REAL_VERSION)
+	kernel-wedge find-unpackaged $(REAL_VERSION) $(REAL_VERSION)
+	kernel-wedge check $$(dh_listpackages)
 	dh_fixperms
 	dh_gencontrol
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-# Want only to run if all build profiles are fulfilled
-binary_udeb_test: DEB_BUILD_PROFILES += pkg.linux.udeb-unsigned-test-build
-binary_udeb_test:
+binary_installer-test: DEB_BUILD_PROFILES += pkg.linux.udeb-unsigned-test-build
+binary_installer-test:
 	if [ -n "$$(dh_listpackages)" ]; then \
-		kernel-wedge install-files $(ABINAME); \
-		kernel-wedge check $(PACKAGE_NAMES); \
+		dh_testdir; \
+		dh_prep; \
+		kernel-wedge copy-modules $(ABINAME) $(FLAVOUR) $(REAL_VERSION); \
+		kernel-wedge find-dups $(REAL_VERSION); \
+		kernel-wedge find-unpackaged $(REAL_VERSION) $(REAL_VERSION); \
+		kernel-wedge check $$(dh_listpackages); \
 	fi
 
 build_source:

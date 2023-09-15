@@ -8,6 +8,7 @@ import re
 import ssl
 import subprocess
 import sys
+import tempfile
 
 from debian_linux.config import ConfigCoreDump
 from debian_linux.debian import VersionLinux, BinaryPackage
@@ -72,8 +73,6 @@ class Gencontrol(Base):
             vars)
         makeflags['PACKAGE_VERSION'] = vars['imagebinaryversion']
 
-        self.installer_packages = {}
-
         if os.getenv('DEBIAN_KERNEL_DISABLE_INSTALLER'):
             if self.changelog[0].distribution == 'UNRELEASED':
                 import warnings
@@ -83,28 +82,9 @@ class Gencontrol(Base):
                 raise RuntimeError(
                     'Unable to disable installer modules in release build '
                     '(DEBIAN_KERNEL_DISABLE_INSTALLER set)')
-        elif self.config.merge('packages').get('installer', True):
-            # Add udebs using kernel-wedge
-            kw_env = os.environ.copy()
-            kw_env['KW_DEFCONFIG_DIR'] = 'debian/installer'
-            kw_env['KW_CONFIG_DIR'] = 'debian/installer'
-            kw_proc = subprocess.Popen(
-                ['kernel-wedge', 'gen-control', vars['abiname']],
-                stdout=subprocess.PIPE,
-                text=True,
-                env=kw_env)
-            udeb_packages = BinaryPackage.read_rfc822(kw_proc.stdout)
-            kw_proc.wait()
-            if kw_proc.returncode != 0:
-                raise RuntimeError('kernel-wedge exited with code %d' %
-                                   kw_proc.returncode)
-
-            for package in udeb_packages:
-                for arch in package['Architecture']:
-                    if self.config.merge('build', arch) \
-                                  .get('signed-code', False):
-                        self.installer_packages.setdefault(arch, []) \
-                                               .append(package)
+            self.disable_installer = True
+        else:
+            self.disable_installer = False
 
     def do_main_packages(self, vars, makeflags, extra):
         # Assume that arch:all packages do not get binNMU'd
@@ -127,20 +107,7 @@ class Gencontrol(Base):
             self.config['version', ]['abiname_base'] + abiname_part
 
     def do_arch_packages(self, arch, vars, makeflags, extra):
-        udeb_packages = self.installer_packages.get(arch, [])
-
-        if udeb_packages:
-            makeflags_local = makeflags.copy()
-            makeflags_local['PACKAGE_NAMES'] = ' '.join(p['Package'] for p in udeb_packages)
-
-            for package in udeb_packages:
-                package.meta['rules-target'] = 'udeb'
-
-            self.bundle.add_packages(
-                udeb_packages,
-                (arch, 'real'),
-                makeflags_local, arch=arch,
-            )
+        pass
 
     def do_featureset_setup(self, vars, makeflags, arch, featureset, extra):
         self.default_flavour = self.config.merge('base', arch, featureset) \
@@ -180,6 +147,7 @@ class Gencontrol(Base):
         ruleid = (arch, featureset, flavour, 'real')
 
         config_build = self.config.merge('build', arch, featureset, flavour)
+        config_entry_packages = self.config.merge('packages', arch, featureset, flavour)
         if not config_build.get('signed-code', False):
             return
 
@@ -234,6 +202,46 @@ class Gencontrol(Base):
                                 .append('linux-headers-generic')
 
             packages_own.extend(packages_meta)
+
+        if not self.disable_installer and config_entry_packages.get('installer'):
+            with tempfile.TemporaryDirectory(prefix='linux-gencontrol') as config_dir:
+                base_path = pathlib.Path('debian/installer').absolute()
+                config_path = pathlib.Path(config_dir)
+                (config_path / 'modules').symlink_to(base_path / 'modules')
+                (config_path / 'package-list').symlink_to(base_path / 'package-list')
+
+                with (config_path / 'kernel-versions').open('w') as versions:
+                    versions.write(f'{arch} - {vars["flavour"]} - - -\n')
+
+                # Add udebs using kernel-wedge
+                kw_env = os.environ.copy()
+                kw_env['KW_DEFCONFIG_DIR'] = config_dir
+                kw_env['KW_CONFIG_DIR'] = config_dir
+                kw_proc = subprocess.Popen(
+                    ['kernel-wedge', 'gen-control', vars['abiname']],
+                    stdout=subprocess.PIPE,
+                    text=True,
+                    env=kw_env)
+                udeb_packages = BinaryPackage.read_rfc822(kw_proc.stdout)
+                kw_proc.wait()
+                if kw_proc.returncode != 0:
+                    raise RuntimeError('kernel-wedge exited with code %d' %
+                                       kw_proc.returncode)
+
+            for package in udeb_packages:
+                # kernel-wedge currently chokes on Build-Profiles so add it now
+                package['Build-Profiles'] = (
+                    '<!noudeb !stage1 !pkg.linux.nokernel !pkg.linux.quick>')
+                package.meta['rules-target'] = 'installer'
+
+            makeflags_local = makeflags.copy()
+            makeflags_local['IMAGE_PACKAGE_NAME'] = udeb_packages[0]['Package']
+
+            self.bundle.add_packages(
+                udeb_packages,
+                (arch, featureset, flavour, 'real'),
+                makeflags_local, arch=arch,
+            )
 
     def write(self):
         self.bundle.extract_makefile()
