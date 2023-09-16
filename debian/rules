@@ -124,7 +124,7 @@ clean: debian/control
 
 CONTROL_FILES = $(BUILD_DIR)/version-info $(wildcard debian/templates/*.in)
 CONTROL_FILES += debian/config/defines $(wildcard debian/config/*/defines) $(wildcard debian/config/*/*/defines)
-CONTROL_FILES += debian/installer/kernel-versions debian/installer/package-list
+CONTROL_FILES += debian/installer/package-list
 
 # debian/bin/gencontrol.py uses debian/changelog as input, but the
 # output only depends on the source name and version.  To avoid
