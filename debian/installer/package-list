@@ -42,7 +42,7 @@ Description: Wireless NIC drivers
  Includes crypto modules only needed for wireless (WEP, WPA).
 
 Package: nic-shared-modules
-Depends: kernel-image
+Depends: kernel-image, crc-modules
 Depends_alpha: i2c-modules
 Depends_hppa: i2c-modules
 Depends_ia64: i2c-modules
