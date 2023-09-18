@@ -29,9 +29,6 @@ class Gencontrol(Base):
     tests_control_headers: TestsControl | None
 
     config_schema = {
-        'abi': {
-            'ignore-changes': config.SchemaItemList(),
-        },
         'build': {
             'signed-code': config.SchemaItemBoolean(),
             'vdso': config.SchemaItemBoolean(),
