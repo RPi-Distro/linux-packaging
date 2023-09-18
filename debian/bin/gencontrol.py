@@ -97,7 +97,7 @@ class Gencontrol(Base):
         makeflags.update({
             'VERSION': self.version.linux_version,
             'UPSTREAMVERSION': self.version.linux_upstream,
-            'ABINAME': self.abiname_version + self.abiname_part,
+            'ABINAME': self.abiname,
             'SOURCEVERSION': self.version.complete,
         })
         makeflags['SOURCE_BASENAME'] = vars['source_basename']
@@ -198,13 +198,6 @@ class Gencontrol(Base):
             vars['gnu-type-package'] = gnu_type.strip().replace('_', '-')
 
     def do_arch_packages(self, arch, vars, makeflags) -> None:
-        try:
-            abiname_part = '-%s' % self.config['abi', arch]['abiname']
-        except KeyError:
-            abiname_part = self.abiname_part
-        makeflags['ABINAME'] = vars['abiname'] = \
-            self.abiname_version + abiname_part
-
         if not self.disable_signed:
             build_signed = self.config.merge('build', arch) \
                                       .get('signed-code', False)
@@ -640,11 +633,16 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
 
     def process_changelog(self) -> None:
         version = self.version = self.changelog[0].version
-        self.abiname_part = '-%s' % self.config['abi', ]['abiname']
-        # We need to keep at least three version components to avoid
-        # userland breakage (e.g. #742226, #745984).
-        self.abiname_version = re.sub(r'^(\d+\.\d+)(?=-|$)', r'\1.0',
-                                      self.version.linux_version)
+
+        if self.changelog[0].distribution == 'UNRELEASED':
+            self.abiname = f'{version.linux_upstream}+unreleased'
+        elif self.changelog[0].distribution == 'experimental':
+            self.abiname = f'{version.linux_upstream}'
+        elif version.linux_revision_backports:
+            self.abiname = f'{version.linux_upstream_full}+bpo'
+        else:
+            self.abiname = f'{version.linux_upstream_full}'
+
         self.vars = {
             'upstreamversion': self.version.linux_upstream,
             'version': self.version.linux_version,
@@ -653,15 +651,14 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                                       self.changelog[0].source),
             'source_upstream': self.version.upstream,
             'source_package': self.changelog[0].source,
-            'abiname': self.abiname_version + self.abiname_part,
+            'abiname': self.abiname,
         }
         self.vars['source_suffix'] = \
             self.changelog[0].source[len(self.vars['source_basename']):]
         self.config['version', ] = {'source': self.version.complete,
                                     'upstream': self.version.linux_upstream,
-                                    'abiname_base': self.abiname_version,
-                                    'abiname': (self.abiname_version
-                                                + self.abiname_part)}
+                                    'abiname_base': self.abiname,
+                                    'abiname': self.abiname}
 
         distribution = self.changelog[0].distribution
         if distribution in ('unstable', ):
