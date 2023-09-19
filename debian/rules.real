@@ -410,22 +410,6 @@ ifneq ($(filter arm64 armel armhf mipsel mips64el mipsr6 mipsr6el mips64r6 mips6
 	# dtbs_install sets the executable bit on dtb[o] files, which they shouldn't have
 	find $(DT_INSTALL_DIR) -type f \( -name '*.dtb' -o -name '*.dtbo' \) -exec chmod 644 {} \;
 endif
-ifneq ($(filter powerpc ppc64,$(ARCH)),)
-# Install wrapper code and DT source, but not the wrapper script or
-# the executables it calls.  Kbuild will always build these executable
-# as native code, which is wrong for a cross-built package.  Install
-# symlinks to the versions in the linux-bootwrapper package instead.
-	rm -rf '$(BUILD_DIR)/bootwrapper_$(ARCH)_$(FEATURESET)_$(FLAVOUR)'
-	+$(MAKE_CLEAN) -C '$(DIR)' bootwrapper_install DESTDIR= \
-		WRAPPER_OBJDIR='$(DT_INSTALL_DIR)' \
-		WRAPPER_DTSDIR='$(DT_INSTALL_DIR)/dts' \
-		WRAPPER_BINDIR='$(CURDIR)/$(BUILD_DIR)/bootwrapper_$(ARCH)_$(FEATURESET)_$(FLAVOUR)'
-	for prog in '$(BUILD_DIR)/bootwrapper_$(ARCH)_$(FEATURESET)_$(FLAVOUR)'/*; do \
-		prog="$$(basename $$prog)"; \
-		ln -s ../linux-bootwrapper-$(ABINAME)/$$prog \
-			'$(DT_INSTALL_DIR)'/$$prog; \
-	done
-endif
 
 binary_image_bug:
 	dh_installdirs usr/share/bug/$(PACKAGE_NAME)
@@ -708,25 +692,6 @@ endif
 			|| break; \
 	done
 	dh_installudev
-	dh_lintian
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb -- $(BUILDDEB_ARGS)
-
-build_bootwrapper: $(STAMPS_DIR)/build-tools-headers
-	$(call make-tools,arch/powerpc/boot)
-
-binary_bootwrapper: build_bootwrapper
-	dh_testdir
-	dh_testroot
-	dh_prep
-	$(call make-tools,arch/powerpc/boot) install installdir=/usr/lib/$(PACKAGE_NAME)
-	dh_installchangelogs
 	dh_lintian
 	dh_strip
 	dh_compress
