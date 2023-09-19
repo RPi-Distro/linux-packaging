@@ -772,6 +772,9 @@ linux (6.5.6-1) UNRELEASED; urgency=medium
   * [x86] drivers/platform/x86: Enable SYSTEM76_ACPI as module
     (Closes: #1050996)
 
+  [ Emanuele Rocca ]
+  * [arm64] Add qrtr to kernel-image udeb, needed by Lenovo Thinkpad X13s.
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 20 Sep 2023 21:51:47 +0200
 
 linux (6.5.3-1) unstable; urgency=medium
