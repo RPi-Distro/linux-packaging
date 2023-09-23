@@ -20,6 +20,9 @@ configs:
  kernelarch-mips/config.malta
  kernelarch-mips/config.mips64r2
 
+[5kc-malta_packages]
+installer: true
+
 [mips64r2eb_description]
 hardware: MIPS Generic (mips64r2eb)
 hardware-long: MIPS Generic platform (mips64r2eb)
@@ -28,6 +31,9 @@ hardware-long: MIPS Generic platform (mips64r2eb)
 configs:
  kernelarch-mips/config.boston
  kernelarch-mips/config.mips64r2
+
+[mips64r2eb_packages]
+installer: true
 
 [octeon_description]
 hardware: Octeon
@@ -39,3 +45,6 @@ image-file: vmlinux
 [octeon_image]
 install-stem: vmlinux
 configs: kernelarch-mips/config.octeon
+
+[octeon_packages]
+installer: true

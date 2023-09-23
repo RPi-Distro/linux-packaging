@@ -17,3 +17,6 @@ headers%gcc-13: linux-compiler-gcc-13-s390
 
 [s390x_description]
 hardware: IBM zSeries
+
+[s390x_packages]
+installer: true

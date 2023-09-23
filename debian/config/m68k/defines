@@ -14,3 +14,6 @@ install-stem: vmlinux
 
 [m68k_description]
 hardware: Motorola MC68020+ family
+
+[m68k_packages]
+installer: true
