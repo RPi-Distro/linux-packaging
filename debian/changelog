@@ -471,6 +471,8 @@ linux (6.5.5-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 2
+  * [rt] Drop "kernel/fork: beware of __put_task_struct calling context"
+    (applied upstream)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 20 Sep 2023 21:51:47 +0200
 
