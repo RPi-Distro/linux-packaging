@@ -27,6 +27,10 @@ linux (6.6.5-1~exp1) UNRELEASED; urgency=medium
     - drivers/hwtracing/stm: Enable STM_SOURCE_FTRACE as module
     - drivers/hwtracing/intel_th: Enable INTEL_TH_STH as module
 
+  [ Jair Gonzalez ]
+  * [amd64] drivers/platform/x86/intel: Enable INTEL_TPMI (Topology Aware
+    Register and PM Capsule Interface).
+
  -- Bastian Blank <waldi@debian.org>  Thu, 07 Dec 2023 19:44:53 +0100
 
 linux (6.6.4-1~exp1) experimental; urgency=medium
