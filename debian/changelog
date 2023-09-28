@@ -30,6 +30,9 @@ linux (6.6.5-1~exp1) UNRELEASED; urgency=medium
   [ Jair Gonzalez ]
   * [amd64] drivers/platform/x86/intel: Enable INTEL_TPMI (Topology Aware
     Register and PM Capsule Interface).
+  * [amd64] drivers/powercap/Kconfig: Enable INTEL_RAPL_TPMI (Running Average
+    Power Limit Energy Reporting via the Topology Aware Register and PM
+    Capsule Interface) (Closes: #1053187).
 
  -- Bastian Blank <waldi@debian.org>  Thu, 07 Dec 2023 19:44:53 +0100
 
