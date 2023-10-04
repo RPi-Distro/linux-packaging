@@ -1,11 +1,9 @@
 #!/usr/bin/python3
 
-import hashlib
 import json
 import os.path
 import pathlib
 import re
-import ssl
 import subprocess
 import sys
 import tempfile
@@ -167,9 +165,7 @@ class Gencontrol(Base):
             kconfig = f.readlines()
         assert 'CONFIG_EFI_STUB=y\n' in kconfig
         assert 'CONFIG_LOCK_DOWN_IN_EFI_SECURE_BOOT=y\n' in kconfig
-        cert_file_name = config_build['trusted-certs']
-        self.image_packages.append((image_suffix, image_package_name,
-                                    cert_file_name))
+        self.image_packages.append((image_suffix, image_package_name))
 
         self.packages['source']['Build-Depends'].append(
             image_package_name
@@ -283,49 +279,14 @@ linux-signed@source_suffix@-@arch@ (@signedsourceversion@) @distribution@; urgen
                     f.write(d)
 
     def write_files_json(self):
-        # Can't raise from a lambda function :-(
-        def raise_func(e):
-            raise e
-
-        # Some functions in openssl work with multiple concatenated
-        # PEM-format certificates, but others do not.
-        def get_certs(file_name):
-            certs = []
-            BEGIN, MIDDLE = 0, 1
-            state = BEGIN
-            with open(file_name) as f:
-                for line in f:
-                    if line == '-----BEGIN CERTIFICATE-----\n':
-                        assert state == BEGIN
-                        certs.append([])
-                        state = MIDDLE
-                    elif line == '-----END CERTIFICATE-----\n':
-                        assert state == MIDDLE
-                        state = BEGIN
-                    else:
-                        assert line[0] != '-'
-                        assert state == MIDDLE
-                    certs[-1].append(line)
-            assert state == BEGIN
-            return [''.join(cert_lines) for cert_lines in certs]
-
-        def get_cert_fingerprint(cert, algo):
-            hasher = hashlib.new(algo)
-            hasher.update(ssl.PEM_cert_to_DER_cert(cert))
-            return hasher.hexdigest()
-
         all_files = {'packages': {}}
 
-        for image_suffix, image_package_name, cert_file_name in \
-                self.image_packages:
+        for image_suffix, image_package_name in self.image_packages:
             package_files = []
             package_files.append({'sig_type': 'efi',
                                   'file': 'boot/vmlinuz-%s' % image_suffix})
-            package_certs = [get_cert_fingerprint(cert, 'sha256')
-                             for cert in get_certs(cert_file_name)]
-            assert len(package_certs) >= 1
             all_files['packages'][image_package_name] = {
-                'trusted_certs': package_certs,
+                'trusted_certs': [],
                 'files': package_files
             }
 
