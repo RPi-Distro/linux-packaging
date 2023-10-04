@@ -473,7 +473,6 @@ binary_signed-template:
 		debian/signing_templates/README.source \
 		debian/signing_templates/rules \
 		debian/signing_templates/rules.real \
-		debian/signing_templates/sign-file-attach \
 		debian/signing_templates/source \
 		$(CODE_SIGNING_DIR)/source-template/debian/
 	+$(MAKE_SELF) install-base
