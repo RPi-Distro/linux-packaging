@@ -14,6 +14,10 @@ linux (6.6.4-1~exp1) UNRELEASED; urgency=medium
   * [powerpc] Don't clobber f0/vs0 during fp|altivec register save
     (Closes: #1032104)
 
+  [ Johannes Schauer Marin Rodrigues ]
+  * Fix FTCBFS: Pass _PYTHON_SYSCONFIGDATA_NAME to the perf build.
+    (Closes: #1037938) Thanks to Helmut Grohne for the patch.
+
  -- Bastian Blank <waldi@debian.org>  Sun, 03 Dec 2023 09:57:46 +0100
 
 linux (6.6.3-1~exp1) experimental; urgency=medium
