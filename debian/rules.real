@@ -422,7 +422,21 @@ binary_image-dbg: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 	dh_installdirs usr/lib/debug usr/lib/debug/boot usr/share/lintian/overrides/
 	install -m644 $(DIR)/vmlinux $(DEBUG_DIR)/boot/vmlinux-$(REAL_VERSION)
 	install -m644 $(DIR)/System.map $(DEBUG_DIR)/boot/System.map-$(REAL_VERSION)
-	+$(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH=$(DEBUG_DIR)
+
+# cmd_sign=: Don't sign modules
+	+$(MAKE_CLEAN) -C $(DIR) modules_install \
+		cmd_sign= \
+		DEPMOD='$(CURDIR)/debian/bin/no-depmod' \
+		INSTALL_MOD_PATH=$(DEBUG_DIR)
+
+# Verify we don't have any signed modules installed
+	@if find $(DEBUG_DIR)/lib/modules/$(REAL_VERSION) -name '*.ko' | xargs grep -q '~Module signature appended~'; then \
+		echo; \
+		echo 'Signed modules to be installed into debug package $(PACKAGE_NAME)'; \
+		echo; \
+		exit 1; \
+	fi
+
 	find $(DEBUG_DIR)/lib/modules/$(REAL_VERSION)/ -mindepth 1 -maxdepth 1 \! -name kernel -exec rm {} \+
 	rm $(DEBUG_DIR)/lib/firmware -rf
 ifeq ($(VDSO),True)
