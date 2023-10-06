@@ -10,6 +10,8 @@ linux (6.5.3-2) UNRELEASED; urgency=medium
 
   [ Emanuele Rocca ]
   * [arm64] Add qrtr to kernel-image udeb, needed by Lenovo Thinkpad X13s.
+  * [arm64] Enable support for Renesas RZ/G2UL (ARCH_R9A07G043), RZ/V2L
+    (ARCH_R9A07G054), and RZ/V2M (ARCH_R9A09G011). (Closes: #1053503)
 
  -- Vincent Blut <vincent.debian@free.fr>  Thu, 14 Sep 2023 13:53:48 +0200
 
