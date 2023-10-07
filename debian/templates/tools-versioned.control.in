@@ -1,6 +1,6 @@
 Package: linux-kbuild-@abiname@
 Meta-Rules-Target: kbuild
-Build-Profiles: <!stage1 !pkg.linux.notools>
+Build-Profiles: <!pkg.linux.notools>
 Architecture: linux-any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Multi-Arch: foreign

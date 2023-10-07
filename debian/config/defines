@@ -167,7 +167,7 @@ recommends: apparmor
 
 [relations]
 # compilers
-gcc-13: gcc-13 <!stage1 !cross !pkg.linux.nokernel>, gcc-13-@gnu-type-package@ <!stage1 cross !pkg.linux.nokernel>
+gcc-13: gcc-13 <!cross !pkg.linux.nokernel>, gcc-13-@gnu-type-package@ <cross !pkg.linux.nokernel>
 
 # initramfs-generators
 initramfs-fallback: linux-initramfs-tool
