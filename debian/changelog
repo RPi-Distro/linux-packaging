@@ -1,4 +1,4 @@
-linux (6.5.6-1) UNRELEASED; urgency=medium
+linux (6.5.6-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.4
@@ -775,7 +775,7 @@ linux (6.5.6-1) UNRELEASED; urgency=medium
   [ Emanuele Rocca ]
   * [arm64] Add qrtr to kernel-image udeb, needed by Lenovo Thinkpad X13s.
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 20 Sep 2023 21:51:47 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 07 Oct 2023 11:36:46 +0200
 
 linux (6.5.3-1) unstable; urgency=medium
 
