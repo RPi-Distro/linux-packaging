@@ -516,8 +516,6 @@ class Gencontrol(Base):
                                     arch, featureset, flavour))
         makeflags['KCONFIG'] = ' '.join(kconfig)
         makeflags['KCONFIG_OPTIONS'] = ''
-        if build_signed:
-            makeflags['KCONFIG_OPTIONS'] += ' -o SECURITY_LOCKDOWN_LSM=y -o MODULE_SIG=y'
         # Add "salt" to fix #872263
         makeflags['KCONFIG_OPTIONS'] += \
             ' -o "BUILD_SALT=\\"%(abiname)s%(localversion)s\\""' % vars
