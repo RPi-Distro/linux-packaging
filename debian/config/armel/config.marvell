@@ -718,11 +718,6 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
 # CONFIG_BPF_JIT is not set
 
 ##
-## file: kernel/module/Kconfig
-##
-# CONFIG_MODULE_SIG is not set
-
-##
 ## file: kernel/power/Kconfig
 ##
 # CONFIG_SUSPEND is not set
