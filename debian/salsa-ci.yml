@@ -82,11 +82,6 @@ extract-source:
     - sed -i -e '1 s/) [^;]*/+salsaci) UNRELEASED/' debian/changelog
     - version=${version}+salsaci
 
-    # Change trusted signing certificate to the one we will use
-    - |
-      sed -i -e 's|^trusted-certs:.*|trusted-certs: debian/certs/ci-test-sign/ci-test-sign.pem|' \
-        debian/config/defines
-
     # Run gencontrol.py
     # - create temporary log
     - log="$(mktemp)"

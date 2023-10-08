@@ -190,18 +190,6 @@ ifeq ($(IMAGE_FILE),vmlinux)
 	$(CROSS_COMPILE)strip --strip-debug $(INSTALL_DIR)/boot/$(IMAGE_INSTALL_STEM)-$(REAL_VERSION)
 endif
 	+$(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH='$(CURDIR)/$(INSTALL_DIR)' INSTALL_MOD_STRIP=1
-ifeq ($(call if_package,linux-image-$(ABINAME)$(LOCALVERSION)-dbg,y),y)
-# We are building debug info, so add debug links
-	set -o pipefail; \
-	find $(INSTALL_DIR) -name '*.ko' | sed 's|$(INSTALL_DIR)/lib/modules/$(REAL_VERSION)/kernel/||' | while read module ; do \
-	  $(CROSS_COMPILE)objcopy --add-gnu-debuglink=$(DIR)/$$module $(INSTALL_DIR)/lib/modules/$(REAL_VERSION)/kernel/$$module || exit; \
-	done
-# stripping the modules removes signatures as well - if automated signing is enabled with
-# an ephemeral key, re-do the sign step
-	+if grep -qs '^CONFIG_MODULE_SIG_ALL=y' $(DIR)/.config; then \
-		$(MAKE_CLEAN) -C $(DIR) modules_sign INSTALL_MOD_PATH=$(DESTDIR); \
-	fi
-endif
 ifneq ($(filter arm64 armel armhf mipsel mips64el mipsr6 mipsr6el mips64r6 mips64r6el riscv64,$(ARCH)),)
 	+$(MAKE_CLEAN) -C $(DIR) dtbs
 	+$(MAKE_CLEAN) -C $(DIR) dtbs_install INSTALL_DTBS_PATH='$(CURDIR)/$(DT_INSTALL_DIR)'
@@ -434,7 +422,21 @@ binary_image-dbg: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 	dh_installdirs usr/lib/debug usr/lib/debug/boot usr/share/lintian/overrides/
 	install -m644 $(DIR)/vmlinux $(DEBUG_DIR)/boot/vmlinux-$(REAL_VERSION)
 	install -m644 $(DIR)/System.map $(DEBUG_DIR)/boot/System.map-$(REAL_VERSION)
-	+$(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH=$(DEBUG_DIR)
+
+# cmd_sign=: Don't sign modules
+	+$(MAKE_CLEAN) -C $(DIR) modules_install \
+		cmd_sign= \
+		DEPMOD='$(CURDIR)/debian/bin/no-depmod' \
+		INSTALL_MOD_PATH=$(DEBUG_DIR)
+
+# Verify we don't have any signed modules installed
+	@if find $(DEBUG_DIR)/lib/modules/$(REAL_VERSION) -name '*.ko' | xargs grep -q '~Module signature appended~'; then \
+		echo; \
+		echo 'Signed modules to be installed into debug package $(PACKAGE_NAME)'; \
+		echo; \
+		exit 1; \
+	fi
+
 	find $(DEBUG_DIR)/lib/modules/$(REAL_VERSION)/ -mindepth 1 -maxdepth 1 \! -name kernel -exec rm {} \+
 	rm $(DEBUG_DIR)/lib/firmware -rf
 ifeq ($(VDSO),True)
@@ -471,7 +473,6 @@ binary_signed-template:
 		debian/signing_templates/README.source \
 		debian/signing_templates/rules \
 		debian/signing_templates/rules.real \
-		debian/signing_templates/sign-file-attach \
 		debian/signing_templates/source \
 		$(CODE_SIGNING_DIR)/source-template/debian/
 	+$(MAKE_SELF) install-base
