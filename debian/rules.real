@@ -424,8 +424,10 @@ binary_image-dbg: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 	install -m644 $(DIR)/System.map $(DEBUG_DIR)/boot/System.map-$(REAL_VERSION)
 
 # cmd_sign=: Don't sign modules
+# suffix-y=: Don't compress modules
 	+$(MAKE_CLEAN) -C $(DIR) modules_install \
 		cmd_sign= \
+		suffix-y= \
 		DEPMOD='$(CURDIR)/debian/bin/no-depmod' \
 		INSTALL_MOD_PATH=$(DEBUG_DIR)
 
@@ -433,6 +435,14 @@ binary_image-dbg: $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)
 	@if find $(DEBUG_DIR)/lib/modules/$(REAL_VERSION) -name '*.ko' | xargs grep -q '~Module signature appended~'; then \
 		echo; \
 		echo 'Signed modules to be installed into debug package $(PACKAGE_NAME)'; \
+		echo; \
+		exit 1; \
+	fi
+
+# Verify we don't have any compressed modules installed
+	@if ! find $(DEBUG_DIR)/lib/modules/$(REAL_VERSION) -name '*.ko.*' -exec false {} +; then \
+		echo; \
+		echo 'Compressed modules to be installed into debug package $(PACKAGE_NAME)'; \
 		echo; \
 		exit 1; \
 	fi
