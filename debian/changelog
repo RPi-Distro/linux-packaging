@@ -1,3 +1,156 @@
+linux (6.5.7-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.7
+    - ASoC: soc-utils: Export snd_soc_dai_is_dummy() symbol
+    - maple_tree: add mas_is_active() to detect in-tree walks
+    - mptcp: Remove unnecessary test for __mptcp_init_sock()
+    - mptcp: rename timer related helper to less confusing names
+    - mptcp: fix dangling connection hang-up
+    - scsi: core: Improve type safety of scsi_rescan_device()
+    - scsi: Do not attempt to rescan suspended devices
+    - ata: libata-scsi: Fix delayed scsi_rescan_device() execution
+    - btrfs: remove btrfs_writepage_endio_finish_ordered
+    - btrfs: remove end_extent_writepage
+    - btrfs: don't clear uptodate on write errors
+    - [arm64] add HWCAP for FEAT_HBC (hinted conditional branches)
+    - [arm64] cpufeature: Fix CLRBHB and BC detection
+    - net: add sysctl accept_ra_min_rtr_lft
+    - net: change accept_ra_min_rtr_lft to affect all RA lifetimes
+    - net: release reference to inet6_dev pointer
+    - [arm64] iommu/arm-smmu-v3: Avoid constructing invalid range commands
+    - maple_tree: reduce resets during store setup
+    - maple_tree: add MAS_UNDERFLOW and MAS_OVERFLOW states
+    - scsi: zfcp: Fix a double put in zfcp_port_enqueue()
+    - [amd64] iommu/vt-d: Avoid memory allocation in iommu_suspend()
+    - net: mana: Fix TX CQE error handling
+    - mptcp: fix delegated action races
+    - mptcp: userspace pm allow creating id 0 subflow
+    - Bluetooth: hci_codec: Fix leaking content of local_codecs
+    - wifi: brcmfmac: Replace 1-element arrays with flexible arrays
+    - Bluetooth: hci_sync: Fix handling of HCI_QUIRK_STRICT_DUPLICATE_FILTER
+    - wifi: rtw88: rtw8723d: Fix MAC address offset in EEPROM
+    - wifi: mwifiex: Fix tlv_buf_left calculation
+    - io_uring: don't allow IORING_SETUP_NO_MMAP rings on highmem pages
+    - md/raid5: release batch_last before waiting for another stripe_head
+    - PCI/PM: Mark devices disconnected if upstream PCIe link is down on resume
+    - PCI: qcom: Fix IPQ8074 enumeration
+    - [x86] platform/x86/intel/ifs: release cpus_read_lock()
+    - net: replace calls to sock->ops->connect() with kernel_connect()
+    - io_uring/kbuf: don't allow registered buffer rings on highmem pages
+    - io_uring: ensure io_lockdep_assert_cq_locked() handles disabled rings
+    - btrfs: always print transaction aborted messages with an error level
+    - net: prevent rewrite of msg_name in sock_sendmsg()
+    - [x86] drm/i915: Don't set PIPE_CONTROL_FLUSH_L3 for aux inval
+    - drm/amd: Fix detection of _PR3 on the PCIe root port
+    - drm/amd: Fix logic error in sienna_cichlid_update_pcie_parameters()
+    - [arm64] Add Cortex-A520 CPU part definition
+    - [arm64] errata: Add Cortex-A520 speculative unprivileged load workaround
+    - HID: sony: Fix a potential memory leak in sony_probe()
+    - wifi: mt76: fix lock dependency problem for wed_lock
+    - ubi: Refuse attaching if mtd's erasesize is 0
+    - erofs: fix memory leak of LZMA global compressed deduplication
+    - wifi: cfg80211/mac80211: hold link BSSes when assoc fails for MLO
+      connection
+    - iwlwifi: mvm: handle PS changes in vif_cfg_changed
+    - wifi: iwlwifi: dbg_ini: fix structure packing
+    - wifi: iwlwifi: mvm: Fix a memory corruption issue
+    - wifi: cfg80211: fix cqm_config access race
+    - wifi: cfg80211: add missing kernel-doc for cqm_rssi_work
+    - wifi: mac80211: fix mesh id corruption on 32 bit systems
+    - wifi: mwifiex: Fix oob check condition in mwifiex_process_rx_packet
+    - HID: nvidia-shield: add LEDS_CLASS dependency
+    - erofs: allow empty device tags in flatdev mode
+    - [s390x] bpf: Let arch_prepare_bpf_trampoline return program size
+    - leds: Drop BUG_ON check for LED_COLOR_ID_MULTI
+    - bpf: Fix tr dereferencing
+    - bpf: unconditionally reset backtrack_state masks on global func exit
+    - regulator: mt6358: split ops for buck and linear range LDO regulators
+    - Bluetooth: Delete unused hci_req_prepare_suspend() declaration
+    - Bluetooth: Fix hci_link_tx_to RCU lock usage
+    - Bluetooth: ISO: Fix handling of listen for unicast
+    - drivers/net: process the result of hdlc_open() and add call of
+      hdlc_close() in uhdlc_close()
+    - wifi: mt76: mt76x02: fix MT76x0 external LNA gain handling
+    - [x86] perf/x86/amd/core: Fix overflow reset on hotplug
+    - regmap: rbtree: Fix wrong register marked as in-cache when creating new
+      node
+    - wifi: mac80211: fix potential key use-after-free
+    - [x86] perf/x86/amd: Do not WARN() on every IRQ
+    - wifi: mac80211: Create resources for disabled links
+    - regulator/core: regulator_register: set device->class earlier
+    - wifi: iwlwifi: mvm: Fix incorrect usage of scan API
+    - scsi: target: core: Fix deadlock due to recursive locking
+    - NFSv4: Fix a nfs4_state_manager() race
+    - ice: always add legacy 32byte RXDID in supported_rxdids
+    - bpf: tcp_read_skb needs to pop skb regardless of seq
+    - bpf, sockmap: Do not inc copied_seq when PEEK flag set
+    - bpf, sockmap: Reject sk_msg egress redirects to non-TCP sockets
+    - modpost: add missing else to the "of" check
+    - net: stmmac: platform: fix the incorrect parameter
+    - net: fix possible store tearing in neigh_periodic_work()
+    - neighbour: fix data-races around n->output
+    - ipv4, ipv6: Fix handling of transhdrlen in __ip{,6}_append_data()
+    - ptp: ocp: Fix error handling in ptp_ocp_device_init
+    - net: dsa: mv88e6xxx: Avoid EEPROM timeout when EEPROM is absent
+    - ovl: move freeing ovl_entry past rcu delay
+    - ovl: fetch inode once in ovl_dentry_revalidate_common()
+    - ipv6: tcp: add a missing nf_reset_ct() in 3WHS handling
+    - net: usb: smsc75xx: Fix uninit-value access in __smsc75xx_read_reg
+    - ethtool: plca: fix plca enable data type while parsing the value
+    - net: nfc: llcp: Add lock when modifying device list
+    - [arm64] net: ethernet: ti: am65-cpsw: Fix error code in
+      am65_cpsw_nuss_init_tx_chns()
+    - ibmveth: Remove condition to recompute TCP header checksum.
+    - netfilter: nft_payload: rebuild vlan header on h_proto access
+    - netfilter: handle the connecting collision properly in
+      nf_conntrack_proto_sctp
+    - selftests: netfilter: Test nf_tables audit logging
+    - selftests: netfilter: Extend nft_audit.sh
+    - netfilter: nf_tables: Deduplicate nft_register_obj audit logs
+    - netfilter: nf_tables: nft_set_rbtree: fix spurious insertion failure
+    - ipv4: Set offload_failed flag in fibmatch results
+    - net: stmmac: dwmac-stm32: fix resume on STM32 MCU
+    - tipc: fix a potential deadlock on &tx->lock
+    - tcp: fix quick-ack counting to count actual ACKs of new data
+    - tcp: fix delayed ACKs for MSS boundary condition
+    - sctp: update transport state when processing a dupcook packet
+    - sctp: update hb timer immediately after users change hb_interval
+    - netlink: annotate data-races around sk->sk_err
+    - net: mana: Fix the tso_bytes calculation
+    - net: mana: Fix oversized sge0 for GSO packets
+    - HID: nvidia-shield: Fix a missing led_classdev_unregister() in the probe
+      error handling path
+    - HID: sony: remove duplicate NULL check before calling usb_free_urb()
+    - HID: intel-ish-hid: ipc: Disable and reenable ACPI GPE bit
+    - net: lan743x: also select PHYLIB
+    - smb: use kernel_connect() and kernel_bind()
+    - dm zoned: free dmz->ddev array in dmz_put_zoned_devices
+    - RDMA/core: Require admin capabilities to set system parameters
+    - of: dynamic: Fix potential memory leak in of_changeset_action()
+    - IB/mlx4: Fix the size of a buffer in add_port_entries()
+    - gpio: aspeed: fix the GPIO number passed to pinctrl_gpio_set_config()
+    - gpio: pxa: disable pinctrl calls for MMP_GPIO
+    - RDMA/cma: Initialize ib_sa_multicast structure to 0 when join
+    - RDMA/cma: Fix truncation compilation warning in make_cma_ports
+    - RDMA/bnxt_re: Fix the handling of control path response data
+    - RDMA/uverbs: Fix typo of sizeof argument
+    - RDMA/srp: Do not call scsi_done() from srp_abort()
+    - RDMA/siw: Fix connection failure handling
+    - RDMA/mlx5: Fix mkey cache possible deadlock on cleanup
+    - RDMA/mlx5: Fix assigning access flags to cache mkeys
+    - RDMA/mlx5: Fix mutex unlocking on error flow for steering anchor creation
+    - RDMA/mlx5: Fix NULL string error
+    - [x86] sev: Change npages to unsigned long in snp_accept_memory()
+    - [x86] sev: Use the GHCB protocol when available for SNP CPUID requests
+    - ksmbd: fix race condition between session lookup and expire
+    - ksmbd: fix uaf in smb20_oplock_break_ack
+    - ksmbd: fix race condition from parallel smb2 lock requests
+    - RDMA/mlx5: Remove not-used cache disable flag
+    - xen/events: replace evtchn_rwlock with RCU (CVE-2023-34324)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 21 Oct 2023 12:46:10 +0200
+
 linux (6.5.6-1) unstable; urgency=medium
 
   * New upstream stable update:
