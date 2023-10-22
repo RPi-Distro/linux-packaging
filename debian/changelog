@@ -343,6 +343,7 @@ linux (6.5.8-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 3
+  * [x86] KVM: SVM: always update the x2avic msr interception (CVE-2023-5090)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 21 Oct 2023 12:46:10 +0200
 
