@@ -345,6 +345,8 @@ linux (6.5.8-1) UNRELEASED; urgency=medium
   * Bump ABI to 3
   * [x86] KVM: SVM: always update the x2avic msr interception (CVE-2023-5090)
   * nvmet-tcp: Fix a possible UAF in queue intialization setup (CVE-2023-5178)
+  * Bluetooth: hci_ldisc: check HCI_UART_PROTO_READY flag in HCIUARTGETPROTO
+    (CVE-2023-31083)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 21 Oct 2023 12:46:10 +0200
 
