@@ -1,4 +1,4 @@
-linux (6.5.8-1) UNRELEASED; urgency=medium
+linux (6.5.8-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.7
@@ -348,7 +348,7 @@ linux (6.5.8-1) UNRELEASED; urgency=medium
   * Bluetooth: hci_ldisc: check HCI_UART_PROTO_READY flag in HCIUARTGETPROTO
     (CVE-2023-31083)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 21 Oct 2023 12:46:10 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 22 Oct 2023 21:28:21 +0200
 
 linux (6.5.6-1) unstable; urgency=medium
 
