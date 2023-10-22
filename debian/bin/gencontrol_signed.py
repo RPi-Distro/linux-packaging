@@ -227,7 +227,7 @@ class Gencontrol(Base):
             for package in udeb_packages:
                 # kernel-wedge currently chokes on Build-Profiles so add it now
                 package['Build-Profiles'] = (
-                    '<!noudeb !stage1 !pkg.linux.nokernel !pkg.linux.quick>')
+                    '<!noudeb !pkg.linux.nokernel !pkg.linux.quick>')
                 package.meta['rules-target'] = 'installer'
 
             makeflags_local = makeflags.copy()

@@ -224,9 +224,6 @@ Build profiles
 
 Several build profiles are understood and supported:
 
-- stage1: Needed when bootstrapping an architecture.  A stage1 build
-  produces only the linux-libc-dev package and has no host
-  build-dependencies.
 - nodoc: Exclude most documentation
 - noudeb: Exclude installer udeb packages
 - pkg.linux.notools: Exclude userland tool packages (linux-kbuild-<version>,

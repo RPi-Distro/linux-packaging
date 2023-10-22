@@ -1,6 +1,6 @@
 Package: linux-compiler-gcc-13-arm
 Meta-Rules-Target: meta
-Build-Profiles: <!stage1>
+Build-Profiles: <!pkg.linux.notools>
 Depends: gcc-13, ${misc:Depends}
 Architecture: armel armhf
 Multi-Arch: foreign
@@ -10,7 +10,7 @@ Description: Compiler for Linux on ARM (meta-package)
 
 Package: linux-compiler-gcc-13-s390
 Meta-Rules-Target: meta
-Build-Profiles: <!stage1>
+Build-Profiles: <!pkg.linux.notools>
 Depends: gcc-13, ${misc:Depends}
 Architecture: s390 s390x
 Multi-Arch: foreign
@@ -20,7 +20,7 @@ Description: Compiler for Linux on IBM zSeries (meta-package)
 
 Package: linux-compiler-gcc-13-x86
 Meta-Rules-Target: meta
-Build-Profiles: <!stage1>
+Build-Profiles: <!pkg.linux.notools>
 Depends: gcc-13, ${misc:Depends}
 Architecture: amd64 i386 x32
 Multi-Arch: foreign
@@ -30,7 +30,7 @@ Description: Compiler for Linux on x86 (meta-package)
 
 Package: linux-image-parisc64-smp
 Meta-Rules-Target: meta
-Build-Profiles: <!stage1 !pkg.linux.nokernel !pkg.linux.nometa>
+Build-Profiles: <!pkg.linux.nokernel !pkg.linux.nometa>
 Architecture: hppa
 Section: oldlibs
 Priority: extra
@@ -40,7 +40,7 @@ Description: Linux for multiprocessor 64-bit PA-RISC (dummy package)
 
 Package: linux-image-parisc-smp
 Meta-Rules-Target: meta
-Build-Profiles: <!stage1 !pkg.linux.nokernel !pkg.linux.nometa>
+Build-Profiles: <!pkg.linux.nokernel !pkg.linux.nometa>
 Architecture: hppa
 Section: oldlibs
 Priority: extra

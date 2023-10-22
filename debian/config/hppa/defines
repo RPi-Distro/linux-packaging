@@ -11,7 +11,7 @@ suggests: palo
 install-stem: vmlinuz
 
 [relations]
-gcc-13: gcc-13 <!stage1 !cross !pkg.linux.nokernel>, gcc-13-hppa-linux-gnu <!stage1 cross !pkg.linux.nokernel>, gcc-hppa-linux-gnu <!stage1 cross !pkg.linux.nokernel>, binutils-hppa64-linux-gnu:native <!stage1 !pkg.linux.nokernel>, gcc-13-hppa64-linux-gnu:native <!stage1 !pkg.linux.nokernel>
+gcc-13: gcc-13 <!cross !pkg.linux.nokernel>, gcc-13-hppa-linux-gnu <cross !pkg.linux.nokernel>, gcc-hppa-linux-gnu <cross !pkg.linux.nokernel>, binutils-hppa64-linux-gnu:native <!pkg.linux.nokernel>, gcc-13-hppa64-linux-gnu:native <!pkg.linux.nokernel>
 
 [parisc_description]
 hardware: 32-bit PA-RISC
