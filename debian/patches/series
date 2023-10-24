@@ -95,6 +95,9 @@ features/all/db-mok-keyring/trust-machine-keyring-by-default.patch
 # Security fixes
 debian/i386-686-pae-pci-set-pci-nobios-by-default.patch
 debian/ntfs-mark-it-as-broken.patch
+bugfix/x86/x86-KVM-SVM-always-update-the-x2avic-msr-interceptio.patch
+bugfix/all/nvmet-tcp-Fix-a-possible-UAF-in-queue-intialization-.patch
+bugfix/all/Bluetooth-hci_ldisc-check-HCI_UART_PROTO_READY-flag-.patch
 
 # Fix exported symbol versions
 bugfix/all/module-disable-matching-missing-version-crc.patch
