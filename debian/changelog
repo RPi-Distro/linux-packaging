@@ -223,6 +223,9 @@ linux (6.5.9-1) UNRELEASED; urgency=medium
   * Disable DEBUG_PREEMPT as it introduces slowdowns up to 20% on certain
     workloads.
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 4
+
  -- Emanuele Rocca <ema@debian.org>  Tue, 24 Oct 2023 15:06:39 +0200
 
 linux (6.5.8-1) unstable; urgency=medium
