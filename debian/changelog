@@ -225,6 +225,7 @@ linux (6.5.9-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * Bump ABI to 4
+  * Do not explicitly unset DEBUG_PREEMPT (not enabled by default since 6.3-rc1)
 
  -- Emanuele Rocca <ema@debian.org>  Tue, 24 Oct 2023 15:06:39 +0200
 
