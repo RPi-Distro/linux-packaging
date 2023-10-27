@@ -16,9 +16,10 @@ linux (6.5.9-1) UNRELEASED; urgency=medium
     - btrfs: fix stripe length calculation for non-zoned data chunk allocation
     - regmap: fix NULL deref on lookup
     - [x86] KVM: x86: Mask LVTPC when handling a PMI
-    - [x86] sev: Disable MMIO emulation from user mode
-    - [x86] sev: Check IOBM for IOIO exceptions from user-space
+    - [x86] sev: Disable MMIO emulation from user mode (CVE-2023-46813)
+    - [x86] sev: Check IOBM for IOIO exceptions from user-space (CVE-2023-46813)
     - [x86] sev: Check for user-space IOIO pointing to kernel space
+      (CVE-2023-46813)
     - [x86] fpu: Allow caller to constrain xfeatures when copying to uabi buffer
     - [x86] KVM: x86/pmu: Truncate counter value to allowed width on write
     - [x86] KVM: x86: Constrain guest-supported xfeatures only at
