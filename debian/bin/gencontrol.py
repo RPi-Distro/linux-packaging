@@ -13,7 +13,7 @@ from debian_linux import config
 from debian_linux.debian import PackageRelation, \
     PackageRelationEntry, PackageRelationGroup, VersionLinux, BinaryPackage, \
     restriction_requires_profile
-from debian_linux.gencontrol import Gencontrol as Base, \
+from debian_linux.gencontrol import Gencontrol as Base, PackagesBundle, \
     iter_featuresets, iter_flavours, add_package_build_restriction
 from debian_linux.utils import Templates
 
@@ -193,6 +193,15 @@ class Gencontrol(Base):
 
         if build_signed:
             self.bundle.add('signed-template', (arch, 'real'), makeflags, vars, arch=arch)
+
+            bundle_signed = self.bundles[f'signed-{arch}'] = \
+                PackagesBundle(f'signed-{arch}', self.templates)
+            bundle_signed.packages['source'] = \
+                self.templates.get_source_control('signed.source.control', vars)[0]
+
+            with bundle_signed.open('source/lintian-overrides', 'w') as f:
+                f.write(self.substitute(
+                    self.templates.get('signed.source.lintian-overrides'), vars))
 
         if self.config.merge('packages').get('libc-dev', True):
             self.bundle.add('libc-dev', (arch, 'real'), makeflags, vars)

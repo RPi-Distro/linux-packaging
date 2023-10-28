@@ -25,6 +25,7 @@
 /control
 /control.*
 /files
+/generated.*/
 /linux-*
 /rules.gen
 /tests/control
