@@ -208,6 +208,15 @@ class Gencontrol(Base):
                 f.write(self.substitute(
                     self.templates.get('signed.source.lintian-overrides'), vars))
 
+            with bundle_signed.open('changelog.head', 'w') as f:
+                dist = self.changelog[0].distribution
+                urgency = self.changelog[0].urgency
+                f.write(f'''\
+linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={urgency}
+
+  * Sign kernel from {self.changelog[0].source} @signedtemplate_binaryversion@
+''')
+
         if self.config.merge('packages').get('libc-dev', True):
             self.bundle.add('libc-dev', (arch, 'real'), makeflags, vars)
 
