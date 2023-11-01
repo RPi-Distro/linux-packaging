@@ -666,6 +666,7 @@ class BinaryPackage(_ControlFileDict):
         ('Build-Depends-Arch', PackageRelation),
         ('Build-Depends-Indep', PackageRelation),
         ('Build-Profiles', PackageBuildRestrictFormula),
+        ('Built-Using', PackageRelation),
         ('Provides', PackageRelation),
         ('Pre-Depends', PackageRelation),
         ('Depends', PackageRelation),

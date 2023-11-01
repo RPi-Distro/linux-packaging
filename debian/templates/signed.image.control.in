@@ -1,0 +1,14 @@
+Package: linux-image-@abiname@@localversion@
+Meta-Rules-Target: image
+Build-Profiles: <!pkg.linux.nokernel>
+Build-Depends: linux-image-@abiname@@localversion@-unsigned (= @signedtemplate_binaryversion@)
+Built-Using: @source_basename@@source_suffix@ (= @version_complete@)
+Depends: kmod, linux-base (>= 4.3~), ${misc:Depends}
+Recommends: firmware-linux-free
+Conflicts: linux-image-@abiname@@localversion@-unsigned
+Replaces: linux-image-@abiname@@localversion@-unsigned
+Suggests: linux-doc-@version@, debian-kernel-handbook
+Description: Linux @upstreamversion@ for @class@ (signed)
+ The Linux kernel @upstreamversion@ and modules for use on @longclass@.
+ .
+ ${signed:Description}

@@ -192,6 +192,10 @@ class Gencontrol(Base):
             build_signed = False
 
         if build_signed:
+            # Make sure variables remain
+            vars['signedtemplate_binaryversion'] = '@signedtemplate_binaryversion@'
+            vars['signedtemplate_sourceversion'] = '@signedtemplate_sourceversion@'
+
             self.bundle.add('signed-template', (arch, 'real'), makeflags, vars, arch=arch)
 
             bundle_signed = self.bundles[f'signed-{arch}'] = \
@@ -345,19 +349,30 @@ class Gencontrol(Base):
         else:
             build_signed = False
 
+        if build_signed:
+            bundle_signed = self.bundles[f'signed-{arch}']
+        else:
+            bundle_signed = self.bundle
+
         vars.setdefault('desc', None)
 
-        package_image = (
-            self.bundle.add(build_signed and 'image-unsigned' or 'image',
-                            ruleid, makeflags, vars, arch=arch)
-        )[0]
-        makeflags['IMAGE_PACKAGE_NAME'] = package_image['Package']
+        packages_image = []
+
+        if build_signed:
+            packages_image.extend(
+                bundle_signed.add('signed.image', ruleid, makeflags, vars, arch=arch))
+            packages_image.extend(
+                self.bundle.add('image-unsigned', ruleid, makeflags, vars, arch=arch))
+
+        else:
+            packages_image.extend(bundle_signed.add('image', ruleid, makeflags, vars, arch=arch))
 
         for field in ('Depends', 'Provides', 'Suggests', 'Recommends',
                       'Conflicts', 'Breaks'):
-            package_image.setdefault(field).extend(PackageRelation(
-                config_entry_image(field.lower(), None),
-                override_arches=(arch,)))
+            for package_image in packages_image:
+                package_image.setdefault(field).extend(PackageRelation(
+                    config_entry_image(field.lower(), None),
+                    override_arches=(arch,)))
 
         generators = config_entry_image('initramfs-generators')
         group = PackageRelationGroup()
@@ -367,10 +382,12 @@ class Gencontrol(Base):
             a = PackageRelationEntry(i)
             if a.operator is not None:
                 a.operator = -a.operator
-                package_image['Breaks'].append(PackageRelationGroup([a]))
+                for package_image in packages_image:
+                    package_image['Breaks'].append(PackageRelationGroup([a]))
         for item in group:
             item.arches = [arch]
-        package_image['Depends'].append(group)
+        for package_image in packages_image:
+            package_image['Depends'].append(group)
 
         bootloaders = config_entry_image('bootloaders', None)
         if bootloaders:
@@ -381,10 +398,12 @@ class Gencontrol(Base):
                 a = PackageRelationEntry(i)
                 if a.operator is not None:
                     a.operator = -a.operator
-                    package_image['Breaks'].append(PackageRelationGroup([a]))
+                    for package_image in packages_image:
+                        package_image['Breaks'].append(PackageRelationGroup([a]))
             for item in group:
                 item.arches = [arch]
-            package_image['Suggests'].append(group)
+            for package_image in packages_image:
+                package_image['Suggests'].append(group)
 
         desc_parts = self.config.get_merge('description', arch, featureset,
                                            flavour, 'parts')
@@ -394,17 +413,18 @@ class Gencontrol(Base):
             parts = list(set(desc_parts))
             parts.sort()
             desc = package_image['Description']
-            for part in parts:
-                desc.append(config_entry_description['part-long-' + part])
-                desc.append_short(config_entry_description
-                                  .get('part-short-' + part, ''))
+            for package_image in packages_image:
+                for part in parts:
+                    desc.append(config_entry_description['part-long-' + part])
+                    desc.append_short(config_entry_description
+                                      .get('part-short-' + part, ''))
 
         packages_headers[0]['Depends'].extend(relations_compiler_headers)
-        packages_own.append(package_image)
+        packages_own.extend(packages_image)
         packages_own.extend(packages_headers)
         if extra.get('headers_arch_depends'):
             extra['headers_arch_depends'].append('%s (= ${binary:Version})' %
-                                                 packages_own[-1]['Package'])
+                                                 packages_headers[-1]['Package'])
 
         # The image meta-packages will depend on signed linux-image
         # packages where applicable, so should be built from the
@@ -608,6 +628,7 @@ class Gencontrol(Base):
         self.vars = {
             'upstreamversion': self.version.linux_upstream,
             'version': self.version.linux_version,
+            'version_complete': self.version.complete,
             'source_basename': re.sub(r'-[\d.]+$', '',
                                       self.changelog[0].source),
             'source_upstream': self.version.upstream,

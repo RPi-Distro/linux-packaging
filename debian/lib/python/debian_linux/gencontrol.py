@@ -552,8 +552,8 @@ class Gencontrol(object):
 
     def write(self):
         for bundle in self.bundles.values():
-            bundle.merge_build_depends()
             bundle.extract_makefile()
+            bundle.merge_build_depends()
             bundle.write()
 
     # TODO: Remove
