@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import sys
+import json
 import locale
 import os
 import os.path
@@ -674,11 +675,33 @@ class Gencontrol(Base):
         self.write_config()
         super().write()
         self.write_tests_control()
+        self.write_signed()
 
     def write_config(self):
         f = open("debian/config.defines.dump", 'wb')
         self.config.dump(f)
         f.close()
+
+    def write_signed(self):
+        for bundle in self.bundles.values():
+            pkg_sign_entries = {}
+
+            for p in bundle.packages.values():
+                if pkg_sign_pkg := p.meta.get('sign-package'):
+                    pkg_sign_entries[pkg_sign_pkg] = {
+                        'trusted_certs': [],
+                        'files': [
+                            {
+                                'sig_type': e.split(':', 1)[-1],
+                                'file': e.split(':', 1)[0],
+                            }
+                            for e in p.meta['sign-files'].split()
+                        ],
+                    }
+
+            if pkg_sign_entries:
+                with bundle.path('files.json').open('w') as f:
+                    json.dump({'packages': pkg_sign_entries}, f, indent=2)
 
     def write_tests_control(self):
         self.write_rfc822(open("debian/tests/control", 'w'),

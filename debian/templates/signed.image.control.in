@@ -1,5 +1,7 @@
 Package: linux-image-@abiname@@localversion@
 Meta-Rules-Target: image
+Meta-Sign-Package: linux-image-@abiname@@localversion@-unsigned
+Meta-Sign-Files: boot/@image-stem@-@abiname@@localversion@:efi
 Build-Profiles: <!pkg.linux.nokernel>
 Build-Depends: linux-image-@abiname@@localversion@-unsigned (= @signedtemplate_binaryversion@)
 Built-Using: @source_basename@@source_suffix@ (= @version_complete@)
