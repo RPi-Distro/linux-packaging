@@ -1,0 +1,143 @@
+From: Thomas Gleixner <tglx@linutronix.de>
+Date: Mon, 11 Sep 2023 15:21:57 +0000
+Subject: [PATCH 015/108] printk: nbcon: Provide functions to mark atomic write
+ sections
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rc6-rt10.tar.xz
+
+WARN/OOPS/PANIC require printing out immediately since the
+regular printing method (and in the future, the printing
+threads) might not be able to run.
+
+Add per-CPU state to denote the priority/urgency of the output
+and provide functions to mark the beginning and end of sections
+where the urgent messages are generated.
+
+Note that when a CPU is in a priority elevated state, flushing
+only occurs when dropping back to a lower priority. This allows
+the full set of printk records (WARN/OOPS/PANIC output) to be
+stored in the ringbuffer before beginning to flush the backlog.
+
+Co-developed-by: John Ogness <john.ogness@linutronix.de>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Signed-off-by: Thomas Gleixner (Intel) <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ include/linux/console.h |    4 ++
+ kernel/printk/nbcon.c   |   89 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 93 insertions(+)
+
+--- a/include/linux/console.h
++++ b/include/linux/console.h
+@@ -452,10 +452,14 @@ static inline bool console_is_registered
+ 	hlist_for_each_entry(con, &console_list, node)
+ 
+ #ifdef CONFIG_PRINTK
++extern enum nbcon_prio nbcon_atomic_enter(enum nbcon_prio prio);
++extern void nbcon_atomic_exit(enum nbcon_prio prio, enum nbcon_prio prev_prio);
+ extern bool nbcon_can_proceed(struct nbcon_write_context *wctxt);
+ extern bool nbcon_enter_unsafe(struct nbcon_write_context *wctxt);
+ extern bool nbcon_exit_unsafe(struct nbcon_write_context *wctxt);
+ #else
++static inline enum nbcon_prio nbcon_atomic_enter(enum nbcon_prio prio) { return NBCON_PRIO_NONE; }
++static inline void nbcon_atomic_exit(enum nbcon_prio prio, enum nbcon_prio prev_prio) { }
+ static inline bool nbcon_can_proceed(struct nbcon_write_context *wctxt) { return false; }
+ static inline bool nbcon_enter_unsafe(struct nbcon_write_context *wctxt) { return false; }
+ static inline bool nbcon_exit_unsafe(struct nbcon_write_context *wctxt) { return false; }
+--- a/kernel/printk/nbcon.c
++++ b/kernel/printk/nbcon.c
+@@ -962,6 +962,95 @@ static bool nbcon_emit_next_record(struc
+ }
+ 
+ /**
++ * struct nbcon_cpu_state - Per CPU printk context state
++ * @prio:	The current context priority level
++ * @nesting:	Per priority nest counter
++ */
++struct nbcon_cpu_state {
++	enum nbcon_prio		prio;
++	int			nesting[NBCON_PRIO_MAX];
++};
++
++static DEFINE_PER_CPU(struct nbcon_cpu_state, nbcon_pcpu_state);
++static struct nbcon_cpu_state early_nbcon_pcpu_state __initdata;
++
++/**
++ * nbcon_get_cpu_state - Get the per CPU console state pointer
++ *
++ * Returns either a pointer to the per CPU state of the current CPU or to
++ * the init data state during early boot.
++ */
++static __ref struct nbcon_cpu_state *nbcon_get_cpu_state(void)
++{
++	if (!printk_percpu_data_ready())
++		return &early_nbcon_pcpu_state;
++
++	return this_cpu_ptr(&nbcon_pcpu_state);
++}
++
++/**
++ * nbcon_atomic_enter - Enter a context that enforces atomic printing
++ * @prio:	Priority of the context
++ *
++ * Return:	The previous priority that needs to be fed into
++ *		the corresponding nbcon_atomic_exit()
++ * Context:	Any context. Disables preemption.
++ */
++enum nbcon_prio nbcon_atomic_enter(enum nbcon_prio prio)
++{
++	struct nbcon_cpu_state *cpu_state;
++	enum nbcon_prio prev_prio;
++
++	preempt_disable();
++
++	cpu_state = nbcon_get_cpu_state();
++
++	prev_prio = cpu_state->prio;
++	if (prio > prev_prio)
++		cpu_state->prio = prio;
++
++	/*
++	 * Increment the nesting on @cpu_state->prio (instead of
++	 * @prio) so that a WARN() nested within a panic printout
++	 * does not attempt to scribble state.
++	 */
++	cpu_state->nesting[cpu_state->prio]++;
++
++	return prev_prio;
++}
++
++/**
++ * nbcon_atomic_exit - Exit a context that enforces atomic printing
++ * @prio:	Priority of the context to leave
++ * @prev_prio:	Priority of the previous context for restore
++ *
++ * Context:	Any context. Enables preemption.
++ *
++ * @prev_prio is the priority returned by the corresponding
++ * nbcon_atomic_enter().
++ */
++void nbcon_atomic_exit(enum nbcon_prio prio, enum nbcon_prio prev_prio)
++{
++	struct nbcon_cpu_state *cpu_state;
++
++	cpu_state = nbcon_get_cpu_state();
++
++	/*
++	 * Undo the nesting of nbcon_atomic_enter() at the CPU state
++	 * priority.
++	 */
++	cpu_state->nesting[cpu_state->prio]--;
++
++	/*
++	 * Restore the previous priority, which was returned by
++	 * nbcon_atomic_enter().
++	 */
++	cpu_state->prio = prev_prio;
++
++	preempt_enable();
++}
++
++/**
+  * nbcon_alloc - Allocate buffers needed by the nbcon console
+  * @con:	Console to allocate buffers for
+  *

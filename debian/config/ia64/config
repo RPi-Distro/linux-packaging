@@ -7,8 +7,6 @@ CONFIG_PERMIT_BSP_REMOVE=y
 CONFIG_NODES_SHIFT=8
 CONFIG_IA64_MCA_RECOVERY=y
 CONFIG_IA64_PALINFO=m
-CONFIG_KEXEC=y
-CONFIG_CRASH_DUMP=y
 CONFIG_MSPEC=m
 
 ##
@@ -610,8 +608,6 @@ CONFIG_FRAMEBUFFER_CONSOLE=y
 ## file: drivers/video/fbdev/Kconfig
 ##
 CONFIG_FB=y
-CONFIG_FB_MODE_HELPERS=y
-CONFIG_FB_TILEBLITTING=y
 CONFIG_FB_CIRRUS=m
 CONFIG_FB_PM2=m
 # CONFIG_FB_PM2_FIFO_DISCONNECT is not set
@@ -646,9 +642,21 @@ CONFIG_FB_TRIDENT=m
 # CONFIG_FB_VIRTUAL is not set
 
 ##
+## file: drivers/video/fbdev/core/Kconfig
+##
+CONFIG_FB_MODE_HELPERS=y
+CONFIG_FB_TILEBLITTING=y
+
+##
 ## file: fs/pstore/Kconfig
 ##
 CONFIG_PSTORE=y
+
+##
+## file: kernel/Kconfig.kexec
+##
+CONFIG_KEXEC=y
+CONFIG_CRASH_DUMP=y
 
 ##
 ## file: lib/Kconfig.debug

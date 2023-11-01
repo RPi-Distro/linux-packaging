@@ -20,7 +20,6 @@ CONFIG_ARM_ATAG_DTB_COMPAT=y
 CONFIG_CMDLINE=""
 # CONFIG_XIP_KERNEL is not set
 CONFIG_ATAGS_PROC=y
-# CONFIG_CRASH_DUMP is not set
 CONFIG_VFP=y
 
 ##
@@ -710,6 +709,11 @@ CONFIG_NLS=m
 CONFIG_CC_OPTIMIZE_FOR_SIZE=y
 ## end choice
 # CONFIG_PROFILING is not set
+
+##
+## file: kernel/Kconfig.kexec
+##
+# CONFIG_CRASH_DUMP is not set
 
 ##
 ## file: kernel/bpf/Kconfig

@@ -1,0 +1,112 @@
+From: John Ogness <john.ogness@linutronix.de>
+Date: Tue, 19 Sep 2023 17:07:34 +0000
+Subject: [PATCH 020/108] panic: Add atomic write enforcement to oops
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rc6-rt10.tar.xz
+
+Invoke the atomic write enforcement functions for oops to
+ensure that the information gets out to the consoles.
+
+Since there is no single general function that calls both
+oops_enter() and oops_exit(), the nesting feature of atomic
+write sections is taken advantage of in order to guarantee
+full coverage between the first oops_enter() and the last
+oops_exit().
+
+It is important to note that if there are any legacy consoles
+registered, they will be attempting to directly print from the
+printk-caller context, which may jeopardize the reliability of
+the atomic consoles. Optimally there should be no legacy
+consoles registered.
+
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ kernel/panic.c |   56 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
+
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -614,6 +614,10 @@ bool oops_may_print(void)
+ 	return pause_on_oops_flag == 0;
+ }
+ 
++static int oops_printing_cpu = -1;
++static int oops_nesting;
++static enum nbcon_prio oops_prev_prio;
++
+ /*
+  * Called when the architecture enters its oops handler, before it prints
+  * anything.  If this is the first CPU to oops, and it's oopsing the first
+@@ -630,6 +634,38 @@ bool oops_may_print(void)
+  */
+ void oops_enter(void)
+ {
++	enum nbcon_prio prev_prio;
++	int cur_cpu = get_cpu();
++	int old_cpu = -1;
++
++	/*
++	 * If this turns out to be the first CPU in oops, this is the
++	 * beginning of the outermost atomic printing section. Otherwise
++	 * it is the beginning of an inner atomic printing section.
++	 */
++	prev_prio = nbcon_atomic_enter(NBCON_PRIO_EMERGENCY);
++
++	old_cpu = cmpxchg(&oops_printing_cpu, old_cpu, cur_cpu);
++	if (old_cpu == -1) {
++		/*
++		 * This is the first CPU in oops so it will be the printer.
++		 * Save the outermost @prev_prio in order to restore it on the
++		 * outermost matching oops_exit(), when @oops_nesting == 0.
++		 */
++		oops_prev_prio = prev_prio;
++
++		/*
++		 * Enter an inner atomic printing section that ends at the end
++		 * of this function. In this case, the nbcon_atomic_enter()
++		 * above began the outermost atomic printing section.
++		 */
++		prev_prio = nbcon_atomic_enter(NBCON_PRIO_EMERGENCY);
++	}
++
++	/* Track nesting when this CPU is the printer. */
++	if (old_cpu == -1 || old_cpu == cur_cpu)
++		oops_nesting++;
++
+ 	tracing_off();
+ 	/* can't trust the integrity of the kernel anymore: */
+ 	debug_locks_off();
+@@ -637,6 +673,9 @@ void oops_enter(void)
+ 
+ 	if (sysctl_oops_all_cpu_backtrace)
+ 		trigger_all_cpu_backtrace();
++
++	/* Exit inner atomic printing section. */
++	nbcon_atomic_exit(NBCON_PRIO_EMERGENCY, prev_prio);
+ }
+ 
+ static void print_oops_end_marker(void)
+@@ -652,6 +691,23 @@ void oops_exit(void)
+ {
+ 	do_oops_enter_exit();
+ 	print_oops_end_marker();
++
++	/*
++	 * Reading @oops_printing_cpu is a data race if this CPU is not the
++	 * printer. But that is OK because in that situation the condition
++	 * will correctly evaluate to false regardless which value was read.
++	 */
++	if (oops_printing_cpu == smp_processor_id()) {
++		oops_nesting--;
++		if (oops_nesting == 0) {
++			oops_printing_cpu = -1;
++
++			/* Exit outermost atomic printing section. */
++			nbcon_atomic_exit(NBCON_PRIO_EMERGENCY, oops_prev_prio);
++		}
++	}
++	put_cpu();
++
+ 	kmsg_dump(KMSG_DUMP_OOPS);
+ }
+ 

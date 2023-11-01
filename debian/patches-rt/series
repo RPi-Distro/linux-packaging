@@ -3,7 +3,6 @@
 ###########################################################################
 # Posted and applied
 ###########################################################################
-0002-sched-avoid-false-lockdep-splat-in-put_task_struct.patch
 
 # signal_x86__Delay_calling_signals_in_atomic.patch
 
@@ -16,14 +15,21 @@
 0004-sched-Provide-rt_mutex-specific-scheduler-helpers.patch
 0005-locking-rtmutex-Use-rt_mutex-specific-scheduler-help.patch
 0006-locking-rtmutex-Add-a-lockdep-assert-to-catch-potent.patch
-locking-rtmutex-Acquire-the-hb-lock-via-trylock-afte.patch
+0007-futex-pi-Fix-recursive-rt_mutex-waiter-state.patch
 
 # Hacks to get ptrace to work.
 0001-signal-Add-proper-comment-about-the-preempt-disable-.patch
 0002-signal-Don-t-disable-preemption-in-ptrace_stop-on-PR.patch
 
-seqlock-Do-the-lockdep-annotation-before-locking-in-.patch
-mm-page_alloc-Use-write_seqlock_irqsave-instead-writ.patch
+# DRM AMD GPU
+0001-drm-amd-display-Remove-migrate_en-dis-from-dc_fpu_be.patch
+0002-drm-amd-display-Simplify-the-per-CPU-usage.patch
+0003-drm-amd-display-Add-a-warning-if-the-FPU-is-used-out.patch
+0004-drm-amd-display-Move-the-memory-allocation-out-of-dc.patch
+0005-drm-amd-display-Move-the-memory-allocation-out-of-dc.patch
+
+# printk related
+srcu-Use-try-lock-lockdep-annotation-for-NMI-safe-ac.patch
 
 ###########################################################################
 # Post
@@ -41,8 +47,6 @@ x86__Enable_RT_also_on_32bit.patch
 ###########################################################################
 # Posted
 sched-rt-Don-t-try-push-tasks-if-there-are-none.patch
-x86-microcode-Remove-microcode_mutex.patch
-ASoC-mediatek-mt8186-Remove-unused-mutex.patch
 
 # Needs discussion first.
 softirq-Use-a-dedicated-thread-for-timer-wakeups.patch
@@ -60,31 +64,114 @@ preempt-Put-preempt_enable-within-an-instrumentation.patch
 ###########################################################################
 # John's printk queue
 ###########################################################################
-0001-kdb-do-not-assume-write-callback-available.patch
-0002-printk-Add-NMI-check-to-console_flush_on_panic-and-c.patch
-0003-printk-Consolidate-console-deferred-printing.patch
-0004-printk-Add-per-console-suspended-state.patch
-0005-printk-Add-non-BKL-console-basic-infrastructure.patch
-0006-printk-nobkl-Add-acquire-release-logic.patch
-0007-printk-nobkl-Add-buffer-management.patch
-0008-printk-nobkl-Add-sequence-handling.patch
-0009-printk-nobkl-Add-print-state-functions.patch
-0010-printk-nobkl-Add-emit-function-and-callback-function.patch
-0011-printk-nobkl-Introduce-printer-threads.patch
-0012-printk-nobkl-Add-printer-thread-wakeups.patch
-0013-printk-nobkl-Add-write-context-storage-for-atomic-wr.patch
-0014-printk-nobkl-Provide-functions-for-atomic-write-enfo.patch
-0015-printk-nobkl-Stop-threads-on-shutdown-reboot.patch
-0016-tty-tty_io-Show-non-BKL-consoles-as-active.patch
-0017-proc-consoles-Add-support-for-non-BKL-consoles.patch
-0018-kernel-panic-Add-atomic-write-enforcement-to-warn-pa.patch
-0019-rcu-Add-atomic-write-enforcement-for-rcu-stalls.patch
-0020-printk-Perform-atomic-flush-in-console_flush_on_pani.patch
-0021-printk-only-disable-if-actually-unregistered.patch
-0022-printk-Add-threaded-printing-support-for-BKL-console.patch
-0023-printk-replace-local_irq_save-with-local_lock-for-sa.patch
-0024-serial-8250-implement-non-BKL-console.patch
-printk-Check-only-for-migration-in-printk_deferred_.patch
+0001-printk-flush-consoles-before-checking-progress.patch
+0002-printk-Add-non-BKL-nbcon-console-basic-infrastructur.patch
+0003-printk-nbcon-Add-acquire-release-logic.patch
+0004-printk-Make-static-printk-buffers-available-to-nbcon.patch
+0005-printk-nbcon-Add-buffer-management.patch
+0006-printk-nbcon-Add-ownership-state-functions.patch
+0007-printk-nbcon-Add-sequence-handling.patch
+0008-printk-nbcon-Add-emit-function-and-callback-function.patch
+0009-printk-nbcon-Allow-drivers-to-mark-unsafe-regions-an.patch
+0010-printk-fix-illegal-pbufs-access-for-CONFIG_PRINTK.patch
+0011-printk-Add-sparse-notation-to-console_srcu-locking.patch
+0012-printk-Make-console_is_usable-available-to-nbcon.patch
+0013-printk-Let-console_is_usable-handle-nbcon.patch
+0014-printk-Add-flags-argument-for-console_is_usable.patch
+0015-printk-nbcon-Provide-functions-to-mark-atomic-write-.patch
+0016-printk-nbcon-Provide-function-for-atomic-flushing.patch
+0017-printk-nbcon-Wire-up-nbcon-console-atomic-flushing.patch
+0018-printk-nbcon-Wire-up-nbcon-into-console_flush_all.patch
+0019-panic-Add-atomic-write-enforcement-to-warn-panic.patch
+0020-panic-Add-atomic-write-enforcement-to-oops.patch
+0021-rcu-Add-atomic-write-enforcement-for-rcu-stalls.patch
+0022-lockdep-Add-atomic-write-enforcement-for-lockdep-spl.patch
+0023-serial-core-Provide-port-lock-wrappers.patch
+0024-serial-core-Use-lock-wrappers.patch
+0025-serial-21285-Use-port-lock-wrappers.patch
+0026-serial-8250_aspeed_vuart-Use-port-lock-wrappers.patch
+0027-serial-8250_bcm7271-Use-port-lock-wrappers.patch
+0028-serial-8250-Use-port-lock-wrappers.patch
+0029-serial-8250_dma-Use-port-lock-wrappers.patch
+0030-serial-8250_dw-Use-port-lock-wrappers.patch
+0031-serial-8250_exar-Use-port-lock-wrappers.patch
+0032-serial-8250_fsl-Use-port-lock-wrappers.patch
+0033-serial-8250_mtk-Use-port-lock-wrappers.patch
+0034-serial-8250_omap-Use-port-lock-wrappers.patch
+0035-serial-8250_pci1xxxx-Use-port-lock-wrappers.patch
+0036-serial-altera_jtaguart-Use-port-lock-wrappers.patch
+0037-serial-altera_uart-Use-port-lock-wrappers.patch
+0038-serial-amba-pl010-Use-port-lock-wrappers.patch
+0039-serial-amba-pl011-Use-port-lock-wrappers.patch
+0040-serial-apb-Use-port-lock-wrappers.patch
+0041-serial-ar933x-Use-port-lock-wrappers.patch
+0042-serial-arc_uart-Use-port-lock-wrappers.patch
+0043-serial-atmel-Use-port-lock-wrappers.patch
+0044-serial-bcm63xx-uart-Use-port-lock-wrappers.patch
+0045-serial-cpm_uart-Use-port-lock-wrappers.patch
+0046-serial-digicolor-Use-port-lock-wrappers.patch
+0047-serial-dz-Use-port-lock-wrappers.patch
+0048-serial-linflexuart-Use-port-lock-wrappers.patch
+0049-serial-fsl_lpuart-Use-port-lock-wrappers.patch
+0050-serial-icom-Use-port-lock-wrappers.patch
+0051-serial-imx-Use-port-lock-wrappers.patch
+0052-serial-ip22zilog-Use-port-lock-wrappers.patch
+0053-serial-jsm-Use-port-lock-wrappers.patch
+0054-serial-liteuart-Use-port-lock-wrappers.patch
+0055-serial-lpc32xx_hs-Use-port-lock-wrappers.patch
+0056-serial-ma35d1-Use-port-lock-wrappers.patch
+0057-serial-mcf-Use-port-lock-wrappers.patch
+0058-serial-men_z135_uart-Use-port-lock-wrappers.patch
+0059-serial-meson-Use-port-lock-wrappers.patch
+0060-serial-milbeaut_usio-Use-port-lock-wrappers.patch
+0061-serial-mpc52xx-Use-port-lock-wrappers.patch
+0062-serial-mps2-uart-Use-port-lock-wrappers.patch
+0063-serial-msm-Use-port-lock-wrappers.patch
+0064-serial-mvebu-uart-Use-port-lock-wrappers.patch
+0065-serial-omap-Use-port-lock-wrappers.patch
+0066-serial-owl-Use-port-lock-wrappers.patch
+0067-serial-pch-Use-port-lock-wrappers.patch
+0068-serial-pic32-Use-port-lock-wrappers.patch
+0069-serial-pmac_zilog-Use-port-lock-wrappers.patch
+0070-serial-pxa-Use-port-lock-wrappers.patch
+0071-serial-qcom-geni-Use-port-lock-wrappers.patch
+0072-serial-rda-Use-port-lock-wrappers.patch
+0073-serial-rp2-Use-port-lock-wrappers.patch
+0074-serial-sa1100-Use-port-lock-wrappers.patch
+0075-serial-samsung_tty-Use-port-lock-wrappers.patch
+0076-serial-sb1250-duart-Use-port-lock-wrappers.patch
+0077-serial-sc16is7xx-Use-port-lock-wrappers.patch
+0078-serial-tegra-Use-port-lock-wrappers.patch
+0079-serial-core-Use-port-lock-wrappers.patch
+0080-serial-mctrl_gpio-Use-port-lock-wrappers.patch
+0081-serial-txx9-Use-port-lock-wrappers.patch
+0082-serial-sh-sci-Use-port-lock-wrappers.patch
+0083-serial-sifive-Use-port-lock-wrappers.patch
+0084-serial-sprd-Use-port-lock-wrappers.patch
+0085-serial-st-asc-Use-port-lock-wrappers.patch
+0086-serial-stm32-Use-port-lock-wrappers.patch
+0087-serial-sunhv-Use-port-lock-wrappers.patch
+0088-serial-sunplus-uart-Use-port-lock-wrappers.patch
+0089-serial-sunsab-Use-port-lock-wrappers.patch
+0090-serial-sunsu-Use-port-lock-wrappers.patch
+0091-serial-sunzilog-Use-port-lock-wrappers.patch
+0092-serial-timbuart-Use-port-lock-wrappers.patch
+0093-serial-uartlite-Use-port-lock-wrappers.patch
+0094-serial-ucc_uart-Use-port-lock-wrappers.patch
+0095-serial-vt8500-Use-port-lock-wrappers.patch
+0096-serial-xilinx_uartps-Use-port-lock-wrappers.patch
+0097-printk-nbcon-Implement-processing-in-port-lock-wrapp.patch
+0098-printk-nbcon-Introduce-printer-threads.patch
+0099-printk-nbcon-Add-context-to-console_is_usable.patch
+0100-printk-nbcon-Add-printer-thread-wakeups.patch
+0101-printk-nbcon-Stop-threads-on-shutdown-reboot.patch
+0102-printk-Track-registration-of-console-types.patch
+0103-proc-Add-nbcon-support-for-proc-consoles.patch
+0104-tty-sysfs-Add-nbcon-support-for-active.patch
+0105-serial-8250-implement-nbcon-console.patch
+0106-printk-check-printk_deferred_enter-_exit-usage.patch
+0107-printk-Add-kthread-for-all-legacy-consoles.patch
+0108-serial-8250-revert-drop-lockdep-annotation-from-seri.patch
 
 ###########################################################################
 # DRM:
@@ -98,18 +185,13 @@ printk-Check-only-for-migration-in-printk_deferred_.patch
 0009-drm-i915-gt-Use-spin_lock_irq-instead-of-local_irq_d.patch
 0010-drm-i915-Drop-the-irqs_disabled-check.patch
 drm-i915-Do-not-disable-preemption-for-resets.patch
+drm-i915-guc-Consider-also-RCU-depth-in-busy-loop.patch
 Revert-drm-i915-Depend-on-PREEMPT_RT.patch
 
 ###########################################################################
 # Lazy preemption
 ###########################################################################
-sched__Add_support_for_lazy_preemption.patch
-x86_entry__Use_should_resched_in_idtentry_exit_cond_resched.patch
-x86__Support_for_lazy_preemption.patch
-entry--Fix-the-preempt-lazy-fallout.patch
-arm__Add_support_for_lazy_preemption.patch
-powerpc__Add_support_for_lazy_preemption.patch
-arch_arm64__Add_lazy_preempt_support.patch
+PREEMPT_AUTO.patch
 
 ###########################################################################
 # ARM/ARM64
@@ -119,9 +201,10 @@ ARM__enable_irq_in_translation_section_permission_fault_handlers.patch
 # arm64-signal-Use-ARCH_RT_DELAYS_SIGNAL_SEND.patch
 tty_serial_omap__Make_the_locking_RT_aware.patch
 tty_serial_pl011__Make_the_locking_work_on_RT.patch
-0003-ARM-vfp-Provide-vfp_lock-for-VFP-locking.patch
-0004-ARM-vfp-Use-vfp_lock-in-vfp_sync_hwstate.patch
-0005-ARM-vfp-Use-vfp_lock-in-vfp_entry.patch
+0001-ARM-vfp-Provide-vfp_lock-for-VFP-locking.patch
+0002-ARM-vfp-Use-vfp_lock-in-vfp_sync_hwstate.patch
+0003-ARM-vfp-Use-vfp_lock-in-vfp_support_entry.patch
+0004-ARM-vfp-Move-sending-signals-outside-of-vfp_lock-ed-.patch
 ARM__Allow_to_enable_RT.patch
 ARM64__Allow_to_enable_RT.patch
 

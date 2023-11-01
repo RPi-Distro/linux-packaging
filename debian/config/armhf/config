@@ -1396,7 +1396,6 @@ CONFIG_STAGING_MEDIA=y
 ## file: drivers/staging/media/imx/Kconfig
 ##
 CONFIG_VIDEO_IMX_MEDIA=m
-CONFIG_VIDEO_IMX_CSI=m
 
 ##
 ## file: drivers/staging/media/rkvdec/Kconfig
