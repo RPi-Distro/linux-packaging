@@ -478,13 +478,6 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
             for package in packages_own:
                 add_package_build_restriction(package, '!pkg.linux.quick')
 
-        # Make sure signed-template is build after linux
-        if build_signed:
-            self.makefile.add_deps(f'build-arch_{arch}_real_signed-template',
-                                   [f'build-arch_{arch}_{featureset}_{flavour}_real'])
-            self.makefile.add_deps(f'binary-arch_{arch}_real_signed-template',
-                                   [f'binary-arch_{arch}_{featureset}_{flavour}_real'])
-
         tests_control = self.templates.get_tests_control('image.tests-control', vars)[0]
         tests_control['Depends'].append(
             PackageRelationGroup(package_image['Package'],
