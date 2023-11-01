@@ -574,23 +574,44 @@ class Gencontrol(Base):
                     stdout=subprocess.PIPE,
                     text=True,
                     env=kw_env)
-                udeb_packages = BinaryPackage.read_rfc822(kw_proc.stdout)
+                udeb_packages_base = BinaryPackage.read_rfc822(kw_proc.stdout)
                 kw_proc.wait()
                 if kw_proc.returncode != 0:
                     raise RuntimeError('kernel-wedge exited with code %d' %
                                        kw_proc.returncode)
 
+            udeb_packages = []
+            for package_base in udeb_packages_base:
+                package = package_base.copy()
+                # kernel-wedge currently chokes on Build-Profiles so add it now
+                package['Build-Profiles'] = (
+                    '<!noudeb !pkg.linux.nokernel !pkg.linux.quick>')
+                package.meta['rules-target'] = 'installer'
+                udeb_packages.append(package)
+
+            makeflags_local = makeflags.copy()
+            makeflags_local['IMAGE_PACKAGE_NAME'] = udeb_packages[0]['Package']
+
+            bundle_signed.add_packages(
+                udeb_packages,
+                (arch, featureset, flavour, 'real'),
+                makeflags_local, arch=arch,
+            )
+
             if build_signed:
+                udeb_packages = []
                 # XXX This is a hack to exclude the udebs from
                 # the package list while still being able to
                 # convince debhelper and kernel-wedge to go
                 # part way to building them.
-                for package in udeb_packages:
+                for package_base in udeb_packages_base:
+                    package = package_base.copy()
                     # kernel-wedge currently chokes on Build-Profiles so add it now
                     package['Build-Profiles'] = (
                         '<pkg.linux.udeb-unsigned-test-build !noudeb'
                         ' !pkg.linux.nokernel !pkg.linux.quick>')
                     package.meta['rules-target'] = 'installer-test'
+                    udeb_packages.append(package)
 
                 self.bundle.add_packages(
                     udeb_packages,
@@ -601,22 +622,6 @@ class Gencontrol(Base):
                 # XXX Make sure udeb is build after linux
                 self.makefile.add_deps(f'binary-arch_{arch}_{featureset}_{flavour}_real_installer',
                                        [f'binary-arch_{arch}_{featureset}_{flavour}_real_image'])
-
-            else:
-                for package in udeb_packages:
-                    # kernel-wedge currently chokes on Build-Profiles so add it now
-                    package['Build-Profiles'] = (
-                        '<!noudeb !pkg.linux.nokernel !pkg.linux.quick>')
-                    package.meta['rules-target'] = 'installer'
-
-                makeflags_local = makeflags.copy()
-                makeflags_local['IMAGE_PACKAGE_NAME'] = udeb_packages[0]['Package']
-
-                self.bundle.add_packages(
-                    udeb_packages,
-                    (arch, featureset, flavour, 'real'),
-                    makeflags_local, arch=arch,
-                )
 
     def process_changelog(self):
         version = self.version = self.changelog[0].version

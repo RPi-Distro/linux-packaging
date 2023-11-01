@@ -590,6 +590,12 @@ class _ControlFileDict(collections.abc.MutableMapping):
                 ret = self[key] = ''
             return ret
 
+    def copy(self):
+        ret = self.__class__()
+        ret.__data = self.__data.copy()
+        ret.meta = self.meta.copy()
+        return ret
+
     @classmethod
     def read_rfc822(cls, f):
         entries = []
