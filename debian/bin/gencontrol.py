@@ -432,13 +432,14 @@ class Gencontrol(Base):
         # built along with the signed packages, to create a dependency
         # relationship that ensures src:linux and src:linux-signed-*
         # transition to testing together.
-        if do_meta and not build_signed:
+        if do_meta:
             packages_meta = (
-                self.bundle.add('image.meta', ruleid, makeflags, vars, arch=arch)
+                bundle_signed.add('image.meta', ruleid, makeflags, vars, arch=arch)
             )
             assert len(packages_meta) == 1
             packages_meta += (
-                self.bundle.add('headers.meta', ruleid, makeflags, vars, arch=arch)
+                bundle_signed.add(build_signed and 'signed.headers.meta' or 'headers.meta',
+                                  ruleid, makeflags, vars, arch=arch)
             )
             assert len(packages_meta) == 2
 
