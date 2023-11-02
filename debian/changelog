@@ -1,4 +1,4 @@
-linux (6.5.9-1) UNRELEASED; urgency=medium
+linux (6.5.10-1) UNRELEASED; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.9
@@ -219,6 +219,112 @@ linux (6.5.9-1) UNRELEASED; urgency=medium
     - net: rfkill: reduce data->mtx scope in rfkill_fop_open
     - Bluetooth: hci_sock: Correctly bounds check and pad HCI_MON_NEW_INDEX name
     - mptcp: avoid sending RST when closing the initial subflow
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.10
+    - smb3: allow controlling length of time directory entries are cached with
+      dir leases
+    - smb3: allow controlling maximum number of cached directories
+    - smb3: do not start laundromat thread when dir leases disabled
+    - smb: client: do not start laundromat thread on nohandlecache
+    - smb: client: make laundromat a delayed worker
+    - smb: client: prevent new fids from being removed by laundromat
+    - [arm64] virtio_balloon: Fix endless deflation and inflation on arm64
+    - virtio-mmio: fix memory leak of vm_dev
+    - virtio-crypto: handle config changed by work queue
+    - virtio_pci: fix the common cfg map size
+    - vsock/virtio: initialize the_virtio_vsock before using VQs
+    - vhost: Allow null msg.size on VHOST_IOTLB_INVALIDATE
+    - [arm64] dts: qcom: apq8096-db820c: fix missing clock populate
+    - [arm64] dts: qcom: msm8996-xiaomi: fix missing clock populate
+    - [arm64] dts: rockchip: use codec as clock master on px30-ringneck-haikou
+    - [arm64] dts: rockchip: set codec system-clock-fixed on
+      px30-ringneck-haikou
+    - [arm64] dts: qcom: sa8775p: correct PMIC GPIO label in gpio-ranges
+    - [arm64] dts: rockchip: Add i2s0-2ch-bus-bclk-off pins to RK3399
+    - [arm64] dts: rockchip: Fix i2s0 pin conflict on ROCK Pi 4 boards
+    - i40e: sync next_to_clean and next_to_process for programming status desc
+    - mm: fix vm_brk_flags() to not bail out while holding lock
+    - hugetlbfs: clear resv_map pointer if mmap fails
+    - mm/page_alloc: correct start page when guard page debug is enabled
+    - mm/migrate: fix do_pages_move for compat pointers
+    - mm/mempolicy: fix set_mempolicy_home_node() previous VMA pointer
+    - hugetlbfs: extend hugetlb_vma_lock to private VMAs
+    - maple_tree: add GFP_KERNEL to allocations in mas_expected_entries()
+    - nfsd: lock_rename() needs both directories to live on the same fs
+    - [x86] drm/i915/pmu: Check if pmu is closed before stopping event
+    - drm/amd: Disable ASPM for VI w/ all Intel systems
+    - drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
+    - btrfs: remove v0 extent handling
+    - btrfs: fix unwritten extent buffer after snapshotting a new subvolume
+    - [armhf] clk: ti: Fix missing omap4 mcbsp functional clock and aliases
+    - [armhf] clk: ti: Fix missing omap5 mcbsp functional clock and aliases
+    - r8169: fix the KCSAN reported data-race in rtl_tx() while reading
+      tp->cur_tx
+    - r8169: fix the KCSAN reported data-race in rtl_tx while reading
+      TxDescArray[entry].opts1
+    - r8169: fix the KCSAN reported data race in rtl_rx while reading
+      desc->opts1
+    - iavf: initialize waitqueues before starting watchdog_task
+    - i40e: Fix I40E_FLAG_VF_VLAN_PRUNING value
+    - igb: Fix potential memory leak in igb_add_ethtool_nfc_entry
+    - net: do not leave an empty skb in write queue
+    - neighbour: fix various data-races
+    - igc: Fix ambiguity in the ethtool advertising
+    - net: ethernet: adi: adin1110: Fix uninitialized variable
+    - net: ieee802154: adf7242: Fix some potential buffer overflow in
+      adf7242_stats_show()
+    - net: usb: smsc95xx: Fix uninit-value access in smsc95xx_read_reg
+    - r8152: Increase USB control msg timeout to 5000ms as per spec
+    - r8152: Run the unload routine if we have errors during probe
+    - r8152: Cancel hw_phy_work if we have an error in probe
+    - r8152: Release firmware if we have an error in probe
+    - tcp: fix wrong RTO timeout when received SACK reneging
+    - wifi: cfg80211: pass correct pointer to rdev_inform_bss()
+    - wifi: cfg80211: fix assoc response warning on failed links
+    - wifi: mac80211: don't drop all unprotected public action frames
+    - net/handshake: fix file ref count in handshake_nl_accept_doit()
+    - gtp: uapi: fix GTPA_MAX
+    - gtp: fix fragmentation needed check with gso
+    - [x86] drm/i915/perf: Determine context valid in OA reports
+    - i40e: Fix wrong check for I40E_TXR_FLAGS_WB_ON_ITR
+    - netfilter: flowtable: GC pushes back packets to classic path
+    - net/sched: act_ct: additional checks for outdated flows
+    - drm/i915/mcr: Hold GT forcewake during steering operations
+    - iavf: in iavf_down, disable queues when removing the driver
+    - scsi: sd: Introduce manage_shutdown device flag
+    - blk-throttle: check for overflow in calculate_bytes_allowed
+    - io_uring/fdinfo: lock SQ thread while retrieving thread cpu/pid
+      (CVE-2023-46862)
+    - iio: afe: rescale: Accept only offset channels
+    - iio: exynos-adc: request second interupt only when touchscreen mode is
+      used
+    - iio: adc: xilinx-xadc: Don't clobber preset voltage/temperature thresholds
+    - iio: adc: xilinx-xadc: Correct temperature offset/scale for UltraScale
+    - i2c: muxes: i2c-mux-pinctrl: Use of_get_i2c_adapter_by_node()
+    - i2c: muxes: i2c-mux-gpmux: Use of_get_i2c_adapter_by_node()
+    - i2c: muxes: i2c-demux-pinctrl: Use of_get_i2c_adapter_by_node()
+    - i2c: stm32f7: Fix PEC handling in case of SMBUS transfers
+    - i2c: aspeed: Fix i2c bus hang in slave read
+    - tracing/kprobes: Fix symbol counting logic by looking at modules as well
+    - tracing/kprobes: Fix the description of variable length arguments
+    - [arm64] misc: fastrpc: Reset metadata buffer to avoid incorrect free
+    - [arm64] misc: fastrpc: Free DMA handles for RPC calls with no arguments
+    - [arm64] misc: fastrpc: Clean buffers on remote invocation failures
+    - [arm64] misc: fastrpc: Unmap only if buffer is unmapped from DSP
+    - [arm64,armhf] nvmem: imx: correct nregs for i.MX6ULL
+    - [arm64,armhf] nvmem: imx: correct nregs for i.MX6SLL
+    - [arm64,armhf] nvmem: imx: correct nregs for i.MX6UL
+    - [x86] tsc: Defer marking TSC unstable to a worker
+    - [x86] i8259: Skip probing when ACPI/MADT advertises PCAT compatibility
+    - [x86] cpu: Add model number for Intel Arrow Lake mobile processor
+    - perf/core: Fix potential NULL deref
+    - clk: Sanitize possible_parent_show to Handle Return Value of
+      of_clk_get_parent_name
+    - [armhf] clk: socfpga: gate: Account for the divider in determine_rate
+    - [armhf] clk: stm32: Fix a signedness issue in
+      clk_stm32_composite_determine_rate()
+    - [x86] platform/x86: Add s2idle quirk for more Lenovo laptops
+    - mm/damon/sysfs: check DAMOS regions update progress from
+      before_terminate()
 
   [ Emanuele Rocca ]
   * Disable DEBUG_PREEMPT as it introduces slowdowns up to 20% on certain
