@@ -5,6 +5,7 @@ linux (6.6-1~exp1) UNRELEASED; urgency=medium
   [ Vincent Blut ]
   * [armhf] drivers/input/keyboard: Enable KEYBOARD_TCA8418 as module
     (Closes: #1050782)
+  * drivers/net/wwan: Enable MTK_T7XX as module (Closes: #1055244)
 
   [ Bastian Blank ]
   * [powerpc,ppc64] Remove unused arch specific bootwrapper.
