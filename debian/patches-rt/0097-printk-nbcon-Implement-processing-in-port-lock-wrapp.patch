@@ -2,7 +2,7 @@ From: John Ogness <john.ogness@linutronix.de>
 Date: Wed, 13 Sep 2023 08:35:23 +0000
 Subject: [PATCH 097/108] printk: nbcon: Implement processing in port->lock
  wrapper
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rc6-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt12.tar.xz
 
 Currently the port->lock wrappers nbcon_handle_port_lock(),
 nbcon_handle_port_unlock() (and their variants) only lock/unlock

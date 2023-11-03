@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Mon, 15 Aug 2022 17:29:50 +0200
 Subject: [PATCH] net: Avoid the IPI to free the
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rc6-rt10.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt12.tar.xz
 
 skb_attempt_defer_free() collects a skbs, which was allocated on a
 remote CPU, on a per-CPU list. These skbs are either freed on that
@@ -39,7 +39,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  static inline void input_queue_head_incr(struct softnet_data *sd)
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -4673,15 +4673,6 @@ static void rps_trigger_softirq(void *da
+@@ -4702,15 +4702,6 @@ static void rps_trigger_softirq(void *da
  
  #endif /* CONFIG_RPS */
  
@@ -55,7 +55,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  /*
   * After we queued a packet into sd->input_pkt_queue,
   * we need to make sure this queue is serviced soon.
-@@ -6650,6 +6641,32 @@ static void skb_defer_free_flush(struct
+@@ -6679,6 +6670,32 @@ static void skb_defer_free_flush(struct
  	}
  }
  
@@ -88,7 +88,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  static int napi_threaded_poll(void *data)
  {
  	struct napi_struct *napi = data;
-@@ -11509,7 +11526,11 @@ static int __init net_dev_init(void)
+@@ -11548,7 +11565,11 @@ static int __init net_dev_init(void)
  		INIT_CSD(&sd->csd, rps_trigger_softirq, sd);
  		sd->cpu = i;
  #endif
