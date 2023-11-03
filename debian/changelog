@@ -1,4 +1,4 @@
-linux (6.5.10-1) UNRELEASED; urgency=medium
+linux (6.5.10-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.9
@@ -334,7 +334,7 @@ linux (6.5.10-1) UNRELEASED; urgency=medium
   * Bump ABI to 4
   * Do not explicitly unset DEBUG_PREEMPT (not enabled by default since 6.3-rc1)
 
- -- Emanuele Rocca <ema@debian.org>  Tue, 24 Oct 2023 15:06:39 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 03 Nov 2023 05:15:32 +0100
 
 linux (6.5.8-1) unstable; urgency=medium
 
