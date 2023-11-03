@@ -4,7 +4,7 @@ include:
 variables:
   RELEASE: 'unstable'
   # Make that build quicker
-  SALSA_CI_DPKG_BUILDPACKAGE_ARGS: '-Ppkg.linux.quick'
+  DEB_BUILD_PROFILES: pkg.linux.quick
   # We have to bump the version in source preparation, not later
   SALSA_CI_DISABLE_VERSION_BUMP: 'true'
   # Currently broken in quick build

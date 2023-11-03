@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import os
 import pathlib
 import re
@@ -177,7 +178,7 @@ class PackagesBundle:
                 except KeyError:
                     pass
                 else:
-                    with self.path(f'{package_name}.{name}').open('w') as f:
+                    with self.open(f'{package_name}.{name}') as f:
                         f.write(template)
                         os.chmod(f.fileno(),
                                  self.templates.get_mode(f'{pkgid}.{name}') & 0o777)
@@ -202,17 +203,8 @@ class PackagesBundle:
 
     def path(self, name) -> pathlib.Path:
         if self.name:
-            raise RuntimeError
-            return self.base / f'debian/generated.{self.name}/{name}'
+            return self.base / f'generated.{self.name}/{name}'
         return self.base / name
-
-    @property
-    def path_control(self) -> pathlib.Path:
-        return self.path('control')
-
-    @property
-    def path_makefile(self) -> pathlib.Path:
-        return self.path('rules.gen')
 
     @staticmethod
     def __ruleid_deps(ruleid: tuple[str], name: str) -> typing.Iterator[tuple[str, str]]:
@@ -234,6 +226,13 @@ class PackagesBundle:
                 '_' + '_'.join(r[:i]),
                 '_' + '_'.join(r[:i + 1]),
             )
+
+    @contextlib.contextmanager
+    def open(self, name: str, mode: str = 'w') -> typing.TextIO:
+        path = self.path(name)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open(mode, encoding='utf-8') as f:
+            yield f
 
     def extract_makefile(self) -> None:
         targets = {}
@@ -336,11 +335,11 @@ class PackagesBundle:
         self.write_makefile()
 
     def write_control(self) -> None:
-        with self.path_control.open('w', encoding='utf-8') as f:
+        with self.open('control') as f:
             self.write_rfc822(f, self.packages.values())
 
     def write_makefile(self) -> None:
-        with self.path_makefile.open('w', encoding='utf-8') as f:
+        with self.open('rules.gen') as f:
             self.makefile.write(f)
 
     def write_rfc822(self, f: typing.TextIO, entries: typing.Iterable) -> None:
@@ -553,8 +552,8 @@ class Gencontrol(object):
 
     def write(self):
         for bundle in self.bundles.values():
-            bundle.merge_build_depends()
             bundle.extract_makefile()
+            bundle.merge_build_depends()
             bundle.write()
 
     # TODO: Remove

@@ -17,6 +17,7 @@ DISTRIBUTOR := Debian
 endif
 
 include debian/rules.defs
+include /usr/share/dpkg/pkg-info.mk
 
 ifdef ARCH
   ifneq ($(DEB_HOST_ARCH),$(ARCH))
@@ -470,20 +471,34 @@ endif
 
 build_signed-template:
 
+binary_signed-template: GEN_DIR = debian/generated.signed-$(ARCH)
 binary_signed-template: CODE_SIGNING_DIR = $(DESTDIR)/usr/share/code-signing/$(PACKAGE_NAME)
+binary_signed-template: DEBIAN_DIR = $(CODE_SIGNING_DIR)/source-template/debian
+binary_signed-template: VERSION_TEMPLATE = $(shell echo $(DEB_VERSION) | sed -Ee 's/\+b(\d+)$$/.b\1/' -e 's/-/+/g')
 binary_signed-template:
 	dh_testdir
 	dh_testroot
 	dh_prep
 	rm -rf $(CODE_SIGNING_DIR)
-	mkdir -p $(CODE_SIGNING_DIR)
-	PYTHONHASHSEED=0 debian/bin/gencontrol_signed.py $(ARCH)
+	mkdir -p $(DEBIAN_DIR)/source
+	for i in $$(find $(GEN_DIR) -type f -printf '%P\n'); do \
+		sed -E \
+			-e 's/@signedtemplate_binaryversion@/$(DEB_VERSION)/g' \
+			-e 's/@signedtemplate_sourceversion@/$(VERSION_TEMPLATE)/g' \
+			$(GEN_DIR)/$$i > $(DEBIAN_DIR)/$$i; \
+	done
+	for i in $$(find debian/signing_templates -type f -printf '%P\n'); do \
+		sed -E \
+			-e 's/@signedtemplate_binaryversion@/$(DEB_VERSION)/g' \
+			-e 's/@signedtemplate_sourceversion@/$(VERSION_TEMPLATE)/g' \
+			debian/signing_templates/$$i > $(DEBIAN_DIR)/$$i; \
+	done
+	mv $(DEBIAN_DIR)/changelog.head $(DEBIAN_DIR)/changelog
+	tail +2 debian/changelog >> $(DEBIAN_DIR)/changelog
+	mv $(DEBIAN_DIR)/files.json $(CODE_SIGNING_DIR)/
+	chmod 755 $(DEBIAN_DIR)/rules
 	cp -R	debian/copyright \
 		debian/linux-image.NEWS \
-		debian/signing_templates/README.source \
-		debian/signing_templates/rules \
-		debian/signing_templates/rules.real \
-		debian/signing_templates/source \
 		$(CODE_SIGNING_DIR)/source-template/debian/
 	+$(MAKE_SELF) install-base
 

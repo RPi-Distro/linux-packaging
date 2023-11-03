@@ -590,6 +590,12 @@ class _ControlFileDict(collections.abc.MutableMapping):
                 ret = self[key] = ''
             return ret
 
+    def copy(self):
+        ret = self.__class__()
+        ret.__data = self.__data.copy()
+        ret.meta = self.meta.copy()
+        return ret
+
     @classmethod
     def read_rfc822(cls, f):
         entries = []
@@ -666,6 +672,7 @@ class BinaryPackage(_ControlFileDict):
         ('Build-Depends-Arch', PackageRelation),
         ('Build-Depends-Indep', PackageRelation),
         ('Build-Profiles', PackageBuildRestrictFormula),
+        ('Built-Using', PackageRelation),
         ('Provides', PackageRelation),
         ('Pre-Depends', PackageRelation),
         ('Depends', PackageRelation),

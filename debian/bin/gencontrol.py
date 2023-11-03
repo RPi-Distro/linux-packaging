@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import sys
+import json
 import locale
 import os
 import os.path
@@ -13,7 +14,7 @@ from debian_linux import config
 from debian_linux.debian import PackageRelation, \
     PackageRelationEntry, PackageRelationGroup, VersionLinux, BinaryPackage, \
     restriction_requires_profile
-from debian_linux.gencontrol import Gencontrol as Base, \
+from debian_linux.gencontrol import Gencontrol as Base, PackagesBundle, \
     iter_featuresets, iter_flavours, add_package_build_restriction
 from debian_linux.utils import Templates
 
@@ -192,7 +193,29 @@ class Gencontrol(Base):
             build_signed = False
 
         if build_signed:
+            # Make sure variables remain
+            vars['signedtemplate_binaryversion'] = '@signedtemplate_binaryversion@'
+            vars['signedtemplate_sourceversion'] = '@signedtemplate_sourceversion@'
+
             self.bundle.add('signed-template', (arch, 'real'), makeflags, vars, arch=arch)
+
+            bundle_signed = self.bundles[f'signed-{arch}'] = \
+                PackagesBundle(f'signed-{arch}', self.templates)
+            bundle_signed.packages['source'] = \
+                self.templates.get_source_control('signed.source.control', vars)[0]
+
+            with bundle_signed.open('source/lintian-overrides', 'w') as f:
+                f.write(self.substitute(
+                    self.templates.get('signed.source.lintian-overrides'), vars))
+
+            with bundle_signed.open('changelog.head', 'w') as f:
+                dist = self.changelog[0].distribution
+                urgency = self.changelog[0].urgency
+                f.write(f'''\
+linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={urgency}
+
+  * Sign kernel from {self.changelog[0].source} @signedtemplate_binaryversion@
+''')
 
         if self.config.merge('packages').get('libc-dev', True):
             self.bundle.add('libc-dev', (arch, 'real'), makeflags, vars)
@@ -336,19 +359,30 @@ class Gencontrol(Base):
         else:
             build_signed = False
 
+        if build_signed:
+            bundle_signed = self.bundles[f'signed-{arch}']
+        else:
+            bundle_signed = self.bundle
+
         vars.setdefault('desc', None)
 
-        package_image = (
-            self.bundle.add(build_signed and 'image-unsigned' or 'image',
-                            ruleid, makeflags, vars, arch=arch)
-        )[0]
-        makeflags['IMAGE_PACKAGE_NAME'] = package_image['Package']
+        packages_image = []
+
+        if build_signed:
+            packages_image.extend(
+                bundle_signed.add('signed.image', ruleid, makeflags, vars, arch=arch))
+            packages_image.extend(
+                self.bundle.add('image-unsigned', ruleid, makeflags, vars, arch=arch))
+
+        else:
+            packages_image.extend(bundle_signed.add('image', ruleid, makeflags, vars, arch=arch))
 
         for field in ('Depends', 'Provides', 'Suggests', 'Recommends',
                       'Conflicts', 'Breaks'):
-            package_image.setdefault(field).extend(PackageRelation(
-                config_entry_image(field.lower(), None),
-                override_arches=(arch,)))
+            for package_image in packages_image:
+                package_image.setdefault(field).extend(PackageRelation(
+                    config_entry_image(field.lower(), None),
+                    override_arches=(arch,)))
 
         generators = config_entry_image('initramfs-generators')
         group = PackageRelationGroup()
@@ -358,10 +392,12 @@ class Gencontrol(Base):
             a = PackageRelationEntry(i)
             if a.operator is not None:
                 a.operator = -a.operator
-                package_image['Breaks'].append(PackageRelationGroup([a]))
+                for package_image in packages_image:
+                    package_image['Breaks'].append(PackageRelationGroup([a]))
         for item in group:
             item.arches = [arch]
-        package_image['Depends'].append(group)
+        for package_image in packages_image:
+            package_image['Depends'].append(group)
 
         bootloaders = config_entry_image('bootloaders', None)
         if bootloaders:
@@ -372,10 +408,12 @@ class Gencontrol(Base):
                 a = PackageRelationEntry(i)
                 if a.operator is not None:
                     a.operator = -a.operator
-                    package_image['Breaks'].append(PackageRelationGroup([a]))
+                    for package_image in packages_image:
+                        package_image['Breaks'].append(PackageRelationGroup([a]))
             for item in group:
                 item.arches = [arch]
-            package_image['Suggests'].append(group)
+            for package_image in packages_image:
+                package_image['Suggests'].append(group)
 
         desc_parts = self.config.get_merge('description', arch, featureset,
                                            flavour, 'parts')
@@ -385,17 +423,18 @@ class Gencontrol(Base):
             parts = list(set(desc_parts))
             parts.sort()
             desc = package_image['Description']
-            for part in parts:
-                desc.append(config_entry_description['part-long-' + part])
-                desc.append_short(config_entry_description
-                                  .get('part-short-' + part, ''))
+            for package_image in packages_image:
+                for part in parts:
+                    desc.append(config_entry_description['part-long-' + part])
+                    desc.append_short(config_entry_description
+                                      .get('part-short-' + part, ''))
 
         packages_headers[0]['Depends'].extend(relations_compiler_headers)
-        packages_own.append(package_image)
+        packages_own.extend(packages_image)
         packages_own.extend(packages_headers)
         if extra.get('headers_arch_depends'):
             extra['headers_arch_depends'].append('%s (= ${binary:Version})' %
-                                                 packages_own[-1]['Package'])
+                                                 packages_headers[-1]['Package'])
 
         # The image meta-packages will depend on signed linux-image
         # packages where applicable, so should be built from the
@@ -403,13 +442,14 @@ class Gencontrol(Base):
         # built along with the signed packages, to create a dependency
         # relationship that ensures src:linux and src:linux-signed-*
         # transition to testing together.
-        if do_meta and not build_signed:
+        if do_meta:
             packages_meta = (
-                self.bundle.add('image.meta', ruleid, makeflags, vars, arch=arch)
+                bundle_signed.add('image.meta', ruleid, makeflags, vars, arch=arch)
             )
             assert len(packages_meta) == 1
             packages_meta += (
-                self.bundle.add('headers.meta', ruleid, makeflags, vars, arch=arch)
+                bundle_signed.add(build_signed and 'signed.headers.meta' or 'headers.meta',
+                                  ruleid, makeflags, vars, arch=arch)
             )
             assert len(packages_meta) == 2
 
@@ -437,13 +477,6 @@ class Gencontrol(Base):
         if flavour != self.quick_flavour:
             for package in packages_own:
                 add_package_build_restriction(package, '!pkg.linux.quick')
-
-        # Make sure signed-template is build after linux
-        if build_signed:
-            self.makefile.add_deps(f'build-arch_{arch}_real_signed-template',
-                                   [f'build-arch_{arch}_{featureset}_{flavour}_real'])
-            self.makefile.add_deps(f'binary-arch_{arch}_real_signed-template',
-                                   [f'binary-arch_{arch}_{featureset}_{flavour}_real'])
 
         tests_control = self.templates.get_tests_control('image.tests-control', vars)[0]
         tests_control['Depends'].append(
@@ -545,23 +578,44 @@ class Gencontrol(Base):
                     stdout=subprocess.PIPE,
                     text=True,
                     env=kw_env)
-                udeb_packages = BinaryPackage.read_rfc822(kw_proc.stdout)
+                udeb_packages_base = BinaryPackage.read_rfc822(kw_proc.stdout)
                 kw_proc.wait()
                 if kw_proc.returncode != 0:
                     raise RuntimeError('kernel-wedge exited with code %d' %
                                        kw_proc.returncode)
 
+            udeb_packages = []
+            for package_base in udeb_packages_base:
+                package = package_base.copy()
+                # kernel-wedge currently chokes on Build-Profiles so add it now
+                package['Build-Profiles'] = (
+                    '<!noudeb !pkg.linux.nokernel !pkg.linux.quick>')
+                package.meta['rules-target'] = 'installer'
+                udeb_packages.append(package)
+
+            makeflags_local = makeflags.copy()
+            makeflags_local['IMAGE_PACKAGE_NAME'] = udeb_packages[0]['Package']
+
+            bundle_signed.add_packages(
+                udeb_packages,
+                (arch, featureset, flavour, 'real'),
+                makeflags_local, arch=arch,
+            )
+
             if build_signed:
+                udeb_packages = []
                 # XXX This is a hack to exclude the udebs from
                 # the package list while still being able to
                 # convince debhelper and kernel-wedge to go
                 # part way to building them.
-                for package in udeb_packages:
+                for package_base in udeb_packages_base:
+                    package = package_base.copy()
                     # kernel-wedge currently chokes on Build-Profiles so add it now
                     package['Build-Profiles'] = (
                         '<pkg.linux.udeb-unsigned-test-build !noudeb'
                         ' !pkg.linux.nokernel !pkg.linux.quick>')
                     package.meta['rules-target'] = 'installer-test'
+                    udeb_packages.append(package)
 
                 self.bundle.add_packages(
                     udeb_packages,
@@ -573,22 +627,6 @@ class Gencontrol(Base):
                 self.makefile.add_deps(f'binary-arch_{arch}_{featureset}_{flavour}_real_installer',
                                        [f'binary-arch_{arch}_{featureset}_{flavour}_real_image'])
 
-            else:
-                for package in udeb_packages:
-                    # kernel-wedge currently chokes on Build-Profiles so add it now
-                    package['Build-Profiles'] = (
-                        '<!noudeb !pkg.linux.nokernel !pkg.linux.quick>')
-                    package.meta['rules-target'] = 'installer'
-
-                makeflags_local = makeflags.copy()
-                makeflags_local['IMAGE_PACKAGE_NAME'] = udeb_packages[0]['Package']
-
-                self.bundle.add_packages(
-                    udeb_packages,
-                    (arch, featureset, flavour, 'real'),
-                    makeflags_local, arch=arch,
-                )
-
     def process_changelog(self):
         version = self.version = self.changelog[0].version
         self.abiname_part = '-%s' % self.config['abi', ]['abiname']
@@ -599,6 +637,7 @@ class Gencontrol(Base):
         self.vars = {
             'upstreamversion': self.version.linux_upstream,
             'version': self.version.linux_version,
+            'version_complete': self.version.complete,
             'source_basename': re.sub(r'-[\d.]+$', '',
                                       self.changelog[0].source),
             'source_upstream': self.version.upstream,
@@ -638,11 +677,33 @@ class Gencontrol(Base):
         self.write_config()
         super().write()
         self.write_tests_control()
+        self.write_signed()
 
     def write_config(self):
         f = open("debian/config.defines.dump", 'wb')
         self.config.dump(f)
         f.close()
+
+    def write_signed(self):
+        for bundle in self.bundles.values():
+            pkg_sign_entries = {}
+
+            for p in bundle.packages.values():
+                if pkg_sign_pkg := p.meta.get('sign-package'):
+                    pkg_sign_entries[pkg_sign_pkg] = {
+                        'trusted_certs': [],
+                        'files': [
+                            {
+                                'sig_type': e.split(':', 1)[-1],
+                                'file': e.split(':', 1)[0],
+                            }
+                            for e in p.meta['sign-files'].split()
+                        ],
+                    }
+
+            if pkg_sign_entries:
+                with bundle.path('files.json').open('w') as f:
+                    json.dump({'packages': pkg_sign_entries}, f, indent=2)
 
     def write_tests_control(self):
         self.write_rfc822(open("debian/tests/control", 'w'),
