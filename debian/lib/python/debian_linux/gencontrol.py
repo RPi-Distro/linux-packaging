@@ -288,12 +288,12 @@ class PackagesBundle:
             makeflags = target['makeflags']
             ttype = target['type']
 
-            rule = '_'.join(ruleid)
-            self.makefile.add_rules(f'setup_{rule}_{name}',
+            rule = '_'.join(ruleid + (name, ))
+            self.makefile.add_rules(f'setup_{rule}',
                                     f'setup_{name}', makeflags, packages, packages_extra)
-            self.makefile.add_rules(f'build-{ttype}_{rule}_{name}',
+            self.makefile.add_rules(f'build-{ttype}_{rule}',
                                     f'build_{name}', makeflags, packages, packages_extra)
-            self.makefile.add_rules(f'binary-{ttype}_{rule}_{name}',
+            self.makefile.add_rules(f'binary-{ttype}_{rule}',
                                     f'binary_{name}', makeflags, packages, packages_extra)
 
             for i, j in self.__ruleid_deps(ruleid, name):
@@ -439,7 +439,7 @@ class Gencontrol(object):
                 i.append(package)
                 extra_arches[arch] = i
         for arch in sorted(extra_arches.keys()):
-            self.bundle.add_packages(packages_extra, (arch, 'real'),
+            self.bundle.add_packages(packages_extra, (arch, ),
                                      MakeFlags(), check_packages=False)
 
     def do_indep_featureset(self, featureset, vars,

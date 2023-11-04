@@ -140,7 +140,7 @@ and the filenames can generally be overridden by explicit lists
    - Filename list: [<flavour>_image]configs in <arch>/<fset>/defines
 
 You can check the final list of configuration files by reading
-debian/rules.gen.  Each binary-arch_<arch>_<fset>_<flavour>_real
+debian/rules.gen.  Each binary-arch_<arch>_<fset>_<flavour>_image
 rule passes the list to debian/rules.real as the KCONFIG variable.
 
 These files should be kept in order using the kconfigeditor2
