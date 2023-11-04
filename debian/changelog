@@ -59,6 +59,9 @@ linux (6.6-1~exp1) UNRELEASED; urgency=medium
   * d/installer: Add crc-modules to nic-shared-modules Depends
   * [rt] Update to 6.6-rt12
 
+  [ Alper Nebi Yasak ]
+  * debian/templates: Keep cpio as build-depends for nodoc build profile
+
  -- Vincent Blut <vincent.debian@free.fr>  Thu, 14 Sep 2023 13:53:48 +0200
 
 linux (6.5.10-1) unstable; urgency=medium

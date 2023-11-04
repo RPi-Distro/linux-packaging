@@ -11,7 +11,7 @@ Build-Depends:
 # used by debian/rules.real to prepare the source
  quilt,
 # used by debian/rules.real to build linux-doc and linux-headers
- cpio <!nodoc !pkg.linux.nokernel>,
+ cpio <!pkg.linux.nokernel>,
 # used by upstream to compress kernel and by debian/rules.real to build linux-source
  xz-utils <!pkg.linux.nokernel !pkg.linux.nosource>,
 # used by debian/rules.real to build linux-perf and linux-support
