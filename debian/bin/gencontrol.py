@@ -111,9 +111,9 @@ class Gencontrol(Base):
             makeflags_featureset = makeflags.copy()
             makeflags_featureset['FEATURESET'] = featureset
 
-            self.makefile.add_rules(f'source_{featureset}',
-                                    'source', makeflags_featureset)
-            self.makefile.add_deps('source', [f'source_{featureset}'])
+            self.bundle.makefile.add_rules(f'source_{featureset}',
+                                           'source', makeflags_featureset)
+            self.bundle.makefile.add_deps('source', [f'source_{featureset}'])
 
         makeflags = makeflags.copy()
         makeflags['ALL_FEATURESETS'] = ' '.join(iter_featuresets(self.config))
@@ -349,7 +349,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
         for group in relations_compiler_build_dep:
             for item in group:
                 item.arches = [arch]
-        self.packages['source']['Build-Depends-Arch'].extend(
+        self.bundle.packages['source']['Build-Depends-Arch'].extend(
             relations_compiler_build_dep)
 
         packages_own = []
@@ -555,9 +555,9 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
 
         merged_config = ('debian/build/config.%s_%s_%s' %
                          (arch, featureset, flavour))
-        self.makefile.add_cmds(merged_config,
-                               ["$(MAKE) -f debian/rules.real %s %s" %
-                                (merged_config, makeflags)])
+        self.bundle.makefile.add_cmds(merged_config,
+                                      ["$(MAKE) -f debian/rules.real %s %s" %
+                                       (merged_config, makeflags)])
 
         if not self.disable_installer and config_entry_packages.get('installer'):
             with tempfile.TemporaryDirectory(prefix='linux-gencontrol') as config_dir:
@@ -622,10 +622,6 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                     (arch, featureset, flavour),
                     makeflags, arch=arch, check_packages=False,
                 )
-
-                # XXX Make sure udeb is build after linux
-                self.makefile.add_deps(f'binary-arch_{arch}_{featureset}_{flavour}_real_installer',
-                                       [f'binary-arch_{arch}_{featureset}_{flavour}_real_image'])
 
     def process_changelog(self):
         version = self.version = self.changelog[0].version
@@ -706,8 +702,8 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                     json.dump({'packages': pkg_sign_entries}, f, indent=2)
 
     def write_tests_control(self):
-        self.write_rfc822(open("debian/tests/control", 'w'),
-                          self.tests_control)
+        self.bundle.write_rfc822(open("debian/tests/control", 'w'),
+                                 self.tests_control)
 
 
 if __name__ == '__main__':
