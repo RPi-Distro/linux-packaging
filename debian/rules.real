@@ -10,9 +10,7 @@ include /usr/share/dpkg/default.mk
 
 SHELL  := bash -e
 MAINTAINER := $(shell sed -ne 's,^Maintainer: .[^<]*<\([^>]*\)>,\1,p' debian/control)
-DISTRIBUTION := $(shell dpkg-parsechangelog -SDistribution)
-SOURCE_DATE := $(shell dpkg-parsechangelog -SDate)
-SOURCE_DATE_UTC_ISO := $(shell date -u -d '$(SOURCE_DATE)' +%Y-%m-%d)
+SOURCE_DATE_UTC_ISO := $(shell date -u -d '@$(SOURCE_DATE_EPOCH)' +%Y-%m-%d)
 
 DISTRIBUTOR := $(shell lsb_release -is 2>/dev/null)
 ifeq ($(DISTRIBUTOR),)
@@ -43,7 +41,7 @@ undefine LANGUAGE
 stamp = [ -d $(dir $@) ] || mkdir $(dir $@); touch $@
 
 setup_env := env -u ABINAME -u ARCH -u FEATURESET -u FLAVOUR -u VERSION -u LOCALVERSION
-setup_env += DISTRIBUTION_OFFICIAL_BUILD=1 DISTRIBUTOR="$(DISTRIBUTOR)" DISTRIBUTION_VERSION="$(SOURCEVERSION)" KBUILD_BUILD_TIMESTAMP="$(SOURCE_DATE)" KBUILD_BUILD_VERSION_TIMESTAMP="$(DISTRIBUTOR) $(SOURCEVERSION) ($(SOURCE_DATE_UTC_ISO))" KBUILD_BUILD_USER="$(word 1,$(subst @, ,$(MAINTAINER)))" KBUILD_BUILD_HOST="$(word 2,$(subst @, ,$(MAINTAINER)))"
+setup_env += DISTRIBUTION_OFFICIAL_BUILD=1 DISTRIBUTOR="$(DISTRIBUTOR)" DISTRIBUTION_VERSION="$(SOURCEVERSION)" KBUILD_BUILD_TIMESTAMP="@$(SOURCE_DATE_EPOCH)" KBUILD_BUILD_VERSION_TIMESTAMP="$(DISTRIBUTOR) $(SOURCEVERSION) ($(SOURCE_DATE_UTC_ISO))" KBUILD_BUILD_USER="$(word 1,$(subst @, ,$(MAINTAINER)))" KBUILD_BUILD_HOST="$(word 2,$(subst @, ,$(MAINTAINER)))"
 setup_env += KBUILD_VERBOSE=$(if $(filter terse,$(DEB_BUILD_OPTIONS)),0,1)
 
 # XXX: All the tools leak flags between host and build all the time, just don't care.  See #1050991.
@@ -88,8 +86,8 @@ $(BUILD_DIR)/$(SOURCE_BASENAME)-source-$(UPSTREAMVERSION).tar.xz: $(STAMPS_DIR)/
 	rm -rf '$@' '$(DIR)'
 	$(call copy_source,$(DIR))
 	chmod -R u+rw,go=rX '$(DIR)'
-	find '$(DIR)' -depth -newermt '$(SOURCE_DATE)' -print0 | \
-		xargs -0r touch --no-dereference --date='$(SOURCE_DATE)'
+	find '$(DIR)' -depth -newermt '@$(SOURCE_DATE_EPOCH)' -print0 | \
+		xargs -0r touch --no-dereference --date='@$(SOURCE_DATE_EPOCH)'
 	cd '$(BUILD_DIR)'; \
 	find '$(SOURCE_BASENAME)-source-$(UPSTREAMVERSION)' \
 		-name '*.pyc' -prune -o \
