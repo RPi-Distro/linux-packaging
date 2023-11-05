@@ -5,6 +5,9 @@
 # Additionally, variables version, abiname and ltver are
 # expected to be available (need to be exported from the parent process).
 #
+
+include /usr/share/dpkg/default.mk
+
 SHELL  := bash -e
 MAINTAINER := $(shell sed -ne 's,^Maintainer: .[^<]*<\([^>]*\)>,\1,p' debian/control)
 DISTRIBUTION := $(shell dpkg-parsechangelog -SDistribution)
@@ -17,7 +20,6 @@ DISTRIBUTOR := Debian
 endif
 
 include debian/rules.defs
-include /usr/share/dpkg/pkg-info.mk
 
 ifdef ARCH
   ifneq ($(DEB_HOST_ARCH),$(ARCH))
