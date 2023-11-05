@@ -5,6 +5,7 @@ import collections.abc
 import functools
 import os.path
 import re
+import typing
 import warnings
 
 
@@ -218,38 +219,19 @@ $
         self.linux_revision_other = d['revision_other'] and True
 
 
-class PackageArchitecture(collections.abc.MutableSet):
-    __slots__ = '_data'
+class PackageArchitecture(set[str]):
+    def __init__(
+        self,
+        v: typing.Optional[str | typing.Iterable[str]] = None,
+        /,
+    ) -> None:
+        if v:
+            if isinstance(v, str):
+                v = re.split(r'\s', v.strip())
+            self |= frozenset(v)
 
-    def __init__(self, value=None):
-        self._data = set()
-        if value:
-            self.extend(value)
-
-    def __contains__(self, value):
-        return self._data.__contains__(value)
-
-    def __iter__(self):
-        return self._data.__iter__()
-
-    def __len__(self):
-        return self._data.__len__()
-
-    def __str__(self):
+    def __str__(self) -> str:
         return ' '.join(sorted(self))
-
-    def add(self, value):
-        self._data.add(value)
-
-    def discard(self, value):
-        self._data.discard(value)
-
-    def extend(self, value):
-        if isinstance(value, str):
-            for i in re.split(r'\s', value.strip()):
-                self.add(i)
-        else:
-            raise RuntimeError
 
 
 class PackageDescription(object):
