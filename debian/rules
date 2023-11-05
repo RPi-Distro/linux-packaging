@@ -1,11 +1,11 @@
 #!/usr/bin/make -f
 
+include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/pkg-info.mk
+
+DEB_VERSION_SOURCE = $(shell echo '$(DEB_VERSION)' | sed -re 's/\+b([0-9]+)$$//')
+
 SHELL    := sh -e
-SOURCE := $(shell dpkg-parsechangelog -SSource)
-VERSION := $(shell dpkg-parsechangelog -SVersion)
-VERSION_UPSTREAM := $(shell echo "$(VERSION)" | sed -e 's,-[^-]*$$,,')
-VERSION_BINNMU := $(shell echo "$(VERSION)" | sed -rne 's,.*\+b([0-9]+)$$,\1,p')
-VERSION_SOURCE := $(patsubst %+b$(VERSION_BINNMU),%,$(VERSION))
 
 include debian/rules.defs
 
@@ -75,8 +75,8 @@ binary-indep: build-indep
 	dh_testdir
 	$(MAKE) -f debian/rules.gen binary-indep
 
-DIR_ORIG = ../orig/$(SOURCE)-$(VERSION_UPSTREAM)
-TAR_ORIG_NAME = $(SOURCE)_$(VERSION_UPSTREAM).orig.tar.xz
+DIR_ORIG = ../orig/$(DEB_SOURCE)-$(DEB_VERSION_EPOCH_UPSTREAM)
+TAR_ORIG_NAME = $(DEB_SOURCE)_$(DEB_VERSION_EPOCH_UPSTREAM).orig.tar.xz
 TAR_ORIG = $(firstword $(wildcard ../$(TAR_ORIG_NAME)) $(wildcard ../orig/$(TAR_ORIG_NAME)))
 
 orig: $(DIR_ORIG)
@@ -132,7 +132,7 @@ CONTROL_FILES += debian/installer/package-list
 # in the checksum.
 $(BUILD_DIR)/version-info: debian/changelog
 	mkdir -p $(@D)
-	printf >$@ 'Source: %s\nVersion: %s\n' $(SOURCE) $(VERSION_SOURCE)
+	printf >$@ 'Source: %s\nVersion: %s\n' $(DEB_SOURCE) $(DEB_VERSION_SOURCE)
 
 debian/control debian/rules.gen: debian/bin/gencontrol.py $(CONTROL_FILES)
 ifeq ($(wildcard debian/control.md5sum),)
