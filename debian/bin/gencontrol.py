@@ -422,8 +422,8 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
             # name
             parts = list(set(desc_parts))
             parts.sort()
-            desc = package_image['Description']
             for package_image in packages_image:
+                desc = package_image['Description']
                 for part in parts:
                     desc.append(config_entry_description['part-long-' + part])
                     desc.append_short(config_entry_description
