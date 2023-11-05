@@ -402,7 +402,6 @@ endif
 	  binary_image_bug \
 	  DESTDIR='$(DESTDIR)' PACKAGE_NAME='$(PACKAGE_NAME)' REAL_VERSION='$(REAL_VERSION)'
 	dh_strip --no-automatic-dbgsym -Xvmlinux -Xvmlinuz
-	ln -sf linux-image.NEWS debian/$(PACKAGE_NAME).NEWS
 	+$(MAKE_SELF) install-base
 
 binary_image_bug:
@@ -499,7 +498,6 @@ binary_signed-template:
 	chmod 755 $(DEBIAN_DIR)/rules
 	cp -R	debian/copyright \
 		debian/installer \
-		debian/linux-image.NEWS \
 		$(CODE_SIGNING_DIR)/source-template/debian/
 	+$(MAKE_SELF) install-base
 

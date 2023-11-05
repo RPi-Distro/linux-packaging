@@ -43,7 +43,6 @@ binary_image:
 		$(PACKAGE_DIR)/usr/share/bug/$(PACKAGE_NAME)/info
 	dh_install
 	dh_installchangelogs
-	ln -sf linux-image.NEWS debian/$(PACKAGE_NAME).NEWS
 	dh_installdocs
 	dh_lintian
 	dh_compress
