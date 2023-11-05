@@ -234,44 +234,46 @@ class PackageArchitecture(set[str]):
         return ' '.join(sorted(self))
 
 
-class PackageDescription(object):
-    __slots__ = "short", "long"
+class PackageDescription:
+    short: list[str]
+    long: list[str]
 
-    def __init__(self, value=None):
+    def __init__(
+        self,
+        v: typing.Optional[str] = None,
+        /,
+    ) -> None:
         self.short = []
         self.long = []
-        if value is not None:
-            desc_split = value.split("\n", 1)
+        if v:
+            desc_split = v.split('\n', 1)
             self.append_short(desc_split[0])
             if len(desc_split) == 2:
                 self.append(desc_split[1])
 
-    def __str__(self):
+    def __str__(self) -> str:
         from .utils import TextWrapper
         wrap = TextWrapper(width=74, fix_sentence_endings=True).wrap
         short = ', '.join(self.short)
         long_pars = []
         for i in self.long:
             long_pars.append(wrap(i))
-        long = '\n .\n '.join(['\n '.join(i) for i in long_pars])
+        long = '\n .\n '.join('\n '.join(i) for i in long_pars)
         return short + '\n ' + long if long else short
 
-    def append(self, str):
-        str = str.strip()
-        if str:
-            self.long.extend(str.split(u"\n.\n"))
+    def append(self, long: str) -> None:
+        long = long.strip()
+        if long:
+            self.long.extend(long.split('\n.\n'))
 
-    def append_short(self, str):
-        for i in [i.strip() for i in str.split(u",")]:
+    def append_short(self, short: str) -> None:
+        for i in [i.strip() for i in short.split(',')]:
             if i:
                 self.short.append(i)
 
-    def extend(self, desc):
-        if isinstance(desc, PackageDescription):
-            self.short.extend(desc.short)
-            self.long.extend(desc.long)
-        else:
-            raise TypeError
+    def extend(self, desc: PackageDescription) -> None:
+        self.short.extend(desc.short)
+        self.long.extend(desc.long)
 
 
 class PackageRelation(list):
