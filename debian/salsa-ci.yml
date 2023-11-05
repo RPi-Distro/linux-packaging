@@ -246,8 +246,7 @@ sign-code:
   script:
     - |
       apt-get update && eatmydata apt-get install --no-install-recommends -y \
-        dpkg-dev git openssl python3 python3-debian sbsigntool \
-        ${WORKING_DIR}/linux-kbuild-*[0-9]_*_${BUILD_ARCH}.deb
+        dpkg-dev git openssl python3 python3-debian sbsigntool
 
     # Fetch kernel-team repository
     - kernel_team_dir="$(mktemp -d)"
@@ -294,9 +293,7 @@ build-signed:
     # Install build-dependencies produced by build job
     - |
       apt-get install --no-install-recommends -y \
-        ${WORKING_DIR}/linux-image-*-unsigned_*_${BUILD_ARCH}.deb \
-        ${WORKING_DIR}/linux-kbuild-*[0-9]_*_${BUILD_ARCH}.deb \
-        ${WORKING_DIR}/linux-support-*_all.deb
+        ${WORKING_DIR}/linux-image-*-unsigned_*_${BUILD_ARCH}.deb
 
     # Do the same as the common .build-definition script
     - !reference [.build-before-script]
@@ -311,7 +308,7 @@ build-signed:
       - ${WORKING_DIR}/linux-headers-*_${BUILD_ARCH}.deb
       - ${WORKING_DIR}/linux-headers-*-common_*_all.deb
       - ${WORKING_DIR}/linux-image-*_${BUILD_ARCH}.deb
-      - ${WORKING_DIR}/linux-kbuild-*[0-9]_*_${BUILD_ARCH}.deb
+      - ${WORKING_DIR}/linux-kbuild-*_${BUILD_ARCH}.deb
       - ${WORKING_DIR}/linux-compiler-*_${BUILD_ARCH}.deb
     exclude:
       - ${WORKING_DIR}/linux-image-*-unsigned_*_${BUILD_ARCH}.deb
