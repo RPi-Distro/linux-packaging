@@ -498,6 +498,7 @@ binary_signed-template:
 	mv $(DEBIAN_DIR)/files.json $(CODE_SIGNING_DIR)/
 	chmod 755 $(DEBIAN_DIR)/rules
 	cp -R	debian/copyright \
+		debian/installer \
 		debian/linux-image.NEWS \
 		$(CODE_SIGNING_DIR)/source-template/debian/
 	+$(MAKE_SELF) install-base
