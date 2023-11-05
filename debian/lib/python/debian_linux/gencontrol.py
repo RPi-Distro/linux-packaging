@@ -164,6 +164,7 @@ class PackagesBundle:
             package.meta['rules-check-packages'] = check_packages
 
             for name in (
+                    'NEWS',
                     'bug-presubj',
                     'lintian-overrides',
                     'maintscript',
