@@ -317,7 +317,7 @@ class PackagesBundle:
             for group in dep:
                 for item in group:
                     if package["Architecture"] != arch_all and not item.arches:
-                        item.arches = sorted(package["Architecture"])
+                        item.arches = package["Architecture"]
                     if package.get("Build-Profiles") and not item.restrictions:
                         item.restrictions = package["Build-Profiles"]
             if package["Architecture"] == arch_all:

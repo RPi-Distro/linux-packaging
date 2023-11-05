@@ -344,13 +344,11 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
             for entry in group:
                 entry.restrictions = []
 
-        relations_compiler_build_dep = PackageRelation(
-            self.substitute(config_entry_relations[compiler], vars))
-        for group in relations_compiler_build_dep:
-            for item in group:
-                item.arches = [arch]
-        self.bundle.packages['source']['Build-Depends-Arch'].extend(
-            relations_compiler_build_dep)
+        for i in PackageRelation(
+            self.substitute(config_entry_relations[compiler], vars),
+            arches={arch},
+        ):
+            self.bundle.packages['source']['Build-Depends-Arch'].merge(i)
 
         packages_own = []
 
@@ -380,40 +378,37 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
         for field in ('Depends', 'Provides', 'Suggests', 'Recommends',
                       'Conflicts', 'Breaks'):
             for package_image in packages_image:
-                package_image.setdefault(field).extend(PackageRelation(
-                    config_entry_image(field.lower(), None),
-                    override_arches=(arch,)))
+                for i in config_entry_image(field.lower(), ()):
+                    package_image.setdefault(field).merge(
+                        PackageRelationGroup(i, arches={arch})
+                    )
 
         generators = config_entry_image('initramfs-generators')
         group = PackageRelationGroup()
         for i in generators:
             i = config_entry_relations.get(i, i)
-            group.append(i)
+            group.append(PackageRelationEntry(i, arches={arch}))
             a = PackageRelationEntry(i)
             if a.operator is not None:
                 a.operator = -a.operator
                 for package_image in packages_image:
-                    package_image['Breaks'].append(PackageRelationGroup([a]))
-        for item in group:
-            item.arches = [arch]
+                    package_image['Breaks'].merge(PackageRelationGroup([a]))
         for package_image in packages_image:
-            package_image['Depends'].append(group)
+            package_image['Depends'].merge(group)
 
         bootloaders = config_entry_image('bootloaders', None)
         if bootloaders:
             group = PackageRelationGroup()
             for i in bootloaders:
                 i = config_entry_relations.get(i, i)
-                group.append(i)
+                group.append(PackageRelationEntry(i, arches={arch}))
                 a = PackageRelationEntry(i)
                 if a.operator is not None:
                     a.operator = -a.operator
                     for package_image in packages_image:
-                        package_image['Breaks'].append(PackageRelationGroup([a]))
-            for item in group:
-                item.arches = [arch]
+                        package_image['Breaks'].merge(PackageRelationGroup([a]))
             for package_image in packages_image:
-                package_image['Suggests'].append(group)
+                package_image['Suggests'].merge(group)
 
         desc_parts = self.config.get_merge('description', arch, featureset,
                                            flavour, 'parts')
@@ -429,7 +424,8 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                     desc.append_short(config_entry_description
                                       .get('part-short-' + part, ''))
 
-        packages_headers[0]['Depends'].extend(relations_compiler_headers)
+        for i in relations_compiler_headers:
+            packages_headers[0]['Depends'].merge(i)
         packages_own.extend(packages_image)
         packages_own.extend(packages_headers)
         if extra.get('headers_arch_depends'):
@@ -479,12 +475,12 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                 add_package_build_restriction(package, '!pkg.linux.quick')
 
         tests_control = self.templates.get_tests_control('image.tests-control', vars)[0]
-        tests_control['Depends'].append(
+        tests_control['Depends'].merge(
             PackageRelationGroup(package_image['Package'],
-                                 override_arches=(arch,)))
+                                 arches={arch}))
         if self.tests_control_image:
-            self.tests_control_image['Depends'].extend(
-                tests_control['Depends'])
+            for i in tests_control['Depends']:
+                self.tests_control_image['Depends'].merge(i)
         else:
             self.tests_control_image = tests_control
             self.tests_control.append(tests_control)
@@ -495,9 +491,9 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                         self.templates.get_tests_control('headers.tests-control', vars)[0]
                 self.tests_control.append(self.tests_control_headers)
             self.tests_control_headers['Architecture'].add(arch)
-            self.tests_control_headers['Depends'].append(
+            self.tests_control_headers['Depends'].merge(
                 PackageRelationGroup(packages_headers[0]['Package'],
-                                     override_arches=(arch,)))
+                                     arches={arch}))
 
         def get_config(*entry_name):
             entry_real = ('image',) + entry_name
