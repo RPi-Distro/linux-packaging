@@ -67,6 +67,9 @@ linux (6.6-1~exp1) UNRELEASED; urgency=medium
   [ Alper Nebi Yasak ]
   * debian/templates: Keep cpio as build-depends for nodoc build profile
 
+  [ John Paul Adrian Glaubitz ]
+  * [ia64] Compile with gcc-12 to work around ICE (PR target/111425)
+
  -- Vincent Blut <vincent.debian@free.fr>  Thu, 14 Sep 2023 13:53:48 +0200
 
 linux (6.5.10-1) unstable; urgency=medium
