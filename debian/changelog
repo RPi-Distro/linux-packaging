@@ -63,6 +63,9 @@ linux (6.6-1~exp1) UNRELEASED; urgency=medium
   * libcpupower1: Add is_valid_path to symbols file
   * d/installer: Add crc-modules to nic-shared-modules Depends
   * [rt] Update to 6.6-rt12
+  * d/patches: Remove amdgpu part in the "radeon, amdgpu: Firmware is required
+    for DRM and KMS on R600 onward" and "firmware_class: Refer to Debian wiki
+    page when logging missing firmware" patches (Closes: #1053764)
 
   [ Alper Nebi Yasak ]
   * debian/templates: Keep cpio as build-depends for nodoc build profile

@@ -9,7 +9,9 @@ Bug-Debian: https://bugs.debian.org/632212
 Bug-Debian: https://bugs.debian.org/637943
 Bug-Debian: https://bugs.debian.org/649448
 Bug-Debian: https://bugs.debian.org/697229
+Bug-Debian: https://bugs.debian.org/1053764
 Forwarded: no
+Last-Update: 2023-11-08
 
 radeon requires firmware/microcode for the GPU in all chips, but for
 newer chips (apparently R600 'Evergreen' onward) it also expects
@@ -20,66 +22,17 @@ the firmware is not available, but becomes unstable - the framebuffer
 and/or system memory may be corrupted, or the display may stay black.
 
 Therefore, perform a basic check for the existence of
-/lib/firmware/{radeon,amdgpu} when a device is probed, and abort if it
+/lib/firmware/radeon when a device is probed, and abort if it
 is missing, except for the pre-R600 case.
 
+Update 2023-11-08:
+In bug 1053764 Mario Limonciello <mario.limonciello@amd.com> states
+that the patch isn't needed anymore for amdgpu, so remove that part
+of the patch
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 29 ++++++++++++++++++++++++
  drivers/gpu/drm/radeon/radeon_drv.c     | 30 +++++++++++++++++++++++++
- 2 files changed, 59 insertions(+)
+ 1 files changed, 30 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -38,6 +38,8 @@
- #include <linux/pm_runtime.h>
- #include <linux/suspend.h>
- #include <linux/vga_switcheroo.h>
-+#include <linux/namei.h>
-+#include <linux/path.h>
- 
- #include "amdgpu.h"
- #include "amdgpu_amdkfd.h"
-@@ -2042,6 +2044,28 @@ static void amdgpu_get_secondary_funcs(s
- 	}
- }
- 
-+/* Test that /lib/firmware/amdgpu is a directory (or symlink to a
-+ * directory).  We could try to match the udev search path, but let's
-+ * keep it simple.
-+ */
-+static bool amdgpu_firmware_installed(void)
-+{
-+#if IS_BUILTIN(CONFIG_DRM_AMDGPU)
-+	/* It may be too early to tell.  Assume it's there. */
-+	return true;
-+#else
-+	struct path path;
-+
-+	if (kern_path("/lib/firmware/amdgpu", LOOKUP_DIRECTORY | LOOKUP_FOLLOW,
-+		      &path) == 0) {
-+		path_put(&path);
-+		return true;
-+	}
-+
-+	return false;
-+#endif
-+}
-+
- static int amdgpu_pci_probe(struct pci_dev *pdev,
- 			    const struct pci_device_id *ent)
- {
-@@ -2125,6 +2149,11 @@ static int amdgpu_pci_probe(struct pci_d
- 	}
- #endif
- 
-+	if (!amdgpu_firmware_installed()) {
-+		DRM_ERROR("amdgpu requires firmware installed\n");
-+		return -ENODEV;
-+	}
-+
- 	adev = devm_drm_dev_alloc(&pdev->dev, &amdgpu_kms_driver, typeof(*adev), ddev);
- 	if (IS_ERR(adev))
- 		return PTR_ERR(adev);
 --- a/drivers/gpu/drm/radeon/radeon_drv.c
 +++ b/drivers/gpu/drm/radeon/radeon_drv.c
 @@ -32,6 +32,8 @@
