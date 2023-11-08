@@ -64,6 +64,7 @@ CONFIG_CXL_BUS=y
 ##
 CONFIG_DMADEVICES=y
 CONFIG_DMA_SUN6I=m
+CONFIG_DW_AXI_DMAC=m
 
 ##
 ## file: drivers/gpio/Kconfig
@@ -155,6 +156,11 @@ CONFIG_MACB=m
 ## file: drivers/net/ethernet/stmicro/stmmac/Kconfig
 ##
 CONFIG_STMMAC_ETH=m
+
+##
+## file: drivers/net/phy/Kconfig
+##
+CONFIG_MOTORCOMM_PHY=m
 
 ##
 ## file: drivers/nvmem/Kconfig
