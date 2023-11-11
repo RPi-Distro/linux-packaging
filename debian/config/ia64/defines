@@ -10,7 +10,7 @@ compiler: gcc-12
 image-file: vmlinux.gz
 
 [image]
-bootloaders: grub-efi-ia64
+suggests: grub-efi-ia64
 install-stem: vmlinuz
 
 [relations]

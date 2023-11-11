@@ -10,8 +10,7 @@ image-file: vmlinux
 
 [image]
 configs:
-bootloaders: grub-ieee1275
-suggests: fdutils
+suggests: fdutils, grub-ieee1275
 install-stem: vmlinux
 
 [sparc64_description]

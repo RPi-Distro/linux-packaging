@@ -10,8 +10,7 @@ image-file: vmlinux
 
 [image]
 configs:
-bootloaders: grub-ieee1275
-suggests: mkvmlinuz
+suggests: mkvmlinuz, grub-ieee1275
 install-stem: vmlinux
 
 [powerpc_description]

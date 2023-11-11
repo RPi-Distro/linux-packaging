@@ -34,7 +34,6 @@ class Gencontrol(Base):
             'parts': config.SchemaItemList(),
         },
         'image': {
-            'bootloaders': config.SchemaItemList(),
             'configs': config.SchemaItemList(),
             'check-size': config.SchemaItemInteger(),
             'check-size-with-dtb': config.SchemaItemBoolean(),
@@ -391,20 +390,6 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                         entry.operator = -entry.operator
                         for package_image in packages_image:
                             package_image.setdefault('Breaks').append(PackageRelationGroup([entry]))
-
-        bootloaders = config_entry_image('bootloaders', None)
-        if bootloaders:
-            group = PackageRelationGroup()
-            for i in bootloaders:
-                i = config_entry_relations.get(i, i)
-                group.append(PackageRelationEntry(i, arches={arch}))
-                a = PackageRelationEntry(i)
-                if a.operator is not None:
-                    a.operator = -a.operator
-                    for package_image in packages_image:
-                        package_image['Breaks'].merge(PackageRelationGroup([a]))
-            for package_image in packages_image:
-                package_image['Suggests'].merge(group)
 
         desc_parts = self.config.get_merge('description', arch, featureset,
                                            flavour, 'parts')

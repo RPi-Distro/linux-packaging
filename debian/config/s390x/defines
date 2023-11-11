@@ -9,7 +9,7 @@ image-file: arch/s390/boot/bzImage
 vdso: true
 
 [image]
-bootloaders: s390-tools
+suggests: s390-tools
 install-stem: vmlinuz
 
 [relations]

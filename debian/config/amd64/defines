@@ -10,7 +10,7 @@ signed-code: true
 vdso: true
 
 [image]
-bootloaders: grub-pc grub-efi-amd64 extlinux
+suggests: grub-pc | grub-efi-amd64 | extlinux
 install-stem: vmlinuz
 
 [relations]
