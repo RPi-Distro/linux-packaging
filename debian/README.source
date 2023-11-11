@@ -238,8 +238,8 @@ Several build profiles are understood and supported:
 - cross: Needed when cross-building.
 - nopython: Disable Python bindings.  This currently disables building the
   linux-perf-<version> package, as the perf program embeds Python.
-- pkg.linux.nometa: Exclude most meta-packages.  The linux-compiler-* and
-  linux-headers-*-all* packages can still be built.
+- pkg.linux.nometa: Exclude most meta-packages.  The linux-headers-*-all*
+  packages can still be built.
 - pkg.linux.quick: Perform a limited build that should provide good
   coverage yet be quick enough for use in CI.
 
