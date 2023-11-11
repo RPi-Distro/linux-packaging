@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import collections
 import collections.abc
+import enum
 import functools
 import os.path
 import re
+import typing
 import warnings
 
 
@@ -218,232 +220,192 @@ $
         self.linux_revision_other = d['revision_other'] and True
 
 
-class PackageArchitecture(collections.abc.MutableSet):
-    __slots__ = '_data'
+class PackageArchitecture(set[str]):
+    def __init__(
+        self,
+        v: typing.Optional[str | typing.Iterable[str]] = None,
+        /,
+    ) -> None:
+        if v:
+            if isinstance(v, str):
+                v = re.split(r'\s', v.strip())
+            self |= frozenset(v)
 
-    def __init__(self, value=None):
-        self._data = set()
-        if value:
-            self.extend(value)
-
-    def __contains__(self, value):
-        return self._data.__contains__(value)
-
-    def __iter__(self):
-        return self._data.__iter__()
-
-    def __len__(self):
-        return self._data.__len__()
-
-    def __str__(self):
+    def __str__(self) -> str:
         return ' '.join(sorted(self))
 
-    def add(self, value):
-        self._data.add(value)
 
-    def discard(self, value):
-        self._data.discard(value)
+class PackageDescription:
+    short: list[str]
+    long: list[str]
 
-    def extend(self, value):
-        if isinstance(value, str):
-            for i in re.split(r'\s', value.strip()):
-                self.add(i)
-        else:
-            raise RuntimeError
-
-
-class PackageDescription(object):
-    __slots__ = "short", "long"
-
-    def __init__(self, value=None):
+    def __init__(
+        self,
+        v: typing.Optional[str] = None,
+        /,
+    ) -> None:
         self.short = []
         self.long = []
-        if value is not None:
-            desc_split = value.split("\n", 1)
+        if v:
+            desc_split = v.split('\n', 1)
             self.append_short(desc_split[0])
             if len(desc_split) == 2:
                 self.append(desc_split[1])
 
-    def __str__(self):
+    def __str__(self) -> str:
         from .utils import TextWrapper
         wrap = TextWrapper(width=74, fix_sentence_endings=True).wrap
         short = ', '.join(self.short)
         long_pars = []
         for i in self.long:
             long_pars.append(wrap(i))
-        long = '\n .\n '.join(['\n '.join(i) for i in long_pars])
+        long = '\n .\n '.join('\n '.join(i) for i in long_pars)
         return short + '\n ' + long if long else short
 
-    def append(self, str):
-        str = str.strip()
-        if str:
-            self.long.extend(str.split(u"\n.\n"))
+    def append(self, long: str) -> None:
+        long = long.strip()
+        if long:
+            self.long.extend(long.split('\n.\n'))
 
-    def append_short(self, str):
-        for i in [i.strip() for i in str.split(u",")]:
+    def append_short(self, short: str) -> None:
+        for i in [i.strip() for i in short.split(',')]:
             if i:
                 self.short.append(i)
 
-    def extend(self, desc):
-        if isinstance(desc, PackageDescription):
-            self.short.extend(desc.short)
-            self.long.extend(desc.long)
+    def extend(self, desc: PackageDescription) -> None:
+        self.short.extend(desc.short)
+        self.long.extend(desc.long)
+
+
+class PackageRelationEntryOperator(enum.StrEnum):
+    OP_LT = '<<'
+    OP_LE = '<='
+    OP_EQ = '='
+    OP_NE = '!='
+    OP_GE = '>='
+    OP_GT = '>>'
+
+    def __neg__(self) -> str:
+        return {
+            self.OP_LT: self.OP_GE,
+            self.OP_LE: self.OP_GT,
+            self.OP_EQ: self.OP_NE,
+            self.OP_NE: self.OP_EQ,
+            self.OP_GE: self.OP_LT,
+            self.OP_GT: self.OP_LE,
+        }[self]
+
+
+class PackageRelationEntry:
+    name: str
+    operator: typing.Optional[PackageRelationEntryOperator]
+    version: typing.Optional[str]
+    arches: PackageArchitecture
+    restrictions: PackageBuildRestrictFormula
+
+    __re = re.compile(
+        r'^(?P<name>\S+)'
+        r'(?: \((?P<operator><<|<=|=|!=|>=|>>)\s*(?P<version>[^)]+)\))?'
+        r'(?: \[(?P<arches>[^]]+)\])?'
+        r'(?P<restrictions>(?: <[^>]+>)*)$'
+    )
+
+    def __init__(
+        self,
+        v: str,
+        /, *,
+        arches: typing.Optional[set[str]] = None,
+    ) -> None:
+        match = self.__re.match(v)
+        if not match:
+            raise RuntimeError('Unable to parse dependency "%s"' % v)
+
+        self.name = match['name']
+
+        if operator := match['operator']:
+            self.operator = PackageRelationEntryOperator(operator)
         else:
-            raise TypeError
+            self.operator = None
 
-
-class PackageRelation(list):
-    def __init__(self, value=None, override_arches=None):
-        if value:
-            self.extend(value, override_arches)
-
-    def __str__(self):
-        return ', '.join(str(i) for i in self)
-
-    def _search_value(self, value):
-        for i in self:
-            if i._search_value(value):
-                return i
-        return None
-
-    def append(self, value, override_arches=None):
-        if isinstance(value, str):
-            value = PackageRelationGroup(value, override_arches)
-        elif not isinstance(value, PackageRelationGroup):
-            raise ValueError(u"got %s" % type(value))
-        j = self._search_value(value)
-        if j:
-            j._update_arches(value)
-        else:
-            super(PackageRelation, self).append(value)
-
-    def extend(self, value, override_arches=None):
-        if isinstance(value, str):
-            value = (j.strip() for j in re.split(r',', value.strip()))
-        for i in value:
-            self.append(i, override_arches)
-
-
-class PackageRelationGroup(list):
-    def __init__(self, value=None, override_arches=None):
-        if value:
-            self.extend(value, override_arches)
-
-    def __str__(self):
-        return ' | '.join(str(i) for i in self)
-
-    def _search_value(self, value):
-        for i, j in zip(self, value):
-            if i.name != j.name or i.operator != j.operator or \
-               i.version != j.version or i.restrictions != j.restrictions:
-                return None
-        return self
-
-    def _update_arches(self, value):
-        for i, j in zip(self, value):
-            if i.arches:
-                for arch in j.arches:
-                    if arch not in i.arches:
-                        i.arches.append(arch)
-
-    def append(self, value, override_arches=None):
-        if isinstance(value, str):
-            value = PackageRelationEntry(value, override_arches)
-        elif not isinstance(value, PackageRelationEntry):
-            raise ValueError
-        super(PackageRelationGroup, self).append(value)
-
-    def extend(self, value, override_arches=None):
-        if isinstance(value, str):
-            value = (j.strip() for j in re.split(r'\|', value.strip()))
-        for i in value:
-            self.append(i, override_arches)
-
-
-class PackageRelationEntry(object):
-    __slots__ = "name", "operator", "version", "arches", "restrictions"
-
-    _re = re.compile(r'^(\S+)(?: \((<<|<=|=|!=|>=|>>)\s*([^)]+)\))?'
-                     r'(?: \[([^]]+)\])?((?: <[^>]+>)*)$')
-
-    class _operator(object):
-        OP_LT = 1
-        OP_LE = 2
-        OP_EQ = 3
-        OP_NE = 4
-        OP_GE = 5
-        OP_GT = 6
-
-        operators = {
-                '<<': OP_LT,
-                '<=': OP_LE,
-                '=': OP_EQ,
-                '!=': OP_NE,
-                '>=': OP_GE,
-                '>>': OP_GT,
-        }
-
-        operators_neg = {
-                OP_LT: OP_GE,
-                OP_LE: OP_GT,
-                OP_EQ: OP_NE,
-                OP_NE: OP_EQ,
-                OP_GE: OP_LT,
-                OP_GT: OP_LE,
-        }
-
-        operators_text = dict((b, a) for a, b in operators.items())
-
-        __slots__ = '_op',
-
-        def __init__(self, value):
-            self._op = self.operators[value]
-
-        def __neg__(self):
-            return self.__class__(
-                self.operators_text[self.operators_neg[self._op]])
-
-        def __str__(self):
-            return self.operators_text[self._op]
-
-        def __eq__(self, other):
-            return type(other) == type(self) and self._op == other._op
-
-    def __init__(self, value=None, override_arches=None):
-        if not isinstance(value, str):
-            raise ValueError
-
-        self.parse(value)
-
-        if override_arches:
-            self.arches = list(override_arches)
+        self.version = match['version']
+        self.arches = PackageArchitecture(arches or match['arches'])
+        self.restrictions = PackageBuildRestrictFormula(match['restrictions'])
 
     def __str__(self):
         ret = [self.name]
-        if self.operator is not None and self.version is not None:
-            ret.extend((' (', str(self.operator), ' ', self.version, ')'))
+        if self.operator and self.version:
+            ret.append(f'({self.operator} {self.version})')
         if self.arches:
-            ret.extend((' [', ' '.join(self.arches), ']'))
+            ret.append(f'[{self.arches}]')
         if self.restrictions:
-            ret.extend((' ', str(self.restrictions)))
-        return ''.join(ret)
+            ret.append(str(self.restrictions))
+        return ' '.join(ret)
 
-    def parse(self, value):
-        match = self._re.match(value)
-        if match is None:
-            raise RuntimeError(u"Can't parse dependency %s" % value)
-        match = match.groups()
-        self.name = match[0]
-        if match[1] is not None:
-            self.operator = self._operator(match[1])
+
+class PackageRelationGroup(list[PackageRelationEntry]):
+    def __init__(
+        self,
+        v: typing.Optional[typing.Iterable[PackageRelationEntry] | str] = None,
+        /, *,
+        arches: typing.Optional[set[str]] = None,
+    ) -> None:
+        if v:
+            if isinstance(v, str):
+                v = (
+                    PackageRelationEntry(j.strip(), arches=arches)
+                    for j in re.split(r'\|', v.strip())
+                )
+            self.extend(v)
+
+    def __str__(self) -> str:
+        return ' | '.join(str(i) for i in self)
+
+    def _merge_eq(self, v: PackageRelationGroup) -> typing.Optional[PackageRelationGroup]:
+        if all(
+            (
+                i.name == j.name and i.operator == j.operator
+                and i.version == j.version and i.restrictions == j.restrictions
+            ) for i, j in zip(self, v)
+        ):
+            return self
+        return None
+
+
+class PackageRelation(list[PackageRelationGroup]):
+    def __init__(
+        self,
+        v: typing.Optional[typing.Iterable[PackageRelationGroup] | str] = None,
+        /, *,
+        arches: typing.Optional[set[str]] = None,
+    ) -> None:
+        if v:
+            if isinstance(v, str):
+                v = (
+                    PackageRelationGroup(j.strip(), arches=arches)
+                    for j in re.split(r',', v.strip())
+                    if j
+                )
+            self.extend(v)
+
+    def __str__(self) -> str:
+        return ', '.join(str(i) for i in self)
+
+    def _merge_eq(self, v: PackageRelationGroup) -> typing.Optional[PackageRelationGroup]:
+        for i in self:
+            if i._merge_eq(v):
+                return i
+        return None
+
+    def merge(
+        self,
+        v: PackageRelationGroup,
+        /,
+    ) -> None:
+        if g := self._merge_eq(v):
+            for i, j in zip(g, v):
+                i.arches |= j.arches
         else:
-            self.operator = None
-        self.version = match[2]
-        if match[3] is not None:
-            self.arches = re.split(r'\s+', match[3])
-        else:
-            self.arches = []
-        self.restrictions = PackageBuildRestrictFormula(match[4])
+            super().append(v)
 
 
 class PackageBuildRestrictFormula(set):

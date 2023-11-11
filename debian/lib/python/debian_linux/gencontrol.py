@@ -317,7 +317,7 @@ class PackagesBundle:
             for group in dep:
                 for item in group:
                     if package["Architecture"] != arch_all and not item.arches:
-                        item.arches = sorted(package["Architecture"])
+                        item.arches = package["Architecture"]
                     if package.get("Build-Profiles") and not item.restrictions:
                         item.restrictions = package["Build-Profiles"]
             if package["Architecture"] == arch_all:
@@ -374,9 +374,6 @@ class Gencontrol(object):
         self.changelog = Changelog(version=version)
         self.vars = {}
         self.bundles = {None: PackagesBundle(None, templates)}
-        # TODO: Remove after all references are gone
-        self.packages = self.bundle.packages
-        self.makefile = self.bundle.makefile
 
     @property
     def bundle(self) -> PackagesBundle:
@@ -393,7 +390,7 @@ class Gencontrol(object):
         source = self.templates.get_source_control("source.control", self.vars)[0]
         if not source.get('Source'):
             source['Source'] = self.changelog[0].source
-        self.packages['source'] = source
+        self.bundle.packages['source'] = source
 
     def do_main(self):
         vars = self.vars.copy()
@@ -553,23 +550,6 @@ class Gencontrol(object):
             bundle.extract_makefile()
             bundle.merge_build_depends()
             bundle.write()
-
-    # TODO: Remove
-    def write_control(self, name='debian/control'):
-        self.write_rfc822(open(name, 'w', encoding='utf-8'), self.packages.values())
-
-    # TODO: Remove
-    def write_makefile(self, name='debian/rules.gen'):
-        f = open(name, 'w')
-        self.makefile.write(f)
-        f.close()
-
-    # TODO: Remove
-    def write_rfc822(self, f, list):
-        for entry in list:
-            for key, value in entry.items():
-                f.write(u"%s: %s\n" % (key, value))
-            f.write('\n')
 
 
 def merge_packages(packages, new, arch):
