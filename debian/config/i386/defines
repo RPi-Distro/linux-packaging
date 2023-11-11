@@ -19,9 +19,6 @@ part-long-pae: This kernel requires PAE (Physical Address Extension).
 suggests: grub-pc | grub-efi-ia32 | extlinux
 install-stem: vmlinuz
 
-[relations]
-headers%gcc-13: gcc-13
-
 [686_description]
 hardware: older PCs
 hardware-long: PCs with one or more processors not supporting PAE

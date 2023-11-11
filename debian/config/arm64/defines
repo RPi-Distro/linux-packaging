@@ -25,4 +25,3 @@ hardware-long: cloud platforms supporting arm64 virtual machines
 
 [relations]
 gcc-13: gcc-13 <!cross !pkg.linux.nokernel>, gcc-13-aarch64-linux-gnu <cross !pkg.linux.nokernel>, gcc-arm-linux-gnueabihf <!pkg.linux.nokernel>
-headers%gcc-13: gcc-13

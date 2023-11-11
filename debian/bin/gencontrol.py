@@ -326,21 +326,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
 
         compiler = config_entry_base.get('compiler', 'gcc')
 
-        # Work out dependency from linux-headers to compiler.  Drop
-        # dependencies for cross-builds.  Strip any remaining
-        # restrictions, as they don't apply to binary Depends.
-        relations_compiler_headers = PackageRelation(
-            self.substitute(config_entry_relations.get('headers%' + compiler)
-                            or config_entry_relations.get(compiler), vars))
-        relations_compiler_headers = PackageRelation(
-            PackageRelationGroup(
-                entry for entry in group
-                if not restriction_requires_profile(entry.restrictions,
-                                                    'cross'))
-            for group in relations_compiler_headers)
-        for group in relations_compiler_headers:
-            for entry in group:
-                entry.restrictions = []
+        relations_compiler_headers = PackageRelation(compiler)
 
         for i in PackageRelation(
             self.substitute(config_entry_relations[compiler], vars),

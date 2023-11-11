@@ -12,9 +12,6 @@ vdso: true
 suggests: s390-tools
 install-stem: vmlinuz
 
-[relations]
-headers%gcc-13: gcc-13
-
 [s390x_description]
 hardware: IBM zSeries
 

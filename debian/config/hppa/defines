@@ -20,9 +20,6 @@ hardware-long: HP PA-RISC 32-bit systems with max 4 GB RAM
 [parisc_packages]
 installer: true
 
-[parisc_relations]
-headers%gcc-13: gcc-13
-
 [parisc64_base]
 cflags: -fno-cse-follow-jumps
 # no Debian architecture defined; force cross-build
@@ -37,6 +34,3 @@ hardware-long: HP PA-RISC 64-bit systems with support for more than 4 GB RAM
 
 [parisc64_packages]
 installer: true
-
-[parisc64_relations]
-headers%gcc-13: gcc-13-hppa64-linux-gnu
