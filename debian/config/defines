@@ -164,7 +164,3 @@ part-long-up: This kernel is not suitable for SMP (multi-processor,
 depends: initramfs-tools (>= 0.120+deb8u2) | linux-initramfs-tool
 breaks: fwupdate (<< 12-7), wireless-regdb (<< 2019.06.03-1~)
 recommends: apparmor
-
-[relations]
-# compilers
-gcc-13: gcc-13 <!cross !pkg.linux.nokernel>, gcc-13-@gnu-type-package@ <cross !pkg.linux.nokernel>

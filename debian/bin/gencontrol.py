@@ -11,9 +11,9 @@ import re
 import tempfile
 
 from debian_linux import config
-from debian_linux.debian import PackageRelation, \
-    PackageRelationEntry, PackageRelationGroup, VersionLinux, BinaryPackage, \
-    restriction_requires_profile
+from debian_linux.debian import \
+    PackageRelationEntry, PackageRelationGroup, \
+    VersionLinux, BinaryPackage
 from debian_linux.gencontrol import Gencontrol as Base, PackagesBundle, \
     iter_featuresets, iter_flavours, add_package_build_restriction
 from debian_linux.utils import Templates
@@ -44,8 +44,6 @@ class Gencontrol(Base):
             'recommends': config.SchemaItemList(','),
             'conflicts': config.SchemaItemList(','),
             'breaks': config.SchemaItemList(','),
-        },
-        'relations': {
         },
         'packages': {
             'docs': config.SchemaItemBoolean(),
@@ -317,8 +315,6 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                                                      featureset, flavour)
         config_entry_packages = self.config.merge('packages', arch, featureset,
                                                   flavour)
-        config_entry_relations = self.config.merge('relations', arch,
-                                                   featureset, flavour)
 
         def config_entry_image(key, *args, **kwargs):
             return self.config.get_merge(
@@ -326,13 +322,54 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
 
         compiler = config_entry_base.get('compiler', 'gcc')
 
-        relations_compiler_headers = PackageRelation(compiler)
+        relation_compiler = PackageRelationEntry(compiler)
 
-        for i in PackageRelation(
-            self.substitute(config_entry_relations[compiler], vars),
-            arches={arch},
-        ):
-            self.bundle.packages['source']['Build-Depends-Arch'].merge(i)
+        relation_compiler_header = PackageRelationGroup([relation_compiler])
+
+        # Generate compiler build-depends for native:
+        # gcc-13 [arm64] <!cross !pkg.linux.nokernel>
+        self.bundle.packages['source']['Build-Depends-Arch'].merge([
+            PackageRelationEntry(
+                relation_compiler,
+                arches={arch},
+                restrictions='<!cross !pkg.linux.nokernel>',
+            )
+        ])
+
+        # Generate compiler build-depends for cross:
+        # gcc-13-aarch64-linux-gnu [arm64] <cross !pkg.linux.nokernel>
+        self.bundle.packages['source']['Build-Depends-Arch'].merge([
+            PackageRelationEntry(
+                relation_compiler,
+                name=f'{relation_compiler.name}-{vars["gnu-type-package"]}',
+                arches={arch},
+                restrictions='<cross !pkg.linux.nokernel>',
+            )
+        ])
+
+        # Generate compiler build-depends for kernel:
+        # gcc-13-hppa64-linux-gnu [hppa] <!pkg.linux.nokernel>
+        if gnutype := config_entry_base.get('kernel-gnu-type'):
+            self.bundle.packages['source']['Build-Depends-Arch'].merge([
+                PackageRelationEntry(
+                    relation_compiler,
+                    name=f'{relation_compiler.name}-{gnutype}',
+                    arches={arch},
+                    restrictions='<!pkg.linux.nokernel>',
+                )
+            ])
+
+        # Generate compiler build-depends for compat:
+        # gcc-arm-linux-gnueabihf [arm64] <!pkg.linux.nokernel>
+        # XXX: Linux uses various definitions for this, all ending with "gcc", not $CC
+        if gnutype := config_entry_base.get('compat-gnu-type'):
+            self.bundle.packages['source']['Build-Depends-Arch'].merge([
+                PackageRelationEntry(
+                    f'gcc-{gnutype}',
+                    arches={arch},
+                    restrictions='<!pkg.linux.nokernel>',
+                )
+            ])
 
         packages_own = []
 
@@ -361,16 +398,15 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
 
         for field in ('Depends', 'Provides', 'Suggests', 'Recommends',
                       'Conflicts', 'Breaks'):
-            for package_image in packages_image:
-                for i in config_entry_image(field.lower(), ()):
+            for i in config_entry_image(field.lower(), ()):
+                for package_image in packages_image:
                     package_image.setdefault(field).merge(
                         PackageRelationGroup(i, arches={arch})
                     )
 
         for field in ('Depends', 'Suggests', 'Recommends'):
-            for group in PackageRelation(
-                config_entry_image(field.lower(), None), arches=(arch,),
-            ):
+            for i in config_entry_image(field.lower(), ()):
+                group = PackageRelationGroup(i, arches={arch})
                 for entry in group:
                     if entry.operator is not None:
                         entry.operator = -entry.operator
@@ -391,8 +427,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                     desc.append_short(config_entry_description
                                       .get('part-short-' + part, ''))
 
-        for i in relations_compiler_headers:
-            packages_headers[0]['Depends'].merge(i)
+        packages_headers[0]['Depends'].merge(relation_compiler_header)
         packages_own.extend(packages_image)
         packages_own.extend(packages_headers)
         if extra.get('headers_arch_depends'):

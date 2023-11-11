@@ -13,9 +13,6 @@ image-file: vmlinux.gz
 suggests: grub-efi-ia64
 install-stem: vmlinuz
 
-[relations]
-gcc-12: gcc-12
-
 [itanium_description]
 hardware: Itanium (Merced)
 hardware-long: systems with original Itanium (Merced) processors
