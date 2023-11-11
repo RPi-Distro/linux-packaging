@@ -36,7 +36,6 @@ class Gencontrol(Base):
         'image': {
             'bootloaders': config.SchemaItemList(),
             'configs': config.SchemaItemList(),
-            'initramfs-generators': config.SchemaItemList(),
             'check-size': config.SchemaItemInteger(),
             'check-size-with-dtb': config.SchemaItemBoolean(),
             'check-uncompressed-size': config.SchemaItemInteger(),
@@ -392,19 +391,6 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                         entry.operator = -entry.operator
                         for package_image in packages_image:
                             package_image.setdefault('Breaks').append(PackageRelationGroup([entry]))
-
-        generators = config_entry_image('initramfs-generators')
-        group = PackageRelationGroup()
-        for i in generators:
-            i = config_entry_relations.get(i, i)
-            group.append(PackageRelationEntry(i, arches={arch}))
-            a = PackageRelationEntry(i)
-            if a.operator is not None:
-                a.operator = -a.operator
-                for package_image in packages_image:
-                    package_image['Breaks'].merge(PackageRelationGroup([a]))
-        for package_image in packages_image:
-            package_image['Depends'].merge(group)
 
         bootloaders = config_entry_image('bootloaders', None)
         if bootloaders:
