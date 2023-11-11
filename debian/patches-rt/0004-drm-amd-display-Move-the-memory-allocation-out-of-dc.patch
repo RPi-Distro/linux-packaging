@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 21 Sep 2023 16:15:15 +0200
 Subject: [PATCH 4/5] drm/amd/display: Move the memory allocation out of
  dcn21_validate_bandwidth_fp().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt12.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
 
 dcn21_validate_bandwidth_fp() is invoked while FPU access has been
 enabled. FPU access requires disabling preemption even on PREEMPT_RT.
