@@ -383,6 +383,16 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                         PackageRelationGroup(i, arches={arch})
                     )
 
+        for field in ('Depends', 'Suggests', 'Recommends'):
+            for group in PackageRelation(
+                config_entry_image(field.lower(), None), arches=(arch,),
+            ):
+                for entry in group:
+                    if entry.operator is not None:
+                        entry.operator = -entry.operator
+                        for package_image in packages_image:
+                            package_image.setdefault('Breaks').append(PackageRelationGroup([entry]))
+
         generators = config_entry_image('initramfs-generators')
         group = PackageRelationGroup()
         for i in generators:
