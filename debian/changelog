@@ -96,6 +96,19 @@ linux (6.6.1-1~exp1) UNRELEASED; urgency=medium
     - Enable USB_MTU3_DUAL_ROLE, and enable USB_ROLE_SWITCH as built-in
     - Enable MT7622_WMAC
     - Keep SoC-specific clock and pin controller drivers disabled
+  * [arm64] Enable configs for MT8183 Chromebooks:
+    - Enable PINCTRL_MT8183
+    - Enable COMMON_CLK_MT8183 and its AUDIOSYS, CAMSYS, IMGSYS, IPU_CORE0,
+      IPU_CORE1, IPU_ADL, IPU_CONN, MFGCFG, MMSYS, VDECSYS, VENCSYS as modules
+    - Enable DEVFREQ_GOV_PASSIVE, ARM_MEDIATEK_CCI_DEVFREQ, MTK_SVS as modules
+    - Enable DRM_ANALOGIX_ANX7625, DRM_PANEL_BOE_TV101WUM_NL6 and
+      REGULATOR_MT6358 as modules
+    - Enable CROS_EC_RPMSG and VIDEO_MEDIATEK_MDP3 as modules
+    - Enable MT7921S and ATH10K_SDIO as modules
+    - Enable GENERIC_ADC_THERMAL and USB_ONBOARD_HUB as modules
+    - Enable SND_SOC_BT_SCO, SND_SOC_CROS_EC_CODEC, SND_SOC_TS3A227E,
+      SND_SOC_MT6358, SND_SOC_MT8183, SND_SOC_MT8183_DA7219_MAX98357A,
+      and SND_SOC_MT8183_MT6358_TS3A227E_MAX98357A as modules
 
   [ John Paul Adrian Glaubitz ]
   * [ia64] Compile with gcc-12 to work around ICE (PR target/111425)
