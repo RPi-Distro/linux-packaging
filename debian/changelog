@@ -66,6 +66,9 @@ linux (6.5.11-1) UNRELEASED; urgency=medium
     - ALSA: hda: intel-dsp-config: Fix JSL Chromebook quirk detection
     - [x86] ASoC: SOF: sof-pci-dev: Fix community key quirk detection
 
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 5
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 08 Nov 2023 19:13:26 +0100
 
 linux (6.5.10-1) unstable; urgency=medium
