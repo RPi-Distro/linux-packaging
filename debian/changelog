@@ -76,6 +76,26 @@ linux (6.6.1-1~exp1) UNRELEASED; urgency=medium
 
   [ Alper Nebi Yasak ]
   * debian/templates: Keep cpio as build-depends for nodoc build profile
+  * [arm64] Enable configs common to MediaTek MT8173 and MT8183 platforms:
+    - Enable ARCH_MEDIATEK, MTK_TIMER, MTK_CPUX_TIMER, MST_IRQ, MTK_SCPSYS,
+      MTK_SCPSYS_PM_DOMAINS, MTK_INFRACFG, EINT_MTK, IOMMU_IO_PGTABLE_ARMV7S
+    - Enable ARM_MEDIATEK_CPUFREQ, ARM_MEDIATEK_CPUFREQ_HW as built-in
+    - Enable SERIAL_8250_MT6577 as built-in
+    - Enable HW_RANDOM_MTK, MEDIATEK_WATCHDOG, ARM_MEDIATEK_CPUFREQ and
+      ARM_MEDIATEK_CPUFREQ_HW as modules
+    - Enable MTK_SMI, MTK_IOMMU, MTK_MMSYS, MTK_CMDQ, MTK_CMDQ_MBOX,
+      PWM_MTK_DISP, DRM_MEDIATEK, DRM_MEDIATEK_HDMI, PHY_MTK_HDMI and
+      PHY_MTK_MIPI_DSI as modules
+    - Enable VIDEO_MEDIATEK_JPEG, VIDEO_MEDIATEK_VCODEC, VIDEO_MEDIATEK_VPU,
+      MTK_SCP, RPMSG_MTK_SCP as modules
+    - Enable MEDIATEK_MT6577_AUXADC and MTK_THERMAL as modules
+    - Enable I2C_MT65XX, SPI_MT65XX, MFD_MT6397, RTC_DRV_MT6397, MTK_PMIC_WRAP
+      and MTK_REGULATOR_COUPLER as modules
+    - Enable MMC_MTK as module
+    - Enable NVMEM_MTK_EFUSE, PHY_MTK_TPHY, USB_XHCI_MTK, USB_MTU3 as modules
+    - Enable USB_MTU3_DUAL_ROLE, and enable USB_ROLE_SWITCH as built-in
+    - Enable MT7622_WMAC
+    - Keep SoC-specific clock and pin controller drivers disabled
 
   [ John Paul Adrian Glaubitz ]
   * [ia64] Compile with gcc-12 to work around ICE (PR target/111425)
