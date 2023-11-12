@@ -109,6 +109,14 @@ linux (6.6.1-1~exp1) UNRELEASED; urgency=medium
     - Enable SND_SOC_BT_SCO, SND_SOC_CROS_EC_CODEC, SND_SOC_TS3A227E,
       SND_SOC_MT6358, SND_SOC_MT8183, SND_SOC_MT8183_DA7219_MAX98357A,
       and SND_SOC_MT8183_MT6358_TS3A227E_MAX98357A as modules
+  * [arm64] Enable configs for MT8173 Chromebooks:
+    - Enable PINCTRL_MT8173 and COMMON_CLK_MEDIATEK_FHCTL
+    - Enable COMMON_CLK_MT8173 and its IMGSYS, MMSYS, VDECSYS, VENCSYS clocks
+      as modules
+    - Enable DRM_PARADE_PS8640, REGULATOR_DA9211, REGULATOR_MT6397,
+      VIDEO_MEDIATEK_MDP and TOUCHSCREEN_MELFAS_MIP4 as modules
+    - Enable SPI_MTK_NOR and ARM_SMC_WATCHDOG as modules
+    - Enable SND_SOC_MT8173 and SND_SOC_MT8173_RT5650 as modules
 
   [ John Paul Adrian Glaubitz ]
   * [ia64] Compile with gcc-12 to work around ICE (PR target/111425)
