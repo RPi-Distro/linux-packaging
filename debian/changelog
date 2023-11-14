@@ -76,6 +76,12 @@ linux (6.6.1-1~exp1) UNRELEASED; urgency=medium
 
   [ Alper Nebi Yasak ]
   * debian/templates: Keep cpio as build-depends for nodoc build profile
+  * [arm64] Enable more hardware for RK3399 ChromeOS tablets:
+    - drivers/gpu/drm/panel/Kconfig: DRM_PANEL_INNOLUX_P079ZCA as module
+    - drivers/gpu/drm/panel/Kconfig: DRM_PANEL_KINGDISPLAY_KD097D04 as module
+    - drivers/media/i2c/Kconfig: Enable VIDEO_OV2685 as module
+    - drivers/media/i2c/Kconfig: Enable VIDEO_OV5695 as module
+    - drivers/net/wireless/ath/ath10k/Kconfig: Enable ATH10K_SDIO as module
 
   [ John Paul Adrian Glaubitz ]
   * [ia64] Compile with gcc-12 to work around ICE (PR target/111425)
