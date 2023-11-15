@@ -1,3 +1,76 @@
+linux (6.5.11-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.5.11
+    - [x86] ASoC: Intel: sof_sdw: add support for SKU 0B14
+    - [arm*] ASoC: simple-card: fixup asoc_simple_probe() error handling
+    - [arm64,armhf] coresight: tmc-etr: Disable warnings for allocation failures
+    - [arm64] ASoC: fsl-asoc-card: use integer type for fll_id and pll_id
+    - ASoC: core: Do not call link_exit() on uninitialized rtd objects
+    - net: sched: cls_u32: Fix allocation size in u32_init()
+    - [arm64,armhf] can: flexcan: remove the auto stop mode for IMX93
+    - [riscv64] irqchip/riscv-intc: Mark all INTC nodes as initialized
+    - [armhf] irqchip/stm32-exti: add missing DT IRQ flag translation
+    - ata: pata_parport: add custom version of wait_after_reset
+    - ata: pata_parport: fit3: implement IDE command set registers
+    - Input: synaptics-rmi4 - handle reset delay when using SMBus trsnsport
+    - fbdev: atyfb: only use ioremap_uc() on i386 and ia64
+    - ASoC: soc-dapm: Add helper for comparing widget name
+    - netfilter: nfnetlink_log: silence bogus compiler warning
+    - net/mlx5: Bridge, fix peer entry ageing in LAG mode
+    - [x86] efistub: Don't try to print after ExitBootService()
+    - efi: fix memory leak in krealloc failure handling
+    - ASoC: rt5650: fix the wrong result of key button
+    - drm/ttm: Reorder sys manager cleanup step
+    - [x86] fbdev: uvesafb: Call cn_del_callback() at the end of uvesafb_exit()
+    - scsi: mpt3sas: Fix in error path
+    - ASoC: da7219: Correct the process of setting up Gnd switch in AAD
+    - drm/amdgpu: Unset context priority is now invalid
+    - gpu/drm: Eliminate DRM_SCHED_PRIORITY_UNSET
+    - netfilter: nf_tables: audit log object reset once per table
+    - drm/amdgpu: Reserve fences for VM update
+    - net: chelsio: cxgb4: add an error code check in t4_load_phy_fw
+    - r8152: Check for unplug in rtl_phy_patch_request()
+    - r8152: Check for unplug in r8153b_ups_en() / r8153c_ups_en()
+    - [powerpc*] mm: Fix boot crash with FLATMEM
+    - io_uring: kiocb_done() should *not* trust ->ki_pos if
+      ->{read,write}_iter() failed
+    - ceph_wait_on_conflict_unlink(): grab reference before dropping ->d_lock
+    - drm/amd/display: Don't use fsleep for PSR exit waits
+    - power: supply: core: Use blocking_notifier_call_chain to avoid RCU
+      complaint
+    - perf evlist: Avoid frequency mode for the dummy event
+    - mmap: fix vma_iterator in error path of vma_merge()
+    - mmap: fix error paths with dup_anon_vma()
+    - ALSA: usb-audio: add quirk flag to enable native DSD for McIntosh devices
+    - PCI: Prevent xHCI driver from claiming AMD VanGogh USB3 DRD device
+    - usb: storage: set 1.50 as the lower bcdDevice for older "Super Top"
+      compatibility
+    - usb: typec: tcpm: Add additional checks for contaminant
+    - usb: typec: tcpm: Fix NULL pointer dereference in tcpm_pd_svdm()
+    - usb: raw-gadget: properly handle interrupted requests
+    - Bluetooth: hci_bcm4377: Mark bcm4378/bcm4387 as BROKEN_LE_CODED
+    - tty: n_gsm: fix race condition in status line change on dead connections
+    - tty: 8250: Remove UC-257 and UC-431
+    - tty: 8250: Add support for additional Brainboxes UC cards
+    - tty: 8250: Add support for Brainboxes UP cards
+    - tty: 8250: Add support for Intashield IS-100
+    - tty: 8250: Fix port count of PX-257
+    - tty: 8250: Fix up PX-803/PX-857
+    - tty: 8250: Add support for additional Brainboxes PX cards
+    - tty: 8250: Add support for Intashield IX cards
+    - tty: 8250: Add Brainboxes Oxford Semiconductor-based quirks
+    - dt-bindings: serial: rs485: Add rs485-rts-active-high
+    - misc: pci_endpoint_test: Add deviceID for J721S2 PCIe EP device support
+    - serial: core: Fix runtime PM handling for pending tx
+    - ALSA: hda: intel-dsp-config: Fix JSL Chromebook quirk detection
+    - [x86] ASoC: SOF: sof-pci-dev: Fix community key quirk detection
+
+  [ Salvatore Bonaccorso ]
+  * Bump ABI to 5
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 08 Nov 2023 19:13:26 +0100
+
 linux (6.5.10-1) unstable; urgency=medium
 
   * New upstream stable update:
