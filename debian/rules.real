@@ -212,9 +212,7 @@ endif
 	@$(stamp)
 
 install-base:
-ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	dh_installdocs $(if $(INSTALLDOCS_LINK_DOC),--link-doc=$(INSTALLDOCS_LINK_DOC))
-endif
 	dh_installchangelogs
 	dh_bugfiles
 	dh_lintian
@@ -576,9 +574,7 @@ binary_bpftool: build_bpftool
 	dh_prep
 	$(call make-tools,tools/bpf/bpftool) install
 	dh_installchangelogs
-ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	dh_installdocs
-endif
 	dh_lintian
 	dh_strip
 	dh_compress
@@ -606,9 +602,7 @@ binary_kbuild: build_kbuild
 	$(call make-tools,tools/objtool) install prefix=$(PREFIX_DIR)
 	dh_link $(PREFIX_DIR) /usr/src/$(PACKAGE_NAME)
 	dh_installchangelogs
-ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	dh_installdocs
-endif
 	dh_lintian
 	dh_strip
 	dh_compress
@@ -644,10 +638,8 @@ ifneq ($(filter i386 amd64 x32,$(DEB_HOST_ARCH)),)
 endif
 	dh_install --sourcedir=$(DIR)
 	dh_installchangelogs
-ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	dh_installdocs
 	dh_installman
-endif
 	dh_lintian
 	dh_strip
 	dh_compress
@@ -672,9 +664,7 @@ binary_perf: build_perf
 	dh_perl /usr/lib/perf-core/scripts/perl/Perf-Trace-Util/lib/
 	dh_python3 /usr/lib/perf-core/scripts/python/Perf-Trace-Util/lib/
 	dh_installchangelogs
-ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	dh_installdocs
-endif
 	dh_lintian
 	dh_strip
 	dh_compress
@@ -696,10 +686,8 @@ binary_usbip: build_usbip
 	$(call make-tools,tools/usb/usbip) install DESTDIR=$(DIR)
 	dh_install --sourcedir=$(DIR)
 	dh_installchangelogs
-ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	dh_installdocs
 	dh_installman
-endif
 	dh_lintian
 	dh_strip
 	dh_compress
@@ -722,9 +710,7 @@ binary_hyperv-daemons: build_hyperv-daemons
 	$(call make-tools,tools/hv) install
 	dh_install
 	dh_installchangelogs
-ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	dh_installdocs
-endif
 	for service in fcopy kvp vss; do \
 		dh_installsystemd --name hv-$$service-daemon --no-enable --no-start \
 			|| break; \
@@ -753,10 +739,8 @@ binary_rtla: build_rtla
 	dh_install
 	dh_link
 	dh_installchangelogs
-ifeq (,$(filter nodoc,$(DEB_BUILD_PROFILES)))
 	dh_installdocs
 	dh_installman
-endif
 	dh_lintian
 	dh_strip
 	dh_compress
