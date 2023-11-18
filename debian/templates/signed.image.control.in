@@ -13,4 +13,4 @@ Suggests: linux-doc-@version@, debian-kernel-handbook
 Description: Linux @upstreamversion@ for @class@ (signed)
  The Linux kernel @upstreamversion@ and modules for use on @longclass@.
  .
- ${signed:Description}
+ The kernel image is signed for use with Secure Boot.
