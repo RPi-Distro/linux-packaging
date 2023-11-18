@@ -1,6 +1,14 @@
 import pytest
 
-from .debian import Version, VersionLinux
+from .debian import (
+    Version,
+    VersionLinux,
+    PackageArchitecture,
+    PackageDescription,
+    PackageRelationEntry,
+    PackageRelationGroup,
+    PackageRelation,
+)
 
 
 class TestVersion:
@@ -185,3 +193,139 @@ class TestVersionLinux:
         assert not v.linux_revision_security
         assert not v.linux_revision_backports
         assert v.linux_revision_other
+
+
+class TestPackageArchitecture:
+    def test_init(self):
+        a = PackageArchitecture()
+        assert a == set()
+
+    def test_init_str(self):
+        a = PackageArchitecture(' foo  bar\tbaz ')
+        assert a == {'foo', 'bar', 'baz'}
+
+    def test_init_iter(self):
+        a = PackageArchitecture(('foo', 'bar'))
+        assert a == {'foo', 'bar'}
+
+    def test_init_self(self):
+        a = PackageArchitecture(PackageArchitecture(('foo', 'bar')))
+        assert a == {'foo', 'bar'}
+
+    def test_str(self):
+        a = PackageArchitecture(('foo', 'bar'))
+        assert str(a) == 'bar foo'
+
+
+class TestPackageDescription:
+    def test_init(self):
+        a = PackageDescription()
+        assert a.short == []
+        assert a.long == []
+
+    def test_init_str(self):
+        a = PackageDescription('Short\nLong1\n.\nLong2')
+        assert a.short == ['Short']
+        assert a.long == ['Long1', 'Long2']
+
+    def test_init_self(self):
+        a = PackageDescription(PackageDescription('Short\nLong1\n.\nLong2'))
+        assert a.short == ['Short']
+        assert a.long == ['Long1', 'Long2']
+
+    def test_str(self):
+        a = PackageDescription('Short\nLong1\n.\nLong2')
+        assert str(a) == 'Short\n Long1\n .\n Long2'
+
+
+class TestPackageRelationEntry:
+    def test_init_str(self):
+        a = PackageRelationEntry('package (>=version) [arch2 arch1] <profile1 >')
+        assert a.name == 'package'
+        assert a.version == 'version'
+        assert a.arches == {'arch1', 'arch2'}
+        # TODO: assert a.profiles
+        assert str(a) == 'package (>= version) [arch1 arch2] <profile1>'
+
+    def test_init_self(self):
+        a = PackageRelationEntry(PackageRelationEntry('package [arch2 arch1]'))
+        assert a.name == 'package'
+        assert a.arches == {'arch1', 'arch2'}
+        assert str(a) == 'package [arch1 arch2]'
+
+
+class TestPackageRelationGroup:
+    def test_init(self):
+        a = PackageRelationGroup()
+        assert a == []
+
+    def test_init_str(self):
+        a = PackageRelationGroup('foo | bar')
+        assert len(a) == 2
+        assert a[0].name == 'foo'
+        assert a[1].name == 'bar'
+
+    def test_init_iter_entry(self):
+        a = PackageRelationGroup((PackageRelationEntry('foo'), PackageRelationEntry('bar')))
+        assert len(a) == 2
+        assert a[0].name == 'foo'
+        assert a[1].name == 'bar'
+
+    def test_init_iter_str(self):
+        a = PackageRelationGroup(('foo', 'bar'))
+        assert len(a) == 2
+        assert a[0].name == 'foo'
+        assert a[1].name == 'bar'
+
+    def test_init_self(self):
+        a = PackageRelationGroup(PackageRelationGroup(['foo', 'bar']))
+        assert len(a) == 2
+        assert a[0].name == 'foo'
+        assert a[1].name == 'bar'
+
+    def test_str(self):
+        a = PackageRelationGroup('foo|  bar')
+        assert str(a) == 'foo | bar'
+
+
+class TestPackageRelation:
+    def test_init(self):
+        a = PackageRelation()
+        assert a == []
+
+    def test_init_str(self):
+        a = PackageRelation('foo1 | foo2, bar')
+        assert len(a) == 2
+        assert len(a[0]) == 2
+        assert a[0][0].name == 'foo1'
+        assert a[0][1].name == 'foo2'
+        assert len(a[1]) == 1
+        assert a[1][0].name == 'bar'
+
+    def test_init_iter_entry(self):
+        a = PackageRelation([[PackageRelationEntry('foo')], [PackageRelationEntry('bar')]])
+        assert len(a) == 2
+        assert len(a[0]) == 1
+        assert a[0][0].name == 'foo'
+        assert len(a[1]) == 1
+        assert a[1][0].name == 'bar'
+
+    def test_init_iter_str(self):
+        a = PackageRelation(('foo', 'bar'))
+        assert len(a) == 2
+        assert len(a[0]) == 1
+        assert a[0][0].name == 'foo'
+        assert len(a[1]) == 1
+        assert a[1][0].name == 'bar'
+
+    def test_init_self(self):
+        a = PackageRelation(PackageRelation(('foo', 'bar')))
+        assert len(a) == 2
+        assert len(a[0]) == 1
+        assert a[0][0].name == 'foo'
+        assert len(a[1]) == 1
+        assert a[1][0].name == 'bar'
+
+    def test_str(self):
+        a = PackageRelation('foo ,bar')
+        assert str(a) == 'foo, bar'
