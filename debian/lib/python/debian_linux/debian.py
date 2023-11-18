@@ -9,6 +9,8 @@ import re
 import typing
 import warnings
 
+from typing import Iterable, Self
+
 
 class Changelog(list):
     _top_rules = r"""
@@ -223,12 +225,12 @@ $
 class PackageArchitecture(set[str]):
     def __init__(
         self,
-        v: typing.Optional[str | typing.Iterable[str]] = None,
+        v: str | Iterable[str] | None = None,
         /,
     ) -> None:
         if v:
             if isinstance(v, str):
-                v = re.split(r'\s', v.strip())
+                v = re.split(r'\s+', v.strip())
             self |= frozenset(v)
 
     def __str__(self) -> str:
@@ -241,16 +243,21 @@ class PackageDescription:
 
     def __init__(
         self,
-        v: typing.Optional[str] = None,
+        v: str | Self | None = None,
         /,
     ) -> None:
         self.short = []
         self.long = []
+
         if v:
-            desc_split = v.split('\n', 1)
-            self.append_short(desc_split[0])
-            if len(desc_split) == 2:
-                self.append(desc_split[1])
+            if isinstance(v, str):
+                desc_split = v.split('\n', 1)
+                self.append_short(desc_split[0])
+                if len(desc_split) == 2:
+                    self.append(desc_split[1])
+            else:
+                self.short.extend(v.short)
+                self.long.extend(v.long)
 
     def __str__(self) -> str:
         from .utils import TextWrapper
@@ -312,24 +319,38 @@ class PackageRelationEntry:
 
     def __init__(
         self,
-        v: str,
+        v: str | Self,
         /, *,
-        arches: typing.Optional[set[str]] = None,
+        name: str | None = None,
+        arches: set[str] | None = None,
+        restrictions: PackageBuildRestrictFormula | str | None = None,
     ) -> None:
-        match = self.__re.match(v)
-        if not match:
-            raise RuntimeError('Unable to parse dependency "%s"' % v)
+        if isinstance(v, str):
+            match = self.__re.match(v)
+            if not match:
+                raise RuntimeError('Unable to parse dependency "%s"' % v)
 
-        self.name = match['name']
+            self.name = name or match['name']
 
-        if operator := match['operator']:
-            self.operator = PackageRelationEntryOperator(operator)
+            if operator := match['operator']:
+                self.operator = PackageRelationEntryOperator(operator)
+            else:
+                self.operator = None
+
+            self.version = match['version']
+            self.arches = PackageArchitecture(arches or match['arches'])
+            self.restrictions = PackageBuildRestrictFormula(
+                restrictions or match['restrictions'],
+            )
+
         else:
-            self.operator = None
-
-        self.version = match['version']
-        self.arches = PackageArchitecture(arches or match['arches'])
-        self.restrictions = PackageBuildRestrictFormula(match['restrictions'])
+            self.name = name or v.name
+            self.operator = v.operator
+            self.version = v.version
+            self.arches = PackageArchitecture(arches or v.arches)
+            self.restrictions = PackageBuildRestrictFormula(
+                restrictions or v.restrictions
+            )
 
     def __str__(self):
         ret = [self.name]
@@ -345,17 +366,14 @@ class PackageRelationEntry:
 class PackageRelationGroup(list[PackageRelationEntry]):
     def __init__(
         self,
-        v: typing.Optional[typing.Iterable[PackageRelationEntry] | str] = None,
+        v: Iterable[PackageRelationEntry | str] | str | Self | None = None,
         /, *,
-        arches: typing.Optional[set[str]] = None,
+        arches: set[str] | None = None,
     ) -> None:
         if v:
             if isinstance(v, str):
-                v = (
-                    PackageRelationEntry(j.strip(), arches=arches)
-                    for j in re.split(r'\|', v.strip())
-                )
-            self.extend(v)
+                v = (i.strip() for i in re.split(r'\|', v.strip()))
+            self.extend(PackageRelationEntry(i, arches=arches) for i in v if i)
 
     def __str__(self) -> str:
         return ' | '.join(str(i) for i in self)
@@ -374,18 +392,14 @@ class PackageRelationGroup(list[PackageRelationEntry]):
 class PackageRelation(list[PackageRelationGroup]):
     def __init__(
         self,
-        v: typing.Optional[typing.Iterable[PackageRelationGroup] | str] = None,
+        v: Iterable[PackageRelationGroup | str] | str | Self | None = None,
         /, *,
-        arches: typing.Optional[set[str]] = None,
+        arches: set[str] | None = None,
     ) -> None:
         if v:
             if isinstance(v, str):
-                v = (
-                    PackageRelationGroup(j.strip(), arches=arches)
-                    for j in re.split(r',', v.strip())
-                    if j
-                )
-            self.extend(v)
+                v = (i.strip() for i in re.split(r',', v.strip()))
+            self.extend(PackageRelationGroup(i, arches=arches) for i in v if i)
 
     def __str__(self) -> str:
         return ', '.join(str(i) for i in self)
@@ -398,9 +412,10 @@ class PackageRelation(list[PackageRelationGroup]):
 
     def merge(
         self,
-        v: PackageRelationGroup,
+        v: PackageRelationGroup | Iterable[PackageRelationEntry | str] | str,
         /,
     ) -> None:
+        v = PackageRelationGroup(v)
         if g := self._merge_eq(v):
             for i, j in zip(g, v):
                 i.arches |= j.arches

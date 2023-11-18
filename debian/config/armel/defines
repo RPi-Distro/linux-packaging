@@ -12,9 +12,6 @@ uncompressed-image-file: arch/arm/boot/Image
 [image]
 install-stem: vmlinuz
 
-[relations]
-headers%gcc-13: gcc-13
-
 [marvell_description]
 hardware: Marvell Kirkwood/Orion
 hardware-long: Marvell Kirkwood and Orion based systems (https://wiki.debian.org/ArmEabiPort#Supported_hardware)

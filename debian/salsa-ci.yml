@@ -171,7 +171,7 @@ python-static:
   script:
     - |
       apt-get update && eatmydata apt-get install --no-install-recommends -y \
-        python3 pycodestyle pyflakes3 python3-pytest
+        python3 python3-jinja2 pycodestyle pyflakes3 python3-pytest
 
     # Check Python modules under debian/lib and Python scripts under
     # debian/bin or debian/rules.d.
