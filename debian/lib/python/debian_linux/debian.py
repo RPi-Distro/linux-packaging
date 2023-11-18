@@ -8,8 +8,11 @@ import os.path
 import re
 import typing
 import warnings
-
-from typing import Iterable, Self
+from typing import (
+    Iterable,
+    Self,
+    TypeAlias,
+)
 
 
 class Changelog(list):
@@ -58,7 +61,7 @@ class Changelog(list):
             for key, value in kwargs.items():
                 setattr(self, key, value)
 
-    def __init__(self, dir='', version=None, file=None):
+    def __init__(self, dir='', version=None, file=None) -> None:
         if version is None:
             version = Version
         if file:
@@ -68,7 +71,7 @@ class Changelog(list):
                       encoding="UTF-8") as f:
                 self._parse(version, f)
 
-    def _parse(self, version, f):
+    def _parse(self, version, f) -> None:
         top_match = None
         line_no = 0
 
@@ -105,11 +108,13 @@ class Changelog(list):
 
 
 class Version(object):
+    revision: str | None
+
     _epoch_re = re.compile(r'\d+$')
     _upstream_re = re.compile(r'[0-9][A-Za-z0-9.+\-:~]*$')
     _revision_re = re.compile(r'[A-Za-z0-9+.~]+$')
 
-    def __init__(self, version):
+    def __init__(self, version) -> None:
         try:
             split = version.index(':')
         except ValueError:
@@ -130,23 +135,23 @@ class Version(object):
         self.upstream = upstream
         self.revision = revision
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.complete
 
     @property
-    def complete(self):
+    def complete(self) -> str:
         if self.epoch is not None:
             return u"%d:%s" % (self.epoch, self.complete_noepoch)
         return self.complete_noepoch
 
     @property
-    def complete_noepoch(self):
+    def complete_noepoch(self) -> str:
         if self.revision is not None:
             return u"%s-%s" % (self.upstream, self.revision)
         return self.upstream
 
     @property
-    def debian(self):
+    def debian(self) -> str | None:
         from warnings import warn
         warn(u"debian argument was replaced by revision", DeprecationWarning,
              stacklevel=2)
@@ -199,9 +204,10 @@ $
 $
     """, re.X)
 
-    def __init__(self, version):
+    def __init__(self, version) -> None:
         super(VersionLinux, self).__init__(version)
         up_match = self._upstream_re.match(self.upstream)
+        assert self.revision is not None
         rev_match = self._revision_re.match(self.revision)
         if up_match is None or rev_match is None:
             raise RuntimeError(u"Invalid debian linux version")
@@ -292,15 +298,15 @@ class PackageRelationEntryOperator(enum.StrEnum):
     OP_GE = '>='
     OP_GT = '>>'
 
-    def __neg__(self) -> str:
-        return {
+    def __neg__(self) -> PackageRelationEntryOperator:
+        return typing.cast(PackageRelationEntryOperator, {
             self.OP_LT: self.OP_GE,
             self.OP_LE: self.OP_GT,
             self.OP_EQ: self.OP_NE,
             self.OP_NE: self.OP_EQ,
             self.OP_GE: self.OP_LT,
             self.OP_GT: self.OP_LE,
-        }[self]
+        }[self])
 
 
 class PackageRelationEntry:
@@ -390,9 +396,11 @@ class PackageRelationGroup(list[PackageRelationEntry]):
 
 
 class PackageRelation(list[PackageRelationGroup]):
+    Init: TypeAlias = PackageRelationGroup | Iterable[PackageRelationEntry] | str
+
     def __init__(
         self,
-        v: Iterable[PackageRelationGroup | str] | str | Self | None = None,
+        v: Iterable[Init] | str | Self | None = None,
         /, *,
         arches: set[str] | None = None,
     ) -> None:
@@ -412,7 +420,7 @@ class PackageRelation(list[PackageRelationGroup]):
 
     def merge(
         self,
-        v: PackageRelationGroup | Iterable[PackageRelationEntry | str] | str,
+        v: Init | str,
         /,
     ) -> None:
         v = PackageRelationGroup(v)
