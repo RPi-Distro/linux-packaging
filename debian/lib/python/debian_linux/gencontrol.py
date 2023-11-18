@@ -3,12 +3,20 @@ from __future__ import annotations
 import contextlib
 import pathlib
 import re
-import typing
 from collections import OrderedDict
+from collections.abc import (
+    Generator,
+)
+from typing import (
+    Any,
+    Iterable,
+    Iterator,
+    IO,
+)
 
 from .debian import Changelog, PackageArchitecture, \
     PackageBuildRestrictFormula, PackageBuildRestrictList, \
-    PackageBuildRestrictTerm, PackageRelation, Version
+    PackageBuildRestrictTerm, PackageRelation, Version, _ControlFileDict
 from .utils import Templates
 
 
@@ -20,26 +28,28 @@ class PackagesList(OrderedDict):
         for package in packages:
             self[package['Package']] = package
 
-    def setdefault(self, package) -> typing.Any:
+    def setdefault(self, package) -> Any:
         return super().setdefault(package['Package'], package)
 
 
 class Makefile:
+    rules: dict[str, MakefileRule]
+
     def __init__(self) -> None:
         self.rules = {}
 
-    def add_cmds(self, name, cmds) -> None:
+    def add_cmds(self, name: str, cmds) -> None:
         rule = self.rules.setdefault(name, MakefileRule(name))
         rule.add_cmds(MakefileRuleCmdsSimple(cmds))
 
-    def add_deps(self, name, deps) -> None:
+    def add_deps(self, name: str, deps) -> None:
         rule = self.rules.setdefault(name, MakefileRule(name))
         rule.add_deps(deps)
 
         for i in deps:
             self.rules.setdefault(i, MakefileRule(i))
 
-    def add_rules(self, name, target, makeflags, packages=set(), packages_extra=set()) -> None:
+    def add_rules(self, name: str, target, makeflags, packages=set(), packages_extra=set()) -> None:
         rule = self.rules.setdefault(name, MakefileRule(name))
         rule.add_cmds(MakefileRuleCmdsRules(target, makeflags, packages, packages_extra))
 
@@ -57,19 +67,22 @@ endef
 
 
 class MakefileRule:
-    def __init__(self, name) -> None:
+    name: str
+    cmds: list[MakefileRuleCmds]
+    deps: set[str]
+
+    def __init__(self, name: str) -> None:
         self.name = name
         self.cmds = []
         self.deps = set()
 
-    def add_cmds(self, cmds) -> None:
+    def add_cmds(self, cmds: MakefileRuleCmds) -> None:
         self.cmds.append(cmds)
 
-    def add_deps(self, deps) -> None:
-        assert type(deps) is list
+    def add_deps(self, deps: Iterable[str]) -> None:
         self.deps.update(deps)
 
-    def write(self, out) -> None:
+    def write(self, out: IO) -> None:
         if self.cmds:
             out.write(f'{self.name}:{" ".join(sorted(self.deps))}\n')
             for c in self.cmds:
@@ -78,7 +91,12 @@ class MakefileRule:
             out.write(f'{self.name}:{" ".join(sorted(self.deps))}\n')
 
 
-class MakefileRuleCmdsRules:
+class MakefileRuleCmds:
+    def write(self, out: IO) -> None:
+        raise NotImplementedError
+
+
+class MakefileRuleCmdsRules(MakefileRuleCmds):
     def __init__(self, target, makeflags, packages, packages_extra) -> None:
         self.target = target
         self.makeflags = makeflags.copy()
@@ -97,7 +115,7 @@ class MakefileRuleCmdsRules:
 
             self.makeflags['DH_OPTIONS'] = ' '.join(f'-p{i}' for i in sorted(packages_all))
 
-    def write(self, out) -> None:
+    def write(self, out: IO) -> None:
         cmd = f'$(MAKE) -f debian/rules.real {self.target} {self.makeflags}'
         if self.packages:
             out.write(f'\t$(call if_package, {" ".join(sorted(self.packages))}, {cmd})\n')
@@ -105,11 +123,13 @@ class MakefileRuleCmdsRules:
             out.write(f'\t{cmd}\n')
 
 
-class MakefileRuleCmdsSimple:
-    def __init__(self, cmds) -> None:
+class MakefileRuleCmdsSimple(MakefileRuleCmds):
+    cmds: list[str]
+
+    def __init__(self, cmds: list[str]) -> None:
         self.cmds = cmds
 
-    def write(self, out) -> None:
+    def write(self, out: IO) -> None:
         for i in self.cmds:
             out.write(f'\t{i}\n')
 
@@ -123,7 +143,7 @@ class MakeFlags(dict):
 
 
 class PackagesBundle:
-    name: typing.Optional[str]
+    name: str | None
     templates: Templates
     base: pathlib.Path
     makefile: Makefile
@@ -131,7 +151,7 @@ class PackagesBundle:
 
     def __init__(
             self,
-            name: typing.Optional[str],
+            name: str | None,
             templates: Templates,
             base: pathlib.Path = pathlib.Path('debian'),
     ) -> None:
@@ -144,13 +164,13 @@ class PackagesBundle:
     def add(
             self,
             pkgid: str,
-            ruleid: tuple[str],
+            ruleid: Iterable[str],
             makeflags: MakeFlags,
             replace: dict[str, str],
             *,
-            arch: str = None,
+            arch: str | None = None,
             check_packages: bool = True,
-    ) -> list[typing.Any]:
+    ) -> list[Any]:
         ret = []
         for raw_package in self.templates.get_control(f'{pkgid}.control', replace):
             package = self.packages.setdefault(raw_package)
@@ -185,11 +205,11 @@ class PackagesBundle:
 
     def add_packages(
             self,
-            packages: PackagesList,
-            ruleid: tuple[str],
+            packages: Iterable[_ControlFileDict],
+            ruleid: Iterable[str],
             makeflags: MakeFlags,
             *,
-            arch: str = None,
+            arch: str | None = None,
             check_packages: bool = True,
     ) -> None:
         for package in packages:
@@ -205,7 +225,7 @@ class PackagesBundle:
         return self.base / name
 
     @staticmethod
-    def __ruleid_deps(ruleid: tuple[str], name: str) -> typing.Iterator[tuple[str, str]]:
+    def __ruleid_deps(ruleid: tuple[str], name: str) -> Iterator[tuple[str, str]]:
         """
         Generate all the rules dependencies.
         ```
@@ -226,14 +246,14 @@ class PackagesBundle:
             )
 
     @contextlib.contextmanager
-    def open(self, name: str, mode: str = 'w') -> typing.TextIO:
+    def open(self, name: str, mode: str = 'w') -> Generator[IO, None, None]:
         path = self.path(name)
         path.parent.mkdir(parents=True, exist_ok=True)
-        with path.open(mode, encoding='utf-8') as f:
+        with path.open(mode=mode, encoding='utf-8') as f:
             yield f
 
     def extract_makefile(self) -> None:
-        targets = {}
+        targets: dict[frozenset[str], dict] = {}
 
         for package_name, package in self.packages.items():
             target_name = package.meta.get('rules-target')
@@ -340,7 +360,7 @@ class PackagesBundle:
         with self.open('rules.gen') as f:
             self.makefile.write(f)
 
-    def write_rfc822(self, f: typing.TextIO, entries: typing.Iterable) -> None:
+    def write_rfc822(self, f: IO, entries: Iterable) -> None:
         for entry in entries:
             for key, value in entry.items():
                 if value:
@@ -348,36 +368,39 @@ class PackagesBundle:
             f.write('\n')
 
 
-def iter_featuresets(config) -> typing.Iterable[str]:
+def iter_featuresets(config) -> Iterable[str]:
     for featureset in config['base', ]['featuresets']:
         if config.merge('base', None, featureset).get('enabled', True):
             yield featureset
 
 
-def iter_arches(config) -> typing.Iterable[str]:
+def iter_arches(config) -> Iterable[str]:
     return iter(config['base', ]['arches'])
 
 
-def iter_arch_featuresets(config, arch) -> typing.Iterable[str]:
+def iter_arch_featuresets(config, arch) -> Iterable[str]:
     for featureset in config['base', arch].get('featuresets', []):
         if config.merge('base', arch, featureset).get('enabled', True):
             yield featureset
 
 
-def iter_flavours(config, arch, featureset) -> typing.Iterable[str]:
+def iter_flavours(config, arch, featureset) -> Iterable[str]:
     return iter(config['base', arch, featureset]['flavours'])
 
 
 class Gencontrol(object):
+    vars: dict[str, str]
+    bundles: dict[str, PackagesBundle]
+
     def __init__(self, config, templates, version=Version) -> None:
         self.config, self.templates = config, templates
         self.changelog = Changelog(version=version)
         self.vars = {}
-        self.bundles = {None: PackagesBundle(None, templates)}
+        self.bundles = {'': PackagesBundle(None, templates)}
 
     @property
     def bundle(self) -> PackagesBundle:
-        return self.bundles[None]
+        return self.bundles['']
 
     def __call__(self) -> None:
         self.do_source()
@@ -425,7 +448,7 @@ class Gencontrol(object):
         except KeyError:
             return
 
-        extra_arches = {}
+        extra_arches: dict[str, Any] = {}
         for package in packages_extra:
             arches = package['Architecture']
             for arch in arches:

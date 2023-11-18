@@ -59,7 +59,7 @@ class KConfigEntryTristate(KConfigEntry):
         return '# CONFIG_{} is not set'.format(self.name)
 
 
-class KconfigFile(OrderedDict):
+class KconfigFile(OrderedDict[str, KConfigEntry]):
     def __str__(self) -> str:
         ret = []
         for i in self.str_iter():
@@ -84,10 +84,9 @@ class KconfigFile(OrderedDict):
 
     def set(self, key, value) -> None:
         if value in ('y', 'm', 'n'):
-            entry = KConfigEntryTristate(key, value)
+            self[key] = KConfigEntryTristate(key, value)
         else:
-            entry = KConfigEntry(key, value)
-        self[key] = entry
+            self[key] = KConfigEntry(key, value)
 
     def str_iter(self) -> Iterable[str]:
         for key, value in self.items():

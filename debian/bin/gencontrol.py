@@ -14,7 +14,7 @@ from typing import Any
 from debian_linux import config
 from debian_linux.debian import \
     PackageRelationEntry, PackageRelationGroup, \
-    VersionLinux, BinaryPackage
+    VersionLinux, BinaryPackage, TestsControl
 from debian_linux.gencontrol import Gencontrol as Base, PackagesBundle, \
     iter_featuresets, iter_flavours, add_package_build_restriction
 from debian_linux.utils import Templates
@@ -23,6 +23,11 @@ locale.setlocale(locale.LC_CTYPE, "C.UTF-8")
 
 
 class Gencontrol(Base):
+    disable_installer: bool
+    disable_signed: bool
+
+    tests_control_headers: TestsControl | None
+
     config_schema = {
         'abi': {
             'ignore-changes': config.SchemaItemList(),
@@ -503,6 +508,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                 self.tests_control_headers = \
                         self.templates.get_tests_control('headers.tests-control', vars)[0]
                 self.tests_control.append(self.tests_control_headers)
+            assert self.tests_control_headers is not None
             self.tests_control_headers['Architecture'].add(arch)
             self.tests_control_headers['Depends'].merge(
                 PackageRelationGroup(packages_headers[0]['Package'],
