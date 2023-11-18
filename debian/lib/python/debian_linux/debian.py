@@ -18,7 +18,7 @@ class Changelog(list):
 (?P<source>
     \w[-+0-9a-z.]+
 )
-\ 
+[ ]
 \(
 (?P<version>
     [^\(\)\ \t]+
@@ -37,11 +37,11 @@ class Changelog(list):
     _top_re = re.compile(_top_rules, re.X)
     _bottom_rules = r"""
 ^
-\ --\ 
+[ ]--[ ]
 (?P<maintainer>
-    \S(?:\ ?\S)*
+    \S(?:[ ]?\S)*
 )
-\ \ 
+[ ]{2}
 (?P<date>
     (.*)
 )
