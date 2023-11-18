@@ -86,8 +86,8 @@ class Gencontrol(Base):
             if src in data or not optional:
                 makeflags[dst] = data[src]
 
-    def do_main_setup(self, vars, makeflags, extra):
-        super(Gencontrol, self).do_main_setup(vars, makeflags, extra)
+    def do_main_setup(self, vars, makeflags):
+        super(Gencontrol, self).do_main_setup(vars, makeflags)
         makeflags.update({
             'VERSION': self.version.linux_version,
             'UPSTREAMVERSION': self.version.linux_upstream,
@@ -102,7 +102,7 @@ class Gencontrol(Base):
         self.tests_control_image = None
         self.tests_control_headers = None
 
-    def do_main_makefile(self, makeflags, extra):
+    def do_main_makefile(self, makeflags):
         for featureset in iter_featuresets(self.config):
             makeflags_featureset = makeflags.copy()
             makeflags_featureset['FEATURESET'] = featureset
@@ -113,9 +113,9 @@ class Gencontrol(Base):
 
         makeflags = makeflags.copy()
         makeflags['ALL_FEATURESETS'] = ' '.join(iter_featuresets(self.config))
-        super().do_main_makefile(makeflags, extra)
+        super().do_main_makefile(makeflags)
 
-    def do_main_packages(self, vars, makeflags, extra):
+    def do_main_packages(self, vars, makeflags):
         self.bundle.add('main', (), makeflags, vars)
 
         # Only build the metapackages if their names won't exactly match
@@ -151,7 +151,7 @@ class Gencontrol(Base):
 
             self.bundle.add('libc-dev', (), libcdev_makeflags, vars)
 
-    def do_indep_featureset_setup(self, vars, makeflags, featureset, extra):
+    def do_indep_featureset_setup(self, vars, makeflags, featureset):
         makeflags['LOCALVERSION'] = vars['localversion']
         kernel_arches = set()
         for arch in iter(self.config['base', ]['arches']):
@@ -168,14 +168,14 @@ class Gencontrol(Base):
                                        desc['part-short-%s' % desc_parts[0]])
 
     def do_indep_featureset_packages(self, featureset,
-                                     vars, makeflags, extra):
+                                     vars, makeflags):
         self.bundle.add('headers.featureset', (featureset, ), makeflags, vars)
 
     arch_makeflags = (
         ('kernel-arch', 'KERNEL_ARCH', False),
     )
 
-    def do_arch_setup(self, vars, makeflags, arch, extra):
+    def do_arch_setup(self, vars, makeflags, arch):
         config_base = self.config.merge('base', arch)
 
         self._setup_makeflags(self.arch_makeflags, makeflags, config_base)
@@ -192,8 +192,7 @@ class Gencontrol(Base):
         else:
             vars['gnu-type-package'] = gnu_type.strip().replace('_', '-')
 
-    def do_arch_packages(self, arch, vars, makeflags,
-                         extra):
+    def do_arch_packages(self, arch, vars, makeflags):
         try:
             abiname_part = '-%s' % self.config['abi', arch]['abiname']
         except KeyError:
@@ -242,7 +241,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
         if self.config.merge('packages').get('tools-versioned', True):
             self.bundle.add('tools-versioned', (arch, ), makeflags, vars)
 
-    def do_featureset_setup(self, vars, makeflags, arch, featureset, extra):
+    def do_featureset_setup(self, vars, makeflags, arch, featureset):
         vars['localversion_headers'] = vars['localversion']
         makeflags['LOCALVERSION_HEADERS'] = vars['localversion_headers']
 
@@ -285,8 +284,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
         ('localversion-image', 'LOCALVERSION_IMAGE', True),
     )
 
-    def do_flavour_setup(self, vars, makeflags, arch, featureset, flavour,
-                         extra):
+    def do_flavour_setup(self, vars, makeflags, arch, featureset, flavour):
         config_base = self.config.merge('base', arch, featureset, flavour)
         config_build = self.config.merge('build', arch, featureset, flavour)
         config_description = self.config.merge('description', arch, featureset,
@@ -314,7 +312,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
         self._setup_makeflags(self.flavour_makeflags_other, makeflags, vars)
 
     def do_flavour_packages(self, arch, featureset,
-                            flavour, vars, makeflags, extra):
+                            flavour, vars, makeflags):
         ruleid = (arch, featureset, flavour)
 
         packages_headers = (
@@ -446,9 +444,6 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
         packages_headers[0]['Depends'].merge(relation_compiler_header)
         packages_own.extend(packages_image)
         packages_own.extend(packages_headers)
-        if extra.get('headers_arch_depends'):
-            extra['headers_arch_depends'].append('%s (= ${binary:Version})' %
-                                                 packages_headers[-1]['Package'])
 
         # The image meta-packages will depend on signed linux-image
         # packages where applicable, so should be built from the

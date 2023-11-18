@@ -396,29 +396,28 @@ class Gencontrol(object):
         vars = self.vars.copy()
 
         makeflags = MakeFlags()
-        extra = {}
 
-        self.do_main_setup(vars, makeflags, extra)
-        self.do_main_makefile(makeflags, extra)
-        self.do_main_packages(vars, makeflags, extra)
-        self.do_main_recurse(vars, makeflags, extra)
+        self.do_main_setup(vars, makeflags)
+        self.do_main_makefile(makeflags)
+        self.do_main_packages(vars, makeflags)
+        self.do_main_recurse(vars, makeflags)
 
-    def do_main_setup(self, vars, makeflags, extra):
+    def do_main_setup(self, vars, makeflags):
         pass
 
-    def do_main_makefile(self, makeflags, extra):
+    def do_main_makefile(self, makeflags):
         pass
 
-    def do_main_packages(self, vars, makeflags, extra):
+    def do_main_packages(self, vars, makeflags):
         pass
 
-    def do_main_recurse(self, vars, makeflags, extra):
+    def do_main_recurse(self, vars, makeflags):
         for featureset in iter_featuresets(self.config):
             self.do_indep_featureset(featureset,
-                                     vars.copy(), makeflags.copy(), extra)
+                                     vars.copy(), makeflags.copy())
         for arch in iter_arches(self.config):
             self.do_arch(arch, vars.copy(),
-                         makeflags.copy(), extra)
+                         makeflags.copy())
 
     def do_extra(self):
         try:
@@ -438,89 +437,82 @@ class Gencontrol(object):
                                      MakeFlags(), check_packages=False)
 
     def do_indep_featureset(self, featureset, vars,
-                            makeflags, extra):
+                            makeflags):
         vars['localversion'] = ''
         if featureset != 'none':
             vars['localversion'] = '-' + featureset
 
-        self.do_indep_featureset_setup(vars, makeflags, featureset, extra)
-        self.do_indep_featureset_makefile(featureset, makeflags,
-                                          extra)
+        self.do_indep_featureset_setup(vars, makeflags, featureset)
+        self.do_indep_featureset_makefile(featureset, makeflags)
         self.do_indep_featureset_packages(featureset,
-                                          vars, makeflags, extra)
+                                          vars, makeflags)
 
-    def do_indep_featureset_setup(self, vars, makeflags, featureset, extra):
+    def do_indep_featureset_setup(self, vars, makeflags, featureset):
         pass
 
-    def do_indep_featureset_makefile(self, featureset, makeflags,
-                                     extra):
+    def do_indep_featureset_makefile(self, featureset, makeflags):
         makeflags['FEATURESET'] = featureset
 
-    def do_indep_featureset_packages(self, featureset, vars, makeflags, extra):
+    def do_indep_featureset_packages(self, featureset, vars, makeflags):
         pass
 
-    def do_arch(self, arch, vars, makeflags, extra):
+    def do_arch(self, arch, vars, makeflags):
         vars['arch'] = arch
 
-        self.do_arch_setup(vars, makeflags, arch, extra)
-        self.do_arch_makefile(arch, makeflags, extra)
-        self.do_arch_packages(arch, vars, makeflags, extra)
-        self.do_arch_recurse(arch, vars, makeflags, extra)
+        self.do_arch_setup(vars, makeflags, arch)
+        self.do_arch_makefile(arch, makeflags)
+        self.do_arch_packages(arch, vars, makeflags)
+        self.do_arch_recurse(arch, vars, makeflags)
 
-    def do_arch_setup(self, vars, makeflags, arch, extra):
+    def do_arch_setup(self, vars, makeflags, arch):
         pass
 
-    def do_arch_makefile(self, arch, makeflags, extra):
+    def do_arch_makefile(self, arch, makeflags):
         makeflags['ARCH'] = arch
 
-    def do_arch_packages(self, arch, vars, makeflags,
-                         extra):
+    def do_arch_packages(self, arch, vars, makeflags):
         pass
 
-    def do_arch_recurse(self, arch, vars, makeflags,
-                        extra):
+    def do_arch_recurse(self, arch, vars, makeflags):
         for featureset in iter_arch_featuresets(self.config, arch):
             self.do_featureset(arch, featureset,
-                               vars.copy(), makeflags.copy(), extra)
+                               vars.copy(), makeflags.copy())
 
     def do_featureset(self, arch, featureset, vars,
-                      makeflags, extra):
+                      makeflags):
         vars['localversion'] = ''
         if featureset != 'none':
             vars['localversion'] = '-' + featureset
 
-        self.do_featureset_setup(vars, makeflags, arch, featureset, extra)
-        self.do_featureset_makefile(arch, featureset, makeflags, extra)
-        self.do_featureset_packages(arch, featureset, vars, makeflags, extra)
-        self.do_featureset_recurse(arch, featureset, vars, makeflags, extra)
+        self.do_featureset_setup(vars, makeflags, arch, featureset)
+        self.do_featureset_makefile(arch, featureset, makeflags)
+        self.do_featureset_packages(arch, featureset, vars, makeflags)
+        self.do_featureset_recurse(arch, featureset, vars, makeflags)
 
-    def do_featureset_setup(self, vars, makeflags, arch, featureset, extra):
+    def do_featureset_setup(self, vars, makeflags, arch, featureset):
         pass
 
-    def do_featureset_makefile(self, arch, featureset, makeflags,
-                               extra):
+    def do_featureset_makefile(self, arch, featureset, makeflags):
         makeflags['FEATURESET'] = featureset
 
-    def do_featureset_packages(self, arch, featureset, vars, makeflags, extra):
+    def do_featureset_packages(self, arch, featureset, vars, makeflags):
         pass
 
-    def do_featureset_recurse(self, arch, featureset, vars, makeflags, extra):
+    def do_featureset_recurse(self, arch, featureset, vars, makeflags):
         for flavour in iter_flavours(self.config, arch, featureset):
             self.do_flavour(arch, featureset, flavour,
-                            vars.copy(), makeflags.copy(), extra)
+                            vars.copy(), makeflags.copy())
 
     def do_flavour(self, arch, featureset, flavour, vars,
-                   makeflags, extra):
+                   makeflags):
         vars['localversion'] += '-' + flavour
 
-        self.do_flavour_setup(vars, makeflags, arch, featureset, flavour,
-                              extra)
-        self.do_flavour_makefile(arch, featureset, flavour, makeflags, extra)
+        self.do_flavour_setup(vars, makeflags, arch, featureset, flavour)
+        self.do_flavour_makefile(arch, featureset, flavour, makeflags)
         self.do_flavour_packages(arch, featureset, flavour,
-                                 vars, makeflags, extra)
+                                 vars, makeflags)
 
-    def do_flavour_setup(self, vars, makeflags, arch, featureset, flavour,
-                         extra):
+    def do_flavour_setup(self, vars, makeflags, arch, featureset, flavour):
         for i in (
             ('kernel-arch', 'KERNEL_ARCH'),
             ('localversion', 'LOCALVERSION'),
@@ -529,11 +521,11 @@ class Gencontrol(object):
                 makeflags[i[1]] = vars[i[0]]
 
     def do_flavour_makefile(self, arch, featureset, flavour,
-                            makeflags, extra):
+                            makeflags):
         makeflags['FLAVOUR'] = flavour
 
     def do_flavour_packages(self, arch, featureset,
-                            flavour, vars, makeflags, extra):
+                            flavour, vars, makeflags):
         pass
 
     def substitute(self, s, vars):
