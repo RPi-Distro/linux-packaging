@@ -9,6 +9,7 @@ import pathlib
 import subprocess
 import re
 import tempfile
+from typing import Any
 
 from debian_linux import config
 from debian_linux.debian import \
@@ -62,7 +63,7 @@ class Gencontrol(Base):
     ]
 
     def __init__(self, config_dirs=["debian/config", "debian/config.local"],
-                 template_dirs=["debian/templates"]):
+                 template_dirs=["debian/templates"]) -> None:
         super(Gencontrol, self).__init__(
             config.ConfigCoreHierarchy(self.config_schema, config_dirs),
             Templates(template_dirs),
@@ -81,12 +82,12 @@ class Gencontrol(Base):
                     raise RuntimeError(
                         f'Unable to disable {desc} in release build ({env} set)')
 
-    def _setup_makeflags(self, names, makeflags, data):
+    def _setup_makeflags(self, names, makeflags, data) -> None:
         for src, dst, optional in names:
             if src in data or not optional:
                 makeflags[dst] = data[src]
 
-    def do_main_setup(self, vars, makeflags):
+    def do_main_setup(self, vars, makeflags) -> None:
         super(Gencontrol, self).do_main_setup(vars, makeflags)
         makeflags.update({
             'VERSION': self.version.linux_version,
@@ -102,7 +103,7 @@ class Gencontrol(Base):
         self.tests_control_image = None
         self.tests_control_headers = None
 
-    def do_main_makefile(self, makeflags):
+    def do_main_makefile(self, makeflags) -> None:
         for featureset in iter_featuresets(self.config):
             makeflags_featureset = makeflags.copy()
             makeflags_featureset['FEATURESET'] = featureset
@@ -115,7 +116,7 @@ class Gencontrol(Base):
         makeflags['ALL_FEATURESETS'] = ' '.join(iter_featuresets(self.config))
         super().do_main_makefile(makeflags)
 
-    def do_main_packages(self, vars, makeflags):
+    def do_main_packages(self, vars, makeflags) -> None:
         self.bundle.add('main', (), makeflags, vars)
 
         # Only build the metapackages if their names won't exactly match
@@ -151,7 +152,7 @@ class Gencontrol(Base):
 
             self.bundle.add('libc-dev', (), libcdev_makeflags, vars)
 
-    def do_indep_featureset_setup(self, vars, makeflags, featureset):
+    def do_indep_featureset_setup(self, vars, makeflags, featureset) -> None:
         makeflags['LOCALVERSION'] = vars['localversion']
         kernel_arches = set()
         for arch in iter(self.config['base', ]['arches']):
@@ -167,15 +168,14 @@ class Gencontrol(Base):
             vars['featureset_desc'] = (' with the %s featureset' %
                                        desc['part-short-%s' % desc_parts[0]])
 
-    def do_indep_featureset_packages(self, featureset,
-                                     vars, makeflags):
+    def do_indep_featureset_packages(self, featureset, vars, makeflags) -> None:
         self.bundle.add('headers.featureset', (featureset, ), makeflags, vars)
 
     arch_makeflags = (
         ('kernel-arch', 'KERNEL_ARCH', False),
     )
 
-    def do_arch_setup(self, vars, makeflags, arch):
+    def do_arch_setup(self, vars, makeflags, arch) -> None:
         config_base = self.config.merge('base', arch)
 
         self._setup_makeflags(self.arch_makeflags, makeflags, config_base)
@@ -192,7 +192,7 @@ class Gencontrol(Base):
         else:
             vars['gnu-type-package'] = gnu_type.strip().replace('_', '-')
 
-    def do_arch_packages(self, arch, vars, makeflags):
+    def do_arch_packages(self, arch, vars, makeflags) -> None:
         try:
             abiname_part = '-%s' % self.config['abi', arch]['abiname']
         except KeyError:
@@ -241,7 +241,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
         if self.config.merge('packages').get('tools-versioned', True):
             self.bundle.add('tools-versioned', (arch, ), makeflags, vars)
 
-    def do_featureset_setup(self, vars, makeflags, arch, featureset):
+    def do_featureset_setup(self, vars, makeflags, arch, featureset) -> None:
         vars['localversion_headers'] = vars['localversion']
         makeflags['LOCALVERSION_HEADERS'] = vars['localversion_headers']
 
@@ -284,7 +284,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
         ('localversion-image', 'LOCALVERSION_IMAGE', True),
     )
 
-    def do_flavour_setup(self, vars, makeflags, arch, featureset, flavour):
+    def do_flavour_setup(self, vars, makeflags, arch, featureset, flavour) -> None:
         config_base = self.config.merge('base', arch, featureset, flavour)
         config_build = self.config.merge('build', arch, featureset, flavour)
         config_description = self.config.merge('description', arch, featureset,
@@ -312,7 +312,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
         self._setup_makeflags(self.flavour_makeflags_other, makeflags, vars)
 
     def do_flavour_packages(self, arch, featureset,
-                            flavour, vars, makeflags):
+                            flavour, vars, makeflags) -> None:
         ruleid = (arch, featureset, flavour)
 
         packages_headers = (
@@ -330,7 +330,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
         config_entry_packages = self.config.merge('packages', arch, featureset,
                                                   flavour)
 
-        def config_entry_image(key, *args, **kwargs):
+        def config_entry_image(key, *args, **kwargs) -> Any:
             return self.config.get_merge(
                 'image', arch, featureset, flavour, key, *args, **kwargs)
 
@@ -508,14 +508,14 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                 PackageRelationGroup(packages_headers[0]['Package'],
                                      arches={arch}))
 
-        def get_config(*entry_name):
+        def get_config(*entry_name) -> Any:
             entry_real = ('image',) + entry_name
             entry = self.config.get(entry_real, None)
             if entry is None:
                 return None
             return entry.get('configs', None)
 
-        def check_config_default(fail, f):
+        def check_config_default(fail, f) -> list[str]:
             for d in self.config_dirs[::-1]:
                 f1 = d + '/' + f
                 if os.path.exists(f1):
@@ -524,7 +524,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                 raise RuntimeError("%s unavailable" % f)
             return []
 
-        def check_config_files(files):
+        def check_config_files(files) -> list[str]:
             ret = []
             for f in files:
                 for d in self.config_dirs[::-1]:
@@ -536,7 +536,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                     raise RuntimeError("%s unavailable" % f)
             return ret
 
-        def check_config(default, fail, *entry_name):
+        def check_config(default, fail, *entry_name) -> list[str]:
             configs = get_config(*entry_name)
             if configs is None:
                 return check_config_default(fail, default)
@@ -632,7 +632,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                     makeflags, arch=arch, check_packages=False,
                 )
 
-    def process_changelog(self):
+    def process_changelog(self) -> None:
         version = self.version = self.changelog[0].version
         self.abiname_part = '-%s' % self.config['abi', ]['abiname']
         # We need to keep at least three version components to avoid
@@ -678,18 +678,18 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                 raise RuntimeError("Can't upload to %s with a version of %s" %
                                    (distribution, version))
 
-    def write(self):
+    def write(self) -> None:
         self.write_config()
         super().write()
         self.write_tests_control()
         self.write_signed()
 
-    def write_config(self):
+    def write_config(self) -> None:
         f = open("debian/config.defines.dump", 'wb')
         self.config.dump(f)
         f.close()
 
-    def write_signed(self):
+    def write_signed(self) -> None:
         for bundle in self.bundles.values():
             pkg_sign_entries = {}
 
@@ -710,7 +710,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
                 with bundle.path('files.json').open('w') as f:
                     json.dump({'packages': pkg_sign_entries}, f, indent=2)
 
-    def write_tests_control(self):
+    def write_tests_control(self) -> None:
         self.bundle.write_rfc822(open("debian/tests/control", 'w'),
                                  self.tests_control)
 

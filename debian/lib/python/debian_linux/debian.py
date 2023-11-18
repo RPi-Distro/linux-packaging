@@ -58,7 +58,7 @@ class Changelog(list):
             for key, value in kwargs.items():
                 setattr(self, key, value)
 
-    def __init__(self, dir='', version=None, file=None):
+    def __init__(self, dir='', version=None, file=None) -> None:
         if version is None:
             version = Version
         if file:
@@ -68,7 +68,7 @@ class Changelog(list):
                       encoding="UTF-8") as f:
                 self._parse(version, f)
 
-    def _parse(self, version, f):
+    def _parse(self, version, f) -> None:
         top_match = None
         line_no = 0
 
@@ -109,7 +109,7 @@ class Version(object):
     _upstream_re = re.compile(r'[0-9][A-Za-z0-9.+\-:~]*$')
     _revision_re = re.compile(r'[A-Za-z0-9+.~]+$')
 
-    def __init__(self, version):
+    def __init__(self, version) -> None:
         try:
             split = version.index(':')
         except ValueError:
@@ -130,23 +130,23 @@ class Version(object):
         self.upstream = upstream
         self.revision = revision
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.complete
 
     @property
-    def complete(self):
+    def complete(self) -> str:
         if self.epoch is not None:
             return u"%d:%s" % (self.epoch, self.complete_noepoch)
         return self.complete_noepoch
 
     @property
-    def complete_noepoch(self):
+    def complete_noepoch(self) -> str:
         if self.revision is not None:
             return u"%s-%s" % (self.upstream, self.revision)
         return self.upstream
 
     @property
-    def debian(self):
+    def debian(self) -> str:
         from warnings import warn
         warn(u"debian argument was replaced by revision", DeprecationWarning,
              stacklevel=2)
@@ -199,7 +199,7 @@ $
 $
     """, re.X)
 
-    def __init__(self, version):
+    def __init__(self, version) -> None:
         super(VersionLinux, self).__init__(version)
         up_match = self._upstream_re.match(self.upstream)
         rev_match = self._revision_re.match(self.revision)
