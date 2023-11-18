@@ -22,13 +22,8 @@ binary_image:
 	mkdir -p $(PACKAGE_DIR)/boot
 	rsync -a $(patsubst %,/boot/%-$(KERNEL_VERSION),config System.map $(IMAGE_INSTALL_STEM)) \
 		$(PACKAGE_DIR)/boot/
-	if [ -f $(SIGNATURE_DIR)/boot/vmlinuz-$(KERNEL_VERSION).sig ]; then \
-		sbattach --attach $(SIGNATURE_DIR)/boot/vmlinuz-$(KERNEL_VERSION).sig \
-			$(PACKAGE_DIR)/boot/vmlinuz-$(KERNEL_VERSION); \
-		echo >> debian/$(PACKAGE_NAME).substvars 'signed:Description=The kernel image and modules are signed for use with Secure Boot.'; \
-	else \
-		echo >> debian/$(PACKAGE_NAME).substvars 'signed:Description=The modules are signed.'; \
-	fi
+	sbattach --attach $(SIGNATURE_DIR)/boot/vmlinuz-$(KERNEL_VERSION).sig \
+		$(PACKAGE_DIR)/boot/vmlinuz-$(KERNEL_VERSION)
 	mkdir -p $(PACKAGE_DIR)/lib/modules/$(KERNEL_VERSION)
 	rsync -a $(addprefix /lib/modules/$(KERNEL_VERSION)/,kernel modules.builtin modules.builtin.modinfo modules.order) \
 		$(PACKAGE_DIR)/lib/modules/$(KERNEL_VERSION)/
