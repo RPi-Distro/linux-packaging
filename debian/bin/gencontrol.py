@@ -132,6 +132,25 @@ class Gencontrol(Base):
             if do_meta:
                 self.bundle.add('sourcebin.meta', (), makeflags, vars)
 
+        if self.config.merge('packages').get('libc-dev', True):
+            libcdev_kernelarches = set()
+            libcdev_multiarches = set()
+            for arch in iter(self.config['base', ]['arches']):
+                libcdev_kernelarch = self.config['base', arch]['kernel-arch']
+                libcdev_multiarch = subprocess.check_output(
+                    ['dpkg-architecture', '-f', '-a', arch,
+                     '-q', 'DEB_HOST_MULTIARCH'],
+                    stderr=subprocess.DEVNULL,
+                    encoding='utf-8').strip()
+                libcdev_kernelarches.add(libcdev_kernelarch)
+                libcdev_multiarches.add(f'{libcdev_multiarch}:{libcdev_kernelarch}')
+
+            libcdev_makeflags = makeflags.copy()
+            libcdev_makeflags['ALL_LIBCDEV_KERNELARCHES'] = ' '.join(sorted(libcdev_kernelarches))
+            libcdev_makeflags['ALL_LIBCDEV_MULTIARCHES'] = ' '.join(sorted(libcdev_multiarches))
+
+            self.bundle.add('libc-dev', (), libcdev_makeflags, vars)
+
     def do_indep_featureset_setup(self, vars, makeflags, featureset, extra):
         makeflags['LOCALVERSION'] = vars['localversion']
         kernel_arches = set()
@@ -212,9 +231,6 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
 
   * Sign kernel from {self.changelog[0].source} @signedtemplate_binaryversion@
 ''')
-
-        if self.config.merge('packages').get('libc-dev', True):
-            self.bundle.add('libc-dev', (arch, ), makeflags, vars)
 
         if self.config['base', arch].get('featuresets') and \
            self.config.merge('packages').get('source', True):
