@@ -19,10 +19,9 @@ stages:
   - provisioning
   - build
   - publish
-  - test
   - sign-code
   - build-signed
-  - test-signed
+  - test
 
 # The common Salsa CI pipeline relies on keeping the unpacked source
 # as an artifact, but in our case this is far too large for the
@@ -143,7 +142,12 @@ build:
 # require building again
 
 lintian:
-    extends: .test-lintian
+  extends: .test-lintian
+  needs:
+  - job: build
+    artifacts: true
+  - job: build-signed
+    artifacts: true
 
 autopkgtest:
     extends: .test-autopkgtest
@@ -152,7 +156,12 @@ blhc:
     extends: .test-blhc
 
 piuparts:
-    extends: .test-piuparts
+  extends: .test-piuparts
+  needs:
+  - job: build
+    artifacts: true
+  - job: build-signed
+    artifacts: true
 
 missing-breaks:
     extends: .test-missing-breaks
@@ -297,18 +306,4 @@ build-signed:
     - job: build
       artifacts: true
     - job: sign-code
-      artifacts: true
-
-lintian-signed:
-  extends: .test-lintian
-  stage: test-signed
-  needs:
-    - job: build-signed
-      artifacts: true
-
-piuparts-signed:
-  extends: .test-piuparts
-  stage: test-signed
-  needs:
-    - job: build-signed
       artifacts: true
