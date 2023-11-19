@@ -84,6 +84,11 @@ linux (6.6.1-1~exp1) UNRELEASED; urgency=medium
   [ John Paul Adrian Glaubitz ]
   * [ia64] Compile with gcc-12 to work around ICE (PR target/111425)
 
+  [ Francesco Dolcini ]
+  * Improve support for NXP i.MX devices
+    - [armhf] drivers/cpufreq/Kconfig.arm: Enable CONFIG_ARM_IMX_CPUFREQ_DT
+    - [armhf] sound/soc/fsl/Kconfig: Enable CONFIG_SND_SOC_FSL_ASOC_CARD
+
  -- Vincent Blut <vincent.debian@free.fr>  Thu, 14 Sep 2023 13:53:48 +0200
 
 linux (6.5.10-1) unstable; urgency=medium
