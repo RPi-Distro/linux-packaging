@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sat, 23 Sep 2023 03:11:05 +0200
 Subject: [PATCH] sched: define TIF_ALLOW_RESCHED
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt12.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
 
 On Fri, Sep 22 2023 at 00:55, Thomas Gleixner wrote:
 > On Thu, Sep 21 2023 at 09:00, Linus Torvalds wrote:
