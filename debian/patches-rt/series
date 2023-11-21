@@ -213,7 +213,6 @@ ARM64__Allow_to_enable_RT.patch
 ###########################################################################
 powerpc__traps__Use_PREEMPT_RT.patch
 powerpc_pseries_iommu__Use_a_locallock_instead_local_irq_save.patch
-powerpc-imc-pmu-Use-the-correct-spinlock-initializer.patch
 powerpc-pseries-Select-the-generic-memory-allocator.patch
 powerpc_kvm__Disable_in-kernel_MPIC_emulation_for_PREEMPT_RT.patch
 powerpc_stackprotector__work_around_stack-guard_init_from_atomic.patch
