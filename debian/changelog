@@ -51,8 +51,8 @@ linux (6.6.2-1~exp1) UNRELEASED; urgency=medium
   [ Emanuele Rocca ]
   * [arm64] Enable support for Renesas RZ/G2UL (ARCH_R9A07G043), RZ/V2L
     (ARCH_R9A07G054), and RZ/V2M (ARCH_R9A09G011). (Closes: #1053503)
-  * [arm64] Enable SND_SOC_SC8280XP and SC_LPASSCC_8280XP as modules, needed
-    for audio support on the Lenovo X13s. (Closes: #1055069)
+  * [arm64] Enable SND_SOC_SC8280XP, SC_LPASSCC_8280XP, and SND_SOC_WSA883X as
+    modules, needed for audio support on the Lenovo X13s. (Closes: #1055069)
 
   [ Salvatore Bonaccorso ]
   * drivers/block: Enable BLK_DEV_UBLK as module (Closes: #1032604)
