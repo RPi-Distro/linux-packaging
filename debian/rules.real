@@ -542,7 +542,7 @@ endif
 	dh_gencontrol
 	dh_builddeb -- $(BUILDDEB_ARGS)
 
-binary_installer-test: DEB_BUILD_PROFILES += pkg.linux.udeb-unsigned-test-build
+binary_installer-test: export DEB_BUILD_PROFILES += pkg.linux.udeb-unsigned-test-build
 binary_installer-test:
 	if [ -n "$$(dh_listpackages)" ]; then \
 		dh_testdir; \

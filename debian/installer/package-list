@@ -252,7 +252,7 @@ Description: PCMCIA storage drivers
  This package contains PCMCIA storage drivers for the kernel.
 
 Package: fb-modules
-Depends: kernel-image, i2c-modules
+Depends: kernel-image, i2c-modules, input-modules
 Depends_armel: kernel-image, usb-modules
 Priority: optional
 Priority_hppa: standard

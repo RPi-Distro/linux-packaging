@@ -134,6 +134,10 @@ linux (6.6.2-1~exp1) UNRELEASED; urgency=medium
     - [armhf] drivers/cpufreq/Kconfig.arm: Enable CONFIG_ARM_IMX_CPUFREQ_DT
     - [armhf] sound/soc/fsl/Kconfig: Enable CONFIG_SND_SOC_FSL_ASOC_CARD
 
+  [ Ben Hutchings ]
+  * d/rules.real: Reinstate installer test build with no build profiles
+  * udeb: Move i2c-hid modules to fb-modules since they depend on drm
+
  -- Vincent Blut <vincent.debian@free.fr>  Thu, 14 Sep 2023 13:53:48 +0200
 
 linux (6.5.10-1) unstable; urgency=medium
