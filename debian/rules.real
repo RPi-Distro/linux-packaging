@@ -236,6 +236,7 @@ define dh_binary_post
 	dh_makeshlibs
 	dh_shlibdeps $(DH_SHLIBDEPS_ARGS)
 	dh_installdeb
+	if command -v dh_movetousr >/dev/null; then dh_movetousr; fi
 	dh_gencontrol -- $(GENCONTROL_ARGS)
 	dh_md5sums
 	dh_builddeb -- $(BUILDDEB_ARGS)
