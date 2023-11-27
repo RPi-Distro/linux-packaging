@@ -123,6 +123,7 @@ arches:
  mips
  mips64
  mips64el
+ mips64r6el
  mipsel
  powerpc
  ppc64
