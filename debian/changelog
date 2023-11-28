@@ -1,9 +1,10 @@
-linux (6.6.2-1~exp1) UNRELEASED; urgency=medium
+linux (6.6.3-1~exp1) UNRELEASED; urgency=medium
 
   * New upstream release: https://kernelnewbies.org/Linux_6.6
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.6.1
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.6.2
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.6.3
 
   [ Vincent Blut ]
   * [armhf] drivers/input/keyboard: Enable KEYBOARD_TCA8418 as module
