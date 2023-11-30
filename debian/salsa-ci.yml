@@ -13,6 +13,7 @@ variables:
   # Current runners have 2 CPUs but have slow I/O so 'parallel=4' is
   # a bit faster.
   DEB_BUILD_OPTIONS: 'terse parallel=4'
+  DEBIAN_KERNEL_DISABLE_BUILD_PACKAGE_ARM64: 0
 
 # Add stages for signed packages
 stages:
@@ -39,9 +40,10 @@ extract-source:
       - orig
   extends:
     - .artifacts-default-expire
-  except:
-    variables:
-      - $CI_COMMIT_TAG != null
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
   script:
     # Move cache to where genorig.py and orig target want it
     - mkdir -p orig
@@ -113,9 +115,10 @@ build:
       - .ccache
   extends:
     - .artifacts-default-expire
-  except:
-    variables:
-      - $CI_COMMIT_TAG != null
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
   variables:
     CCACHE_TMP_DIR: ${CI_PROJECT_DIR}/../.ccache
     CCACHE_WORK_DIR: ${CI_PROJECT_DIR}/.ccache
@@ -137,6 +140,31 @@ build:
     - mv ${CCACHE_TMP_DIR} ${CCACHE_WORK_DIR}
   dependencies:
     - extract-source
+
+build-arm64:
+  extends: build
+  image: $SALSA_CI_IMAGES_BASE_ARM64
+  variables:
+    BUILD_ARCH: 'arm64'
+  tags:
+    - arm64
+  rules:
+    - if: $DEBIAN_KERNEL_DISABLE_BUILD_PACKAGE_ARM64 =~ /^(1|yes|true)$/
+      when: never
+    # Make it possible to override the rules below. E.g. when a project fork
+    # has an ARM64 runner available.
+    - if: $DEBIAN_KERNEL_ENABLE_BUILD_PACKAGE_ARM64 =~ /^(1|yes|true)$/
+      when: always
+    # While there isn't an ARM shared runner avilable, let's run this job
+    # manually in forks of the kernel-team/linux project, and in branches other
+    # than the default branch, and allow it to fail in that case
+    - if: $CI_PROJECT_NAMESPACE != "kernel-team"
+      allow_failure: true
+      when: manual
+    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
+      allow_failure: true
+      when: manual
+    - when: always
 
 # The folllowing jobs are the standard tests, excluding any that
 # require building again
@@ -178,9 +206,10 @@ rc-bugs:
 python-static:
   stage: test
   image: $SALSA_CI_IMAGES_BASE
-  except:
-    variables:
-      - $CI_COMMIT_TAG != null
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
   script:
     - |
       apt-get update && eatmydata apt-get install --no-install-recommends -y \
@@ -199,9 +228,10 @@ python-static:
 kconfig-static:
   stage: test
   image: $SALSA_CI_IMAGES_BASE
-  except:
-    variables:
-      - $CI_COMMIT_TAG != null
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
   script:
     # Unpack source and apply featureset patches
     - |
@@ -235,9 +265,10 @@ sign-code:
   image: $SALSA_CI_IMAGES_BASE
   extends:
     - .artifacts-default-expire
-  except:
-    variables:
-      - $CI_COMMIT_TAG != null
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
   script:
     - |
       apt-get update && eatmydata apt-get install --no-install-recommends -y \
@@ -267,9 +298,10 @@ build-signed:
   image: $SALSA_CI_IMAGES_BASE
   extends:
     - .artifacts-default-expire
-  except:
-    variables:
-      - $CI_COMMIT_TAG != null
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
   variables:
     SALSA_CI_DPKG_BUILDPACKAGE_ARGS: ''
     CCACHE_TMP_DIR: ${CI_PROJECT_DIR}/../.ccache
