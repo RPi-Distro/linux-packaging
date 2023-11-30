@@ -177,7 +177,6 @@ into the templates:
 	       this is unset, it will default to @class@.
 @desc@         (Potentially) multi-line verbiage that's appended to
                -image descriptions.
-@abiname@      Current abiname, a single digit.
 
 Normally, the arch-specific contents should be controlled by
 adjusting the corresponding defines file.
