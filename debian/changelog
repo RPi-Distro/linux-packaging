@@ -2,6 +2,7 @@ linux (6.6.3-1~exp2) UNRELEASED; urgency=medium
 
   * Fix build dependency on rsync.
   * Fix build dependency on kernel-wedge.
+  * udeb: Make i2c-hid modules optional.
 
  -- Bastian Blank <waldi@debian.org>  Sun, 03 Dec 2023 09:57:46 +0100
 
