@@ -7,9 +7,7 @@ Standards-Version: 4.2.0
 Build-Depends:
  debhelper-compat (= 12), dh-exec,
  python3:any,
- rsync,
  sbsigntool [amd64 arm64 i386],
- kernel-wedge (>= 2.102~),
 Rules-Requires-Root: no
 Vcs-Git: https://salsa.debian.org/kernel-team/linux.git
 Vcs-Browser: https://salsa.debian.org/kernel-team/linux

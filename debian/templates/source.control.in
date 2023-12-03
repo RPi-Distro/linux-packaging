@@ -19,10 +19,6 @@ Build-Depends:
 # used by upstream to build genksyms, kconfig, and perf
  bison <!pkg.linux.nokernel>, flex (>= 2.6.1-1.1~) <!pkg.linux.nokernel>,
 Build-Depends-Arch:
-# used by debian/rules.real to build udebs
- kernel-wedge (>= 2.105~) <!pkg.linux.nokernel>,
-# used by kernel-wedge (only on Linux, thus not declared as a dependency)
- kmod <!pkg.linux.nokernel>,
 # used by upstream to build include/generated/timeconst.h
  bc <!pkg.linux.nokernel>,
 # used by upstream to build signing tools and to process certificates
@@ -33,8 +29,6 @@ Build-Depends-Arch:
 # linux-kbuild), perf (host arch)
  libelf-dev:native <!pkg.linux.nokernel>,
  libelf-dev <!pkg.linux.notools>,
-# used by upstream headers_install target and by debian/rules.d/tools/usb/usbip
- rsync,
  lz4 [amd64 arm64] <!pkg.linux.nokernel>,
 # used for bft debug info
  pahole <!pkg.linux.nokernel> | dwarves:native (>= 1.16~) <!pkg.linux.nokernel>,
