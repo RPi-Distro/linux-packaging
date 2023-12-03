@@ -623,6 +623,8 @@ ifneq ($(filter i386 amd64 x32,$(DEB_HOST_ARCH)),)
 endif
 	$(dh_binary_post)
 
+binary_perf build_perf: export _PYTHON_SYSCONFIGDATA_NAME = _sysconfigdata__$(DEB_HOST_MULTIARCH)
+
 build_perf: $(STAMPS_DIR)/build-tools-headers
 	$(call make-tools,tools/perf)
 
