@@ -10,6 +10,10 @@ linux (6.6.4-1~exp1) UNRELEASED; urgency=medium
   * Fix build dependency on kernel-wedge.
   * udeb: Make i2c-hid modules optional.
 
+  [ Timothy Pearson ]
+  * [powerpc] Don't clobber f0/vs0 during fp|altivec register save
+    (Closes: #1032104)
+
  -- Bastian Blank <waldi@debian.org>  Sun, 03 Dec 2023 09:57:46 +0100
 
 linux (6.6.3-1~exp1) experimental; urgency=medium
