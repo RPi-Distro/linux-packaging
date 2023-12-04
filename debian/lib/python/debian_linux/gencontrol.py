@@ -15,8 +15,7 @@ from typing import (
 )
 
 from .debian import Changelog, PackageArchitecture, \
-    PackageBuildRestrictFormula, PackageBuildRestrictList, \
-    PackageBuildRestrictTerm, PackageRelation, Version, _ControlFileDict
+    Version, _ControlFileDict
 from .utils import Templates
 
 
@@ -582,14 +581,3 @@ def merge_packages(packages, new, arch) -> None:
         else:
             new_package['Architecture'] = arch
             packages.append(new_package)
-
-
-def add_package_build_restriction(package, term) -> None:
-    if not isinstance(term, PackageBuildRestrictTerm):
-        term = PackageBuildRestrictTerm(term)
-    old_form = package['Build-Profiles']
-    new_form = PackageBuildRestrictFormula()
-    for old_list in old_form:
-        new_list = PackageBuildRestrictList(list(old_list) + [term])
-        new_form.add(new_list)
-    package['Build-Profiles'] = new_form

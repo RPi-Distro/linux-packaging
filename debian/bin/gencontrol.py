@@ -16,7 +16,7 @@ from debian_linux.debian import \
     PackageRelationEntry, PackageRelationGroup, \
     VersionLinux, BinaryPackage, TestsControl
 from debian_linux.gencontrol import Gencontrol as Base, PackagesBundle, \
-    iter_featuresets, iter_flavours, add_package_build_restriction
+    iter_featuresets, iter_flavours
 from debian_linux.utils import Templates
 
 locale.setlocale(locale.LC_CTYPE, "C.UTF-8")
@@ -480,7 +480,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
         # In a quick build, only build the quick flavour (if any).
         if flavour != self.quick_flavour:
             for package in packages_own:
-                add_package_build_restriction(package, '!pkg.linux.quick')
+                package['Build-Profiles'][0].neg.add('pkg.linux.quick')
 
         tests_control = self.templates.get_tests_control('image.tests-control', vars)[0]
         tests_control['Depends'].merge(
