@@ -8,6 +8,12 @@ linux (6.6.5-1~exp1) UNRELEASED; urgency=medium
   [ Bastian Blank ]
   * [i386] No longer sign kernels.
 
+  [ Salvatore Bonaccorso ]
+  * Enable vDPA support (Closes: #1057619)
+    - drivers/vdpa: Enable VDPA and VDPA_USER as module
+    - drivers/virtio: Enable VIRTIO_VDPA as module
+    - drivers/vhost: Enable VHOST_VDPA as module
+
  -- Bastian Blank <waldi@debian.org>  Thu, 07 Dec 2023 19:44:53 +0100
 
 linux (6.6.4-1~exp1) experimental; urgency=medium
