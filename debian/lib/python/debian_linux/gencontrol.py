@@ -333,19 +333,17 @@ class PackagesBundle:
             if not dep:
                 continue
             del package["Build-Depends"]
+            if package["Architecture"] == arch_all:
+                dep_type = "Build-Depends-Indep"
+            else:
+                dep_type = "Build-Depends-Arch"
             for group in dep:
                 for item in group:
                     if package["Architecture"] != arch_all and not item.arches:
                         item.arches = package["Architecture"]
                     if package.get("Build-Profiles") and not item.restrictions:
                         item.restrictions = package["Build-Profiles"]
-            if package["Architecture"] == arch_all:
-                dep_type = "Build-Depends-Indep"
-            else:
-                dep_type = "Build-Depends-Arch"
-            if dep_type not in source:
-                source[dep_type] = PackageRelation()
-            source[dep_type].extend(dep)
+                source.setdefault(dep_type).merge(group)
 
     def write(self) -> None:
         self.write_control()

@@ -393,7 +393,7 @@ class PackageRelationGroup(list[PackageRelationEntry]):
         if all(
             (
                 i.name == j.name and i.operator == j.operator
-                and i.version == j.version and i.restrictions == j.restrictions
+                and i.version == j.version
             ) for i, j in zip(self, v)
         ):
             return self
@@ -432,6 +432,7 @@ class PackageRelation(list[PackageRelationGroup]):
         if g := self._merge_eq(v):
             for i, j in zip(g, v):
                 i.arches |= j.arches
+                i.restrictions.update(j.restrictions)
         else:
             super().append(v)
 
