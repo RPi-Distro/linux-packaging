@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import collections
 import collections.abc
+import dataclasses
 import enum
-import functools
+import itertools
 import os.path
 import re
 import typing
@@ -314,7 +315,7 @@ class PackageRelationEntry:
     operator: typing.Optional[PackageRelationEntryOperator]
     version: typing.Optional[str]
     arches: PackageArchitecture
-    restrictions: PackageBuildRestrictFormula
+    restrictions: PackageBuildprofile
 
     __re = re.compile(
         r'^(?P<name>\S+)'
@@ -329,7 +330,7 @@ class PackageRelationEntry:
         /, *,
         name: str | None = None,
         arches: set[str] | None = None,
-        restrictions: PackageBuildRestrictFormula | str | None = None,
+        restrictions: PackageBuildprofile | str | None = None,
     ) -> None:
         if isinstance(v, str):
             match = self.__re.match(v)
@@ -345,18 +346,22 @@ class PackageRelationEntry:
 
             self.version = match['version']
             self.arches = PackageArchitecture(arches or match['arches'])
-            self.restrictions = PackageBuildRestrictFormula(
-                restrictions or match['restrictions'],
-            )
+            if isinstance(restrictions, PackageBuildprofile):
+                self.restrictions = restrictions.copy()
+            else:
+                self.restrictions = PackageBuildprofile.parse(
+                    restrictions or match['restrictions'],
+                )
 
         else:
             self.name = name or v.name
             self.operator = v.operator
             self.version = v.version
             self.arches = PackageArchitecture(arches or v.arches)
-            self.restrictions = PackageBuildRestrictFormula(
-                restrictions or v.restrictions
-            )
+            if isinstance(restrictions, str):
+                self.restrictions = PackageBuildprofile.parse(restrictions)
+            else:
+                self.restrictions = (restrictions or v.restrictions).copy()
 
     def __str__(self):
         ret = [self.name]
@@ -388,7 +393,7 @@ class PackageRelationGroup(list[PackageRelationEntry]):
         if all(
             (
                 i.name == j.name and i.operator == j.operator
-                and i.version == j.version and i.restrictions == j.restrictions
+                and i.version == j.version
             ) for i, j in zip(self, v)
         ):
             return self
@@ -427,101 +432,112 @@ class PackageRelation(list[PackageRelationGroup]):
         if g := self._merge_eq(v):
             for i, j in zip(g, v):
                 i.arches |= j.arches
+                i.restrictions.update(j.restrictions)
         else:
             super().append(v)
 
 
-class PackageBuildRestrictFormula(set):
-    _re = re.compile(r' *<([^>]+)>(?: +|$)')
+@dataclasses.dataclass
+class PackageBuildprofileEntry:
+    pos: set[str] = dataclasses.field(default_factory=set)
+    neg: set[str] = dataclasses.field(default_factory=set)
 
-    def __init__(self, value=None):
-        if value:
-            self.update(value)
+    __re = re.compile(r'^<(?P<profiles>[a-z0-9. !-]+)>$')
 
-    def __str__(self):
-        return ' '.join(f'<{i}>' for i in sorted(self))
+    def copy(self) -> Self:
+        return self.__class__(
+            pos=set(self.pos),
+            neg=set(self.neg),
+        )
 
-    def add(self, value):
-        if isinstance(value, str):
-            value = PackageBuildRestrictList(value)
-        elif not isinstance(value, PackageBuildRestrictList):
-            raise ValueError("got %s" % type(value))
-        super(PackageBuildRestrictFormula, self).add(value)
-
-    def update(self, value):
-        if isinstance(value, str):
-            pos = 0
-            for match in self._re.finditer(value):
-                if match.start() != pos:
-                    break
-                pos = match.end()
-            if pos != len(value):
-                raise ValueError(f'invalid restriction formula "{value}"')
-            value = (match.group(1) for match in self._re.finditer(value))
-        for i in value:
-            self.add(i)
-
-    # TODO: union etc.
-
-
-class PackageBuildRestrictList(frozenset):
-    # values are established in frozenset.__new__ not __init__, so we
-    # implement __new__ as well
-    def __new__(cls, value=()):
-        if isinstance(value, str):
-            if not re.fullmatch(r'[^()\[\]<>,]+', value):
-                raise ValueError(f'invalid restriction list "{value}"')
-            value = (PackageBuildRestrictTerm(i) for i in value.split())
-        else:
-            for i in value:
-                if not isinstance(i, PackageBuildRestrictTerm):
-                    raise ValueError
-        return super(PackageBuildRestrictList, cls).__new__(cls, value)
-
-    def __str__(self):
-        return ' '.join(str(i) for i in sorted(self))
-
-    # TODO: union etc.
-
-
-@functools.total_ordering
-class PackageBuildRestrictTerm(object):
-    def __init__(self, value):
-        if not isinstance(value, str):
-            raise ValueError
-        match = re.fullmatch(r'(!?)([^()\[\]<>,!\s]+)', value)
+    @classmethod
+    def parse(cls, v: str, /) -> Self:
+        match = cls.__re.match(v)
         if not match:
-            raise ValueError(f'invalid restriction term "{value}"')
-        self.negated = bool(match.group(1))
-        self.profile = match.group(2)
+            raise RuntimeError('Unable to parse build profile "%s"' % v)
 
-    def __str__(self):
-        return ('!' if self.negated else '') + self.profile
+        ret = cls()
+        for i in re.split(r' ', match.group('profiles')):
+            if i:
+                if i[0] == '!':
+                    ret.neg.add(i[1:])
+                else:
+                    ret.pos.add(i)
+        return ret
 
-    def __eq__(self, other):
-        return (self.negated == other.negated
-                and self.profile == other.profile)
+    def __eq__(self, other: object, /) -> bool:
+        if not isinstance(other, PackageBuildprofileEntry):
+            return NotImplemented
+        return self.pos == other.pos and self.neg == other.neg
 
-    def __lt__(self, other):
-        return (self.profile < other.profile
-                or (self.profile == other.profile
-                    and not self.negated and other.negated))
+    def isdisjoint(self, other: Self, /) -> bool:
+        return not (self.issubset(other)) and not (self.issuperset(other))
 
-    def __hash__(self):
-        return hash(self.profile) ^ int(self.negated)
+    def issubset(self, other: Self, /) -> bool:
+        '''
+        Test wether this build profile would select a subset of packages.
+
+        For positive profile matches: Ading profiles will select a subset.
+        For negative profile matches: Removing profiles will select a subset.
+        '''
+        return self.pos >= other.pos and self.neg <= other.neg
+    __le__ = issubset
+
+    def issuperset(self, other: Self, /) -> bool:
+        '''
+        Test wether this build profile would select a superset of packages.
+
+        For positive profile matches: Removing profiles will select a superset.
+        For negative profile matches: Adding profiles will select a superset.
+        '''
+        return self.pos <= other.pos and self.neg >= other.neg
+    __ge__ = issuperset
+
+    def update(self, other: Self, /) -> None:
+        '''
+        Update the build profiles, adding entries from other, merging if possible.
+
+        Negating entries (profile vs !profile) are completely removed.
+        All others remain if they are used on both sides.
+        '''
+        diff = (self.pos & other.neg) | (self.neg & other.pos)
+        self.pos &= other.pos - diff
+        self.neg &= other.neg - diff
+    __ior__ = update
+
+    def __str__(self) -> str:
+        s = ' '.join(itertools.chain(
+            sorted(self.pos),
+            (f'!{i}' for i in sorted(self.neg)),
+        ))
+        return f'<{s}>'
 
 
-def restriction_requires_profile(form, profile):
-    # An empty restriction formula does not require any profile.
-    # Otherwise, a profile is required if each restriction list
-    # includes it without negation.
-    if len(form) == 0:
-        return False
-    term = PackageBuildRestrictTerm(profile)
-    for lst in form:
-        if term not in lst:
-            return False
-    return True
+class PackageBuildprofile(list[PackageBuildprofileEntry]):
+    __re = re.compile(r' *(<[^>]+>)(?: +|$)')
+
+    def copy(self) -> Self:
+        return self.__class__(i.copy() for i in self)
+
+    @classmethod
+    def parse(cls, v: str, /) -> Self:
+        ret = cls()
+        for match in cls.__re.finditer(v):
+            ret.append(PackageBuildprofileEntry.parse(match.group(1)))
+        return ret
+
+    def update(self, v: Self, /) -> None:
+        for i in v:
+            for j in self:
+                if not j.isdisjoint(i):
+                    j.update(i)
+                    break
+            else:
+                self.append(i)
+    __ior__ = update
+
+    def __str__(self) -> str:
+        return ' '.join(str(i) for i in self)
 
 
 class _ControlFileDict(collections.abc.MutableMapping):
@@ -540,7 +556,10 @@ class _ControlFileDict(collections.abc.MutableMapping):
         try:
             cls = self._fields[key]
             if not isinstance(value, cls):
-                value = cls(value)
+                if f := getattr(cls, 'parse', None):
+                    value = f(value)
+                else:
+                    value = cls(value)
         except KeyError:
             warnings.warn(
                 f'setting unknown field { key } in { type(self).__name__ }',
@@ -656,7 +675,7 @@ class BinaryPackage(_ControlFileDict):
         ('Build-Depends', PackageRelation),
         ('Build-Depends-Arch', PackageRelation),
         ('Build-Depends-Indep', PackageRelation),
-        ('Build-Profiles', PackageBuildRestrictFormula),
+        ('Build-Profiles', PackageBuildprofile),
         ('Built-Using', PackageRelation),
         ('Provides', PackageRelation),
         ('Pre-Depends', PackageRelation),
