@@ -131,6 +131,11 @@ CONFIG_DRM_I915_PXP=y
 CONFIG_AMD_SFH_HID=m
 
 ##
+## file: drivers/hwtracing/intel_th/Kconfig
+##
+CONFIG_INTEL_TH_STH=m
+
+##
 ## file: drivers/hwtracing/stm/Kconfig
 ##
 CONFIG_STM=m
@@ -140,11 +145,6 @@ CONFIG_STM_DUMMY=m
 CONFIG_STM_SOURCE_CONSOLE=m
 CONFIG_STM_SOURCE_HEARTBEAT=m
 CONFIG_STM_SOURCE_FTRACE=m
-
-##
-## file: drivers/hwtracing/intel_th/Kconfig
-##
-CONFIG_INTEL_TH_STH=m
 
 ##
 ## file: drivers/i2c/Kconfig
