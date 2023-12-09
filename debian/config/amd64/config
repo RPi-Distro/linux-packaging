@@ -220,6 +220,11 @@ CONFIG_PINCTRL_AMD=y
 CONFIG_AMD_PMC=m
 
 ##
+## file: drivers/platform/x86/intel/Kconfig
+##
+CONFIG_INTEL_TPMI=m
+
+##
 ## file: drivers/platform/x86/intel/ifs/Kconfig
 ##
 CONFIG_INTEL_IFS=m
@@ -228,6 +233,11 @@ CONFIG_INTEL_IFS=m
 ## file: drivers/platform/x86/intel/uncore-frequency/Kconfig
 ##
 CONFIG_INTEL_UNCORE_FREQ_CONTROL=m
+
+##
+## file: drivers/powercap/Kconfig
+##
+CONFIG_INTEL_RAPL_TPMI=m
 
 ##
 ## file: drivers/scsi/Kconfig
