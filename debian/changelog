@@ -45,6 +45,8 @@ linux (6.6.6-1~exp1) UNRELEASED; urgency=medium
   [ Vincent Blut ]
   * [x86] sound/soc/amd: Enable SND_SOC_AMD_PS and SND_SOC_AMD_PS_MACH as
     modules (Closes: #1055649)
+  * [x86] sound/soc/amd: Enable SND_SOC_AMD_RPL_ACP6x as module
+    (Closes: #1058576)
 
  -- Bastian Blank <waldi@debian.org>  Thu, 07 Dec 2023 19:44:53 +0100
 
