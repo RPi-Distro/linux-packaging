@@ -28,6 +28,8 @@ linux (6.6.7-1~exp1) UNRELEASED; urgency=medium
     - drivers/vdpa: Enable VDPA and VDPA_USER as module
     - drivers/virtio: Enable VIRTIO_VDPA as module
     - drivers/vhost: Enable VHOST_VDPA as module
+  * [rt] Refresh "serial: amba-pl011: Use port lock wrappers" for context
+    changes
 
   [ Miguel Bernal Marin ]
   * [amd64] Enable System Trace Modules and the Intel Trace Hub Software
