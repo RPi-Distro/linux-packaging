@@ -204,12 +204,6 @@ Priority: optional
 Description: UDF modules
  This package contains the UDF filesystem module.
 
-Package: fuse-modules
-Depends: kernel-image
-Priority: optional
-Description: FUSE modules
- This package contains the Filesystem in Userspace (FUSE) module.
-
 Package: f2fs-modules
 Depends: kernel-image, crc-modules
 Priority: optional
