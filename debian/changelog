@@ -16,6 +16,7 @@ linux (6.6.6-1~exp1) UNRELEASED; urgency=medium
   * Properly merge Build-Depends, so that we don't carry hundred identical
     entries.
   * [udeb] Fix nic-shared-modules dependencies.
+  * Add dependency on image to headers package.
 
   [ Salvatore Bonaccorso ]
   * Enable vDPA support (Closes: #1057619)
