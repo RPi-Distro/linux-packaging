@@ -49,6 +49,10 @@ linux (6.6.6-1~exp1) UNRELEASED; urgency=medium
   * [x86] sound/soc/amd: Enable SND_SOC_AMD_RPL_ACP6x as module
     (Closes: #1058576)
 
+  [ Luca Boccassi ]
+  * Set CONFIG_VIRTIO_FS and its dependencies to builtin, to allow building
+    images that boot directly to rootfs (skipping the initrd)
+
  -- Bastian Blank <waldi@debian.org>  Thu, 07 Dec 2023 19:44:53 +0100
 
 linux (6.6.4-1~exp1) experimental; urgency=medium
