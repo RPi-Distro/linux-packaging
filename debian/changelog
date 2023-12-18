@@ -11,6 +11,8 @@ linux (6.6.7-1~exp1) UNRELEASED; urgency=medium
       (CVE-2023-6622)
     - [mips*] kernel: Clear FPU states when setting up kernel threads
       (Closes: #1055021)
+    - netfilter: nft_set_pipapo: skip inactive elements during set walk
+      (CVE-2023-6817)
 
   [ Anatoliy Gunya ]
   * [riscv64] improve Starfive Visionfive 2 support: enable DW_AXI_DMAC and
