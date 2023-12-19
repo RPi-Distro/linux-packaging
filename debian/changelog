@@ -9,6 +9,7 @@ linux (6.6.7-1~exp1) UNRELEASED; urgency=medium
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.6.7
     - netfilter: nf_tables: bail out on mismatching dynset and set expressions
       (CVE-2023-6622)
+    - perf: Fix perf_event_validate_size() (CVE-2023-6931)
     - [mips*] kernel: Clear FPU states when setting up kernel threads
       (Closes: #1055021)
     - netfilter: nft_set_pipapo: skip inactive elements during set walk
