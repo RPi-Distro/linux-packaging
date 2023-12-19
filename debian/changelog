@@ -5,6 +5,8 @@ linux (6.6.7-1~exp1) UNRELEASED; urgency=medium
     - io_uring: don't allow discontig pages for IORING_SETUP_NO_MMAP
       (CVE-2023-6560)
     - r8169: fix deadlock on RTL8125 in jumbo mtu mode (Closes: #1057790)
+    - ipv4: igmp: fix refcnt uaf issue when receiving igmp query packet
+      (CVE-2023-6932)
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.6.6
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.6.7
     - netfilter: nf_tables: bail out on mismatching dynset and set expressions
