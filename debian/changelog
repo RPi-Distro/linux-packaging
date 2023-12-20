@@ -1,4 +1,4 @@
-linux (6.6.7-1~exp1) UNRELEASED; urgency=medium
+linux (6.6.7-1~exp1) experimental; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.6.5
@@ -65,7 +65,7 @@ linux (6.6.7-1~exp1) UNRELEASED; urgency=medium
   * Set CONFIG_VIRTIO_FS and its dependencies to builtin, to allow building
     images that boot directly to rootfs (skipping the initrd)
 
- -- Bastian Blank <waldi@debian.org>  Thu, 07 Dec 2023 19:44:53 +0100
+ -- Bastian Blank <waldi@debian.org>  Wed, 20 Dec 2023 12:06:39 +0100
 
 linux (6.6.4-1~exp1) experimental; urgency=medium
 
