@@ -1,3 +1,14 @@
+linux (6.6.8-1~exp1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.6.8
+    - afs: Fix refcount underflow from error handling race (Closes: #1052304)
+    - HID: lenovo: Restrict detection of patched firmware only to USB cptkbd
+      (Closes: #1058758)
+    - [mips*] PCI: loongson: Limit MRRS to 256 (Closes: #1035587)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 20 Dec 2023 17:25:57 +0100
+
 linux (6.6.7-1~exp1) experimental; urgency=medium
 
   * New upstream stable update:
