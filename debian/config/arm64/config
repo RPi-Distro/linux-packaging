@@ -2065,7 +2065,6 @@ CONFIG_TYPEC_FUSB302=m
 ## file: drivers/vfio/Kconfig
 ##
 CONFIG_VFIO=m
-CONFIG_VFIO_NOIOMMU=y
 
 ##
 ## file: drivers/vfio/fsl-mc/Kconfig
