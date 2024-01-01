@@ -1,12 +1,167 @@
-linux (6.6.8-2) UNRELEASED; urgency=medium
+linux (6.6.9-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.6.9
+    - bpf: Fix prog_array_map_poke_run map poke update
+    - btrfs: qgroup: iterate qgroups without memory allocation for
+      qgroup_reserve()
+    - btrfs: qgroup: use qgroup_iterator in qgroup_convert_meta()
+    - btrfs: free qgroup pertrans reserve on transaction abort
+    - drm/amd/display: fix hw rotated modes when PSR-SU is enabled
+    - [x86] drm/i915: Fix FEC state dump
+    - [x86] drm/i915: Introduce crtc_state->enhanced_framing
+    - [x86] drm/i915/edp: don't write to DP_LINK_BW_SET when using rate select
+    - drm: Update file owner during use
+    - drm: Fix FD ownership check in drm_master_check_perm()
+    - [arm64,armhf] spi: spi-imx: correctly configure burst length when using
+      dma
+    - [arm64] dts: allwinner: h616: update emac for Orange Pi Zero 3
+    - [armhf] OMAP2+: Fix null pointer dereference and memory leak in
+      omap_soc_device_init
+    - reset: Fix crash when freeing non-existent optional resets
+    - [s390x] vx: fix save/restore of fpu kernel context
+    - [x86] platform/x86/intel/pmc: Fix hang in pmc_core_send_ltr_ignore()
+    - SUNRPC: Revert 5f7fc5d69f6e92ec0b38774c387f5cf7812c5806
+    - wifi: ieee80211: don't require protected vendor action frames
+    - wifi: iwlwifi: pcie: add another missing bh-disable for rxq->lock
+    - wifi: mac80211: check if the existing link config remains unchanged
+    - wifi: mac80211: don't re-add debugfs during reconfig
+    - wifi: mac80211: check defragmentation succeeded
+    - wifi: mac80211: mesh: check element parsing succeeded
+    - wifi: mac80211: mesh_plink: fix matches_local logic
+    - ice: fix theoretical out-of-bounds access in ethtool link modes
+    - bpf: syzkaller found null ptr deref in unix_bpf proto add
+    - Revert "net/mlx5e: fix double free of encap_header in update funcs"
+    - Revert "net/mlx5e: fix double free of encap_header"
+    - net/mlx5e: Fix slab-out-of-bounds in mlx5_query_nic_vport_mac_list()
+    - net/mlx5e: Fix a race in command alloc flow
+    - net/mlx5e: fix a potential double-free in fs_udp_create_groups
+    - net/mlx5e: Fix overrun reported by coverity
+    - net/mlx5e: Decrease num_block_tc when unblock tc offload
+    - net/mlx5e: XDP, Drop fragmented packets larger than MTU size
+    - net/mlx5: Fix fw tracer first block check
+    - net/mlx5: Refactor mlx5_flow_destination->rep pointer to vport num
+    - net/mlx5e: Fix error code in mlx5e_tc_action_miss_mapping_get()
+    - net/mlx5e: Fix error codes in alloc_branch_attr()
+    - net/mlx5e: Correct snprintf truncation handling for fw_version buffer
+    - net/mlx5e: Correct snprintf truncation handling for fw_version buffer used
+      by representors
+    - [arm64] net: mscc: ocelot: fix eMAC TX RMON stats for bucket 256-511 and
+      above
+    - [arm64] net: mscc: ocelot: fix pMAC TX RMON stats for bucket 256-511 and
+      above
+    - net: Return error from sk_stream_wait_connect() if sk_wait_event() fails
+    - net: sched: ife: fix potential use-after-free
+    - ethernet: atheros: fix a memleak in atl1e_setup_ring_resources
+    - net/rose: fix races in rose_kill_by_device()
+    - Bluetooth: Fix not notifying when connection encryption changes
+    - Bluetooth: Fix deadlock in vhci_send_frame
+    - Bluetooth: hci_event: shut up a false-positive warning
+    - Bluetooth: hci_core: Fix hci_conn_hash_lookup_cis
+    - bnxt_en: do not map packet buffers twice
+    - net: phy: skip LED triggers on PHYs on SFP modules
+    - ice: stop trashing VF VSI aggregator node ID information
+    - ice: alter feature support check for SRIOV and LAG
+    - ice: Fix PF with enabled XDP going no-carrier after reset
+    - net: mana: select PAGE_POOL
+    - net: check vlan filter feature in vlan_vids_add_by_dev() and
+      vlan_vids_del_by_dev()
+    - afs: Fix the dynamic root's d_delete to always delete unused dentries
+    - afs: Fix dynamic root lookup DNS check
+    - net: ethernet: mtk_wed: fix possible NULL pointer dereference in
+      mtk_wed_wo_queue_tx_clean()
+    - net/ipv6: Revert remove expired routes with a separated list of routes
+    - net: check dev->gso_max_size in gso_features_check()
+    - keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry
+    - afs: Fix overwriting of result of DNS query
+    - afs: Fix use-after-free due to get/remove race in volume tree
+    - [x86] drm/i915/hwmon: Fix static analysis tool reported issues
+    - [x86] drm/i915/mtl: Fix HDMI/DP PLL clock selection
+    - [arm64,armhf] ASoC: hdmi-codec: fix missing report for jack initial status
+    - [arm64] ASoC: fsl_sai: Fix channel swap issue on i.MX8MP
+    - [arm64] i2c: qcom-geni: fix missing clk_disable_unprepare() and
+      geni_se_resources_off()
+    - drm/amdgpu: re-create idle bo's PTE during VM state machine reset
+    - [armhf] i2c: aspeed: Handle the coalesced stop conditions with the start
+      conditions.
+    - gpiolib: cdev: add gpio_device locking wrapper around gpio_ioctl()
+    - nvme-pci: fix sleeping function called from interrupt context
+    - iio: imu: inv_mpu6050: fix an error code problem in inv_mpu6050_read_raw
+    - [arm64,armhf] iio: adc: meson: add separate config for axg SoC family
+    - scsi: bnx2fc: Fix skb double free in bnx2fc_rcv()
+    - scsi: ufs: qcom: Return ufs_qcom_clk_scale_*() errors in
+      ufs_qcom_clk_scale_notify()
+    - scsi: ufs: core: Let the sq_lock protect sq_tail_slot access
+    - iio: common: ms_sensors: ms_sensors_i2c: fix humidity conversion time
+      table
+    - iio: imu: adis16475: add spi_device_id table
+    - [armhf] iio: adc: ti_am335x_adc: Fix return value check of
+      tiadc_request_dma()
+    - iio: triggered-buffer: prevent possible freeing of wrong buffer
+    - ALSA: usb-audio: Increase delay in MOTU M quirk
+    - usb-storage: Add quirk for incorrect WP on Kingston DT Ultimate 3.0 G3
+    - wifi: mt76: fix crash with WED rx support enabled
+    - wifi: cfg80211: Add my certificate
+    - wifi: cfg80211: fix certs build to not depend on file order
+    - USB: serial: ftdi_sio: update Actisense PIDs constant names
+    - USB: serial: option: add Quectel EG912Y module support
+    - USB: serial: option: add Foxconn T99W265 with new baseline
+    - USB: serial: option: add Quectel RM500Q R13 firmware support
+    - ALSA: hda/tas2781: select program 0, conf 0 by default
+    - ALSA: hda/realtek: Add quirk for ASUS ROG GV302XA
+    - ASoC: tas2781: check the validity of prm_no/cfg_no
+    - Bluetooth: hci_event: Fix not checking if HCI_OP_INQUIRY has been sent
+    - Bluetooth: af_bluetooth: Fix Use-After-Free in bt_sock_recvmsg
+      (CVE-2023-51779)
+    - Bluetooth: L2CAP: Send reject on command corrupted request
+    - Bluetooth: MGMT/SMP: Fix address type when using SMP over BREDR/LE
+    - Bluetooth: Add more enc key size check
+    - usb: typec: ucsi: fix gpio-based orientation detection
+    - net: usb: ax88179_178a: avoid failed operations when device is
+      disconnected
+    - [x86] Input: soc_button_array - add mapping for airplane mode button
+    - net: 9p: avoid freeing uninit memory in p9pdu_vreadf
+    - net: rfkill: gpio: set GPIO direction
+    - net: avoid build bug in skb extension length calculation
+    - net: stmmac: fix incorrect flag check in timestamp interrupt
+    - dt-bindings: nvmem: mxs-ocotp: Document fsl,ocotp
+    - nfsd: call nfsd_last_thread() before final nfsd_put()
+    - smb: client: fix OOB in cifsd when receiving compounded resps
+    - smb: client: fix potential OOB in cifs_dump_detail()
+    - smb: client: fix OOB in SMB2_query_info_init()
+    - smb: client: fix OOB in smbCalcSize() (CVE-2023-6606)
+    - [x86] drm/i915: Reject async flips with bigjoiner
+    - [x86] drm/i915/dmc: Don't enable any pipe DMC events
+    - 9p: prevent read overrun in protocol dump tracepoint
+    - ring-buffer: Fix 32-bit rb_time_read() race with rb_time_cmpxchg()
+    - ring-buffer: Remove useless update to write_stamp in rb_try_to_discard()
+    - ring-buffer: Fix slowpath of interrupted event
+    - nvmem: brcm_nvram: store a copy of NVRAM content
+    - Revert "scsi: aacraid: Reply queue mapping to CPUs based on IRQ affinity"
+      (Closes: #1059624)
+    - scsi: core: Always send batch on reset or error handling command
+    - tracing / synthetic: Disable events after testing in
+      synth_event_gen_test_init()
+    - dm-integrity: don't modify bio's immutable bio_vec in integrity_metadata()
+    - [riscv64] pinctrl: starfive: jh7110: ignore disabled device tree nodes
+    - [risvv64] pinctrl: starfive: jh7100: ignore disabled device tree nodes
+    - [armhf] bus: ti-sysc: Flush posted write only after srst_udelay
+    - lib/vsprintf: Fix %pfwf when current node refcount == 0
+    - [x86] thunderbolt: Fix memory leak in margining_port_remove()
+    - [arm64] KVM: arm64: vgic: Simplify kvm_vgic_destroy()
+    - [arm64] KVM: arm64: vgic: Add a non-locking primitive for
+      kvm_vgic_vcpu_destroy()
+    - [arm64] KVM: arm64: vgic: Force vcpu vgic teardown on vcpu destroy
+    - [x86] alternatives: Sync core before enabling interrupts
+    - [x86] alternatives: Disable interrupts and sync when optimizing NOPs in
+      place
+    - [x86] smpboot/64: Handle X2APIC BIOS inconsistency gracefully
 
   [ Salvatore Bonaccorso ]
   * [arm64] drivers/vfio: Don't enable VFIO_NOIOMMU.
     This is a breach of the integrity lockdown requirement of secure boot
     and thus cannot be enabled.
     Thanks to Bastian Blank and Ben Hutchings
-  * Revert "scsi: aacraid: Reply queue mapping to CPUs based on IRQ affinity"
-    (Closes: #1059624)
 
   [ Bastian Blank ]
   * [mips*] Increase RELOCATION_TABLE_SIZE to 0x200000. (closes: #1059431)
