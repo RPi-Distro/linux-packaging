@@ -1,7 +1,7 @@
 From: Petr Mladek <pmladek@suse.com>
 Date: Fri, 6 Oct 2023 10:21:51 +0200
-Subject: [PATCH 084/122] printk: Reduce pr_flush() pooling time
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
+Subject: [PATCH 084/134] printk: Reduce pr_flush() pooling time
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6.7-rt18.tar.xz
 
 pr_flush() does not guarantee that all messages would really get flushed
 to the console. The best it could do is to wait with a given timeout.[*]

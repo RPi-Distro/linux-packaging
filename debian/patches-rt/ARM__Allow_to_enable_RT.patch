@@ -1,7 +1,7 @@
 Subject: ARM: Allow to enable RT
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Fri Oct 11 13:14:29 2019 +0200
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6.7-rt18.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 

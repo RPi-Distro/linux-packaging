@@ -1,7 +1,7 @@
 From: John Ogness <john.ogness@linutronix.de>
 Date: Sat, 16 Sep 2023 21:26:02 +0206
-Subject: [PATCH 077/122] printk: Make static printk buffers available to nbcon
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
+Subject: [PATCH 077/134] printk: Make static printk buffers available to nbcon
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6.7-rt18.tar.xz
 
 The nbcon boot consoles also need printk buffers that are available
 very early. Since the nbcon boot consoles will also be serialized

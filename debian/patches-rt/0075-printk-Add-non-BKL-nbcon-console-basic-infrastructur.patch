@@ -1,8 +1,8 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sat, 16 Sep 2023 21:26:00 +0206
-Subject: [PATCH 075/122] printk: Add non-BKL (nbcon) console basic
+Subject: [PATCH 075/134] printk: Add non-BKL (nbcon) console basic
  infrastructure
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6.7-rt18.tar.xz
 
 The current console/printk subsystem is protected by a Big Kernel Lock,
 (aka console_lock) which has ill defined semantics and is more or less
