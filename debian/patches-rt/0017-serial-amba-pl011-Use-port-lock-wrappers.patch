@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Thu, 14 Sep 2023 20:43:34 +0206
-Subject: [PATCH 017/122] serial: amba-pl011: Use port lock wrappers
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
+Subject: [PATCH 017/134] serial: amba-pl011: Use port lock wrappers
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6.7-rt18.tar.xz
 
 When a serial port is used for kernel console output, then all
 modifications to the UART registers which are done from other contexts,
@@ -38,7 +38,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 --- a/drivers/tty/serial/amba-pl011.c
 +++ b/drivers/tty/serial/amba-pl011.c
-@@ -347,9 +347,9 @@
+@@ -347,9 +347,9 @@ static int pl011_fifo_to_tty(struct uart
  				flag = TTY_FRAME;
  		}
  
@@ -50,7 +50,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  		if (!sysrq)
  			uart_insert_char(&uap->port, ch, UART011_DR_OE, ch, flag);
-@@ -544,7 +544,7 @@
+@@ -544,7 +544,7 @@ static void pl011_dma_tx_callback(void *
  	unsigned long flags;
  	u16 dmacr;
  
@@ -59,7 +59,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	if (uap->dmatx.queued)
  		dma_unmap_single(dmatx->chan->device->dev, dmatx->dma,
  				dmatx->len, DMA_TO_DEVICE);
-@@ -565,7 +565,7 @@
+@@ -565,7 +565,7 @@ static void pl011_dma_tx_callback(void *
  	if (!(dmacr & UART011_TXDMAE) || uart_tx_stopped(&uap->port) ||
  	    uart_circ_empty(&uap->port.state->xmit)) {
  		uap->dmatx.queued = false;
@@ -68,7 +68,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		return;
  	}
  
-@@ -576,7 +576,7 @@
+@@ -576,7 +576,7 @@ static void pl011_dma_tx_callback(void *
  		 */
  		pl011_start_tx_pio(uap);
  
@@ -77,7 +77,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  /*
-@@ -1004,7 +1004,7 @@
+@@ -1004,7 +1004,7 @@ static void pl011_dma_rx_callback(void *
  	 * routine to flush out the secondary DMA buffer while
  	 * we immediately trigger the next DMA job.
  	 */
@@ -86,7 +86,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	/*
  	 * Rx data can be taken by the UART interrupts during
  	 * the DMA irq handler. So we check the residue here.
-@@ -1020,7 +1020,7 @@
+@@ -1020,7 +1020,7 @@ static void pl011_dma_rx_callback(void *
  	ret = pl011_dma_rx_trigger_dma(uap);
  
  	pl011_dma_rx_chars(uap, pending, lastbuf, false);
@@ -95,7 +95,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	/*
  	 * Do this check after we picked the DMA chars so we don't
  	 * get some IRQ immediately from RX.
-@@ -1086,11 +1086,11 @@
+@@ -1086,11 +1086,11 @@ static void pl011_dma_rx_poll(struct tim
  	if (jiffies_to_msecs(jiffies - dmarx->last_jiffies)
  			> uap->dmarx.poll_timeout) {
  
@@ -109,7 +109,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  		uap->dmarx.running = false;
  		dmaengine_terminate_all(rxchan);
-@@ -1186,10 +1186,10 @@
+@@ -1186,10 +1186,10 @@ static void pl011_dma_shutdown(struct ua
  	while (pl011_read(uap, REG_FR) & uap->vendor->fr_busy)
  		cpu_relax();
  
@@ -122,7 +122,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	if (uap->using_tx_dma) {
  		/* In theory, this should already be done by pl011_dma_flush_buffer */
-@@ -1370,9 +1370,9 @@
+@@ -1370,9 +1370,9 @@ static void pl011_throttle_rx(struct uar
  {
  	unsigned long flags;
  
@@ -134,7 +134,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  static void pl011_enable_ms(struct uart_port *port)
-@@ -1390,7 +1390,7 @@
+@@ -1390,7 +1390,7 @@ static void pl011_rx_chars(struct uart_a
  {
  	pl011_fifo_to_tty(uap);
  
@@ -143,7 +143,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	tty_flip_buffer_push(&uap->port.state->port);
  	/*
  	 * If we were temporarily out of DMA mode for a while,
-@@ -1415,7 +1415,7 @@
+@@ -1415,7 +1415,7 @@ static void pl011_rx_chars(struct uart_a
  #endif
  		}
  	}
@@ -152,7 +152,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  static bool pl011_tx_char(struct uart_amba_port *uap, unsigned char c,
-@@ -1551,7 +1551,7 @@
+@@ -1551,7 +1551,7 @@ static irqreturn_t pl011_int(int irq, vo
  	unsigned int status, pass_counter = AMBA_ISR_PASS_LIMIT;
  	int handled = 0;
  
@@ -161,7 +161,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	status = pl011_read(uap, REG_RIS) & uap->im;
  	if (status) {
  		do {
-@@ -1581,7 +1581,7 @@
+@@ -1581,7 +1581,7 @@ static irqreturn_t pl011_int(int irq, vo
  		handled = 1;
  	}
  
@@ -170,7 +170,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	return IRQ_RETVAL(handled);
  }
-@@ -1653,14 +1653,14 @@
+@@ -1653,14 +1653,14 @@ static void pl011_break_ctl(struct uart_
  	unsigned long flags;
  	unsigned int lcr_h;
  
@@ -187,7 +187,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  #ifdef CONFIG_CONSOLE_POLL
-@@ -1799,7 +1799,7 @@
+@@ -1799,7 +1799,7 @@ static void pl011_enable_interrupts(stru
  	unsigned long flags;
  	unsigned int i;
  
@@ -196,7 +196,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	/* Clear out any spuriously appearing RX interrupts */
  	pl011_write(UART011_RTIS | UART011_RXIS, uap, REG_ICR);
-@@ -1821,7 +1821,7 @@
+@@ -1821,7 +1821,7 @@ static void pl011_enable_interrupts(stru
  	if (!pl011_dma_rx_running(uap))
  		uap->im |= UART011_RXIM;
  	pl011_write(uap->im, uap, REG_IMSC);
@@ -205,7 +205,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  static void pl011_unthrottle_rx(struct uart_port *port)
-@@ -1829,7 +1829,7 @@
+@@ -1829,7 +1829,7 @@ static void pl011_unthrottle_rx(struct u
  	struct uart_amba_port *uap = container_of(port, struct uart_amba_port, port);
  	unsigned long flags;
  
@@ -214,7 +214,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	uap->im = UART011_RTIM;
  	if (!pl011_dma_rx_running(uap))
-@@ -1837,7 +1837,7 @@
+@@ -1837,7 +1837,7 @@ static void pl011_unthrottle_rx(struct u
  
  	pl011_write(uap->im, uap, REG_IMSC);
  
@@ -223,7 +223,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  static int pl011_startup(struct uart_port *port)
-@@ -1857,7 +1857,7 @@
+@@ -1857,7 +1857,7 @@ static int pl011_startup(struct uart_por
  
  	pl011_write(uap->vendor->ifls, uap, REG_IFLS);
  
@@ -232,7 +232,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	cr = pl011_read(uap, REG_CR);
  	cr &= UART011_CR_RTS | UART011_CR_DTR;
-@@ -1868,7 +1868,7 @@
+@@ -1868,7 +1868,7 @@ static int pl011_startup(struct uart_por
  
  	pl011_write(cr, uap, REG_CR);
  
@@ -241,7 +241,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	/*
  	 * initialise the old status of the modem signals
-@@ -1929,12 +1929,12 @@
+@@ -1929,12 +1929,12 @@ static void pl011_disable_uart(struct ua
  	unsigned int cr;
  
  	uap->port.status &= ~(UPSTAT_AUTOCTS | UPSTAT_AUTORTS);
@@ -256,7 +256,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	/*
  	 * disable break condition and fifos
-@@ -1946,14 +1946,14 @@
+@@ -1946,14 +1946,14 @@ static void pl011_disable_uart(struct ua
  
  static void pl011_disable_interrupts(struct uart_amba_port *uap)
  {
@@ -273,7 +273,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  static void pl011_shutdown(struct uart_port *port)
-@@ -2098,7 +2098,7 @@
+@@ -2098,7 +2098,7 @@ pl011_set_termios(struct uart_port *port
  
  	bits = tty_get_frame_size(termios->c_cflag);
  
@@ -282,7 +282,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	/*
  	 * Update the per-port timeout.
-@@ -2172,7 +2172,7 @@
+@@ -2172,7 +2172,7 @@ pl011_set_termios(struct uart_port *port
  	old_cr |= UART011_CR_RXE;
  	pl011_write(old_cr, uap, REG_CR);
  
@@ -291,7 +291,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  static void
-@@ -2190,10 +2190,10 @@
+@@ -2190,10 +2190,10 @@ sbsa_uart_set_termios(struct uart_port *
  	termios->c_cflag &= ~(CMSPAR | CRTSCTS);
  	termios->c_cflag |= CS8 | CLOCAL;
  
@@ -304,7 +304,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  static const char *pl011_type(struct uart_port *port)
-@@ -2332,9 +2332,9 @@
+@@ -2332,9 +2332,9 @@ pl011_console_write(struct console *co,
  	if (uap->port.sysrq)
  		locked = 0;
  	else if (oops_in_progress)
@@ -316,7 +316,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	/*
  	 *	First save the CR then disable the interrupts
-@@ -2360,7 +2360,7 @@
+@@ -2360,7 +2360,7 @@ pl011_console_write(struct console *co,
  		pl011_write(old_cr, uap, REG_CR);
  
  	if (locked)

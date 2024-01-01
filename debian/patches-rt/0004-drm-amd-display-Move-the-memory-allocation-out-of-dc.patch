@@ -2,7 +2,7 @@ From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu, 21 Sep 2023 16:15:15 +0200
 Subject: [PATCH 4/5] drm/amd/display: Move the memory allocation out of
  dcn21_validate_bandwidth_fp().
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6.7-rt18.tar.xz
 
 dcn21_validate_bandwidth_fp() is invoked while FPU access has been
 enabled. FPU access requires disabling preemption even on PREEMPT_RT.
@@ -43,7 +43,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
 --- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
 +++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-@@ -2216,9 +2216,8 @@ static void dcn21_calculate_wm(struct dc
+@@ -2203,9 +2203,8 @@ static void dcn21_calculate_wm(struct dc
  						&context->bw_ctx.dml, pipes, pipe_cnt);
  }
  
@@ -55,7 +55,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  {
  	bool out = false;
  
-@@ -2227,7 +2226,6 @@ bool dcn21_validate_bandwidth_fp(struct
+@@ -2214,7 +2213,6 @@ bool dcn21_validate_bandwidth_fp(struct
  	int vlevel = 0;
  	int pipe_split_from[MAX_PIPES];
  	int pipe_cnt = 0;
@@ -63,7 +63,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  	DC_LOGGER_INIT(dc->ctx->logger);
  
  	BW_VAL_TRACE_COUNT();
-@@ -2267,7 +2265,6 @@ bool dcn21_validate_bandwidth_fp(struct
+@@ -2254,7 +2252,6 @@ bool dcn21_validate_bandwidth_fp(struct
  	out = false;
  
  validate_out:

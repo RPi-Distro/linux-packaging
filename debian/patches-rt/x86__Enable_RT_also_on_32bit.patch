@@ -1,7 +1,7 @@
 Subject: x86: Enable RT also on 32bit
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Date: Thu Nov  7 17:49:20 2019 +0100
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6.7-rt18.tar.xz
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 

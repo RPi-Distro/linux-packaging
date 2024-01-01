@@ -162,6 +162,7 @@ linux (6.6.9-1) UNRELEASED; urgency=medium
     This is a breach of the integrity lockdown requirement of secure boot
     and thus cannot be enabled.
     Thanks to Bastian Blank and Ben Hutchings
+  * [rt] Update to 6.6.7-rt18
 
   [ Bastian Blank ]
   * [mips*] Increase RELOCATION_TABLE_SIZE to 0x200000. (closes: #1059431)

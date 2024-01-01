@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Fri, 8 Sep 2023 18:22:50 +0200
 Subject: [PATCH 3/7] sched: Extract __schedule_loop()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6.7-rt18.tar.xz
 
 There are currently two implementations of this basic __schedule()
 loop, and there is soon to be a third.
@@ -16,7 +16,7 @@ Link: https://lkml.kernel.org/r/20230908162254.999499-4-bigeasy@linutronix.de
 
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -6770,16 +6770,21 @@ static void sched_update_worker(struct t
+@@ -6771,16 +6771,21 @@ static void sched_update_worker(struct t
  	}
  }
  
@@ -43,7 +43,7 @@ Link: https://lkml.kernel.org/r/20230908162254.999499-4-bigeasy@linutronix.de
  	sched_update_worker(tsk);
  }
  EXPORT_SYMBOL(schedule);
-@@ -6843,11 +6848,7 @@ void __sched schedule_preempt_disabled(v
+@@ -6844,11 +6849,7 @@ void __sched schedule_preempt_disabled(v
  #ifdef CONFIG_PREEMPT_RT
  void __sched notrace schedule_rtlock(void)
  {

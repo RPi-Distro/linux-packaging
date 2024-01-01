@@ -1,7 +1,7 @@
 From: Thomas Gleixner <tglx@linutronix.de>
 Date: Sat, 23 Sep 2023 03:11:05 +0200
 Subject: [PATCH] sched: define TIF_ALLOW_RESCHED
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6.7-rt18.tar.xz
 
 On Fri, Sep 22 2023 at 00:55, Thomas Gleixner wrote:
 > On Thu, Sep 21 2023 at 09:00, Linus Torvalds wrote:
@@ -621,7 +621,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  static void update_curr_fair(struct rq *rq)
  {
  	update_curr(cfs_rq_of(&rq->curr->se));
-@@ -5309,7 +5325,7 @@ entity_tick(struct cfs_rq *cfs_rq, struc
+@@ -5398,7 +5414,7 @@ entity_tick(struct cfs_rq *cfs_rq, struc
  	/*
  	 * Update run-time statistics of the 'current'.
  	 */
@@ -630,7 +630,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  
  	/*
  	 * Ensure that runnable average is periodically updated.
-@@ -5323,7 +5339,7 @@ entity_tick(struct cfs_rq *cfs_rq, struc
+@@ -5412,7 +5428,7 @@ entity_tick(struct cfs_rq *cfs_rq, struc
  	 * validating it and just reschedule.
  	 */
  	if (queued) {
@@ -639,7 +639,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		return;
  	}
  	/*
-@@ -5469,7 +5485,7 @@ static void __account_cfs_rq_runtime(str
+@@ -5558,7 +5574,7 @@ static void __account_cfs_rq_runtime(str
  	 * hierarchy can be throttled
  	 */
  	if (!assign_cfs_rq_runtime(cfs_rq) && likely(cfs_rq->curr))
@@ -648,7 +648,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  static __always_inline
-@@ -5729,7 +5745,7 @@ void unthrottle_cfs_rq(struct cfs_rq *cf
+@@ -5818,7 +5834,7 @@ void unthrottle_cfs_rq(struct cfs_rq *cf
  
  	/* Determine whether we need to wake up potentially idle CPU: */
  	if (rq->curr == rq->idle && rq->cfs.nr_running)
@@ -657,7 +657,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  #ifdef CONFIG_SMP
-@@ -6434,7 +6450,7 @@ static void hrtick_start_fair(struct rq
+@@ -6523,7 +6539,7 @@ static void hrtick_start_fair(struct rq
  
  		if (delta < 0) {
  			if (task_current(rq, p))
@@ -666,7 +666,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  			return;
  		}
  		hrtick_start(rq, delta);
-@@ -8087,7 +8103,7 @@ static void check_preempt_wakeup(struct
+@@ -8175,7 +8191,7 @@ static void check_preempt_wakeup(struct
  	 * prevents us from potentially nominating it as a false LAST_BUDDY
  	 * below.
  	 */
@@ -675,7 +675,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  		return;
  
  	/* Idle tasks are by definition preempted by non-idle tasks. */
-@@ -8129,7 +8145,7 @@ static void check_preempt_wakeup(struct
+@@ -8217,7 +8233,7 @@ static void check_preempt_wakeup(struct
  	return;
  
  preempt:
@@ -684,7 +684,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  #ifdef CONFIG_SMP
-@@ -12280,7 +12296,7 @@ static inline void task_tick_core(struct
+@@ -12374,7 +12390,7 @@ static inline void task_tick_core(struct
  	 */
  	if (rq->core->core_forceidle_count && rq->cfs.nr_running == 1 &&
  	    __entity_slice_used(&curr->se, MIN_NR_TASKS_DURING_FORCEIDLE))
@@ -693,7 +693,7 @@ Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
  }
  
  /*
-@@ -12445,7 +12461,7 @@ prio_changed_fair(struct rq *rq, struct
+@@ -12539,7 +12555,7 @@ prio_changed_fair(struct rq *rq, struct
  	 */
  	if (task_current(rq, p)) {
  		if (p->prio > oldprio)

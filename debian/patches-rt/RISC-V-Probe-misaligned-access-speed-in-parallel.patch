@@ -1,7 +1,7 @@
 From: Evan Green <evan@rivosinc.com>
 Date: Mon, 6 Nov 2023 14:58:55 -0800
 Subject: [PATCH] RISC-V: Probe misaligned access speed in parallel
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6.7-rt18.tar.xz
 
 Probing for misaligned access speed takes about 0.06 seconds. On a
 system with 64 cores, doing this in smp_callin() means it's done

@@ -1,7 +1,7 @@
 From: Peter Zijlstra <peterz@infradead.org>
 Date: Fri, 8 Sep 2023 18:22:51 +0200
 Subject: [PATCH 4/7] sched: Provide rt_mutex specific scheduler helpers
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6.7-rt18.tar.xz
 
 With PREEMPT_RT there is a rt_mutex recursion problem where
 sched_submit_work() can use an rtlock (aka spinlock_t). More
@@ -69,7 +69,7 @@ Link: https://lkml.kernel.org/r/20230908162254.999499-5-bigeasy@linutronix.de
   */
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -6723,9 +6723,6 @@ static inline void sched_submit_work(str
+@@ -6724,9 +6724,6 @@ static inline void sched_submit_work(str
  	static DEFINE_WAIT_OVERRIDE_MAP(sched_map, LD_WAIT_CONFIG);
  	unsigned int task_flags;
  
@@ -79,7 +79,7 @@ Link: https://lkml.kernel.org/r/20230908162254.999499-5-bigeasy@linutronix.de
  	/*
  	 * Establish LD_WAIT_CONFIG context to ensure none of the code called
  	 * will use a blocking primitive -- which would lead to recursion.
-@@ -6783,7 +6780,12 @@ asmlinkage __visible void __sched schedu
+@@ -6784,7 +6781,12 @@ asmlinkage __visible void __sched schedu
  {
  	struct task_struct *tsk = current;
  
@@ -93,7 +93,7 @@ Link: https://lkml.kernel.org/r/20230908162254.999499-5-bigeasy@linutronix.de
  	__schedule_loop(SM_NONE);
  	sched_update_worker(tsk);
  }
-@@ -7044,6 +7046,32 @@ static void __setscheduler_prio(struct t
+@@ -7045,6 +7047,32 @@ static void __setscheduler_prio(struct t
  
  #ifdef CONFIG_RT_MUTEXES
  

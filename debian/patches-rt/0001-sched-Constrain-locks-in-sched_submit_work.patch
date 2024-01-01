@@ -1,7 +1,7 @@
 From: Peter Zijlstra <peterz@infradead.org>
 Date: Fri, 8 Sep 2023 18:22:48 +0200
 Subject: [PATCH 1/7] sched: Constrain locks in sched_submit_work()
-Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6-rt15.tar.xz
+Origin: https://www.kernel.org/pub/linux/kernel/projects/rt/6.6/older/patches-6.6.7-rt18.tar.xz
 
 Even though sched_submit_work() is ran from preemptible context,
 it is discouraged to have it use blocking locks due to the recursion
@@ -19,7 +19,7 @@ Link: https://lkml.kernel.org/r/20230908162254.999499-2-bigeasy@linutronix.de
 
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -6720,11 +6720,18 @@ void __noreturn do_task_dead(void)
+@@ -6721,11 +6721,18 @@ void __noreturn do_task_dead(void)
  
  static inline void sched_submit_work(struct task_struct *tsk)
  {
@@ -38,7 +38,7 @@ Link: https://lkml.kernel.org/r/20230908162254.999499-2-bigeasy@linutronix.de
  	task_flags = tsk->flags;
  	/*
  	 * If a worker goes to sleep, notify and ask workqueue whether it
-@@ -6749,6 +6756,8 @@ static inline void sched_submit_work(str
+@@ -6750,6 +6757,8 @@ static inline void sched_submit_work(str
  	 * make sure to submit it to avoid deadlocks.
  	 */
  	blk_flush_plug(tsk->plug, true);
