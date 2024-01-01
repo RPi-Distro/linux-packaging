@@ -1,11 +1,15 @@
 linux (6.6.8-2) UNRELEASED; urgency=medium
 
+  [ Salvatore Bonaccorso ]
   * [arm64] drivers/vfio: Don't enable VFIO_NOIOMMU.
     This is a breach of the integrity lockdown requirement of secure boot
     and thus cannot be enabled.
     Thanks to Bastian Blank and Ben Hutchings
   * Revert "scsi: aacraid: Reply queue mapping to CPUs based on IRQ affinity"
     (Closes: #1059624)
+
+  [ Bastian Blank ]
+  * [mips*] Increase RELOCATION_TABLE_SIZE to 0x200000. (closes: #1059431)
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 28 Dec 2023 16:58:16 +0100
 
