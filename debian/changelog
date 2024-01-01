@@ -1,4 +1,4 @@
-linux (6.6.9-1) UNRELEASED; urgency=medium
+linux (6.6.9-1) unstable; urgency=medium
 
   * New upstream stable update:
     https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.6.9
@@ -167,7 +167,7 @@ linux (6.6.9-1) UNRELEASED; urgency=medium
   [ Bastian Blank ]
   * [mips*] Increase RELOCATION_TABLE_SIZE to 0x200000. (closes: #1059431)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 28 Dec 2023 16:58:16 +0100
+ -- Bastian Blank <waldi@debian.org>  Mon, 01 Jan 2024 18:22:27 +0100
 
 linux (6.6.8-1) unstable; urgency=medium
 
