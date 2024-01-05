@@ -1,3 +1,60 @@
+linux (6.6.10-1) UNRELEASED; urgency=medium
+
+  * New upstream stable update:
+    https://www.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.6.10
+    - ksmbd: Remove unused field in ksmbd_user struct
+    - ksmbd: reorganize ksmbd_iov_pin_rsp()
+    - ksmbd: fix kernel-doc comment of ksmbd_vfs_setxattr()
+    - ksmbd: fix missing RDMA-capable flag for IPoIB device in
+      ksmbd_rdma_capable_netdev()
+    - ksmbd: add support for surrogate pair conversion
+    - ksmbd: no need to wait for binded connection termination at logoff
+    - ksmbd: fix kernel-doc comment of ksmbd_vfs_kern_path_locked()
+    - ksmbd: prevent memory leak on error return
+    - ksmbd: separately allocate ci per dentry
+    - ksmbd: move oplock handling after unlock parent dir
+    - ksmbd: release interim response after sending status pending response
+    - ksmbd: move setting SMB2_FLAGS_ASYNC_COMMAND and AsyncId
+    - ksmbd: don't update ->op_state as OPLOCK_STATE_NONE on error
+    - ksmbd: set epoch in create context v2 lease
+    - ksmbd: set v2 lease capability
+    - ksmbd: downgrade RWH lease caching state to RH for directory
+    - ksmbd: send v2 lease break notification for directory
+    - ksmbd: lazy v2 lease break on smb2_write()
+    - ksmbd: avoid duplicate opinfo_put() call on error of
+      smb21_lease_break_ack()
+    - fs: new accessor methods for atime and mtime
+    - client: convert to new timestamp accessors
+    - fs: cifs: Fix atime update check
+    - virtio_ring: fix syncs DMA memory with different direction
+    - kexec: fix KEXEC_FILE dependencies
+    - kexec: select CRYPTO from KEXEC_FILE instead of depending on it
+    - linux/export: Fix alignment for 64-bit ksymtab entries
+    - linux/export: Ensure natural alignment of kcrctab array
+    - mptcp: refactor sndbuf auto-tuning
+    - mptcp: fix possible NULL pointer dereference on close
+    - mptcp: fix inconsistent state on fastopen race
+    - block: renumber QUEUE_FLAG_HW_WC
+    - [x86] platform/x86/intel/pmc: Add suspend callback
+    - [x86] platform/x86/intel/pmc: Allow reenabling LTRs
+    - [x86] platform/x86/intel/pmc: Move GBE LTR ignore to suspend callback
+    - ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
+    - maple_tree: do not preallocate nodes for slot stores
+    - mm/filemap: avoid buffered read/write race to read inconsistent data
+    - mm: migrate high-order folios in swap cache correctly
+    - mm/memory-failure: cast index to loff_t before shifting it
+    - mm/memory-failure: check the mapcount of the precise page
+    - Revert "nvme-fc: fix race between error recovery and creating association"
+    - ring-buffer: Fix wake ups when buffer_percent is set to 100
+    - ftrace: Fix modification of direct_function hash while in use
+    - tracing: Fix blocked reader of snapshot buffer
+    - wifi: cfg80211: fix CQM for non-range use
+    - wifi: nl80211: fix deadlock in nl80211_set_cqm_rssi (6.6.x)
+    - netfilter: nf_tables: skip set commit for deleted/destroyed sets
+      (CVE-2024-0193)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 05 Jan 2024 15:58:35 +0100
+
 linux (6.6.9-1) unstable; urgency=medium
 
   * New upstream stable update:
