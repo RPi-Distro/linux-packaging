@@ -53,6 +53,9 @@ linux (6.6.10-1) UNRELEASED; urgency=medium
     - netfilter: nf_tables: skip set commit for deleted/destroyed sets
       (CVE-2024-0193)
 
+  [ Salvatore Bonaccorso ]
+  * wifi: iwlwifi: pcie: don't synchronize IRQs from IRQ (Closes: #1058887)
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 05 Jan 2024 15:58:35 +0100
 
 linux (6.6.9-1) unstable; urgency=medium
