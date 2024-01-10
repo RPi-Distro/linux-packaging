@@ -247,7 +247,7 @@ POWERPC__Allow_to_enable_RT.patch
 ###########################################################################
 # RISC-V
 ###########################################################################
-RISC-V-Probe-misaligned-access-speed-in-parallel.patch
+#RISC-V-Probe-misaligned-access-speed-in-parallel.patch
 riscv-add-PREEMPT_AUTO-support.patch
 riscv-allow-to-enable-RT.patch
 

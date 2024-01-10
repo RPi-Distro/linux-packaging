@@ -162,6 +162,9 @@ linux (6.6.11-1) UNRELEASED; urgency=medium
     - cxl/hdm: Fix a benign lockdep splat
     - cxl/memdev: Hold region_rwsem during inject and clear poison ops
 
+  [ Salvatore Bonaccorso ]
+  * [rt] Disable "RISC-V: Probe misaligned access speed in parallel"
+
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 05 Jan 2024 15:58:35 +0100
 
 linux (6.6.9-1) unstable; urgency=medium
