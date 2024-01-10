@@ -1835,6 +1835,15 @@ CONFIG_USB_ATM=m
 CONFIG_USB_SPEEDTOUCH=m
 
 ##
+## file: drivers/usb/dwc3/Kconfig
+##
+CONFIG_USB_DWC3=m
+CONFIG_USB_DWC3_ULPI=y
+## choice: DWC3 Mode Selection
+CONFIG_USB_DWC3_DUAL_ROLE=y
+## end choice
+
+##
 ## file: drivers/usb/gadget/Kconfig
 ##
 CONFIG_USB_GADGET=m
