@@ -164,6 +164,10 @@ linux (6.6.11-1) UNRELEASED; urgency=medium
 
   [ Salvatore Bonaccorso ]
   * [rt] Disable "RISC-V: Probe misaligned access speed in parallel"
+  * [x86] Enable DesignWare USB3 DRD Core Support (Closes: #1059607)
+    - drivers/usb/dwc3: Enable USB_DWC3 as module
+    - drivers/usb/dwc3: Enable USB_DWC3_ULPI
+    - drivers/usb/dwc3: Enable USB_DWC3_DUAL_ROLE
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 05 Jan 2024 15:58:35 +0100
 
