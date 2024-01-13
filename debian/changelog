@@ -168,6 +168,7 @@ linux (6.6.11-1) UNRELEASED; urgency=medium
     - drivers/usb/dwc3: Enable USB_DWC3 as module
     - drivers/usb/dwc3: Enable USB_DWC3_ULPI
     - drivers/usb/dwc3: Enable USB_DWC3_DUAL_ROLE
+  * nfsd: drop the nfsd_put helper
 
  -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 05 Jan 2024 15:58:35 +0100
 
