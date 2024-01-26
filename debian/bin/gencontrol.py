@@ -638,7 +638,7 @@ linux-signed-{vars['arch']} (@signedtemplate_sourceversion@) {dist}; urgency={ur
         elif version.linux_revision_backports:
             self.abiname = f'{version.linux_upstream_full}+bpo'
         else:
-            self.abiname = f'{version.linux_upstream_full}'
+            self.abiname = f'{version.linux_upstream_full}+rpt'
 
         self.vars = {
             'upstreamversion': self.version.linux_upstream,
