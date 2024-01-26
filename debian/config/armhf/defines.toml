@@ -14,8 +14,24 @@ name = "armmp-lpae"
 hardware = 'ARMv7 multiplatform compatible SoCs supporting LPAE'
 hardware_long = 'ARMv7 multiplatform kernel supporting LPAE. See https://wiki.debian.org/DebianKernel/ARMMP for details of supported platforms.'
 
+[[flavour]]
+name = "v6"
+[flavour.description]
+hardware = 'Raspberry Pi v6'
+hardware_long = 'Raspberry Pi v6 kernel'
+
+[[flavour]]
+name = "v7"
+[flavour.description]
+hardware = 'Raspberry Pi v7'
+hardware_long = 'Raspberry Pi v7 kernel'
+
 [[featureset]]
-name = 'none'
+name = 'rpi'
+[[featureset.flavour]]
+name = 'v6'
+[[featureset.flavour]]
+name = 'v7'
 
 [build]
 enable_dtb = true

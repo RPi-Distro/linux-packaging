@@ -23,12 +23,31 @@ config = ['arm64/config-page-16k']
 hardware = '64-bit ARMv8 machines with 16k pages'
 
 [[flavour]]
-name = 'rt-arm64'
-[flavour.build]
-config = ['config.rt']
+name = 'v8'
 [flavour.description]
-hardware = '64-bit ARMv8 machines'
-parts = ['rt']
+hardware = 'Raspberry Pi v8'
+hardware_long = 'Raspberry Pi v8 kernel'
+
+[[flavour]]
+name = 'v8-rt'
+[flavour.description]
+hardware = 'Raspberry Pi v8'
+hardware_long = 'Raspberry Pi v8-rt kernel'
+
+[[flavour]]
+name = '2712'
+[flavour.description]
+hardware = 'Raspberry Pi 2712'
+hardware_long = 'Raspberry Pi 2712 kernel'
+
+[[featureset]]
+name = 'rpi'
+[[featureset.flavour]]
+name = 'v8'
+[[featureset.flavour]]
+name = 'v8-rt'
+[[featureset.flavour]]
+name = '2712'
 
 [[flavour]]
 name = 'test'
@@ -38,9 +57,6 @@ config = ['config.test', 'arm64/config.test']
 is_test = true
 [flavour.packages]
 installer = true
-
-[[featureset]]
-name = 'none'
 
 [build]
 compiler_gnutype_compat = 'arm-linux-gnueabihf'

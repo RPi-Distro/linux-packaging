@@ -9,7 +9,14 @@ name = 'arm64'
   name = 'arm64'
 
 [[featureset]]
-name = 'none'
+name = 'rpi'
+enable = true
+  [featureset.description]
+  parts = ['rpi']
+  [featureset.description.long]
+  rpi = 'This kernel includes the patches for Raspberry Pi platforms.'
+  [featureset.description.short]
+  rpi = 'Raspberry Pi'
 
 [[debianrelease]]
 name_regex = 'UNRELEASED'
@@ -49,11 +56,6 @@ revision_regex = '\d+(\.\d+)?(\+deb13u\d+)?~bpo12\+\d+'
 # Use default rules for any suite with no explicit config
 [[debianrelease]]
 name_regex = '.*'
-
-[description.long]
-rt = 'This kernel is configured with PREEMPT_RT real time support.'
-[description.short]
-rt = 'PREEMPT_RT'
 
 [build]
 c_compiler = 'gcc-14'
