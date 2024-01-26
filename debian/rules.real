@@ -580,7 +580,8 @@ binary_bpftool: BPFTOOL_VERSION_MAJOR = $(shell sed -ne 's,^#define LIBBPF_MAJOR
 binary_bpftool: BPFTOOL_VERSION_MINOR = $(shell sed -ne 's,^#define LIBBPF_MINOR_VERSION \(.*\)$$,\1,p' tools/lib/bpf/libbpf_version.h)
 binary_bpftool: BPFTOOL_VERSION_PATCH = $(shell sed -ne 's,^#define BPFTOOL_PATCH_VERSION \(.*\)$$,\1,p' tools/bpf/bpftool/main.c)
 binary_bpftool: BPFTOOL_VERSION = $(shell expr $(BPFTOOL_VERSION_MAJOR) + 6).$(BPFTOOL_VERSION_MINOR).$(BPFTOOL_VERSION_PATCH)
-binary_bpftool: GENCONTROL_ARGS = -v$(BPFTOOL_VERSION)+$(DEB_VERSION)
+binary_bpftool: DEB_EPOCH = $(shell echo $(DEB_VERSION) | sed -n -e 's/^\([0-9]*:\).*/\1/p')
+binary_bpftool: GENCONTROL_ARGS = -v$(DEB_EPOCH)$(BPFTOOL_VERSION)+$(DEB_VERSION_UPSTREAM_REVISION)
 binary_bpftool: build_bpftool
 	$(dh_binary_pre)
 	$(call make-tools,tools/bpf/bpftool) install
@@ -645,7 +646,8 @@ build_usbip: $(STAMPS_DIR)/build-tools-headers
 binary_usbip: DIR = $(CURDIR)/debian/usbip-tmp
 binary_usbip: DH_INSTALL_ARGS = --sourcedir=$(DIR)
 binary_usbip: USBIP_VERSION = $(shell sed -Ene 's/^AC_INIT\(\[\S+\],\s*\[(\S+)\].*\)$$/\1/p' tools/usb/usbip/configure.ac)
-binary_usbip: GENCONTROL_ARGS = -v$(USBIP_VERSION)+$(DEB_VERSION)
+binary_usbip: DEB_EPOCH = $(shell echo $(DEB_VERSION) | sed -n -e 's/^\([0-9]*:\).*/\1/p')
+binary_usbip: GENCONTROL_ARGS = -v$(DEB_EPOCH)$(USBIP_VERSION)+$(DEB_VERSION_UPSTREAM_REVISION)
 binary_usbip: build_usbip
 	$(dh_binary_pre)
 	$(call make-tools,tools/usb/usbip) install DESTDIR=$(DIR)
