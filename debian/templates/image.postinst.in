@@ -1,5 +1,16 @@
 #!/bin/sh -e
 
+skip_initramfs_gen ()
+(
+    if [ -r /etc/default/raspi-firmware ]; then
+        . /etc/default/raspi-firmware
+    fi
+    if [ "$(echo "$SKIP_INITRAMFS_GEN" | tr '[:upper:]' '[:lower:]' | sed 's/true\|1/yes/')" = 'yes' ]; then
+        return 0
+    fi
+    return 1
+)
+
 version=@abiname@@localversion@
 image_path=/boot/@image-stem@-$version
 
@@ -18,6 +29,9 @@ linux-update-symlinks $change $version $image_path
 rm -f /lib/modules/$version/.fresh-install
 
 if [ -d /etc/kernel/postinst.d ]; then
+    if skip_initramfs_gen; then
+        export INITRD=No
+    fi
     DEB_MAINT_PARAMS="$*" run-parts --report --exit-on-error --arg=$version \
 	      --arg=$image_path /etc/kernel/postinst.d
 fi
