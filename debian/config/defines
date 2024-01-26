@@ -1,27 +1,7 @@
 [base]
 arches:
- alpha
- amd64
  arm64
- armel
  armhf
- hppa
- i386
- ia64
- m68k
- mips
- mips64
- mips64el
- mips64r6el
- mipsel
- powerpc
- ppc64
- ppc64el
- riscv64
- s390x
- sh4
- sparc64
- x32
 compiler: gcc-13
 featuresets:
  rpi
