@@ -227,6 +227,7 @@ endif
 ifeq ($(ENABLE_DTB),True)
 	+$(MAKE_CLEAN) -C $(DIR) dtbs
 	+$(MAKE_CLEAN) -C $(DIR) dtbs_install INSTALL_DTBS_PATH='$(CURDIR)/$(OUTPUT_DIR)/lib/modules/$(REAL_VERSION)/dtb'
+	+install $(BUILD_DIR)/source_$(FEATURESET)/arch/arm/boot/dts/overlays/README $(CURDIR)/$(OUTPUT_DIR)/lib/modules/$(REAL_VERSION)/dtb/overlays/
 endif
 
 	rm -f $(OUTPUT_DIR)/lib/modules/$(REAL_VERSION)/build
