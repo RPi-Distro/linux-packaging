@@ -6,7 +6,7 @@ featuresets:
  rpi
 
 [build]
-image-file: arch/arm64/boot/Image
+image-file: arch/arm64/boot/Image.gz
 signed-code: false
 vdso: true
 
