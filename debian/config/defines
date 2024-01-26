@@ -24,8 +24,7 @@ arches:
  x32
 compiler: gcc-13
 featuresets:
- none
- rt
+ rpi
 
 [build]
 # Disable code signing by default; this can be overridden per-architecture

@@ -1,7 +1,6 @@
 [base]
 featuresets:
- none
- rt
+ rpi
 kernel-arch: arm
 
 [build]
@@ -22,3 +21,15 @@ hardware: ARMv7 multiplatform compatible SoCs supporting LPAE
 hardware-long: ARMv7 multiplatform kernel supporting LPAE. See
   https://wiki.debian.org/DebianKernel/ARMMP for details of supported
   platforms.
+
+[v6_description]
+hardware: Raspberry Pi v6
+hardware-long: Raspberry Pi v6 kernel
+
+[v7_description]
+hardware: Raspberry Pi v7
+hardware-long: Raspberry Pi v7 kernel
+
+[v7l_description]
+hardware: Raspberry Pi v7l
+hardware-long: Raspberry Pi v7l kernel

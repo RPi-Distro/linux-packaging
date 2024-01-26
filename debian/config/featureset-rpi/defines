@@ -1,0 +1,4 @@
+[description]
+part-long-rpi: This kernel includes the patches for Raspberry Pi platforms.
+part-short-rpi: Raspberry Pi
+parts: rpi

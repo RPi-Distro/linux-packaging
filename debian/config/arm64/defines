@@ -3,8 +3,7 @@ compat-deb-arch: armhf
 compat-gnu-type: arm-linux-gnueabihf
 kernel-arch: arm64
 featuresets:
- none
- rt
+ rpi
 
 [build]
 image-file: arch/arm64/boot/Image
@@ -22,3 +21,11 @@ hardware: arm64 cloud
 hardware-long: cloud platforms supporting arm64 virtual machines
 
 [arm64_image]
+
+[v8_description]
+hardware: Raspberry Pi v8
+hardware-long: Raspberry Pi v8 kernel
+
+[2712_description]
+hardware: Raspberry Pi 2712
+hardware-long: Raspberry Pi 2712 kernel
