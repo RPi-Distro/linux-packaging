@@ -45,8 +45,7 @@ revision_regex = '\d+(\.\d+)?(\+deb14u\d+)?~bpo13\+\d+'
 
 [[debianrelease]]
 name_regex = 'trixie(-security)?'
-abi_suffix = '+deb13'
-revision_regex = '\d+(\.\d+)?(\+deb13u\d+)?'
+abi_suffix = '+rpt'
 
 [[debianrelease]]
 name_regex = 'bookworm-backports'
