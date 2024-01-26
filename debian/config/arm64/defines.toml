@@ -24,14 +24,24 @@ config = ['arm64/config-page-16k']
 [flavour.description]
 hardware = '64-bit ARMv8 machines with 16k pages'
 
-[[featureset]]
-name = 'none'
+[[flavour]]
+name = 'v8'
+[flavour.description]
+hardware = 'Raspberry Pi v8'
+hardware_long = 'Raspberry Pi v8 kernel'
+
+[[flavour]]
+name = '2712'
+[flavour.description]
+hardware = 'Raspberry Pi 2712'
+hardware_long = 'Raspberry Pi 2712 kernel'
 
 [[featureset]]
-name = 'rt'
-# Override available flavours in rt featureset
+name = 'rpi'
 [[featureset.flavour]]
-name = 'arm64'
+name = 'v8'
+[[featureset.flavour]]
+name = '2712'
 
 [build]
 compiler_gnutype_compat = 'arm-linux-gnueabihf'
