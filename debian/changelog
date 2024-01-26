@@ -1,3 +1,22 @@
+linux (1:6.6.20-1+rpt1) bookworm; urgency=medium
+
+  * Raspberry Pi OS release
+  * Remove unecessary patches
+  * Add rpi featureset
+  * Import Raspberry Pi defconfigs
+  * Allow initramfs generation to be skipped in postinst
+  * Move initramfs-tools to recommends
+  * Install overlays README
+  * Don't sign arm64 kernels
+  * Compress arm64 kernel
+  * Disable unecessary architectures
+  * Use GCC 12
+  * Add +rpt to abiname
+  * Add epoch support in version string
+  * Linux commit: 6f16847710cc0502450788b9f12f0a14d3429668
+
+ -- Serge Schneider <serge@raspberrypi.com>  Thu, 07 Mar 2024 14:51:31 +0000
+
 linux (6.6.13-1) unstable; urgency=medium
 
   * New upstream stable update:
