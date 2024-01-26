@@ -2,7 +2,7 @@
 arches:
  arm64
  armhf
-compiler: gcc-13
+compiler: gcc-12
 featuresets:
  rpi
 
