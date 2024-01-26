@@ -9,17 +9,14 @@ name = 'arm64'
   name = 'arm64'
 
 [[featureset]]
-name = 'none'
-
-[[featureset]]
-name = 'rt'
+name = 'rpi'
 enable = true
   [featureset.description]
-  parts = ['rt']
+  parts = ['rpi']
   [featureset.description.long]
-  rt = 'This kernel includes the PREEMPT_RT realtime patch set.'
+  rpi = 'This kernel includes the patches for Raspberry Pi platforms.'
   [featureset.description.short]
-  rt = 'PREEMPT_RT'
+  rpi = 'Raspberry Pi'
 
 [build]
 compiler = 'gcc-12'

@@ -62,3 +62,6 @@ bugfix/all/kbuild-bpf-fix-btf-reproducibility.patch
 # debian-installer fixes
 
 # ABI maintenance
+
+# Raspberry Pi
+rpi/rpi.patch
