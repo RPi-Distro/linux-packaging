@@ -190,6 +190,7 @@ endif
 ifneq ($(filter arm64 armel armhf mipsel mips64el mipsr6 mipsr6el mips64r6 mips64r6el riscv64,$(ARCH)),)
 	+$(MAKE_CLEAN) -C $(DIR) dtbs
 	+$(MAKE_CLEAN) -C $(DIR) dtbs_install INSTALL_DTBS_PATH='$(CURDIR)/$(DT_INSTALL_DIR)'
+	install $(BUILD_DIR)/source_$(FEATURESET)/arch/arm/boot/dts/overlays/README $(DT_INSTALL_DIR)/overlays/
 	# dtbs_install sets the executable bit on dtb[o] files, which they shouldn't have
 	find $(DT_INSTALL_DIR) -type f \( -name '*.dtb' -o -name '*.dtbo' \) -exec chmod 644 {} \;
 endif
