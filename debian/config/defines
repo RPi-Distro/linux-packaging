@@ -18,6 +18,6 @@ part-long-up: This kernel is not suitable for SMP (multi-processor,
  multi-core or hyper-threaded) systems.
 
 [image]
-depends:
+depends: initramfs-tools (>= 0.120+deb8u2) | linux-initramfs-tool
 breaks: fwupdate (<< 12-7), wireless-regdb (<< 2019.06.03-1~)
-recommends: apparmor, initramfs-tools (>= 0.120+deb8u2) | linux-initramfs-tool
+recommends: apparmor
