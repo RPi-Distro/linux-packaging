@@ -1,3 +1,15 @@
+linux (1:6.6.28-1+rpt1) bookworm; urgency=medium
+
+  * Raspberry Pi OS release
+  * debian/patches: Remove debian/module-avoid-abi-changes-when-debug-info-is-disabled.patch
+  * Revert "Move initramfs-tools to recommends"
+  * Update Raspberry Pi featureset patch
+  * Update debian/config
+  * d/rules.d/scripts/mod: Add symsearch to Makefile.real
+  * Linux commit: 0c341f47adc3578cd5f817aa20ee2b7f9ae6b23e
+
+ -- Serge Schneider <serge@raspberrypi.com>  Mon, 22 Apr 2024 14:49:56 +0100
+
 linux (1:6.6.20-1+rpt1) bookworm; urgency=medium
 
   * Raspberry Pi OS release
