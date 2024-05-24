@@ -1,0 +1,81 @@
+#!/bin/bash -e
+
+defconfigs=(
+  arch/arm/configs/bcmrpi_defconfig
+  arch/arm/configs/bcm2709_defconfig
+  arch/arm/configs/bcm2711_defconfig
+  arch/arm64/configs/bcm2711_defconfig
+  arch/arm64/configs/bcm2712_defconfig
+)
+
+find_common () {
+  if [ ${#} -gt 0 ]; then
+    sort -u "$1" > "$1.sorted"
+    file1="$1.sorted"
+    shift
+  fi
+
+  if ! [ -t 0 ]; then
+    file2='-'
+  elif [ ${#} -gt 0 ]; then
+    sort -u "$1" > "$1.sorted"
+    file2="$1.sorted"
+    shift
+  fi
+
+  comm -12 "$file1" "$file2" | if [ ${#} -gt 0 ]; then
+    find_common ${@}
+  else
+    cat
+  fi
+  rm "$file1"
+  [ -e "$file2" ] && rm "$file2" ||:
+}
+
+for defconfig in "${defconfigs[@]}"; do
+  if [[ $defconfig == arch/arm/* ]]; then
+    defconfigs_armhf+=("$defconfig")
+  else
+    defconfigs_arm64+=("$defconfig")
+  fi
+done
+
+find debian/config/{kernelarch-arm,armhf,arm64} -maxdepth 1 -type f -name "config" -exec truncate -s0 {} \;
+
+mkdir -p debian/config/{featureset-rpi,arm{hf,64}/rpi}/
+
+find_common ${defconfigs[@]} > debian/config/featureset-rpi/config
+find_common ${defconfigs_armhf[@]} | comm -13 debian/config/featureset-rpi/config - > debian/config/armhf/rpi/config
+find_common ${defconfigs_arm64[@]} | comm -13 debian/config/featureset-rpi/config - > debian/config/arm64/rpi/config
+
+for defconfig in "${defconfigs[@]}"; do
+  arch=$(echo "$defconfig" | cut -f2 -d/)
+  if [ "$arch" = "arm" ]; then
+    arch=armhf
+  fi
+  case "$(basename "$defconfig" | cut -f1 -d_)" in
+    "bcmrpi")
+      flavour=v6
+      ;;
+    "bcm2709")
+      flavour=v7
+      ;;
+    "bcm2711")
+      if [ "$arch" = "armhf" ]; then
+        flavour=v7l
+      else
+        flavour=v8
+      fi
+      ;;
+    "bcm2712")
+      flavour=2712
+      ;;
+    *)
+      echo "Unknown defconfig: $defconfig"
+      exit 1
+      ;;
+  esac
+  sort -u debian/config/{featureset-rpi,$arch/rpi}/config \
+    | comm -13 - <(sort -u "$defconfig") \
+    > "debian/config/$arch/rpi/config.$flavour"
+done

@@ -1,0 +1,51 @@
+#!/bin/bash -e
+
+if [ -z "$1" ]; then
+  GIT_HASH="$(curl -Ss https://raw.githubusercontent.com/raspberrypi/firmware/stable/extra/git_hash)"
+else
+  GIT_HASH="$(git rev-parse "$1")"
+fi
+
+KVER=$(
+  MAKEFILE_HEAD=$(git show "${GIT_HASH}:Makefile" | head)
+  VERSION=$(echo "$MAKEFILE_HEAD" | sed -n 's/^VERSION = \(.*\)$/\1/p')
+  PATCHLEVEL=$(echo "$MAKEFILE_HEAD" | sed -n 's/^PATCHLEVEL = \(.*\)$/\1/p')
+  SUBLEVEL=$(echo "$MAKEFILE_HEAD" | sed -n 's/^SUBLEVEL = \(.*\)$/\1/p')
+  echo "$VERSION.$PATCHLEVEL.$SUBLEVEL"
+)
+
+# Get orig tarball
+if ! [ -f "../linux_$KVER.orig.tar.xz" ]; then
+  wget "https://cdn.kernel.org/pub/linux/kernel/v$(echo "$KVER" | cut -f1 -d.).x/linux-${KVER}.tar.xz" -O "../linux_$KVER.orig.tar.xz"
+fi
+
+dch -v "1:$KVER-1+rptN" -b "Raspberry Pi OS release"
+
+# Generate rpi.patch
+mkdir -p debian/patches-rpi/
+git diff "v$KVER..$GIT_HASH" | grep -v "^index" > debian/patches-rpi/rpi.patch
+
+if [ -n "$(git status --porcelain -- debian/patches-rpi)" ]; then
+  git add debian/patches-rpi -f
+  git commit -m "Update Raspberry Pi featureset patch"
+fi
+
+# Extract upstream source
+origtargz -u
+
+# Update configs
+while read patch; do
+  patch -s -p1 < debian/patches-rpi/"$patch"
+done < debian/patches-rpi/series
+debian/bin/rpi/genconfigs
+while read patch; do
+  patch -s -p1 -R < debian/patches-rpi/"$patch"
+done < <(tac debian/patches-rpi/series)
+
+if [ -n "$(git status --porcelain -- debian/config)" ]; then
+  git add debian/config -f
+  git commit -m "Update debian/config"
+fi
+
+dch "Linux commit: $GIT_HASH"
+gbp dch -R --commit --distribution=bookworm --force-distribution --ignore-branch
