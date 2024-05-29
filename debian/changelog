@@ -1,3 +1,14 @@
+linux (1:6.6.31-1+rpt1) bookworm; urgency=medium
+
+  * Raspberry Pi OS release
+  * d/control: Update Maintainer, Homepage and Vcs information
+  * Add update helper script
+  * Update Raspberry Pi featureset patch
+  * Update debian/config
+  * Linux commit: c1432b4bae5b6582f4d32ba381459f33c34d1424
+
+ -- Serge Schneider <serge@raspberrypi.com>  Wed, 29 May 2024 15:04:19 +0100
+
 linux (1:6.6.28-1+rpt1) bookworm; urgency=medium
 
   * Raspberry Pi OS release
