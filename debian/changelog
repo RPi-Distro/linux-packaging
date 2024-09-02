@@ -1,3 +1,12 @@
+linux (1:6.6.47-1+rpt1) bookworm; urgency=medium
+
+  * Raspberry Pi OS release
+  * Update Raspberry Pi featureset patch
+  * Update debian/config
+  * Linux commit: cf64a1dfecc2dc418efdd61701c1a4b185ab4761
+
+ -- Serge Schneider <serge@raspberrypi.com>  Mon, 02 Sep 2024 12:35:08 +0100
+
 linux (1:6.6.31-1+rpt1) bookworm; urgency=medium
 
   * Raspberry Pi OS release
