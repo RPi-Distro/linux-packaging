@@ -59,3 +59,6 @@ bugfix/all/perf-tools-support-extra-cxxflags.patch
 # debian-installer fixes
 
 # ABI maintenance
+
+# Raspberry Pi
+rpi/rpi.patch

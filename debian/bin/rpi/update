@@ -22,12 +22,12 @@ fi
 dch -v "1:$KVER-1+rptN" -b "Raspberry Pi OS release"
 
 # Generate rpi.patch
-mkdir -p debian/patches-rpi/
-git diff "v$KVER..$GIT_HASH" | grep -v "^index" > debian/patches-rpi/rpi.patch
+mkdir -p debian/patches/rpi/
+git diff "v$KVER..$GIT_HASH" | grep -v "^index" > debian/patches/rpi/rpi.patch
 
-if [ -n "$(git status --porcelain -- debian/patches-rpi)" ]; then
-  git add debian/patches-rpi -f
-  git commit -m "Update Raspberry Pi featureset patch"
+if [ -n "$(git status --porcelain -- debian/patches/rpi)" ]; then
+  git add debian/patches/rpi -f
+  git commit -m "Update Raspberry Pi patch"
 fi
 
 # Extract upstream source
@@ -35,12 +35,12 @@ origtargz -u
 
 # Update configs
 while read patch; do
-  patch -s -p1 < debian/patches-rpi/"$patch"
-done < debian/patches-rpi/series
+  patch -s -p1 < debian/patches/"$patch"
+done < <(quilt series)
 debian/bin/rpi/genconfigs
 while read patch; do
-  patch -s -p1 -R < debian/patches-rpi/"$patch"
-done < <(tac debian/patches-rpi/series)
+  patch -s -p1 -R < debian/patches/"$patch"
+done < <(quilt series | tac)
 
 if [ -n "$(git status --porcelain -- debian/config)" ]; then
   git add debian/config -f
