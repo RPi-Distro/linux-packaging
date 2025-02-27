@@ -47,7 +47,7 @@ compiler_gnutype_compat = 'arm-linux-gnueabihf'
 enable_dtb = true
 enable_rust = true
 enable_signed = false
-kernel_file = 'arch/arm64/boot/Image'
+kernel_file = 'arch/arm64/boot/Image.gz'
 kernel_stem = 'vmlinuz'
 
 [relations.image]
