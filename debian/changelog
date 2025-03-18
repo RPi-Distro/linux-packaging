@@ -1,3 +1,23 @@
+linux (1:6.12.25-1+rpt1+trixie) trixie; urgency=medium
+
+  * Raspberry Pi OS release
+  * d/control: Update Maintainer, Homepage and Vcs information
+  * Remove unecessary patches
+  * Disable unecessary architectures
+  * Don't sign arm64 kernels
+  * Compress arm64 kernels
+  * Add epoch support in version string
+  * Allow initramfs generation to be skipped in postinst
+  * Add rpi featureset
+  * Install overlays README
+  * Add +rpt to abiname
+  * Add update helper script
+  * Refresh gitignore.patch
+  * Update debian/config
+  * Linux commit: 3dd2c2c507c271d411fab2e82a2b3b7e0b6d3f16
+
+ -- Serge Schneider <serge@raspberrypi.com>  Mon, 02 Jun 2025 15:57:49 +0100
+
 linux (6.12.17-1) unstable; urgency=medium
 
   * New upstream stable update:
