@@ -1,3 +1,22 @@
+linux (1:6.12.20-1+rpt1~bpo12+1) bookworm; urgency=medium
+
+  * Raspberry Pi OS release
+  * d/control: Update Maintainer, Homepage and Vcs information
+  * Remove unnecessary patches
+  * Disable unnecessary architectures
+  * Don't sign arm64 kernels
+  * Compress arm64 kernels
+  * Add epoch support in version string
+  * Allow initramfs generation to be skipped in postinst
+  * Add rpi featureset
+  * Install overlays README
+  * Add +rpt to abiname
+  * Add update helper script
+  * Refresh gitignore.patch
+  * Linux commit: cd231d4775b14f228606c09f219b48308f6ab3aa
+
+ -- Serge Schneider <serge@raspberrypi.com>  Wed, 19 Mar 2025 16:49:28 +0000
+
 linux (6.12.9-1~bpo12+1) bookworm-backports; urgency=medium
 
   * Rebuild for bookworm-backports:
