@@ -3,9 +3,9 @@
 defconfigs=(
   arch/arm/configs/bcmrpi_defconfig
   arch/arm/configs/bcm2709_defconfig
-  arch/arm/configs/bcm2711_defconfig
   arch/arm64/configs/bcm2711_defconfig
   arch/arm64/configs/bcm2712_defconfig
+  arch/arm64/configs/bcm2711_rt_defconfig
 )
 
 find_common () {
@@ -53,7 +53,8 @@ for defconfig in "${defconfigs[@]}"; do
   if [ "$arch" = "arm" ]; then
     arch=armhf
   fi
-  case "$(basename "$defconfig" | cut -f1 -d_)" in
+  basename="$(basename "$defconfig")"
+  case "${basename%_defconfig}" in
     "bcmrpi")
       flavour=v6
       ;;
@@ -61,11 +62,10 @@ for defconfig in "${defconfigs[@]}"; do
       flavour=v7
       ;;
     "bcm2711")
-      if [ "$arch" = "armhf" ]; then
-        flavour=v7l
-      else
-        flavour=v8
-      fi
+      flavour=v8
+      ;;
+    "bcm2711_rt")
+      flavour=v8-rt
       ;;
     "bcm2712")
       flavour=2712

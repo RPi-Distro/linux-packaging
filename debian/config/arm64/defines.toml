@@ -31,6 +31,12 @@ hardware = 'Raspberry Pi v8'
 hardware_long = 'Raspberry Pi v8 kernel'
 
 [[flavour]]
+name = 'v8-rt'
+[flavour.description]
+hardware = 'Raspberry Pi v8'
+hardware_long = 'Raspberry Pi v8-rt kernel'
+
+[[flavour]]
 name = '2712'
 [flavour.description]
 hardware = 'Raspberry Pi 2712'
@@ -40,6 +46,8 @@ hardware_long = 'Raspberry Pi 2712 kernel'
 name = 'rpi'
 [[featureset.flavour]]
 name = 'v8'
+[[featureset.flavour]]
+name = 'v8-rt'
 [[featureset.flavour]]
 name = '2712'
 

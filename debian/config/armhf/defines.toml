@@ -26,20 +26,12 @@ name = "v7"
 hardware = 'Raspberry Pi v7'
 hardware_long = 'Raspberry Pi v7 kernel'
 
-[[flavour]]
-name = "v7l"
-[flavour.description]
-hardware = 'Raspberry Pi v7'
-hardware_long = 'Raspberry Pi v7l kernel'
-
 [[featureset]]
 name = 'rpi'
 [[featureset.flavour]]
 name = 'v6'
 [[featureset.flavour]]
 name = 'v7'
-[[featureset.flavour]]
-name = 'v7l'
 
 [build]
 enable_vdso = true
