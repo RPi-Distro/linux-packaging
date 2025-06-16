@@ -1,3 +1,13 @@
+linux (1:6.12.34-1+rpt1~bookworm) bookworm; urgency=medium
+
+  * Raspberry Pi OS release
+  * Add v8-rt kernel support
+  * Update Raspberry Pi patch
+  * Update debian/config
+  * Linux commit: 8f77e03530f65209a377d25023e912b288e039cd
+
+ -- Serge Schneider <serge@raspberrypi.com>  Thu, 26 Jun 2025 10:26:46 +0100
+
 linux (1:6.12.25-1+rpt1) bookworm; urgency=medium
 
   * Raspberry Pi OS release
