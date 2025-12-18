@@ -1,3 +1,12 @@
+linux (1:6.12.62-1+rpt1) trixie; urgency=medium
+
+  * Raspberry Pi OS release
+  * Update Raspberry Pi patch
+  * Update debian/config
+  * Linux commit: a1073743767f9e7fdc7017ababd2a07ea0c97c1c
+
+ -- Serge Schneider <serge@raspberrypi.com>  Thu, 18 Dec 2025 17:17:18 +0000
+
 linux (1:6.12.47-1+rpt1) trixie; urgency=medium
 
   * Raspberry Pi OS release
