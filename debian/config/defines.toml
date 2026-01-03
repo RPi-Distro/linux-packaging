@@ -164,7 +164,7 @@ rt = 'This kernel is configured with PREEMPT_RT real time support.'
 rt = 'PREEMPT_RT'
 
 [build]
-c_compiler = 'gcc-15'
+c_compiler = 'gcc-14'
 rust_build_depends = [
   'rustc:native (>= 1.78.0)',
   'bindgen:native (>= 0.65.1)',
