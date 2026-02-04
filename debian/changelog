@@ -1,10 +1,10 @@
-linux (6.18.5-1~bpo13+1) UNRELEASED; urgency=medium
+linux (6.18.5-1~bpo13+1) trixie-backports; urgency=medium
 
   * Rebuild for trixie-backports:
     - d/salsa-ci.yml: Set RELEASE to trixie-backports
     - Revert "Compile with gcc-15 on all architectures"
 
- -- Ben Hutchings <benh@debian.org>  Sat, 03 Jan 2026 14:42:57 +0100
+ -- Ben Hutchings <benh@debian.org>  Wed, 04 Feb 2026 18:31:12 +0100
 
 linux (6.18.5-1) unstable; urgency=medium
 
