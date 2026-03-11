@@ -8027,7 +8027,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/
  
  / {
  	compatible = "raspberrypi,4-model-b", "brcm,bcm2711";
-@@ -68,7 +76,7 @@ &expgpio {
+@@ -68,7 +76,7 @@
  			  "VDD_SD_IO_SEL",
  			  "CAM_GPIO",		/*  5 */
  			  "SD_PWR_ON",
@@ -8036,7 +8036,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/
  };
  
  &gpio {
-@@ -82,21 +90,21 @@ &gpio {
+@@ -82,21 +90,21 @@
  	 */
  	gpio-line-names = "ID_SDA",		/*  0 */
  			  "ID_SCL",
@@ -8068,7 +8068,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/
  			  "GPIO16",
  			  "GPIO17",
  			  "GPIO18",
-@@ -214,7 +222,7 @@ leds {
+@@ -214,7 +222,7 @@
  			led@0 {
  				reg = <0>;
  				color = <LED_COLOR_ID_GREEN>;
@@ -8077,7 +8077,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/
  				default-state = "keep";
  			};
  
-@@ -222,7 +230,7 @@ led@0 {
+@@ -222,7 +230,7 @@
  			led@1 {
  				reg = <1>;
  				color = <LED_COLOR_ID_AMBER>;
@@ -8086,7 +8086,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/
  				default-state = "keep";
  			};
  		};
-@@ -270,3 +278,234 @@ &vec {
+@@ -270,3 +278,234 @@
  &wifi_pwrseq {
  	reset-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
  };
@@ -8330,7 +8330,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi-400.dts b/arch/arm/boot/dts/
  #include "bcm2711-rpi-4-b.dts"
  
  / {
-@@ -37,8 +36,54 @@ &led_pwr {
+@@ -37,8 +36,54 @@
  	gpios = <&gpio 42 GPIO_ACTIVE_HIGH>;
  };
  
@@ -8894,7 +8894,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi-cm4s.dts b/arch/arm/boot/dts
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/broadcom/bcm2711-rpi-cm4s.dts
-@@ -0,0 +1,305 @@
+@@ -0,0 +1,314 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/dts-v1/;
 +#define BCM2711
@@ -9152,6 +9152,13 @@ new file mode 100644
 +		brcm,pins = <>;
 +		brcm,function = <>;
 +	};
++
++	enable_eeprom_hog: enable_eeprom_hog {
++		gpio-hog;
++		gpios = <57 GPIO_ACTIVE_HIGH>;
++		output-low;
++		status = "disabled";
++	};
 +};
 +
 +/* Permanently disable HDMI1 */
@@ -9198,6 +9205,8 @@ new file mode 100644
 +		act_led_gpio = <&led_act>,"gpios:4";
 +		act_led_activelow = <&led_act>,"gpios:8";
 +		act_led_trigger = <&led_act>,"linux,default-trigger";
++
++		enable_eeprom = <&enable_eeprom_hog>,"status";
 +	};
 +};
 diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi-ds.dtsi b/arch/arm/boot/dts/broadcom/bcm2711-rpi-ds.dtsi
@@ -9778,7 +9787,7 @@ new file mode 100644
 diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi b/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi
 --- a/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi
 +++ b/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi
-@@ -15,6 +15,7 @@ aliases {
+@@ -15,6 +15,7 @@
  		ethernet0 = &genet;
  		pcie0 = &pcie0;
  		blconfig = &blconfig;
@@ -9786,7 +9795,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi b/arch/arm/boot/dts/bro
  	};
  
  	i2c0mux: i2c-mux0 {
-@@ -91,6 +92,18 @@ blconfig: nvram@0 {
+@@ -91,6 +92,18 @@
  		no-map;
  		status = "disabled";
  	};
@@ -9805,7 +9814,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi b/arch/arm/boot/dts/bro
  };
  
  &v3d {
-@@ -100,3 +113,7 @@ &v3d {
+@@ -100,3 +113,7 @@
  &vchiq {
  	interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
  };
@@ -9816,7 +9825,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi b/arch/arm/boot/dts/bro
 diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
 --- a/arch/arm/boot/dts/broadcom/bcm2711.dtsi
 +++ b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-@@ -277,7 +277,7 @@ pwm1: pwm@7e20c800 {
+@@ -277,7 +277,7 @@
  			reg = <0x7e20c800 0x28>;
  			clocks = <&clocks BCM2835_CLOCK_PWM>;
  			assigned-clocks = <&clocks BCM2835_CLOCK_PWM>;
@@ -9825,7 +9834,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadco
  			#pwm-cells = <3>;
  			status = "disabled";
  		};
-@@ -602,21 +602,6 @@ genet_mdio: mdio@e14 {
+@@ -602,21 +602,6 @@
  			};
  		};
  
@@ -9847,7 +9856,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadco
  		v3d: gpu@7ec00000 {
  			compatible = "brcm,2711-v3d";
  			reg = <0x0 0x7ec00000 0x4000>,
-@@ -627,6 +612,15 @@ v3d: gpu@7ec00000 {
+@@ -627,6 +612,15 @@
  			resets = <&pm BCM2835_RESET_V3D>;
  			interrupts = <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
  		};
@@ -9958,7 +9967,7 @@ new file mode 100644
 diff --git a/arch/arm/boot/dts/broadcom/bcm283x.dtsi b/arch/arm/boot/dts/broadcom/bcm283x.dtsi
 --- a/arch/arm/boot/dts/broadcom/bcm283x.dtsi
 +++ b/arch/arm/boot/dts/broadcom/bcm283x.dtsi
-@@ -363,7 +363,7 @@ dsi0: dsi@7e209000 {
+@@ -363,7 +363,7 @@
  			#size-cells = <0>;
  			#clock-cells = <1>;
  
@@ -9967,7 +9976,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm283x.dtsi b/arch/arm/boot/dts/broadco
  				 <&clocks BCM2835_CLOCK_DSI0E>,
  				 <&clocks BCM2835_CLOCK_DSI0P>;
  			clock-names = "phy", "escape", "pixel";
-@@ -415,7 +415,7 @@ pwm: pwm@7e20c000 {
+@@ -415,7 +415,7 @@
  			reg = <0x7e20c000 0x28>;
  			clocks = <&clocks BCM2835_CLOCK_PWM>;
  			assigned-clocks = <&clocks BCM2835_CLOCK_PWM>;
@@ -9976,7 +9985,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm283x.dtsi b/arch/arm/boot/dts/broadco
  			#pwm-cells = <3>;
  			status = "disabled";
  		};
-@@ -502,6 +502,10 @@ usb: usb@7e980000 {
+@@ -502,6 +502,10 @@
  	};
  
  	clocks {
@@ -9991,7 +10000,7 @@ diff --git a/arch/arm/boot/dts/overlays/Makefile b/arch/arm/boot/dts/overlays/Ma
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/Makefile
-@@ -0,0 +1,373 @@
+@@ -0,0 +1,374 @@
 +# Overlays for the Raspberry Pi platform
 +
 +dtb-$(CONFIG_ARCH_BCM2835) += overlay_map.dtb hat_map.dtb
@@ -10332,6 +10341,7 @@ new file mode 100644
 +	vc4-kms-dpi-panel.dtbo \
 +	vc4-kms-dsi-7inch.dtbo \
 +	vc4-kms-dsi-generic.dtbo \
++	vc4-kms-dsi-ili79600-10-1inch.dtbo \
 +	vc4-kms-dsi-ili9881-5inch.dtbo \
 +	vc4-kms-dsi-ili9881-7inch.dtbo \
 +	vc4-kms-dsi-lt070me05000.dtbo \
@@ -10369,7 +10379,7 @@ diff --git a/arch/arm/boot/dts/overlays/README b/arch/arm/boot/dts/overlays/READ
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/README
-@@ -0,0 +1,6113 @@
+@@ -0,0 +1,6202 @@
 +Introduction
 +============
 +
@@ -10606,7 +10616,11 @@ new file mode 100644
 +
 +        eee                     Enable Energy Efficient Ethernet support for
 +                                compatible devices (default "on"). See also
-+                                "tx_lpi_timer". Pi3B+ only.
++                                "tx_lpi_timer". Pi3B+, Pi4 and CM4 only.
++
++        enable_eeprom           Set to "on" to enable the onboard bootloader
++                                EEPROM by driving GPIO 57 low
++                                (default "off"). CM4S only.
 +
 +        eth_downshift_after     Set the number of auto-negotiation failures
 +                                after which the 1000Mbps modes are disabled.
@@ -13761,9 +13775,9 @@ new file mode 100644
 +
 +
 +Name:   mcp2515
-+Info:   Configures the MCP2515 CAN controller on spi0/1/2
-+        For devices on spi1 or spi2, the interfaces should be enabled
-+        with one of the spi1-1/2/3cs and/or spi2-1/2/3cs overlays.
++Info:   Configures the MCP2515 CAN controller on spi0/1/2/3/5
++        For devices on spi1, spi2, spi3 or spi5, the interfaces should be
++        enabled with one of the spi<n>-1/2/3cs overlays.
 +Load:   dtoverlay=mcp2515,<param>=<val>
 +Params: spi<n>-<m>              Configure device at spi<n>, cs<m>
 +                                (boolean, required)
@@ -15739,6 +15753,20 @@ new file mode 100644
 +Info:   Enable uart 0 on GPIOs 14-15. Pi 5 only.
 +Load:   dtoverlay=uart0-pi5,<param>
 +Params: ctsrts                  Enable CTS/RTS on GPIOs 16-17 (default off)
++        rs485                   Enable RS485 mode for using the RTS line to
++                                drive the OE pin of an RS485 transceiver (i.e.
++                                MAX3078E); also enables the UARTx ctsrts
++                                parameter, as RTS is required (default off).
++        rs485_full_duplex       When RS485 mode is enabled, enables receiving of
++                                data while sending data (default off)
++        rs485_invert_rts        When RS485 mode is enabled, inverts the RTS
++                                line from active-high (default) to active-low.
++        rs485_rts_on_delay      When RS485 mode is enabled, sets the delay (in
++                                milliseconds) between data transmission starting
++                                and the RTS line being asserted (default 0).
++        rs485_rts_off_delay     When RS485 mode is enabled, sets the delay (in
++                                milliseconds) between data transmission ending
++                                and the RTS line being deasserted (default 0).
 +
 +
 +Name:   uart1
@@ -15753,6 +15781,20 @@ new file mode 100644
 +Info:   Enable uart 1 on GPIOs 0-1. Pi 5 only.
 +Load:   dtoverlay=uart1-pi5,<param>
 +Params: ctsrts                  Enable CTS/RTS on GPIOs 2-3 (default off)
++        rs485                   Enable RS485 mode for using the RTS line to
++                                drive the OE pin of an RS485 transceiver (i.e.
++                                MAX3078E); also enables the UARTx ctsrts
++                                parameter, as RTS is required (default off).
++        rs485_full_duplex       When RS485 mode is enabled, enables receiving of
++                                data while sending data (default off)
++        rs485_invert_rts        When RS485 mode is enabled, inverts the RTS
++                                line from active-high (default) to active-low.
++        rs485_rts_on_delay      When RS485 mode is enabled, sets the delay (in
++                                milliseconds) between data transmission starting
++                                and the RTS line being asserted (default 0).
++        rs485_rts_off_delay     When RS485 mode is enabled, sets the delay (in
++                                milliseconds) between data transmission ending
++                                and the RTS line being deasserted (default 0).
 +
 +
 +Name:   uart2
@@ -15779,6 +15821,20 @@ new file mode 100644
 +Info:   Enable uart 2 on GPIOs 4-5. Pi 5 only.
 +Load:   dtoverlay=uart2-pi5,<param>
 +Params: ctsrts                  Enable CTS/RTS on GPIOs 6-7 (default off)
++        rs485                   Enable RS485 mode for using the RTS line to
++                                drive the OE pin of an RS485 transceiver (i.e.
++                                MAX3078E); also enables the UARTx ctsrts
++                                parameter, as RTS is required (default off).
++        rs485_full_duplex       When RS485 mode is enabled, enables receiving of
++                                data while sending data (default off)
++        rs485_invert_rts        When RS485 mode is enabled, inverts the RTS
++                                line from active-high (default) to active-low.
++        rs485_rts_on_delay      When RS485 mode is enabled, sets the delay (in
++                                milliseconds) between data transmission starting
++                                and the RTS line being asserted (default 0).
++        rs485_rts_off_delay     When RS485 mode is enabled, sets the delay (in
++                                milliseconds) between data transmission ending
++                                and the RTS line being deasserted (default 0).
 +
 +
 +Name:   uart3
@@ -15805,6 +15861,20 @@ new file mode 100644
 +Info:   Enable uart 3 on GPIOs 8-9. Pi 5 only.
 +Load:   dtoverlay=uart3-pi5,<param>
 +Params: ctsrts                  Enable CTS/RTS on GPIOs 10-11 (default off)
++        rs485                   Enable RS485 mode for using the RTS line to
++                                drive the OE pin of an RS485 transceiver (i.e.
++                                MAX3078E); also enables the UARTx ctsrts
++                                parameter, as RTS is required (default off).
++        rs485_full_duplex       When RS485 mode is enabled, enables receiving of
++                                data while sending data (default off)
++        rs485_invert_rts        When RS485 mode is enabled, inverts the RTS
++                                line from active-high (default) to active-low.
++        rs485_rts_on_delay      When RS485 mode is enabled, sets the delay (in
++                                milliseconds) between data transmission starting
++                                and the RTS line being asserted (default 0).
++        rs485_rts_off_delay     When RS485 mode is enabled, sets the delay (in
++                                milliseconds) between data transmission ending
++                                and the RTS line being deasserted (default 0).
 +
 +
 +Name:   uart4
@@ -15831,6 +15901,20 @@ new file mode 100644
 +Info:   Enable uart 4 on GPIOs 12-13. Pi 5 only.
 +Load:   dtoverlay=uart4-pi5,<param>
 +Params: ctsrts                  Enable CTS/RTS on GPIOs 14-15 (default off)
++        rs485                   Enable RS485 mode for using the RTS line to
++                                drive the OE pin of an RS485 transceiver (i.e.
++                                MAX3078E); also enables the UARTx ctsrts
++                                parameter, as RTS is required (default off).
++        rs485_full_duplex       When RS485 mode is enabled, enables receiving of
++                                data while sending data (default off)
++        rs485_invert_rts        When RS485 mode is enabled, inverts the RTS
++                                line from active-high (default) to active-low.
++        rs485_rts_on_delay      When RS485 mode is enabled, sets the delay (in
++                                milliseconds) between data transmission starting
++                                and the RTS line being asserted (default 0).
++        rs485_rts_off_delay     When RS485 mode is enabled, sets the delay (in
++                                milliseconds) between data transmission ending
++                                and the RTS line being deasserted (default 0).
 +
 +
 +Name:   uart5
@@ -16095,6 +16179,21 @@ new file mode 100644
 +                                Only supported on Pi5 and CM
 +        dsi0                    Switch DSI port to DSI0
 +                                Only supported on Pi5 and CM
++
++
++Name:   vc4-kms-dsi-ili79600-10-1inch
++Info:   Enable the Raspberry Pi 10" ILI79600 based touchscreen panel.
++        Requires vc4-kms-v3d to be loaded.
++Load:   dtoverlay=vc4-kms-dsi-ili79600-10-1inch,<param>
++Params: sizex                   Touchscreen size x (default 1200)
++        sizey                   Touchscreen size y (default 1920)
++        invx                    Touchscreen inverted x axis
++        invy                    Touchscreen inverted y axis
++        swapxy                  Touchscreen swapped x y axis
++        disable_touch           Disables the touch screen overlay driver
++        rotation                Display rotation {0,90,180,270} (default 0)
++        dsi0                    Use DSI0 and i2c_csi_dsi0 (rather than
++                                the default DSI1 and i2c_csi_dsi).
 +
 +
 +Name:   vc4-kms-dsi-ili9881-5inch
@@ -32703,7 +32802,7 @@ diff --git a/arch/arm/boot/dts/overlays/mcp2515-overlay.dts b/arch/arm/boot/dts/
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/mcp2515-overlay.dts
-@@ -0,0 +1,156 @@
+@@ -0,0 +1,213 @@
 +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 +
 +/dts-v1/;
@@ -32773,6 +32872,34 @@ new file mode 100644
 +	};
 +
 +	fragment@8 {
++		target-path = "spi3/spidev@0";
++		__dormant__ {
++			status = "disabled";
++		};
++	};
++
++	fragment@9 {
++		target-path = "spi3/spidev@1";
++		__dormant__ {
++			status = "disabled";
++		};
++	};
++
++	fragment@10 {
++		target-path = "spi5/spidev@0";
++		__dormant__ {
++			status = "disabled";
++		};
++	};
++
++	fragment@11 {
++		target-path = "spi5/spidev@1";
++		__dormant__ {
++			status = "disabled";
++		};
++	};
++
++	fragment@12 {
 +		target = <&gpio>;
 +		__overlay__ {
 +			mcp2515_pins: mcp2515_pins {
@@ -32782,7 +32909,7 @@ new file mode 100644
 +		};
 +	};
 +
-+	fragment@9 {
++	fragment@13 {
 +		target-path = "/clocks";
 +		__overlay__ {
 +			clk_mcp2515_osc: mcp2515-osc {
@@ -32793,7 +32920,7 @@ new file mode 100644
 +		};
 +	};
 +
-+	mcp2515_frag: fragment@10 {
++	mcp2515_frag: fragment@14 {
 +		target = <&spi0>;
 +		__overlay__ {
 +			status = "okay";
@@ -32824,6 +32951,7 @@ new file mode 100644
 +			<&mcp2515>, "reg:0=1",
 +			<&mcp2515_pins>, "name=mcp2515_spi0_1_pins",
 +			<&clk_mcp2515_osc>, "name=mcp2515-spi0-1-osc";
++
 +		spi1-0 = <0>, "+2",
 +			<&mcp2515_frag>, "target:0=", <&spi1>,
 +			<&mcp2515>, "reg:0=0",
@@ -32839,6 +32967,7 @@ new file mode 100644
 +			<&mcp2515>, "reg:0=2",
 +			<&mcp2515_pins>, "name=mcp2515_spi1_2_pins",
 +			<&clk_mcp2515_osc>, "name=mcp2515-spi1-2-osc";
++
 +		spi2-0 = <0>, "+5",
 +			<&mcp2515_frag>, "target:0=", <&spi2>,
 +			<&mcp2515>, "reg:0=0",
@@ -32854,6 +32983,33 @@ new file mode 100644
 +			<&mcp2515>, "reg:0=2",
 +			<&mcp2515_pins>, "name=mcp2515_spi2_2_pins",
 +			<&clk_mcp2515_osc>, "name=mcp2515-spi2-2-osc";
++
++		spi3-0 = <0>, "+8",
++			<&mcp2515_frag>, "target?=0",
++			<&mcp2515_frag>, "target-path=spi3",
++			<&mcp2515>, "reg:0=0",
++			<&mcp2515_pins>, "name=mcp2515_spi3_0_pins",
++			<&clk_mcp2515_osc>, "name=mcp2515-spi3-0-osc";
++		spi3-1 = <0>, "+9",
++			<&mcp2515_frag>, "target?=0",
++			<&mcp2515_frag>, "target-path=spi3",
++			<&mcp2515>, "reg:0=1",
++			<&mcp2515_pins>, "name=mcp2515_spi3_1_pins",
++			<&clk_mcp2515_osc>, "name=mcp2515-spi3-1-osc";
++
++		spi5-0 = <0>, "+10",
++			<&mcp2515_frag>, "target?=0",
++			<&mcp2515_frag>, "target-path=spi5",
++			<&mcp2515>, "reg:0=0",
++			<&mcp2515_pins>, "name=mcp2515_spi5_0_pins",
++			<&clk_mcp2515_osc>, "name=mcp2515-spi5-0-osc";
++		spi5-1 = <0>, "+11",
++			<&mcp2515_frag>, "target?=0",
++			<&mcp2515_frag>, "target-path=spi5",
++			<&mcp2515>, "reg:0=1",
++			<&mcp2515_pins>, "name=mcp2515_spi5_1_pins",
++			<&clk_mcp2515_osc>, "name=mcp2515-spi5-1-osc";
++
 +		oscillator = <&clk_mcp2515_osc>, "clock-frequency:0";
 +		speed = <&mcp2515>, "spi-max-frequency:0";
 +		interrupt = <&mcp2515_pins>, "brcm,pins:0",
@@ -45478,7 +45634,7 @@ diff --git a/arch/arm/boot/dts/overlays/uart0-pi5-overlay.dts b/arch/arm/boot/dt
 new file mode 100755
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/uart0-pi5-overlay.dts
-@@ -0,0 +1,18 @@
+@@ -0,0 +1,25 @@
 +/dts-v1/;
 +/plugin/;
 +
@@ -45490,11 +45646,18 @@ new file mode 100755
 +		frag0: __overlay__ {
 +			status = "okay";
 +			pinctrl-0 = <&uart0_pins>;
++			rs485-rts-delay = <0 0>;
 +		};
 +	};
 +
 +	__overrides__ {
 +		ctsrts = <&frag0>,"pinctrl-0:4=",<&uart0_ctsrts_pins>;
++		rs485 = <&frag0>,"pinctrl-0:4=",<&uart0_ctsrts_pins>,
++				<&frag0>,"linux,rs485-enabled-at-boot-time?";
++		rs485_full_duplex = <&frag0>,"rs485-rx-during-tx?";
++		rs485_invert_rts = <&frag0>,"rs485-rts-active-low?";
++		rs485_rts_on_delay = <&frag0>,"rs485-rts-delay:0";
++		rs485_rts_off_delay = <&frag0>,"rs485-rts-delay:4";
 +	};
 +};
 diff --git a/arch/arm/boot/dts/overlays/uart1-overlay.dts b/arch/arm/boot/dts/overlays/uart1-overlay.dts
@@ -45544,7 +45707,7 @@ diff --git a/arch/arm/boot/dts/overlays/uart1-pi5-overlay.dts b/arch/arm/boot/dt
 new file mode 100755
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/uart1-pi5-overlay.dts
-@@ -0,0 +1,18 @@
+@@ -0,0 +1,25 @@
 +/dts-v1/;
 +/plugin/;
 +
@@ -45556,11 +45719,18 @@ new file mode 100755
 +		frag0: __overlay__ {
 +			status = "okay";
 +			pinctrl-0 = <&uart1_pins>;
++			rs485-rts-delay = <0 0>;
 +		};
 +	};
 +
 +	__overrides__ {
 +		ctsrts = <&frag0>,"pinctrl-0:4=",<&uart1_ctsrts_pins>;
++		rs485 = <&frag0>,"pinctrl-0:4=",<&uart1_ctsrts_pins>,
++				<&frag0>,"linux,rs485-enabled-at-boot-time?";
++		rs485_full_duplex = <&frag0>,"rs485-rx-during-tx?";
++		rs485_invert_rts = <&frag0>,"rs485-rts-active-low?";
++		rs485_rts_on_delay = <&frag0>,"rs485-rts-delay:0";
++		rs485_rts_off_delay = <&frag0>,"rs485-rts-delay:4";
 +	};
 +};
 diff --git a/arch/arm/boot/dts/overlays/uart2-overlay.dts b/arch/arm/boot/dts/overlays/uart2-overlay.dts
@@ -45610,7 +45780,7 @@ diff --git a/arch/arm/boot/dts/overlays/uart2-pi5-overlay.dts b/arch/arm/boot/dt
 new file mode 100755
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/uart2-pi5-overlay.dts
-@@ -0,0 +1,18 @@
+@@ -0,0 +1,25 @@
 +/dts-v1/;
 +/plugin/;
 +
@@ -45622,11 +45792,18 @@ new file mode 100755
 +		frag0: __overlay__ {
 +			status = "okay";
 +			pinctrl-0 = <&uart2_pins>;
++			rs485-rts-delay = <0 0>;
 +		};
 +	};
 +
 +	__overrides__ {
 +		ctsrts = <&frag0>,"pinctrl-0:4=",<&uart2_ctsrts_pins>;
++		rs485 = <&frag0>,"pinctrl-0:4=",<&uart2_ctsrts_pins>,
++				<&frag0>,"linux,rs485-enabled-at-boot-time?";
++		rs485_full_duplex = <&frag0>,"rs485-rx-during-tx?";
++		rs485_invert_rts = <&frag0>,"rs485-rts-active-low?";
++		rs485_rts_on_delay = <&frag0>,"rs485-rts-delay:0";
++		rs485_rts_off_delay = <&frag0>,"rs485-rts-delay:4";
 +	};
 +};
 diff --git a/arch/arm/boot/dts/overlays/uart3-overlay.dts b/arch/arm/boot/dts/overlays/uart3-overlay.dts
@@ -45676,7 +45853,7 @@ diff --git a/arch/arm/boot/dts/overlays/uart3-pi5-overlay.dts b/arch/arm/boot/dt
 new file mode 100755
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/uart3-pi5-overlay.dts
-@@ -0,0 +1,18 @@
+@@ -0,0 +1,25 @@
 +/dts-v1/;
 +/plugin/;
 +
@@ -45688,11 +45865,18 @@ new file mode 100755
 +		frag0: __overlay__ {
 +			status = "okay";
 +			pinctrl-0 = <&uart3_pins>;
++			rs485-rts-delay = <0 0>;
 +		};
 +	};
 +
 +	__overrides__ {
 +		ctsrts = <&frag0>,"pinctrl-0:4=",<&uart3_ctsrts_pins>;
++		rs485 = <&frag0>,"pinctrl-0:4=",<&uart3_ctsrts_pins>,
++				<&frag0>,"linux,rs485-enabled-at-boot-time?";
++		rs485_full_duplex = <&frag0>,"rs485-rx-during-tx?";
++		rs485_invert_rts = <&frag0>,"rs485-rts-active-low?";
++		rs485_rts_on_delay = <&frag0>,"rs485-rts-delay:0";
++		rs485_rts_off_delay = <&frag0>,"rs485-rts-delay:4";
 +	};
 +};
 diff --git a/arch/arm/boot/dts/overlays/uart4-overlay.dts b/arch/arm/boot/dts/overlays/uart4-overlay.dts
@@ -45742,7 +45926,7 @@ diff --git a/arch/arm/boot/dts/overlays/uart4-pi5-overlay.dts b/arch/arm/boot/dt
 new file mode 100755
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/uart4-pi5-overlay.dts
-@@ -0,0 +1,18 @@
+@@ -0,0 +1,25 @@
 +/dts-v1/;
 +/plugin/;
 +
@@ -45754,11 +45938,18 @@ new file mode 100755
 +		frag0: __overlay__ {
 +			status = "okay";
 +			pinctrl-0 = <&uart4_pins>;
++			rs485-rts-delay = <0 0>;
 +		};
 +	};
 +
 +	__overrides__ {
 +		ctsrts = <&frag0>,"pinctrl-0:4=",<&uart4_ctsrts_pins>;
++		rs485 = <&frag0>,"pinctrl-0:4=",<&uart4_ctsrts_pins>,
++				<&frag0>,"linux,rs485-enabled-at-boot-time?";
++		rs485_full_duplex = <&frag0>,"rs485-rx-during-tx?";
++		rs485_invert_rts = <&frag0>,"rs485-rts-active-low?";
++		rs485_rts_on_delay = <&frag0>,"rs485-rts-delay:0";
++		rs485_rts_off_delay = <&frag0>,"rs485-rts-delay:4";
 +	};
 +};
 diff --git a/arch/arm/boot/dts/overlays/uart5-overlay.dts b/arch/arm/boot/dts/overlays/uart5-overlay.dts
@@ -47174,6 +47365,137 @@ new file mode 100644
 +		four-lane = <0>,"+4";
 +	};
 +
++};
+diff --git a/arch/arm/boot/dts/overlays/vc4-kms-dsi-ili79600-10-1inch-overlay.dts b/arch/arm/boot/dts/overlays/vc4-kms-dsi-ili79600-10-1inch-overlay.dts
+new file mode 100644
+--- /dev/null
++++ b/arch/arm/boot/dts/overlays/vc4-kms-dsi-ili79600-10-1inch-overlay.dts
+@@ -0,0 +1,126 @@
++/*
++ * vc4-kms-dsi-ili79600-10-1inch-overlay.dts
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++
++/ {
++	compatible = "brcm,bcm2835";
++
++	i2c_frag: fragment@0 {
++		target = <&i2c_csi_dsi>;
++		__overlay__ {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "okay";
++
++			display_mcu: display_mcu@45
++			{
++				compatible = "raspberrypi,v2-touchscreen-panel-regulator";
++				reg = <0x45>;
++				gpio-controller;
++				#gpio-cells = <2>;
++			};
++
++			touch: ts@41 {
++				compatible = "ilitek,ili79600a";
++				reg = <0x41>;
++
++				reset-gpio = <&display_mcu 1 GPIO_ACTIVE_LOW>;
++
++				touchscreen-size-x = < 1200 >;
++				touchscreen-size-y = < 1920 >;
++				vcc-supply = <&display_reg>;
++
++				panel = <&dsi_panel>;
++			};
++		};
++	};
++
++	dsi_frag: fragment@1 {
++		target = <&dsi1>;
++		__overlay__  {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "okay";
++
++			port {
++				dsi_out: endpoint {
++					remote-endpoint = <&panel_in>;
++				};
++			};
++
++			dsi_panel: dsi_panel@0 {
++				reg = <0>;
++				compatible = "raspberrypi,dsi-10-1inch";
++				power-supply = <&display_reg>;
++				backlight = <&display_mcu>;
++
++				port {
++					panel_in: endpoint {
++						remote-endpoint = <&dsi_out>;
++					};
++				};
++			};
++		};
++	};
++
++	fragment@2 {
++		target = <&i2c0if>;
++		__overlay__ {
++			status = "okay";
++		};
++	};
++
++	fragment@3 {
++		target = <&i2c0mux>;
++		__overlay__ {
++			status = "okay";
++		};
++	};
++
++	fragment@4 {
++		target-path = "/";
++		__overlay__ {
++			display_reg: display_reg@1 {
++				reg = <1>;
++				compatible = "regulator-fixed";
++				regulator-name = "display_reg_1";
++				gpio = <&display_mcu 0 GPIO_ACTIVE_HIGH>;
++				startup-delay-us = <50000>;
++				enable-active-high;
++			};
++		};
++	};
++
++	fragment@10 {
++		target = <&touch>;
++		__dormant__ {
++			touchscreen-inverted-x;
++		};
++	};
++
++	fragment@11 {
++		target = <&touch>;
++		__dormant__ {
++			touchscreen-inverted-y;
++		};
++	};
++
++	__overrides__ {
++		sizex = <&touch>,"touchscreen-size-x:0";
++		sizey = <&touch>,"touchscreen-size-y:0";
++		invx = <0>, "+10";
++		invy = <0>, "+11";
++		swapxy = <&touch>,"touchscreen-swapped-x-y?";
++		disable_touch = <&touch>, "status=disabled";
++		rotation = <&dsi_panel>, "rotation:0";
++		dsi0 = <&dsi_frag>, "target:0=",<&dsi0>,
++		       <&i2c_frag>, "target:0=",<&i2c_csi_dsi0>,
++		       <&display_reg>, "reg:0=0",
++		       <&display_reg>, "regulator-name=display_reg_0";
++	};
 +};
 diff --git a/arch/arm/boot/dts/overlays/vc4-kms-dsi-ili9881-5inch-overlay.dts b/arch/arm/boot/dts/overlays/vc4-kms-dsi-ili9881-5inch-overlay.dts
 new file mode 100644
@@ -49403,7 +49725,7 @@ diff --git a/arch/arm/configs/bcm2709_defconfig b/arch/arm/configs/bcm2709_defco
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/configs/bcm2709_defconfig
-@@ -0,0 +1,1648 @@
+@@ -0,0 +1,1649 @@
 +CONFIG_LOCALVERSION="-v7"
 +# CONFIG_LOCALVERSION_AUTO is not set
 +CONFIG_SYSVIPC=y
@@ -50522,6 +50844,7 @@ new file mode 100644
 +CONFIG_HID_BIGBEN_FF=m
 +CONFIG_HID_CHERRY=m
 +CONFIG_HID_CHICONY=m
++CONFIG_HID_CP2112=m
 +CONFIG_HID_CYPRESS=m
 +CONFIG_HID_DRAGONRISE=m
 +CONFIG_HID_EMS_FF=m
@@ -51056,7 +51379,7 @@ diff --git a/arch/arm/configs/bcm2711_defconfig b/arch/arm/configs/bcm2711_defco
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/configs/bcm2711_defconfig
-@@ -0,0 +1,1695 @@
+@@ -0,0 +1,1696 @@
 +CONFIG_LOCALVERSION="-v7l"
 +# CONFIG_LOCALVERSION_AUTO is not set
 +CONFIG_SYSVIPC=y
@@ -52215,6 +52538,7 @@ new file mode 100644
 +CONFIG_HID_BIGBEN_FF=m
 +CONFIG_HID_CHERRY=m
 +CONFIG_HID_CHICONY=m
++CONFIG_HID_CP2112=m
 +CONFIG_HID_CYPRESS=m
 +CONFIG_HID_DRAGONRISE=m
 +CONFIG_HID_EMS_FF=m
@@ -52756,7 +53080,7 @@ diff --git a/arch/arm/configs/bcmrpi_defconfig b/arch/arm/configs/bcmrpi_defconf
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/configs/bcmrpi_defconfig
-@@ -0,0 +1,1640 @@
+@@ -0,0 +1,1641 @@
 +# CONFIG_LOCALVERSION_AUTO is not set
 +CONFIG_SYSVIPC=y
 +CONFIG_POSIX_MQUEUE=y
@@ -53867,6 +54191,7 @@ new file mode 100644
 +CONFIG_HID_BIGBEN_FF=m
 +CONFIG_HID_CHERRY=m
 +CONFIG_HID_CHICONY=m
++CONFIG_HID_CP2112=m
 +CONFIG_HID_CYPRESS=m
 +CONFIG_HID_DRAGONRISE=m
 +CONFIG_HID_EMS_FF=m
@@ -55917,7 +56242,7 @@ diff --git a/arch/arm/lib/uaccess_with_memcpy.c b/arch/arm/lib/uaccess_with_memc
  static unsigned long noinline
  __copy_to_user_memcpy(void __user *to, const void *from, unsigned long n)
  {
-@@ -137,6 +186,54 @@ __copy_to_user_memcpy(void __user *to, const void *from, unsigned long n)
+@@ -137,6 +186,54 @@ out:
  	return n;
  }
  
@@ -57049,7 +57374,7 @@ diff --git a/arch/arm64/boot/dts/broadcom/bcm2712-rpi-5-b.dts b/arch/arm64/boot/
  	};
  
  	sd_io_1v8_reg: sd-io-1v8-reg {
-@@ -44,6 +64,120 @@ sd_vcc_reg: sd-vcc-reg {
+@@ -44,6 +64,120 @@
  		enable-active-high;
  		gpios = <&gio_aon 4 GPIO_ACTIVE_HIGH>;
  	};
@@ -57170,7 +57495,7 @@ diff --git a/arch/arm64/boot/dts/broadcom/bcm2712-rpi-5-b.dts b/arch/arm64/boot/
  };
  
  /* The Debug UART, on Rpi5 it's on JST-SH 1.0mm 3-pin connector
-@@ -53,12 +187,538 @@ &uart10 {
+@@ -53,12 +187,538 @@
  	status = "okay";
  };
  
@@ -59228,7 +59553,7 @@ new file mode 100644
 diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
 --- a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
 +++ b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
-@@ -192,6 +192,12 @@ soc: soc@107c000000 {
+@@ -192,6 +192,12 @@
  		#address-cells = <1>;
  		#size-cells = <1>;
  
@@ -59241,7 +59566,7 @@ diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/bro
  		sdio1: mmc@fff000 {
  			compatible = "brcm,bcm2712-sdhci",
  				     "brcm,sdhci-brcmstb";
-@@ -204,6 +210,12 @@ sdio1: mmc@fff000 {
+@@ -204,6 +210,12 @@
  			mmc-ddr-3_3v;
  		};
  
@@ -59254,7 +59579,7 @@ diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/bro
  		system_timer: timer@7c003000 {
  			compatible = "brcm,bcm2835-system-timer";
  			reg = <0x7c003000 0x1000>;
-@@ -268,6 +280,307 @@ gicv2: interrupt-controller@7fff9000 {
+@@ -268,6 +280,307 @@
  					IRQ_TYPE_LEVEL_HIGH)>;
  			#interrupt-cells = <3>;
  		};
@@ -59562,7 +59887,7 @@ diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/bro
  	};
  
  	timer {
-@@ -283,4 +596,31 @@ IRQ_TYPE_LEVEL_LOW)>,
+@@ -283,4 +596,31 @@
  			     <GIC_PPI 12 (GIC_CPU_MASK_SIMPLE(4) |
  					  IRQ_TYPE_LEVEL_LOW)>;
  	};
@@ -61065,7 +61390,7 @@ diff --git a/arch/arm64/configs/bcm2711_defconfig b/arch/arm64/configs/bcm2711_d
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm64/configs/bcm2711_defconfig
-@@ -0,0 +1,1781 @@
+@@ -0,0 +1,1784 @@
 +CONFIG_LOCALVERSION="-v8"
 +# CONFIG_LOCALVERSION_AUTO is not set
 +CONFIG_SYSVIPC=y
@@ -61777,6 +62102,7 @@ new file mode 100644
 +CONFIG_TOUCHSCREEN_GOODIX=m
 +CONFIG_TOUCHSCREEN_ILI210X=m
 +CONFIG_TOUCHSCREEN_ILITEK=m
++CONFIG_TOUCHSCREEN_ILITEK_V3=m
 +CONFIG_TOUCHSCREEN_EDT_FT5X06=m
 +CONFIG_TOUCHSCREEN_RASPBERRYPI_FW=m
 +CONFIG_TOUCHSCREEN_USB_COMPOSITE=m
@@ -62144,6 +62470,7 @@ new file mode 100644
 +CONFIG_DRM_LOAD_EDID_FIRMWARE=y
 +CONFIG_DRM_UDL=m
 +CONFIG_DRM_PANEL_LVDS=m
++CONFIG_DRM_PANEL_ILITEK_IL79600A=m
 +CONFIG_DRM_PANEL_ILITEK_ILI9806E=m
 +CONFIG_DRM_PANEL_ILITEK_ILI9806E_SPI=m
 +CONFIG_DRM_PANEL_ILITEK_ILI9881C=m
@@ -62285,6 +62612,7 @@ new file mode 100644
 +CONFIG_HID_BIGBEN_FF=m
 +CONFIG_HID_CHERRY=m
 +CONFIG_HID_CHICONY=m
++CONFIG_HID_CP2112=m
 +CONFIG_HID_CYPRESS=m
 +CONFIG_HID_DRAGONRISE=m
 +CONFIG_HID_EMS_FF=m
@@ -62851,7 +63179,7 @@ diff --git a/arch/arm64/configs/bcm2711_rt_defconfig b/arch/arm64/configs/bcm271
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm64/configs/bcm2711_rt_defconfig
-@@ -0,0 +1,1781 @@
+@@ -0,0 +1,1782 @@
 +CONFIG_LOCALVERSION="-v8-rt"
 +# CONFIG_LOCALVERSION_AUTO is not set
 +CONFIG_SYSVIPC=y
@@ -64071,6 +64399,7 @@ new file mode 100644
 +CONFIG_HID_BIGBEN_FF=m
 +CONFIG_HID_CHERRY=m
 +CONFIG_HID_CHICONY=m
++CONFIG_HID_CP2112=m
 +CONFIG_HID_CYPRESS=m
 +CONFIG_HID_DRAGONRISE=m
 +CONFIG_HID_EMS_FF=m
@@ -64637,7 +64966,7 @@ diff --git a/arch/arm64/configs/bcm2712_defconfig b/arch/arm64/configs/bcm2712_d
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm64/configs/bcm2712_defconfig
-@@ -0,0 +1,1783 @@
+@@ -0,0 +1,1786 @@
 +CONFIG_LOCALVERSION="-v8-16k"
 +# CONFIG_LOCALVERSION_AUTO is not set
 +CONFIG_SYSVIPC=y
@@ -65352,6 +65681,7 @@ new file mode 100644
 +CONFIG_TOUCHSCREEN_GOODIX=m
 +CONFIG_TOUCHSCREEN_ILI210X=m
 +CONFIG_TOUCHSCREEN_ILITEK=m
++CONFIG_TOUCHSCREEN_ILITEK_V3=m
 +CONFIG_TOUCHSCREEN_EDT_FT5X06=m
 +CONFIG_TOUCHSCREEN_RASPBERRYPI_FW=m
 +CONFIG_TOUCHSCREEN_USB_COMPOSITE=m
@@ -65718,6 +66048,7 @@ new file mode 100644
 +CONFIG_DRM_LOAD_EDID_FIRMWARE=y
 +CONFIG_DRM_UDL=m
 +CONFIG_DRM_PANEL_LVDS=m
++CONFIG_DRM_PANEL_ILITEK_IL79600A=m
 +CONFIG_DRM_PANEL_ILITEK_ILI9806E=m
 +CONFIG_DRM_PANEL_ILITEK_ILI9806E_SPI=m
 +CONFIG_DRM_PANEL_ILITEK_ILI9881C=m
@@ -65859,6 +66190,7 @@ new file mode 100644
 +CONFIG_HID_BIGBEN_FF=m
 +CONFIG_HID_CHERRY=m
 +CONFIG_HID_CHICONY=m
++CONFIG_HID_CP2112=m
 +CONFIG_HID_CYPRESS=m
 +CONFIG_HID_DRAGONRISE=m
 +CONFIG_HID_EMS_FF=m
@@ -68175,7 +68507,7 @@ diff --git a/drivers/char/hw_random/iproc-rng200.c b/drivers/char/hw_random/ipro
 diff --git a/drivers/char/random.c b/drivers/char/random.c
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
-@@ -867,6 +867,14 @@ void __init random_init_early(const char *command_line)
+@@ -857,6 +857,14 @@ void __init random_init_early(const char *command_line)
  	unsigned long entropy[BLAKE2S_BLOCK_SIZE / sizeof(long)];
  	size_t i, longs, arch_bits;
  
@@ -73690,7 +74022,7 @@ diff --git a/drivers/dma/bcm2835-dma.c b/drivers/dma/bcm2835-dma.c
  
  	/* detect a size mismatch */
  	if (buf_len && (d->size != buf_len))
-@@ -381,13 +627,12 @@ static struct bcm2835_desc *bcm2835_dma_create_cb_chain(
+@@ -381,13 +627,12 @@ error_cb:
  }
  
  static void bcm2835_dma_fill_cb_chain_with_sg(
@@ -74651,7 +74983,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	int i;
  
  	for (i = 0; i < count; i++)
-@@ -1094,11 +1209,11 @@ static noinline void axi_chan_handle_err(struct axi_dma_chan *chan, u32 status)
+@@ -1094,11 +1209,11 @@ out:
  
  static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
  {
@@ -78219,7 +78551,7 @@ diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_sh
  	}
  	if (ret) {
  		drm_gem_private_object_fini(obj);
-@@ -123,10 +124,31 @@ __drm_gem_shmem_create(struct drm_device *dev, size_t size, bool private)
+@@ -123,10 +124,31 @@ err_free:
   */
  struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev, size_t size)
  {
@@ -78371,7 +78703,23 @@ diff --git a/drivers/gpu/drm/msm/msm_atomic.c b/drivers/gpu/drm/msm/msm_atomic.c
 diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
 --- a/drivers/gpu/drm/panel/Kconfig
 +++ b/drivers/gpu/drm/panel/Kconfig
-@@ -223,6 +223,17 @@ config DRM_PANEL_ILITEK_ILI9806E
+@@ -185,6 +185,15 @@ config DRM_PANEL_HIMAX_HX8394
+ 
+ 	  If M is selected the module will be called panel-himax-hx8394.
+ 
++config DRM_PANEL_ILITEK_IL79600A
++	tristate "Ilitek ILI79960A-based panels"
++	depends on OF
++	depends on DRM_MIPI_DSI
++	depends on BACKLIGHT_CLASS_DEVICE
++	help
++	  Say Y if you want to enable support for panels based on the
++	  Ilitek ILI79960A controller.
++
+ config DRM_PANEL_ILITEK_IL9322
+ 	tristate "Ilitek ILI9322 320x240 QVGA panels"
+ 	depends on OF && SPI
+@@ -223,6 +232,17 @@ config DRM_PANEL_ILITEK_ILI9806E
  	  Say Y if you want to enable support for panels based on the
  	  Ilitek ILI9806E controller.
  
@@ -78389,7 +78737,7 @@ diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
  config DRM_PANEL_ILITEK_ILI9881C
  	tristate "Ilitek ILI9881C-based panels"
  	depends on OF
-@@ -909,6 +920,17 @@ config DRM_PANEL_TDO_TL070WSH30
+@@ -909,6 +929,17 @@ config DRM_PANEL_TDO_TL070WSH30
  	  24 bit RGB per pixel. It provides a MIPI DSI interface to
  	  the host, a built-in LED backlight and touch controller.
  
@@ -78407,7 +78755,7 @@ diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
  config DRM_PANEL_TPO_TD028TTEC1
  	tristate "Toppoly (TPO) TD028TTEC1 panel driver"
  	depends on OF && SPI
-@@ -969,6 +991,26 @@ config DRM_PANEL_VISIONOX_VTDR6130
+@@ -969,6 +1000,26 @@ config DRM_PANEL_VISIONOX_VTDR6130
  	  Say Y here if you want to enable support for Visionox
  	  VTDR6130 1080x2400 AMOLED DSI panel.
  
@@ -78437,7 +78785,12 @@ diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
 diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
 --- a/drivers/gpu/drm/panel/Makefile
 +++ b/drivers/gpu/drm/panel/Makefile
-@@ -23,6 +23,7 @@ obj-$(CONFIG_DRM_PANEL_ILITEK_IL9322) += panel-ilitek-ili9322.o
+@@ -19,10 +19,12 @@ obj-$(CONFIG_DRM_PANEL_FEIYANG_FY07024DI26A30D) += panel-feiyang-fy07024di26a30d
+ obj-$(CONFIG_DRM_PANEL_HIMAX_HX83102) += panel-himax-hx83102.o
+ obj-$(CONFIG_DRM_PANEL_HIMAX_HX83112A) += panel-himax-hx83112a.o
+ obj-$(CONFIG_DRM_PANEL_HIMAX_HX8394) += panel-himax-hx8394.o
++obj-$(CONFIG_DRM_PANEL_ILITEK_IL79600A) += panel-ilitek-ili79600a.o
+ obj-$(CONFIG_DRM_PANEL_ILITEK_IL9322) += panel-ilitek-ili9322.o
  obj-$(CONFIG_DRM_PANEL_ILITEK_ILI9341) += panel-ilitek-ili9341.o
  obj-$(CONFIG_DRM_PANEL_ILITEK_ILI9805) += panel-ilitek-ili9805.o
  obj-$(CONFIG_DRM_PANEL_ILITEK_ILI9806E) += panel-ilitek-ili9806e.o
@@ -78445,7 +78798,7 @@ diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
  obj-$(CONFIG_DRM_PANEL_ILITEK_ILI9881C) += panel-ilitek-ili9881c.o
  obj-$(CONFIG_DRM_PANEL_ILITEK_ILI9882T) += panel-ilitek-ili9882t.o
  obj-$(CONFIG_DRM_PANEL_INNOLUX_EJ030NA) += panel-innolux-ej030na.o
-@@ -91,6 +92,7 @@ obj-$(CONFIG_DRM_PANEL_SONY_TD4353_JDI) += panel-sony-td4353-jdi.o
+@@ -91,6 +93,7 @@ obj-$(CONFIG_DRM_PANEL_SONY_TD4353_JDI) += panel-sony-td4353-jdi.o
  obj-$(CONFIG_DRM_PANEL_SONY_TULIP_TRULY_NT35521) += panel-sony-tulip-truly-nt35521.o
  obj-$(CONFIG_DRM_PANEL_STARTEK_KD070FHFID015) += panel-startek-kd070fhfid015.o
  obj-$(CONFIG_DRM_PANEL_TDO_TL070WSH30) += panel-tdo-tl070wsh30.o
@@ -78453,7 +78806,7 @@ diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
  obj-$(CONFIG_DRM_PANEL_TPO_TD028TTEC1) += panel-tpo-td028ttec1.o
  obj-$(CONFIG_DRM_PANEL_TPO_TD043MTEA1) += panel-tpo-td043mtea1.o
  obj-$(CONFIG_DRM_PANEL_TPO_TPG110) += panel-tpo-tpg110.o
-@@ -98,5 +100,7 @@ obj-$(CONFIG_DRM_PANEL_TRULY_NT35597_WQXGA) += panel-truly-nt35597.o
+@@ -98,5 +101,7 @@ obj-$(CONFIG_DRM_PANEL_TRULY_NT35597_WQXGA) += panel-truly-nt35597.o
  obj-$(CONFIG_DRM_PANEL_VISIONOX_RM69299) += panel-visionox-rm69299.o
  obj-$(CONFIG_DRM_PANEL_VISIONOX_VTDR6130) += panel-visionox-vtdr6130.o
  obj-$(CONFIG_DRM_PANEL_VISIONOX_R66451) += panel-visionox-r66451.o
@@ -78461,6 +78814,478 @@ diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
 +obj-$(CONFIG_DRM_PANEL_WAVESHARE_TOUCHSCREEN_V2) += panel-waveshare-dsi-v2.o
  obj-$(CONFIG_DRM_PANEL_WIDECHIPS_WS2401) += panel-widechips-ws2401.o
  obj-$(CONFIG_DRM_PANEL_XINPENG_XPP055C272) += panel-xinpeng-xpp055c272.o
+diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili79600a.c b/drivers/gpu/drm/panel/panel-ilitek-ili79600a.c
+new file mode 100644
+--- /dev/null
++++ b/drivers/gpu/drm/panel/panel-ilitek-ili79600a.c
+@@ -0,0 +1,467 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2025, Raspberry Pi
++ */
++
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/errno.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/of.h>
++
++#include <linux/gpio/consumer.h>
++#include <linux/regulator/consumer.h>
++
++#include <drm/drm_mipi_dsi.h>
++#include <drm/drm_modes.h>
++#include <drm/drm_panel.h>
++
++#include <video/mipi_display.h>
++
++struct ili79600a;
++
++struct ili79600a_desc {
++	int (*init)(struct ili79600a *ili);
++	const struct drm_display_mode *mode;
++	const unsigned long mode_flags;
++	unsigned int lanes;
++};
++
++struct ili79600a {
++	struct drm_panel	panel;
++	struct mipi_dsi_device	*dsi;
++	const struct ili79600a_desc	*desc;
++
++	struct regulator	*power;
++	struct gpio_desc	*reset;
++
++	enum drm_panel_orientation	orientation;
++};
++
++static inline struct ili79600a *panel_to_ili79600a(struct drm_panel *panel)
++{
++	return container_of(panel, struct ili79600a, panel);
++}
++
++/*
++ * The panel seems to accept some private DCS commands that map
++ * directly to registers.
++ *
++ * It is organised by page, with each page having its own set of
++ * registers, and the first page looks like it's holding the standard
++ * DCS commands.
++ *
++ * So before any attempt at sending a command or data, we have to be
++ * sure if we're in the right page or not.
++ */
++#define ILI79600A_DCS_SWITCH_PAGE	0xFF
++#define ili79600a_switch_page(ctx, page) \
++	mipi_dsi_dcs_write_seq_multi(ctx, ILI79600A_DCS_SWITCH_PAGE, \
++				     0x5A, 0xA5, (page))
++
++static int rpi_10_1_inch_init(struct ili79600a *ili)
++{
++	struct mipi_dsi_multi_context ctx = { .dsi = ili->dsi };
++
++	ili79600a_switch_page(&ctx, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x00, 0x42);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x01, 0x11);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x02, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x03, 0x00);
++
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x04, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x05, 0x11);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x06, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x07, 0x00);
++
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x08, 0x80);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x09, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0a, 0x71);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0c, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0e, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0d, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0f, 0x00);
++
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x30, 0x07);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x31, 0x07);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x32, 0x07);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x33, 0x07);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x34, 0x07);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x35, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x36, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x37, 0x28);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x38, 0x29);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x39, 0x11);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3A, 0x13);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3B, 0x15);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3C, 0x17);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3D, 0x09);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3E, 0x0D);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3F, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x40, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x41, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x42, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x43, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x44, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x45, 0x02);
++
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x48, 0x07);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x49, 0x07);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x4A, 0x07);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x4B, 0x07);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x4C, 0x07);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x4D, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x4E, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x4F, 0x28);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x50, 0x29);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x51, 0x10);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x52, 0x12);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x53, 0x14);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x54, 0x16);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x55, 0x08);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x56, 0x0C);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x57, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x58, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x59, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5A, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5B, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5C, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5D, 0x02);
++
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x2C, 0xB0);
++
++	ili79600a_switch_page(&ctx, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x07, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x06, 0xD2);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x53, 0x1F);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5E, 0x40);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x84, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x29, 0x3A);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x2A, 0x3B);
++
++	ili79600a_switch_page(&ctx, 0x03);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x20, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x21, 0x3C);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x22, 0xFA);
++
++	ili79600a_switch_page(&ctx, 0x12);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x87, 0x2C);
++
++	ili79600a_switch_page(&ctx, 0x05);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x61, 0x8F);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x6D, 0xBB);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5A, 0x7C);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x67, 0x7C);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x54, 0x92);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x55, 0x92);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x40, 0xD2);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x46, 0x70);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x30, 0x47);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x7A, 0x89);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xA4, 0x0B);
++
++	ili79600a_switch_page(&ctx, 0x06);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xC0, 0x80);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xC1, 0x7);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xCA, 0x58);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xCB, 0x2);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xCE, 0x58);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xCF, 0x2);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x10, 0x0);
++
++	ili79600a_switch_page(&ctx, 0x0b);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x76, 0x55);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x78, 0x68);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x77, 0x0D);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x79, 0x60);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x7A, 0x10);
++
++	ili79600a_switch_page(&ctx, 0x08);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xE0, 0x00, 0x1E, 0x3F, 0x68, 0x7D,
++				     0x72, 0x86, 0x89, 0x92, 0x8E, 0xA5, 0xA8,
++				     0xAA, 0xBD, 0xB8, 0xBE, 0xC5, 0xD6, 0xCD,
++				     0xC3, 0xDA, 0xEB, 0xED);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xE1, 0x00, 0x1E, 0x3F, 0x68, 0x7D,
++				     0x72, 0x86, 0x89, 0x92, 0x8E, 0xA5, 0xA8,
++				     0xAA, 0xBD, 0xB8, 0xBE, 0xC5, 0xD6, 0xCD,
++				     0xC3, 0xDA, 0xEB, 0xED);
++
++	ili79600a_switch_page(&ctx, 0x14);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x85, 0xCC);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x87, 0x91);
++
++	ili79600a_switch_page(&ctx, 0x10);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x11, 0x3);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x12, 0x34);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x10, 0x1);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x13, 0x4);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x14, 0xBB);
++
++	ili79600a_switch_page(&ctx, 0x0b);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x94, 0x88);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x95, 0x23);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x96, 0x0B);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x97, 0x0B);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x98, 0xC6);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x99, 0xC6);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xA6, 0x47);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xA7, 0x77);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xA8, 0x5);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xA9, 0x5);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xAA, 0xBA);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xAB, 0xBA);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xBD, 0x92);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xBE, 0xE0);
++
++	ili79600a_switch_page(&ctx, 0x0e);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0, 0x80);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x14, 0x3);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x12, 0x0);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x13, 0x4);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x11, 0x1);
++
++	ili79600a_switch_page(&ctx, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x80, 0x11);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x82, 0x11);
++	ili79600a_switch_page(&ctx, 0x12);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x82, 0x2C);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x85, 0x2C);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x87, 0x2C);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x88, 0xEC);
++	ili79600a_switch_page(&ctx, 0x10);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x4, 0x1);
++	ili79600a_switch_page(&ctx, 0x11);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0C, 0x80);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3C, 0x80);
++
++	ili79600a_switch_page(&ctx, 0x06);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0E, 0x0);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0E, 0x3F);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x10, 0x0);
++
++	ili79600a_switch_page(&ctx, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, MIPI_DCS_SET_TEAR_ON, 0x0);
++
++	return ctx.accum_err;
++};
++
++static int ili79600a_prepare(struct drm_panel *panel)
++{
++	struct ili79600a *ili = panel_to_ili79600a(panel);
++	struct mipi_dsi_multi_context ctx = { .dsi = ili->dsi };
++	ktime_t reset_time, end;
++	s64 remaining;
++	int ret;
++
++	/* Power the panel */
++	ret = regulator_enable(ili->power);
++	if (ret)
++		return ret;
++	fsleep(20);
++
++	/* And reset it */
++	gpiod_set_value_cansleep(ili->reset, 1);
++	fsleep(20);
++
++	gpiod_set_value_cansleep(ili->reset, 0);
++	fsleep(20);
++
++	/* Software reset */
++	ili79600a_switch_page(&ctx, 0x00);
++
++	reset_time = ktime_get();
++	mipi_dsi_dcs_write(ili->dsi, MIPI_DCS_SOFT_RESET, NULL, 0);
++	/* Must wait 5ms from releasing RESX or s/w reset) before sending other
++	 * commands.
++	 */
++	fsleep(5);
++
++	ret = ili->desc->init(ili);
++	if (ret < 0)
++		return ret;
++
++	/* Minimum 120ms between exiting reset and EXIT_SLEEP_MODE */
++	end = ktime_add_us(reset_time, 120000);
++	remaining = ktime_us_delta(end, ktime_get());
++
++	if (remaining > 0)
++		usleep_range(remaining, remaining + 1000);
++
++	mipi_dsi_dcs_write_seq_multi(&ctx, MIPI_DCS_EXIT_SLEEP_MODE, 0x0);
++	mipi_dsi_msleep(&ctx, 100);
++
++	if (ctx.accum_err)
++		return ctx.accum_err;
++
++	ret = mipi_dsi_dcs_set_display_on(ili->dsi);
++
++	return ret;
++}
++
++static int ili79600a_unprepare(struct drm_panel *panel)
++{
++	struct ili79600a *ctx = panel_to_ili79600a(panel);
++
++	mipi_dsi_dcs_set_display_off(ctx->dsi);
++	mipi_dsi_dcs_enter_sleep_mode(ctx->dsi);
++
++	regulator_disable(ctx->power);
++	gpiod_set_value_cansleep(ctx->reset, 1);
++
++	return 0;
++}
++
++static const struct drm_display_mode rpi_10_1_inch_default_mode = {
++	.clock = 166666,
++
++	.hdisplay	= 1200,
++	.hsync_start	= 1200 + 28,
++	.hsync_end	= 1200 + 28 + 10,
++	.htotal		= 1200 + 28 + 10 + 30,
++
++	.vdisplay	= 1920,
++	.vsync_start	= 1920 + 238,
++	.vsync_end	= 1920 + 238 + 4,
++	.vtotal		= 1920 + 238 + 4 + 28,
++
++	.width_mm	= 135,
++	.height_mm	= 216,
++};
++
++static int ili79600a_get_modes(struct drm_panel *panel,
++			       struct drm_connector *connector)
++{
++	struct ili79600a *ctx = panel_to_ili79600a(panel);
++	struct drm_display_mode *mode;
++
++	mode = drm_mode_duplicate(connector->dev, ctx->desc->mode);
++	if (!mode) {
++		dev_err(&ctx->dsi->dev, "failed to add mode %ux%ux@%u\n",
++			ctx->desc->mode->hdisplay,
++			ctx->desc->mode->vdisplay,
++			drm_mode_vrefresh(ctx->desc->mode));
++		return -ENOMEM;
++	}
++
++	drm_mode_set_name(mode);
++
++	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
++	drm_mode_probed_add(connector, mode);
++
++	connector->display_info.width_mm = mode->width_mm;
++	connector->display_info.height_mm = mode->height_mm;
++
++	/*
++	 * TODO: Remove once all drm drivers call
++	 * drm_connector_set_orientation_from_panel()
++	 */
++	drm_connector_set_panel_orientation(connector, ctx->orientation);
++
++	return 1;
++}
++
++static enum drm_panel_orientation ili79600a_get_orientation(struct drm_panel *panel)
++{
++	struct ili79600a *ctx = panel_to_ili79600a(panel);
++
++	return ctx->orientation;
++}
++
++static const struct drm_panel_funcs ili79600a_funcs = {
++	.prepare	= ili79600a_prepare,
++	.unprepare	= ili79600a_unprepare,
++	.get_modes	= ili79600a_get_modes,
++	.get_orientation = ili79600a_get_orientation,
++};
++
++static int ili79600a_dsi_probe(struct mipi_dsi_device *dsi)
++{
++	struct ili79600a *ctx;
++	int ret;
++
++	ctx = devm_kzalloc(&dsi->dev, sizeof(*ctx), GFP_KERNEL);
++	if (!ctx)
++		return -ENOMEM;
++	mipi_dsi_set_drvdata(dsi, ctx);
++	ctx->dsi = dsi;
++	ctx->desc = of_device_get_match_data(&dsi->dev);
++
++	ctx->panel.prepare_prev_first = true;
++	drm_panel_init(&ctx->panel, &dsi->dev, &ili79600a_funcs,
++		       DRM_MODE_CONNECTOR_DSI);
++
++	ctx->power = devm_regulator_get(&dsi->dev, "power");
++	if (IS_ERR(ctx->power))
++		return dev_err_probe(&dsi->dev, PTR_ERR(ctx->power),
++				     "Couldn't get our power regulator\n");
++
++	ctx->reset = devm_gpiod_get_optional(&dsi->dev, "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(ctx->reset))
++		return dev_err_probe(&dsi->dev, PTR_ERR(ctx->reset),
++				     "Couldn't get our reset GPIO\n");
++
++	ret = of_drm_get_panel_orientation(dsi->dev.of_node, &ctx->orientation);
++	if (ret) {
++		dev_err(&dsi->dev, "%pOF: failed to get orientation: %d\n",
++			dsi->dev.of_node, ret);
++		return ret;
++	}
++
++	ctx->panel.prepare_prev_first = true;
++
++	ret = drm_panel_of_backlight(&ctx->panel);
++	if (ret)
++		return ret;
++
++	drm_panel_add(&ctx->panel);
++
++	dsi->mode_flags = ctx->desc->mode_flags;
++	dsi->format = MIPI_DSI_FMT_RGB888;
++	dsi->lanes = ctx->desc->lanes;
++
++	ret = mipi_dsi_attach(dsi);
++	if (ret)
++		drm_panel_remove(&ctx->panel);
++
++	return ret;
++}
++
++static void ili79600a_dsi_remove(struct mipi_dsi_device *dsi)
++{
++	struct ili79600a *ctx = mipi_dsi_get_drvdata(dsi);
++
++	mipi_dsi_detach(dsi);
++	drm_panel_remove(&ctx->panel);
++
++	gpiod_set_value_cansleep(ctx->reset, 1);
++	regulator_disable(ctx->power);
++}
++
++static const struct ili79600a_desc rpi_10_1_inch_desc = {
++	.init = rpi_10_1_inch_init,
++	.mode = &rpi_10_1_inch_default_mode,
++	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE,
++	.lanes = 4,
++};
++
++static const struct of_device_id ili79600a_of_match[] = {
++	{ .compatible = "raspberrypi,dsi-10-1inch", &rpi_10_1_inch_desc },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, ili79600a_of_match);
++
++static struct mipi_dsi_driver ili79600a_dsi_driver = {
++	.probe	= ili79600a_dsi_probe,
++	.remove	= ili79600a_dsi_remove,
++	.driver = {
++		.name		= "ili79600a-dsi",
++		.of_match_table	= ili79600a_of_match,
++	},
++};
++module_mipi_dsi_driver(ili79600a_dsi_driver);
++
++MODULE_AUTHOR("Dave Stevenson <dave.stevenson@raspberrypi.com>");
++MODULE_DESCRIPTION("Ilitek ILI79600a Controller Driver");
++MODULE_LICENSE("GPL");
 diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9806e-spi.c b/drivers/gpu/drm/panel/panel-ilitek-ili9806e-spi.c
 new file mode 100644
 --- /dev/null
@@ -80312,7 +81137,7 @@ diff --git a/drivers/gpu/drm/panel/panel-jdi-lt070me05000.c b/drivers/gpu/drm/pa
  	usleep_range(10, 20);
  
  	ret = jdi_panel_init(jdi);
-@@ -241,11 +241,11 @@ static int jdi_panel_prepare(struct drm_panel *panel)
+@@ -241,11 +241,11 @@ poweroff:
  	if (ret < 0)
  		dev_err(dev, "regulator disable failed, %d\n", ret);
  
@@ -91750,7 +92575,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  	mmu_debug = V3D_READ(V3D_MMU_DEBUG_INFO);
  	mask = DMA_BIT_MASK(30 + V3D_GET_FIELD(mmu_debug, V3D_MMU_PA_WIDTH));
  	ret = dma_set_mask_and_coherent(dev, mask);
-@@ -307,6 +382,11 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
+@@ -309,6 +384,11 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
  	ident1 = V3D_READ(V3D_HUB_IDENT1);
  	v3d->ver = (V3D_GET_FIELD(ident1, V3D_HUB_IDENT1_TVER) * 10 +
  		    V3D_GET_FIELD(ident1, V3D_HUB_IDENT1_REV));
@@ -91762,7 +92587,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  	v3d->cores = V3D_GET_FIELD(ident1, V3D_HUB_IDENT1_NCORES);
  	WARN_ON(v3d->cores > 1); /* multicore not yet implemented */
  
-@@ -331,7 +411,32 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
+@@ -333,7 +413,32 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
  		}
  	}
  
@@ -91796,7 +92621,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  		ret = map_regs(v3d, &v3d->gca_regs, "gca");
  		if (ret)
  			goto clk_disable;
-@@ -360,6 +465,8 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
+@@ -362,6 +467,8 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
  	ret = v3d_sysfs_init(dev);
  	if (ret)
  		goto drm_unregister;
@@ -91805,7 +92630,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  
  	return 0;
  
-@@ -391,6 +498,8 @@ static void v3d_platform_drm_remove(struct platform_device *pdev)
+@@ -393,6 +500,8 @@ static void v3d_platform_drm_remove(struct platform_device *pdev)
  	dma_free_wc(v3d->drm.dev, 4096, v3d->mmu_scratch,
  		    v3d->mmu_scratch_paddr);
  
@@ -92268,7 +93093,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
  
  	v3d_mmu_flush_all(v3d);
  
-@@ -79,6 +83,20 @@ v3d_overflow_mem_work(struct work_struct *work)
+@@ -79,6 +83,20 @@ out:
  	drm_gem_object_put(obj);
  }
  
@@ -92931,7 +93756,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
   * to v3d, so we don't attach dma-buf fences to them.
   */
  static int
-@@ -55,11 +97,11 @@ v3d_lock_bo_reservations(struct v3d_job *job,
+@@ -55,11 +97,11 @@ fail:
   * @bo_count: Number of GEM handles passed in
   *
   * The command validator needs to reference BOs by their index within
@@ -93041,7 +93866,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
  	if (ret) {
  		v3d_job_deallocate((void *)&cpu_job);
  		goto fail;
-@@ -1393,3 +1467,14 @@ v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
+@@ -1393,3 +1467,14 @@ fail:
  
  	return ret;
  }
@@ -95752,7 +96577,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_dsi.c b/drivers/gpu/drm/vc4/vc4_dsi.c
  
  	DSI_PORT_WRITE(TXPKT1C, DSI_PORT_READ(TXPKT1C) & ~DSI_TXPKT1C_CMD_EN);
  	udelay(1);
-@@ -1342,6 +1402,40 @@ static ssize_t vc4_dsi_host_transfer(struct mipi_dsi_host *host,
+@@ -1342,6 +1402,40 @@ reset_fifo_and_return:
  	return ret;
  }
  
@@ -98117,7 +98942,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
  		if (gpiod_get_value_cansleep(vc4_hdmi->hpd_gpio))
  			status = connector_status_connected;
  	} else {
-@@ -751,6 +772,24 @@ static int vc4_hdmi_write_infoframe(struct drm_connector *connector,
+@@ -751,6 +772,24 @@ out:
  	return ret;
  }
  
@@ -98417,7 +99242,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
  	    HDMI_READ(HDMI_VID_CTL) & VC4_HD_VID_CTL_ENABLE) {
  		clk_prepare_enable(vc4_hdmi->pixel_clock);
  		clk_prepare_enable(vc4_hdmi->hsm_clock);
-@@ -3314,8 +3427,16 @@ static int vc4_hdmi_bind(struct device *dev, struct device *master, void *data)
+@@ -3314,8 +3427,16 @@ err_put_runtime_pm:
  	return ret;
  }
  
@@ -100346,7 +101171,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
  		     SCALER_DISPSTATX_MODE_DISABLED);
  
  	WARN_ON_ONCE((HVS_READ(SCALER_DISPSTATX(chan)) &
-@@ -442,17 +1069,54 @@ void vc4_hvs_stop_channel(struct vc4_hvs *hvs, unsigned int chan)
+@@ -442,17 +1069,54 @@ out:
  	drm_dev_exit(idx);
  }
  
@@ -101829,7 +102654,38 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  } hvs_formats[] = {
  	{
  		.drm = DRM_FORMAT_XRGB8888,
-@@ -108,6 +110,20 @@ static const struct hvs_format {
+@@ -61,6 +63,30 @@ static const struct hvs_format {
+ 		.pixel_order = HVS_PIXEL_ORDER_ARGB,
+ 		.pixel_order_hvs5 = HVS_PIXEL_ORDER_ABGR,
+ 	},
++	{
++		.drm = DRM_FORMAT_RGBX8888,
++		.hvs = HVS_PIXEL_FORMAT_RGBA8888,
++		.pixel_order = HVS_PIXEL_ORDER_RGBA,
++		.pixel_order_hvs5 = HVS_PIXEL_ORDER_RGBA,
++	},
++	{
++		.drm = DRM_FORMAT_RGBA8888,
++		.hvs = HVS_PIXEL_FORMAT_RGBA8888,
++		.pixel_order = HVS_PIXEL_ORDER_RGBA,
++		.pixel_order_hvs5 = HVS_PIXEL_ORDER_RGBA,
++	},
++	{
++		.drm = DRM_FORMAT_BGRX8888,
++		.hvs = HVS_PIXEL_FORMAT_RGBA8888,
++		.pixel_order = HVS_PIXEL_ORDER_BGRA,
++		.pixel_order_hvs5 = HVS_PIXEL_ORDER_BGRA,
++	},
++	{
++		.drm = DRM_FORMAT_BGRA8888,
++		.hvs = HVS_PIXEL_FORMAT_RGBA8888,
++		.pixel_order = HVS_PIXEL_ORDER_BGRA,
++		.pixel_order_hvs5 = HVS_PIXEL_ORDER_BGRA,
++	},
+ 	{
+ 		.drm = DRM_FORMAT_RGB565,
+ 		.hvs = HVS_PIXEL_FORMAT_RGB565,
+@@ -108,6 +134,20 @@ static const struct hvs_format {
  		.hvs = HVS_PIXEL_FORMAT_YCBCR_YUV422_3PLANE,
  		.pixel_order = HVS_PIXEL_ORDER_XYCRCB,
  		.pixel_order_hvs5 = HVS_PIXEL_ORDER_XYCRCB,
@@ -101850,7 +102706,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	},
  	{
  		.drm = DRM_FORMAT_YUV420,
-@@ -120,6 +136,7 @@ static const struct hvs_format {
+@@ -120,6 +160,7 @@ static const struct hvs_format {
  		.hvs = HVS_PIXEL_FORMAT_YCBCR_YUV420_3PLANE,
  		.pixel_order = HVS_PIXEL_ORDER_XYCRCB,
  		.pixel_order_hvs5 = HVS_PIXEL_ORDER_XYCRCB,
@@ -101858,7 +102714,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	},
  	{
  		.drm = DRM_FORMAT_NV12,
-@@ -235,6 +252,42 @@ static const struct hvs_format {
+@@ -235,6 +276,42 @@ static const struct hvs_format {
  		.pixel_order = HVS_PIXEL_ORDER_BGRA,
  		.pixel_order_hvs5 = HVS_PIXEL_ORDER_RGBA,
  	},
@@ -101901,7 +102757,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  };
  
  static const struct hvs_format *vc4_get_hvs_format(u32 drm_format)
-@@ -251,9 +304,13 @@ static const struct hvs_format *vc4_get_hvs_format(u32 drm_format)
+@@ -251,9 +328,13 @@ static const struct hvs_format *vc4_get_hvs_format(u32 drm_format)
  
  static enum vc4_scaling_mode vc4_get_scaling_mode(u32 src, u32 dst)
  {
@@ -101917,7 +102773,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  		return VC4_SCALING_PPF;
  	else
  		return VC4_SCALING_TPZ;
-@@ -264,9 +321,12 @@ static bool plane_enabled(struct drm_plane_state *state)
+@@ -264,9 +345,12 @@ static bool plane_enabled(struct drm_plane_state *state)
  	return state->fb && !WARN_ON(!state->crtc);
  }
  
@@ -101931,7 +102787,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  	if (WARN_ON(!plane->state))
  		return NULL;
-@@ -275,8 +335,15 @@ static struct drm_plane_state *vc4_plane_duplicate_state(struct drm_plane *plane
+@@ -275,8 +359,15 @@ static struct drm_plane_state *vc4_plane_duplicate_state(struct drm_plane *plane
  	if (!vc4_state)
  		return NULL;
  
@@ -101948,7 +102804,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  	__drm_atomic_helper_plane_duplicate_state(plane, &vc4_state->base);
  
-@@ -294,18 +361,63 @@ static struct drm_plane_state *vc4_plane_duplicate_state(struct drm_plane *plane
+@@ -294,18 +385,63 @@ static struct drm_plane_state *vc4_plane_duplicate_state(struct drm_plane *plane
  	return &vc4_state->base;
  }
  
@@ -101996,10 +102852,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
 -		unsigned long irqflags;
 +	if (vc4_state->lbm_handle) {
 +		struct vc4_lbm_refcounts *refcount;
- 
--		spin_lock_irqsave(&vc4->hvs->mm_lock, irqflags);
--		drm_mm_remove_node(&vc4_state->lbm);
--		spin_unlock_irqrestore(&vc4->hvs->mm_lock, irqflags);
++
 +		refcount = &hvs->lbm_refcounts[vc4_state->lbm_handle];
 +
 +		if (refcount_dec_and_test(&refcount->refcount))
@@ -102008,7 +102861,10 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
 +
 +	for (i = 0; i < DRM_FORMAT_MAX_PLANES; i++) {
 +		struct vc4_upm_refcounts *refcount;
-+
+ 
+-		spin_lock_irqsave(&vc4->hvs->mm_lock, irqflags);
+-		drm_mm_remove_node(&vc4_state->lbm);
+-		spin_unlock_irqrestore(&vc4->hvs->mm_lock, irqflags);
 +		if (!vc4_state->upm_handle[i])
 +			continue;
 +
@@ -102019,7 +102875,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	}
  
  	kfree(vc4_state->dlist);
-@@ -314,7 +426,7 @@ static void vc4_plane_destroy_state(struct drm_plane *plane,
+@@ -314,7 +450,7 @@ static void vc4_plane_destroy_state(struct drm_plane *plane,
  }
  
  /* Called during init to allocate the plane's atomic state. */
@@ -102028,7 +102884,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  {
  	struct vc4_plane_state *vc4_state;
  
-@@ -438,12 +550,11 @@ static int vc4_plane_setup_clipping_and_scaling(struct drm_plane_state *state)
+@@ -438,12 +574,11 @@ static int vc4_plane_setup_clipping_and_scaling(struct drm_plane_state *state)
  {
  	struct vc4_plane_state *vc4_state = to_vc4_plane_state(state);
  	struct drm_framebuffer *fb = state->fb;
@@ -102042,7 +102898,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  	crtc_state = drm_atomic_get_existing_crtc_state(state->state,
  							state->crtc);
-@@ -457,20 +568,10 @@ static int vc4_plane_setup_clipping_and_scaling(struct drm_plane_state *state)
+@@ -457,20 +592,10 @@ static int vc4_plane_setup_clipping_and_scaling(struct drm_plane_state *state)
  	if (ret)
  		return ret;
  
@@ -102067,7 +102923,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  	vc4_state->crtc_x = state->dst.x1;
  	vc4_state->crtc_y = state->dst.y1;
-@@ -510,6 +611,12 @@ static int vc4_plane_setup_clipping_and_scaling(struct drm_plane_state *state)
+@@ -510,6 +635,12 @@ static int vc4_plane_setup_clipping_and_scaling(struct drm_plane_state *state)
  		 */
  		if (vc4_state->x_scaling[1] == VC4_SCALING_NONE)
  			vc4_state->x_scaling[1] = VC4_SCALING_PPF;
@@ -102080,7 +102936,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	} else {
  		vc4_state->is_yuv = false;
  		vc4_state->x_scaling[1] = VC4_SCALING_NONE;
-@@ -521,33 +628,104 @@ static int vc4_plane_setup_clipping_and_scaling(struct drm_plane_state *state)
+@@ -521,33 +652,104 @@ static int vc4_plane_setup_clipping_and_scaling(struct drm_plane_state *state)
  
  static void vc4_write_tpz(struct vc4_plane_state *vc4_state, u32 src, u32 dst)
  {
@@ -102194,7 +103050,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  {
  	struct vc4_plane_state *vc4_state = to_vc4_plane_state(state);
  	struct vc4_dev *vc4 = to_vc4_dev(state->plane->dev);
-@@ -569,7 +747,7 @@ static u32 vc4_lbm_size(struct drm_plane_state *state)
+@@ -569,7 +771,7 @@ static u32 vc4_lbm_size(struct drm_plane_state *state)
  	if (vc4_state->x_scaling[0] == VC4_SCALING_TPZ)
  		pix_per_line = vc4_state->crtc_w;
  	else
@@ -102203,7 +103059,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  	if (!vc4_state->is_yuv) {
  		if (vc4_state->y_scaling[0] == VC4_SCALING_TPZ)
-@@ -595,34 +773,170 @@ static u32 vc4_lbm_size(struct drm_plane_state *state)
+@@ -595,34 +797,170 @@ static u32 vc4_lbm_size(struct drm_plane_state *state)
  	return lbm;
  }
  
@@ -102382,7 +103238,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  		vc4_dlist_write(vc4_state, 0xc0c0c0c0);
  	}
  }
-@@ -660,7 +974,8 @@ static void vc4_plane_calc_load(struct drm_plane_state *state)
+@@ -660,7 +998,8 @@ static void vc4_plane_calc_load(struct drm_plane_state *state)
  	for (i = 0; i < fb->format->num_planes; i++) {
  		/* Even if the bandwidth/plane required for a single frame is
  		 *
@@ -102392,7 +103248,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  		 *
  		 * when downscaling, we have to read more pixels per line in
  		 * the time frame reserved for a single line, so the bandwidth
-@@ -669,11 +984,11 @@ static void vc4_plane_calc_load(struct drm_plane_state *state)
+@@ -669,11 +1008,11 @@ static void vc4_plane_calc_load(struct drm_plane_state *state)
  		 * load by this number. We're likely over-estimating the read
  		 * demand, but that's better than under-estimating it.
  		 */
@@ -102408,7 +103264,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  		vc4_state->hvs_load += vc4_state->crtc_h * vc4_state->crtc_w;
  	}
  
-@@ -684,43 +999,206 @@ static void vc4_plane_calc_load(struct drm_plane_state *state)
+@@ -684,43 +1023,206 @@ static void vc4_plane_calc_load(struct drm_plane_state *state)
  
  static int vc4_plane_allocate_lbm(struct drm_plane_state *state)
  {
@@ -102627,7 +103483,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  /*
   * The colorspace conversion matrices are held in 3 entries in the dlist.
   * Create an array of them, with entries for each full and limited mode, and
-@@ -768,6 +1246,11 @@ static const u32 colorspace_coeffs[2][DRM_COLOR_ENCODING_MAX][3] = {
+@@ -768,6 +1270,11 @@ static const u32 colorspace_coeffs[2][DRM_COLOR_ENCODING_MAX][3] = {
  
  static u32 vc4_hvs4_get_alpha_blend_mode(struct drm_plane_state *state)
  {
@@ -102639,7 +103495,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	if (!state->fb->format->has_alpha)
  		return VC4_SET_FIELD(SCALER_POS2_ALPHA_MODE_FIXED,
  				     SCALER_POS2_ALPHA_MODE);
-@@ -789,25 +1272,56 @@ static u32 vc4_hvs4_get_alpha_blend_mode(struct drm_plane_state *state)
+@@ -789,25 +1296,56 @@ static u32 vc4_hvs4_get_alpha_blend_mode(struct drm_plane_state *state)
  
  static u32 vc4_hvs5_get_alpha_blend_mode(struct drm_plane_state *state)
  {
@@ -102710,7 +103566,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  /* Writes out a full display list for an active plane to the plane's
   * private dlist state.
   */
-@@ -825,10 +1339,12 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -825,10 +1363,12 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  	u32 v_subsample = fb->format->vsub;
  	bool mix_plane_alpha;
  	bool covers_screen;
@@ -102725,7 +103581,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	int ret, i;
  
  	if (vc4_state->dlist_initialized)
-@@ -838,6 +1354,16 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -838,6 +1378,16 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  	if (ret)
  		return ret;
  
@@ -102742,7 +103598,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	/* SCL1 is used for Cb/Cr scaling of planar formats.  For RGB
  	 * and 4:4:4, scl1 should be set to scl0 so both channels of
  	 * the scaler do the same thing.  For YUV, the Y plane needs
-@@ -858,26 +1384,23 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -858,26 +1408,23 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  					 DRM_MODE_REFLECT_Y);
  
  	/* We must point to the last line when Y reflection is enabled. */
@@ -102776,7 +103632,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  		}
  
  		break;
-@@ -898,7 +1421,7 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -898,7 +1445,7 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  		 *	pitch * tile_h == tile_size * tiles_per_row
  		 */
  		u32 tiles_w = fb->pitches[0] >> (tile_size_shift - tile_h_shift);
@@ -102785,7 +103641,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  		u32 tiles_r = tiles_w - tiles_l;
  		u32 tiles_t = src_y >> tile_h_shift;
  		/* Intra-tile offsets, which modify the base address (the
-@@ -908,7 +1431,7 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -908,7 +1455,7 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  		u32 tile_y = (src_y >> 4) & 1;
  		u32 subtile_y = (src_y >> 2) & 3;
  		u32 utile_y = src_y & 3;
@@ -102794,7 +103650,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  		u32 y_off = src_y & tile_h_mask;
  
  		/* When Y reflection is requested we must set the
-@@ -922,29 +1445,28 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -922,29 +1469,28 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  		 */
  		if (rotation & DRM_MODE_REFLECT_Y) {
  			y_off = tile_h_mask - y_off;
@@ -102838,7 +103694,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  		}
  
  		break;
-@@ -954,6 +1476,7 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -954,6 +1500,7 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  	case DRM_FORMAT_MOD_BROADCOM_SAND128:
  	case DRM_FORMAT_MOD_BROADCOM_SAND256: {
  		uint32_t param = fourcc_mod_broadcom_param(fb->modifier);
@@ -102846,7 +103702,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  		if (param > SCALER_TILE_HEIGHT_MASK) {
  			DRM_DEBUG_KMS("SAND height too large (%d)\n",
-@@ -964,18 +1487,22 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -964,18 +1511,22 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  		if (fb->format->format == DRM_FORMAT_P030) {
  			hvs_format = HVS_PIXEL_FORMAT_YCBCR_10BIT;
  			tiling = SCALER_CTL0_TILING_128B;
@@ -102869,13 +103725,17 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  				break;
  			default:
  				return -EINVAL;
-@@ -993,7 +1520,16 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -993,54 +1544,45 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  		 * should be 6.
  		 */
  		for (i = 0; i < num_planes; i++) {
 -			u32 tile_w, tile, x_off, pix_per_tile;
 +			u32 tile, x_off, pix_per_tile;
-+
+ 
+-			if (fb->format->format == DRM_FORMAT_P030) {
+-				/*
+-				 * Spec says: bits [31:4] of the given address
+-				 * should point to the 128-bit word containing
 +			switch (param) {
 +			case 0:
 +				pitch[i] = fb->pitches[i];
@@ -102884,10 +103744,13 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
 +				pitch[i] = VC4_SET_FIELD(param, SCALER_TILE_HEIGHT);
 +				break;
 +			}
- 
- 			if (fb->format->format == DRM_FORMAT_P030) {
- 				/*
-@@ -1004,43 +1540,25 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
++
++			if (fb->format->format == DRM_FORMAT_P030) {
++				/*
++				 * Spec says: bits [31:4] of the given address
++				 * should point to the 128-bit word containing
+ 				 * the desired starting pixel, and bits[3:0]
+ 				 * should be between 0 and 11, indicating which
  				 * of the 12-pixels in that 128-bit word is the
  				 * first pixel to be used
  				 */
@@ -102938,7 +103801,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  		break;
  	}
  
-@@ -1050,6 +1568,30 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -1050,6 +1592,30 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  		return -EINVAL;
  	}
  
@@ -102969,7 +103832,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	/* Don't waste cycles mixing with plane alpha if the set alpha
  	 * is opaque or there is no per-pixel alpha information.
  	 * In any case we use the alpha property value as the fixed alpha.
-@@ -1092,10 +1634,8 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -1092,10 +1658,8 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  		vc4_dlist_write(vc4_state,
  				(mix_plane_alpha ? SCALER_POS2_ALPHA_MIX : 0) |
  				vc4_hvs4_get_alpha_blend_mode(state) |
@@ -102982,7 +103845,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  		/* Position Word 3: Context.  Written by the HVS. */
  		vc4_dlist_write(vc4_state, 0xc0c0c0c0);
-@@ -1148,10 +1688,8 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -1148,10 +1712,8 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  		/* Position Word 2: Source Image Size */
  		vc4_state->pos2_offset = vc4_state->dlist_count;
  		vc4_dlist_write(vc4_state,
@@ -102995,7 +103858,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  		/* Position Word 3: Context.  Written by the HVS. */
  		vc4_dlist_write(vc4_state, 0xc0c0c0c0);
-@@ -1162,16 +1700,20 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -1162,16 +1724,20 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  	 *
  	 * The pointers may be any byte address.
  	 */
@@ -103020,7 +103883,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  	/* Pitch word 1/2 */
  	for (i = 1; i < num_planes; i++) {
-@@ -1181,7 +1723,7 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -1181,7 +1747,7 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  					VC4_SET_FIELD(fb->pitches[i],
  						      SCALER_SRC_PITCH));
  		} else {
@@ -103029,7 +103892,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  		}
  	}
  
-@@ -1234,7 +1776,18 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -1234,7 +1800,18 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  		    vc4_state->y_scaling[0] == VC4_SCALING_PPF ||
  		    vc4_state->x_scaling[1] == VC4_SCALING_PPF ||
  		    vc4_state->y_scaling[1] == VC4_SCALING_PPF) {
@@ -103049,12 +103912,10 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  						   SCALER_PPF_KERNEL_OFFSET);
  
  			/* HPPF plane 0 */
-@@ -1274,16 +1827,493 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
+@@ -1274,6 +1851,482 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
  	return 0;
  }
  
--/* If a modeset involves changing the setup of a plane, the atomic
-- * infrastructure will call this to validate a proposed plane setup.
 +static u32 vc6_plane_get_csc_mode(struct vc4_plane_state *vc4_state)
 +{
 +	struct drm_plane_state *state = &vc4_state->base;
@@ -103531,10 +104392,10 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
 +	return 0;
 +}
 +
-+/* If a modeset involves changing the setup of a plane, the atomic
-+ * infrastructure will call this to validate a proposed plane setup.
+ /* If a modeset involves changing the setup of a plane, the atomic
+  * infrastructure will call this to validate a proposed plane setup.
   * However, if a plane isn't getting updated, this (and the
-  * corresponding vc4_plane_atomic_update) won't get called.  Thus, we
+@@ -1281,9 +2334,10 @@ static int vc4_plane_mode_set(struct drm_plane *plane,
   * compute the dlist here and have all active plane dlists get updated
   * in the CRTC's flush.
   */
@@ -103547,7 +104408,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	struct drm_plane_state *new_plane_state = drm_atomic_get_new_plane_state(state,
  										 plane);
  	struct vc4_plane_state *vc4_state = to_vc4_plane_state(new_plane_state);
-@@ -1291,14 +2321,40 @@ static int vc4_plane_atomic_check(struct drm_plane *plane,
+@@ -1291,14 +2345,40 @@ static int vc4_plane_atomic_check(struct drm_plane *plane,
  
  	vc4_state->dlist_count = 0;
  
@@ -103591,7 +104452,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  }
  
  static void vc4_plane_atomic_update(struct drm_plane *plane,
-@@ -1344,31 +2400,62 @@ u32 vc4_plane_dlist_size(const struct drm_plane_state *state)
+@@ -1344,31 +2424,62 @@ u32 vc4_plane_dlist_size(const struct drm_plane_state *state)
   */
  void vc4_plane_async_set_fb(struct drm_plane *plane, struct drm_framebuffer *fb)
  {
@@ -103667,7 +104528,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  	drm_dev_exit(idx);
  }
-@@ -1423,8 +2510,6 @@ static void vc4_plane_atomic_async_update(struct drm_plane *plane,
+@@ -1423,8 +2534,6 @@ static void vc4_plane_atomic_async_update(struct drm_plane *plane,
  	       sizeof(vc4_state->y_scaling));
  	vc4_state->is_unity = new_vc4_state->is_unity;
  	vc4_state->is_yuv = new_vc4_state->is_yuv;
@@ -103676,7 +104537,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	vc4_state->needs_bg_fill = new_vc4_state->needs_bg_fill;
  
  	/* Update the current vc4_state pos0, pos2 and ptr0 dlist entries. */
-@@ -1432,8 +2517,8 @@ static void vc4_plane_atomic_async_update(struct drm_plane *plane,
+@@ -1432,8 +2541,8 @@ static void vc4_plane_atomic_async_update(struct drm_plane *plane,
  		new_vc4_state->dlist[vc4_state->pos0_offset];
  	vc4_state->dlist[vc4_state->pos2_offset] =
  		new_vc4_state->dlist[vc4_state->pos2_offset];
@@ -103687,7 +104548,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  	/* Note that we can't just call vc4_plane_write_dlist()
  	 * because that would smash the context data that the HVS is
-@@ -1443,8 +2528,8 @@ static void vc4_plane_atomic_async_update(struct drm_plane *plane,
+@@ -1443,8 +2552,8 @@ static void vc4_plane_atomic_async_update(struct drm_plane *plane,
  	       &vc4_state->hw_dlist[vc4_state->pos0_offset]);
  	writel(vc4_state->dlist[vc4_state->pos2_offset],
  	       &vc4_state->hw_dlist[vc4_state->pos2_offset]);
@@ -103698,7 +104559,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  	drm_dev_exit(idx);
  }
-@@ -1452,13 +2537,17 @@ static void vc4_plane_atomic_async_update(struct drm_plane *plane,
+@@ -1452,13 +2561,17 @@ static void vc4_plane_atomic_async_update(struct drm_plane *plane,
  static int vc4_plane_atomic_async_check(struct drm_plane *plane,
  					struct drm_atomic_state *state)
  {
@@ -103717,7 +104578,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	if (ret)
  		return ret;
  
-@@ -1471,7 +2560,7 @@ static int vc4_plane_atomic_async_check(struct drm_plane *plane,
+@@ -1471,7 +2584,7 @@ static int vc4_plane_atomic_async_check(struct drm_plane *plane,
  	if (old_vc4_state->dlist_count != new_vc4_state->dlist_count ||
  	    old_vc4_state->pos0_offset != new_vc4_state->pos0_offset ||
  	    old_vc4_state->pos2_offset != new_vc4_state->pos2_offset ||
@@ -103726,7 +104587,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	    vc4_lbm_size(plane->state) != vc4_lbm_size(new_plane_state))
  		return -EINVAL;
  
-@@ -1481,7 +2570,7 @@ static int vc4_plane_atomic_async_check(struct drm_plane *plane,
+@@ -1481,7 +2594,7 @@ static int vc4_plane_atomic_async_check(struct drm_plane *plane,
  	for (i = 0; i < new_vc4_state->dlist_count; i++) {
  		if (i == new_vc4_state->pos0_offset ||
  		    i == new_vc4_state->pos2_offset ||
@@ -103735,7 +104596,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  		    (new_vc4_state->lbm_offset &&
  		     i == new_vc4_state->lbm_offset))
  			continue;
-@@ -1598,6 +2687,12 @@ static bool vc4_format_mod_supported(struct drm_plane *plane,
+@@ -1598,6 +2711,12 @@ static bool vc4_format_mod_supported(struct drm_plane *plane,
  	case DRM_FORMAT_YVU420:
  	case DRM_FORMAT_NV16:
  	case DRM_FORMAT_NV61:
@@ -103748,7 +104609,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	default:
  		return (modifier == DRM_FORMAT_MOD_LINEAR);
  	}
-@@ -1624,18 +2719,21 @@ struct drm_plane *vc4_plane_init(struct drm_device *dev,
+@@ -1624,18 +2743,21 @@ struct drm_plane *vc4_plane_init(struct drm_device *dev,
  	unsigned i;
  	static const uint64_t modifiers[] = {
  		DRM_FORMAT_MOD_BROADCOM_VC4_T_TILED,
@@ -103777,7 +104638,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	}
  
  	vc4_plane = drmm_universal_plane_alloc(dev, struct vc4_plane, base,
-@@ -1647,7 +2745,7 @@ struct drm_plane *vc4_plane_init(struct drm_device *dev,
+@@ -1647,7 +2769,7 @@ struct drm_plane *vc4_plane_init(struct drm_device *dev,
  		return ERR_CAST(vc4_plane);
  	plane = &vc4_plane->base;
  
@@ -103786,7 +104647,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  		drm_plane_helper_add(plane, &vc5_plane_helper_funcs);
  	else
  		drm_plane_helper_add(plane, &vc4_plane_helper_funcs);
-@@ -1672,6 +2770,12 @@ struct drm_plane *vc4_plane_init(struct drm_device *dev,
+@@ -1672,6 +2794,12 @@ struct drm_plane *vc4_plane_init(struct drm_device *dev,
  					  DRM_COLOR_YCBCR_BT709,
  					  DRM_COLOR_YCBCR_LIMITED_RANGE);
  
@@ -103799,7 +104660,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  	if (type == DRM_PLANE_TYPE_PRIMARY)
  		drm_plane_create_zpos_immutable_property(plane, 0);
  
-@@ -1679,12 +2783,27 @@ struct drm_plane *vc4_plane_init(struct drm_device *dev,
+@@ -1679,12 +2807,27 @@ struct drm_plane *vc4_plane_init(struct drm_device *dev,
  }
  
  #define VC4_NUM_OVERLAY_PLANES	16
@@ -103827,7 +104688,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
  
  	/* Set up some arbitrary number of planes.  We're not limited
  	 * by a set number of physical registers, just the space in
-@@ -1698,7 +2817,22 @@ int vc4_plane_create_additional_planes(struct drm_device *drm)
+@@ -1698,7 +2841,22 @@ int vc4_plane_create_additional_planes(struct drm_device *drm)
  	for (i = 0; i < VC4_NUM_OVERLAY_PLANES; i++) {
  		struct drm_plane *plane =
  			vc4_plane_init(drm, DRM_PLANE_TYPE_OVERLAY,
@@ -105028,7 +105889,7 @@ diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
  #define USB_VENDOR_ID_BELKIN		0x050d
  #define USB_DEVICE_ID_FLIP_KVM		0x3201
  
-@@ -1475,6 +1478,9 @@
+@@ -1479,6 +1482,9 @@
  #define USB_VENDOR_ID_XIAOMI		0x2717
  #define USB_DEVICE_ID_MI_SILENT_MOUSE	0x5014
  
@@ -107256,6 +108117,40 @@ diff --git a/drivers/input/joystick/sensehat-joystick.c b/drivers/input/joystick
  };
  
  static irqreturn_t sensehat_joystick_report(int irq, void *cookie)
+diff --git a/drivers/input/touchscreen/Kconfig b/drivers/input/touchscreen/Kconfig
+--- a/drivers/input/touchscreen/Kconfig
++++ b/drivers/input/touchscreen/Kconfig
+@@ -479,6 +479,19 @@ config TOUCHSCREEN_ILITEK
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called ilitek_ts_i2c.
+ 
++config TOUCHSCREEN_ILITEK_V3
++	tristate "Ilitek I2C ILI79600 Series Touch ICs"
++	depends on I2C
++	help
++	  Say Y here if you have touchscreen with ILITEK "V3" touch IC,
++	  it supports 79600 and similar over I2C (the IC also supports
++	  SPI)
++
++	  If unsure, say N.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called ilitek_v3_ts_i2c.
++
+ config TOUCHSCREEN_IPROC
+ 	tristate "IPROC touch panel driver support"
+ 	depends on ARCH_BCM_IPROC || COMPILE_TEST
+diff --git a/drivers/input/touchscreen/Makefile b/drivers/input/touchscreen/Makefile
+--- a/drivers/input/touchscreen/Makefile
++++ b/drivers/input/touchscreen/Makefile
+@@ -51,6 +51,7 @@ obj-$(CONFIG_TOUCHSCREEN_HIDEEP)	+= hideep.o
+ obj-$(CONFIG_TOUCHSCREEN_HYNITRON_CSTXXX)	+= hynitron_cstxxx.o
+ obj-$(CONFIG_TOUCHSCREEN_ILI210X)	+= ili210x.o
+ obj-$(CONFIG_TOUCHSCREEN_ILITEK)	+= ilitek_ts_i2c.o
++obj-$(CONFIG_TOUCHSCREEN_ILITEK_V3)	+= ilitek_v3_ts_i2c.o
+ obj-$(CONFIG_TOUCHSCREEN_IMAGIS)	+= imagis.o
+ obj-$(CONFIG_TOUCHSCREEN_IMX6UL_TSC)	+= imx6ul_tsc.o
+ obj-$(CONFIG_TOUCHSCREEN_INEXIO)	+= inexio.o
 diff --git a/drivers/input/touchscreen/edt-ft5x06.c b/drivers/input/touchscreen/edt-ft5x06.c
 --- a/drivers/input/touchscreen/edt-ft5x06.c
 +++ b/drivers/input/touchscreen/edt-ft5x06.c
@@ -107378,7 +108273,7 @@ diff --git a/drivers/input/touchscreen/edt-ft5x06.c b/drivers/input/touchscreen/
  	input_mt_report_pointer_emulation(tsdata->input, true);
  	input_sync(tsdata->input);
  
-@@ -347,6 +404,22 @@ static irqreturn_t edt_ft5x06_ts_isr(int irq, void *dev_id)
+@@ -347,6 +404,22 @@ out:
  	return IRQ_HANDLED;
  }
  
@@ -107498,112 +108393,102 @@ diff --git a/drivers/input/touchscreen/edt-ft5x06.c b/drivers/input/touchscreen/
 diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/goodix.c
 --- a/drivers/input/touchscreen/goodix.c
 +++ b/drivers/input/touchscreen/goodix.c
-@@ -48,6 +48,8 @@
- #define MAX_CONTACTS_LOC	5
- #define TRIGGER_LOC		6
+@@ -44,9 +44,11 @@
+ #define GOODIX_HAVE_KEY			BIT(4)
+ #define GOODIX_BUFFER_STATUS_TIMEOUT	20
  
-+#define POLL_INTERVAL_MS		17	/* 17ms = 60fps */
+-#define RESOLUTION_LOC		1
+-#define MAX_CONTACTS_LOC	5
+-#define TRIGGER_LOC		6
++#define RESOLUTION_LOC			1
++#define MAX_CONTACTS_LOC		5
++#define TRIGGER_LOC			6
 +
++#define GOODIX_POLL_INTERVAL_MS		17	/* 17ms = 60fps */
+ 
  /* Our special handling for GPIO accesses through ACPI is x86 specific */
  #if defined CONFIG_X86 && defined CONFIG_ACPI
- #define ACPI_GPIO_SUPPORT
-@@ -513,16 +515,67 @@ static irqreturn_t goodix_ts_irq_handler(int irq, void *dev_id)
- 	return IRQ_HANDLED;
+@@ -297,6 +299,14 @@ static int goodix_ts_read_input_report(struct goodix_ts_data *ts, u8 *data)
+ 				return 0;
+ 		}
+ 
++		if (!ts->client->irq)
++			/*
++			 * No point in retrying if polling, particularly as some
++			 * versions continuously report "not ready" if there are
++			 * no touch points.
++			 */
++			break;
++
+ 		usleep_range(1000, 2000); /* Poll every 1 - 2 ms */
+ 	} while (time_before(jiffies, max_timeout));
+ 
+@@ -497,6 +507,14 @@ sync:
+ 	input_sync(ts->input_dev);
  }
  
-+static void goodix_ts_irq_poll_timer(struct timer_list *t)
++static void goodix_ts_work_i2c_poll(struct input_dev *input)
 +{
-+	struct goodix_ts_data *ts = from_timer(ts, t, timer);
-+
-+	schedule_work(&ts->work_i2c_poll);
-+	mod_timer(&ts->timer, jiffies + msecs_to_jiffies(POLL_INTERVAL_MS));
-+}
-+
-+static void goodix_ts_work_i2c_poll(struct work_struct *work)
-+{
-+	struct goodix_ts_data *ts = container_of(work,
-+			struct goodix_ts_data, work_i2c_poll);
++	struct goodix_ts_data *ts = input_get_drvdata(input);
 +
 +	goodix_process_events(ts);
 +	goodix_i2c_write_u8(ts->client, GOODIX_READ_COOR_ADDR, 0);
 +}
 +
+ /**
+  * goodix_ts_irq_handler - The IRQ handler
+  *
+@@ -513,13 +531,29 @@ static irqreturn_t goodix_ts_irq_handler(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
 +static void goodix_enable_irq(struct goodix_ts_data *ts)
 +{
-+	if (ts->client->irq) {
++	if (ts->client->irq)
 +		enable_irq(ts->client->irq);
-+	} else {
-+		ts->timer.expires = jiffies + msecs_to_jiffies(POLL_INTERVAL_MS);
-+		add_timer(&ts->timer);
-+	}
 +}
 +
 +static void goodix_disable_irq(struct goodix_ts_data *ts)
 +{
-+	if (ts->client->irq) {
++	if (ts->client->irq)
 +		disable_irq(ts->client->irq);
-+	} else {
-+		del_timer(&ts->timer);
-+		cancel_work_sync(&ts->work_i2c_poll);
-+	}
 +}
 +
  static void goodix_free_irq(struct goodix_ts_data *ts)
  {
 -	devm_free_irq(&ts->client->dev, ts->client->irq, ts);
-+	if (ts->client->irq) {
++	if (ts->client->irq)
 +		devm_free_irq(&ts->client->dev, ts->client->irq, ts);
-+	} else {
-+		del_timer(&ts->timer);
-+		cancel_work_sync(&ts->work_i2c_poll);
-+	}
  }
  
  static int goodix_request_irq(struct goodix_ts_data *ts)
  {
--	return devm_request_threaded_irq(&ts->client->dev, ts->client->irq,
--					 NULL, goodix_ts_irq_handler,
--					 ts->irq_flags, ts->client->name, ts);
-+	if (ts->client->irq) {
-+		return devm_request_threaded_irq(&ts->client->dev, ts->client->irq,
-+						 NULL, goodix_ts_irq_handler,
-+						 ts->irq_flags, ts->client->name, ts);
-+	} else {
-+		INIT_WORK(&ts->work_i2c_poll,
-+			  goodix_ts_work_i2c_poll);
-+		timer_setup(&ts->timer, goodix_ts_irq_poll_timer, 0);
-+		if (ts->irq_pin_access_method == IRQ_PIN_ACCESS_NONE)
-+			goodix_enable_irq(ts);
++	if (!ts->client->irq)
 +		return 0;
-+	}
- }
- 
- static int goodix_check_cfg_8(struct goodix_ts_data *ts, const u8 *cfg, int len)
-@@ -1141,7 +1194,10 @@ static int goodix_configure_dev(struct goodix_ts_data *ts)
- 		return -ENOMEM;
++
+ 	return devm_request_threaded_irq(&ts->client->dev, ts->client->irq,
+ 					 NULL, goodix_ts_irq_handler,
+ 					 ts->irq_flags, ts->client->name, ts);
+@@ -1219,6 +1253,18 @@ retry_read_config:
+ 		return error;
  	}
  
--	ts->input_dev->name = "Goodix Capacitive TouchScreen";
-+	snprintf(ts->name, GOODIX_NAME_MAX_LEN, "%s Goodix Capacitive TouchScreen",
-+		 dev_name(&ts->client->dev));
++	input_set_drvdata(ts->input_dev, ts);
 +
-+	ts->input_dev->name = ts->name;
- 	ts->input_dev->phys = "input/ts";
- 	ts->input_dev->id.bustype = BUS_I2C;
- 	ts->input_dev->id.vendor = 0x0416;
-@@ -1407,6 +1463,11 @@ static void goodix_ts_remove(struct i2c_client *client)
- {
- 	struct goodix_ts_data *ts = i2c_get_clientdata(client);
- 
-+	if (!client->irq) {
-+		del_timer(&ts->timer);
-+		cancel_work_sync(&ts->work_i2c_poll);
++	if (!ts->client->irq) {
++		error = input_setup_polling(ts->input_dev, goodix_ts_work_i2c_poll);
++		if (error) {
++			dev_err(&ts->client->dev,
++				 "could not set up polling mode, %d\n", error);
++			return error;
++		}
++		input_set_poll_interval(ts->input_dev, GOODIX_POLL_INTERVAL_MS);
 +	}
 +
- 	if (ts->load_cfg_from_disk)
- 		wait_for_completion(&ts->firmware_loading_complete);
- }
-@@ -1422,7 +1483,7 @@ static int goodix_suspend(struct device *dev)
+ 	error = input_register_device(ts->input_dev);
+ 	if (error) {
+ 		dev_err(&ts->client->dev,
+@@ -1422,7 +1468,7 @@ static int goodix_suspend(struct device *dev)
  
  	/* We need gpio pins to suspend/resume */
  	if (ts->irq_pin_access_method == IRQ_PIN_ACCESS_NONE) {
@@ -107612,7 +108497,7 @@ diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/good
  		return 0;
  	}
  
-@@ -1466,7 +1527,7 @@ static int goodix_resume(struct device *dev)
+@@ -1466,7 +1512,7 @@ static int goodix_resume(struct device *dev)
  	int error;
  
  	if (ts->irq_pin_access_method == IRQ_PIN_ACCESS_NONE) {
@@ -107621,35 +108506,6 @@ diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/good
  		return 0;
  	}
  
-diff --git a/drivers/input/touchscreen/goodix.h b/drivers/input/touchscreen/goodix.h
---- a/drivers/input/touchscreen/goodix.h
-+++ b/drivers/input/touchscreen/goodix.h
-@@ -57,6 +57,8 @@
- #define GOODIX_CONFIG_MAX_LENGTH		240
- #define GOODIX_MAX_KEYS				7
- 
-+#define GOODIX_NAME_MAX_LEN			38
-+
- enum goodix_irq_pin_access_method {
- 	IRQ_PIN_ACCESS_NONE,
- 	IRQ_PIN_ACCESS_GPIO,
-@@ -91,6 +93,7 @@ struct goodix_ts_data {
- 	enum gpiod_flags gpiod_rst_flags;
- 	char id[GOODIX_ID_MAX_LEN + 1];
- 	char cfg_name[64];
-+	char name[GOODIX_NAME_MAX_LEN];
- 	u16 version;
- 	bool reset_controller_at_probe;
- 	bool load_cfg_from_disk;
-@@ -104,6 +107,8 @@ struct goodix_ts_data {
- 	u8 main_clk[GOODIX_MAIN_CLK_LEN];
- 	int bak_ref_len;
- 	u8 *bak_ref;
-+	struct timer_list timer;
-+	struct work_struct work_i2c_poll;
- };
- 
- int goodix_i2c_read(struct i2c_client *client, u16 reg, u8 *buf, int len);
 diff --git a/drivers/input/touchscreen/ili210x.c b/drivers/input/touchscreen/ili210x.c
 --- a/drivers/input/touchscreen/ili210x.c
 +++ b/drivers/input/touchscreen/ili210x.c
@@ -107758,6 +108614,772 @@ diff --git a/drivers/input/touchscreen/ili210x.c b/drivers/input/touchscreen/ili
  };
  
  module_i2c_driver(ili210x_ts_driver);
+diff --git a/drivers/input/touchscreen/ilitek_v3_ts_i2c.c b/drivers/input/touchscreen/ilitek_v3_ts_i2c.c
+new file mode 100644
+--- /dev/null
++++ b/drivers/input/touchscreen/ilitek_v3_ts_i2c.c
+@@ -0,0 +1,761 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2026 Raspberry Pi
++ *
++ * Based on edt-ft5x06 driver.
++ */
++
++#include <linux/delay.h>
++#include <linux/gpio/consumer.h>
++#include <linux/i2c.h>
++#include <linux/interrupt.h>
++#include <linux/input.h>
++#include <linux/input/mt.h>
++#include <linux/input/touchscreen.h>
++#include <linux/irq.h>
++#include <linux/module.h>
++#include <linux/regulator/consumer.h>
++
++#include <drm/drm_panel.h>
++
++#define ILI_V3_NAME_LEN			23
++#define ILI_V3_NAME_PREFIX_LEN		8
++
++#define ILI_V3_POLL_INTERVAL		17	/* 60fps */
++#define ILI_V3_POLL_SLEEP_INTERVAL	300	/* 3.3fps */
++#define RESET_DELAY_MS			(65 + 85)
++
++#define ILI_V3_TOUCH_PACKET_LEN		72
++#define ILI_V3_GESTURE_PACKET_LEN	221
++#define P5_X_DEMO_MODE_PACKET_INFO_LEN	3
++#define TDDI_PID_ADDR					0x4009C
++#define TDDI_SECOND_PID_ADDR				0x40098
++#define TDDI_OTP_ID_ADDR				0x400A0
++#define TDDI_ANA_ID_ADDR				0x400A4
++
++#define P5_X_DEMO_AXIS_PACKET_ID			0x5B
++#define P5_X_GESTURE_PACKET_ID				0xAA
++
++#define P5_X_NEW_CONTROL_FORMAT				0xF2
++#define P5_X_READ_DATA_CTRL				0xF6
++ #define P5_X_GET_TP_INFORMATION				0x20
++ #define P5_X_GET_KEY_INFORMATION				0x27
++ #define P5_X_GET_TOOL_VERSION					0x28
++ #define P5_X_GET_PANEL_INFORMATION				0x29
++ #define P5_X_GET_FW_VERSION					0x21
++ #define P5_X_GET_PROTOCOL_VERSION				0x22
++ #define P5_X_GET_CORE_VERSION					0x23
++ #define P5_X_GET_CORE_VERSION_NEW				0x24
++ #define P5_X_GET_REPORT_INFORMATION				0x2B
++ #define P5_X_GET_ALL_INFORMATION				0x2F
++ #define P5_X_GET_REPORT_FORMAT					0x37
++ #define P5_X_GET_BLOCK_INFOMATION				0x38
++ #define P5_X_MODE_CONTROL					0xF0
++
++#define MIN_FW_VERSION 0x8c000600U	/* Minimum of 140.0.6.0 */
++
++#define MAX_TOUCH_NUM			10
++
++struct ili_v3_ts_data {
++	struct i2c_client *client;
++	struct i2c_client *slave_addr;
++	struct input_dev *input;
++	struct touchscreen_properties prop;
++	unsigned int panel_width;
++	unsigned int panel_height;
++	struct regulator *vcc;
++	struct regulator *iovcc;
++
++	struct gpio_desc *reset_gpio;
++	struct gpio_desc *wake_gpio;
++
++	struct drm_panel_follower panel_follower;
++
++	/* Mutex to prevent suspend/resume interacting with polling */
++	struct mutex mutex;
++	int max_support_points;
++
++	char name[ILI_V3_NAME_PREFIX_LEN + ILI_V3_NAME_LEN];
++
++	int finger;
++	int curt_touch[MAX_TOUCH_NUM];
++	int prev_touch[MAX_TOUCH_NUM];
++	u8 touch_num;
++	int last_touch;
++	bool asleep;
++};
++
++struct ili_v3_i2c_chip_data {
++	int  max_support_points;
++};
++
++struct ilitek_touch_info {
++	u16 id;
++	u16 x;
++	u16 y;
++	u16 pressure;
++};
++
++struct ilitek_fw_info {
++	u8 cmd;
++	u8 dummy1;
++	u8 min_x;
++	u8 min_y;
++	u16 max_x;
++	u16 max_y;
++	u8 xch_num;
++	u8 ych_num;
++	u8 dummy2;
++	u8 dummy3;
++	u8 stx;
++	u8 srx;
++	u8 dummy4;
++	u8 dummy5;
++	u8 fw_ver[4];	/* Offset 16-19 */
++	u8 fw_mp_ver[4];	/* Offset 20-23 */
++	u8 dummy6;
++	u8 core_ver[4];	/* Offset 25-28 */
++	u8 dummy6a;
++	u8 dummy6b;
++	u8 dummy6c;
++	u32 dummy7;	/* Offset 32-35 */
++	u32 dummy8;	/* Offset 36-39 */
++	u32 dummy9;	/* Offset 40-43 */
++	u8 dummy10;
++	u8 dummy10a;
++	u8 panel_info_cmd;	/* Offset 46 */
++	u8 panel_width_high;
++	u8 panel_width_low;
++	u8 panel_height_high;
++	u8 panel_height_low;
++	u8 panel_trans_xy;	/* Offset 51 */
++};
++
++static int ili_v3_i2c_transfer(struct i2c_client *client, u8 *write_buf,
++			       int write_len, u8 *read_buf, int read_len)
++{
++	struct i2c_msg msgs[2];
++	int ret = 0;
++
++	if (write_len && write_buf) {
++		msgs[0].flags = 0;
++		msgs[0].addr  = client->addr;
++		msgs[0].len   = write_len;
++		msgs[0].buf   = write_buf;
++		ret = i2c_transfer(client->adapter, msgs, 1);
++		if (ret >= 0)
++			ret = (ret == 1 ? 0 : -EIO);
++		fsleep(1000);
++	}
++
++	if (!ret && read_len && read_buf) {
++		msgs[0].flags = I2C_M_RD;
++		msgs[0].addr  = client->addr;
++		msgs[0].len   = read_len;
++		msgs[0].buf   = read_buf;
++		ret = i2c_transfer(client->adapter, msgs, 1);
++		if (ret >= 0)
++			ret = (ret == 1 ? 0 : -EIO);
++		fsleep(1000);
++	}
++
++	if (ret)
++		dev_dbg(&client->dev, "Error transferring %d / %d : %d\n",
++			write_len, read_len, ret);
++	return ret;
++}
++
++static int ili_v3_i2c_read_u32_reg(struct i2c_client *client, u32 reg, u32 *val)
++{
++	u8 wr_buf[4];
++	int ret;
++
++	wr_buf[0] = 0x25;
++	wr_buf[1] = (char)((reg & 0x000000FF) >> 0);
++	wr_buf[2] = (char)((reg & 0x0000FF00) >> 8);
++	wr_buf[3] = (char)((reg & 0x00FF0000) >> 16);
++
++	ret = ili_v3_i2c_transfer(client, wr_buf, sizeof(wr_buf), (u8 *)val,
++				  sizeof(*val));
++
++	return ret;
++}
++
++static int ili_v3_i2c_write_u32_reg(struct i2c_client *client, u32 reg, u32 val)
++{
++	u8 wr_buf[8];
++	int ret, i;
++
++	wr_buf[0] = 0x25;
++	wr_buf[1] = (u8)((reg & 0x000000FF) >> 0);
++	wr_buf[2] = (u8)((reg & 0x0000FF00) >> 8);
++	wr_buf[3] = (u8)((reg & 0x00FF0000) >> 16);
++
++	for (i = 0; i < 4; i++)
++		wr_buf[i + 4] = (u8)(val >> (8 * i));
++
++	ret = ili_v3_i2c_transfer(client, wr_buf, sizeof(wr_buf), NULL, 0);
++
++	return ret;
++}
++
++static u8 ili_v3_calc_checksum(const u8 *packet, int len)
++{
++	int i;
++	s32 sum = 0;
++
++	for (i = 0; i < len; i++)
++		sum += packet[i];
++
++	return (u8)((-sum) & 0xFF);
++}
++
++static void ili_v3_report_ap_mode(struct ili_v3_ts_data *tsdata, u8 *buf,
++				  int len)
++{
++	struct ilitek_touch_info touch_info[MAX_TOUCH_NUM] = {0};
++	int i = 0;
++	u32 xop = 0, yop = 0;
++
++	tsdata->finger = 0;
++
++	for (i = 0; i < MAX_TOUCH_NUM; i++) {
++		if (buf[5 * i + 1 + P5_X_DEMO_MODE_PACKET_INFO_LEN] == 0xFF &&
++		    buf[5 * i + 2 + P5_X_DEMO_MODE_PACKET_INFO_LEN] == 0xFF &&
++		    buf[5 * i + 3 + P5_X_DEMO_MODE_PACKET_INFO_LEN] == 0xFF &&
++		    buf[5 * i + 4 + P5_X_DEMO_MODE_PACKET_INFO_LEN] == 0xFF) {
++			tsdata->curt_touch[i] = 0;
++			continue;
++		}
++		xop = ((buf[5 * i + 1 + P5_X_DEMO_MODE_PACKET_INFO_LEN] << 8) |
++		       (buf[5 * i + 2 + P5_X_DEMO_MODE_PACKET_INFO_LEN]));
++		yop = ((buf[5 * i + 3 + P5_X_DEMO_MODE_PACKET_INFO_LEN] << 8) |
++		       (buf[5 * i + 4 + P5_X_DEMO_MODE_PACKET_INFO_LEN]));
++
++		touch_info[tsdata->finger].x = xop;
++		touch_info[tsdata->finger].y = yop;
++
++		touch_info[tsdata->finger].id = i;
++
++		touch_info[tsdata->finger].pressure = 1;
++
++		tsdata->finger++;
++		tsdata->curt_touch[i] = 1;
++	}
++
++	if (tsdata->finger) {
++		for (i = 0; i < tsdata->finger; i++) {
++			input_report_key(tsdata->input, BTN_TOUCH, 1);
++			input_mt_slot(tsdata->input, touch_info[i].id);
++			input_mt_report_slot_state(tsdata->input,
++						   MT_TOOL_FINGER, true);
++			touchscreen_report_pos(tsdata->input, &tsdata->prop,
++					       touch_info[i].x, touch_info[i].y,
++					       true);
++			input_report_key(tsdata->input, BTN_TOOL_FINGER, 1);
++		}
++		for (i = 0; i < MAX_TOUCH_NUM; i++) {
++			if (tsdata->curt_touch[i] == 0 &&
++			    tsdata->prev_touch[i] == 1) {
++				input_mt_slot(tsdata->input, i);
++				input_mt_report_slot_state(tsdata->input,
++							   MT_TOOL_FINGER,
++							   false);
++			}
++			tsdata->prev_touch[i] = tsdata->curt_touch[i];
++		}
++		input_sync(tsdata->input);
++		tsdata->last_touch = tsdata->finger;
++	} else {
++		if (tsdata->last_touch) {
++			for (i = 0; i < MAX_TOUCH_NUM; i++) {
++				if (tsdata->curt_touch[i] == 0 &&
++				    tsdata->prev_touch[i] == 1) {
++					input_mt_slot(tsdata->input, i);
++					input_mt_report_slot_state(tsdata->input,
++								   MT_TOOL_FINGER,
++								   false);
++				}
++				tsdata->prev_touch[i] = tsdata->curt_touch[i];
++			}
++			input_report_key(tsdata->input, BTN_TOUCH, 0);
++			input_report_key(tsdata->input, BTN_TOOL_FINGER, 0);
++			input_sync(tsdata->input);
++			tsdata->last_touch = 0;
++		}
++	}
++}
++
++static void ili_v3_handle_gesture(struct ili_v3_ts_data *tsdata)
++{
++	/*
++	 * Gestures are currently only being used in low power mode to wake up,
++	 * as this touch controller doesn't generate touch data whilst the
++	 * display is disabled.
++	 * Generate the most minimal event possible that should wake up the
++	 * display.
++	 */
++	input_report_key(tsdata->input, BTN_TOUCH, 1);
++	input_mt_slot(tsdata->input, 0);
++	input_mt_report_slot_state(tsdata->input,
++				   MT_TOOL_FINGER, true);
++	input_report_key(tsdata->input, BTN_TOOL_FINGER, 1);
++	input_sync(tsdata->input);
++
++	input_mt_slot(tsdata->input, 0);
++	input_mt_report_slot_state(tsdata->input,
++				   MT_TOOL_FINGER,
++				   false);
++	input_report_key(tsdata->input, BTN_TOUCH, 0);
++	input_report_key(tsdata->input, BTN_TOOL_FINGER, 0);
++	input_sync(tsdata->input);
++}
++
++static irqreturn_t ili_v3_ts_isr(int irq, void *dev_id)
++{
++	struct ili_v3_ts_data *tsdata = dev_id;
++	u8 checksum, len, expected_len;
++	u8 rdbuf[ILI_V3_GESTURE_PACKET_LEN];
++	u8 len_offset = 2;
++
++	mutex_lock(&tsdata->mutex);
++
++	len = tsdata->asleep ? ILI_V3_GESTURE_PACKET_LEN : ILI_V3_TOUCH_PACKET_LEN;
++	ili_v3_i2c_transfer(tsdata->client, NULL, 0, rdbuf, len);
++
++	switch (rdbuf[0]) {
++	case P5_X_DEMO_AXIS_PACKET_ID:
++		expected_len = ILI_V3_TOUCH_PACKET_LEN;
++		break;
++	case P5_X_GESTURE_PACKET_ID:
++		expected_len = ILI_V3_GESTURE_PACKET_LEN;
++		len_offset = 3;
++		break;
++
++	default:
++		goto out;
++	}
++
++	if (expected_len != rdbuf[len_offset])
++		dev_err(&tsdata->client->dev, "buffer len %u when %u was expected, cmd %02x\n",
++			rdbuf[len_offset], expected_len, rdbuf[0]);
++
++	checksum = ili_v3_calc_checksum(rdbuf, rdbuf[len_offset]);
++
++	if (checksum) {
++		dev_err(&tsdata->client->dev, "checksum failed cmd %02x len %u\n",
++			rdbuf[0], rdbuf[len_offset]);
++		goto out;
++	}
++
++	switch (rdbuf[0]) {
++	case P5_X_DEMO_AXIS_PACKET_ID:
++		ili_v3_report_ap_mode(tsdata, rdbuf, ILI_V3_TOUCH_PACKET_LEN);
++		break;
++	case P5_X_GESTURE_PACKET_ID:
++		if (!tsdata->asleep)
++			break;
++
++		ili_v3_handle_gesture(tsdata);
++		break;
++	}
++
++out:
++	mutex_unlock(&tsdata->mutex);
++
++	return IRQ_HANDLED;
++}
++
++static void ili_v3_ts_work_i2c_poll(struct input_dev *input)
++{
++	struct ili_v3_ts_data *tsdata = input_get_drvdata(input);
++
++	ili_v3_ts_isr(0, tsdata);
++}
++
++static int ili_v3_ts_identify(struct ili_v3_ts_data *tsdata)
++{
++	struct i2c_client *client = tsdata->client;
++	char *model_name = tsdata->name;
++
++	snprintf(model_name, ILI_V3_NAME_PREFIX_LEN + 1, "%s ",
++		 dev_name(&client->dev));
++	model_name += strlen(model_name);
++
++	snprintf(model_name, ILI_V3_NAME_LEN, "ili_v3");
++
++	return 0;
++}
++
++static int ili_v3_init(struct ili_v3_ts_data *tsdata)
++{
++	static u8 stop_msg[2] = { 0x10, 0x10 };
++	static u8 cmd_open_msg[4] = { 0x25, 0x62, 0x10, 0x18 };
++	static u8 slave_mode[5] = { 0x25, 0x00, 0x10, 0x04, 0x01};
++	static u8 slave_mode2[5] = { 0x25, 0x03, 0x10, 0x04, 0x00};
++	static u8 read_protocol_ver[2] = {P5_X_READ_DATA_CTRL,
++					  P5_X_GET_PROTOCOL_VERSION};
++	static u8 read_all_info[1] = {P5_X_GET_ALL_INFORMATION};
++	static u8 set_tp_data_len[3] = {P5_X_NEW_CONTROL_FORMAT, 0x00, 0x03};
++	struct i2c_client *master_client = tsdata->client;
++	struct i2c_client *slave_client = tsdata->slave_addr;
++	u8 rd_buf[97];
++	struct ilitek_fw_info *fw_info = (struct ilitek_fw_info *)rd_buf;
++	u32 value;
++
++	if (tsdata->reset_gpio) {
++		usleep_range(5000, 6000);
++		/* Come out of reset */
++		gpiod_set_value_cansleep(tsdata->reset_gpio, 0);
++		msleep(RESET_DELAY_MS);
++	}
++
++	ili_v3_i2c_transfer(master_client, stop_msg, sizeof(stop_msg), NULL, 0);
++
++	ili_v3_i2c_transfer(master_client, cmd_open_msg, sizeof(cmd_open_msg), NULL, 0);
++
++	ili_v3_i2c_transfer(slave_client, slave_mode, sizeof(slave_mode), NULL, 0);
++	ili_v3_i2c_transfer(slave_client, slave_mode2, sizeof(slave_mode2), NULL, 0);
++
++	ili_v3_i2c_transfer(master_client, cmd_open_msg, sizeof(cmd_open_msg), NULL, 0);
++
++	ili_v3_i2c_transfer(master_client, slave_mode, sizeof(slave_mode), NULL, 0);
++	ili_v3_i2c_transfer(master_client, slave_mode2, sizeof(slave_mode2), NULL, 0);
++
++	ili_v3_i2c_write_u32_reg(master_client, 0x051024, 0xa5a5a5a5);
++	ili_v3_i2c_read_u32_reg(master_client, 0x051024, &value);
++	if (value != 0xa5a5a5a5)
++		dev_err(&master_client->dev, "dummy read didn't match - %08x\n",
++			value);
++
++	ili_v3_i2c_read_u32_reg(slave_client, TDDI_PID_ADDR, &value);
++	dev_info(&master_client->dev, "Slave PIDADDR %08x\n", value);
++	ili_v3_i2c_read_u32_reg(slave_client, TDDI_SECOND_PID_ADDR, &value);
++	dev_info(&master_client->dev, "Slave TDDI_SECOND_PID_ADDR %08x\n", value);
++
++	ili_v3_i2c_read_u32_reg(master_client, TDDI_PID_ADDR, &value);
++	dev_info(&master_client->dev, "Master PIDADDR %08x\n", value);
++	ili_v3_i2c_read_u32_reg(master_client, TDDI_SECOND_PID_ADDR, &value);
++	dev_info(&master_client->dev, "Master TDDI_SECOND_PID_ADDR %08x\n", value);
++	ili_v3_i2c_read_u32_reg(master_client, TDDI_OTP_ID_ADDR, &value);
++	dev_info(&master_client->dev, "Master TDDI_OTP_ID_ADDR %08x\n", value);
++	ili_v3_i2c_read_u32_reg(master_client, TDDI_ANA_ID_ADDR, &value);
++	dev_info(&master_client->dev, "Master TDDI_ANA_ID_ADDR %08x\n", value);
++
++	if (tsdata->reset_gpio) {
++		mdelay(1);
++		gpiod_set_value_cansleep(tsdata->reset_gpio, 1);
++		mdelay(5);
++		gpiod_set_value_cansleep(tsdata->reset_gpio, 0);
++		msleep(RESET_DELAY_MS);
++	}
++
++	ili_v3_i2c_transfer(master_client, read_protocol_ver, 2, NULL, 0);
++	ili_v3_i2c_transfer(master_client, &read_protocol_ver[1], 1, rd_buf, 4);
++	dev_info(&master_client->dev, "protocol version is %08x\n",
++		 *((u32 *)rd_buf));
++
++	ili_v3_i2c_transfer(master_client, read_all_info, 1, rd_buf, 97);
++
++	if (be32_to_cpu(*(unsigned int *)fw_info->fw_ver) < MIN_FW_VERSION)
++		dev_err(&master_client->dev, "Firmware version %u.%u.%u.%u is older than expected. Minimum %u.%u.%u.%u\n",
++			fw_info->fw_ver[0], fw_info->fw_ver[1],
++			fw_info->fw_ver[2], fw_info->fw_ver[3],
++			(MIN_FW_VERSION >> 24) & 0xff, (MIN_FW_VERSION >> 16) & 0xff,
++			(MIN_FW_VERSION >> 8) & 0xff, MIN_FW_VERSION & 0xff);
++
++	dev_info(&master_client->dev, "FW AP Version %u.%u.%u.%u\n",
++		 fw_info->fw_ver[0], fw_info->fw_ver[1], fw_info->fw_ver[2],
++		 fw_info->fw_ver[3]);
++	dev_info(&master_client->dev, "FW MP Version %u.%u.%u.%u\n",
++		 fw_info->fw_mp_ver[0], fw_info->fw_mp_ver[1],
++		 fw_info->fw_mp_ver[2], fw_info->fw_mp_ver[3]);
++	dev_info(&master_client->dev, "Core Version %u.%u.%u.%u\n",
++		 fw_info->core_ver[0], fw_info->core_ver[1],
++		 fw_info->core_ver[2], fw_info->core_ver[3]);
++
++	if (fw_info->panel_info_cmd == P5_X_GET_PANEL_INFORMATION) {
++		tsdata->panel_width = (fw_info->panel_width_high << 8) |
++				      fw_info->panel_width_low;
++		tsdata->panel_height = (fw_info->panel_height_high << 8) |
++				       fw_info->panel_height_low;
++
++		dev_info(&master_client->dev, "Configured size %u x %u%s\n",
++			 tsdata->panel_width, tsdata->panel_height,
++			 fw_info->panel_trans_xy ? " swapxy" : "");
++	}
++
++	ili_v3_i2c_transfer(master_client, set_tp_data_len, sizeof(set_tp_data_len),
++			    NULL, 0);
++
++	ili_v3_ts_identify(tsdata);
++
++	return 0;
++}
++
++static void ili_v3_disable_regulators(void *arg)
++{
++	struct ili_v3_ts_data *data = arg;
++
++	regulator_disable(data->vcc);
++	regulator_disable(data->iovcc);
++}
++
++static int ili_v3_ts_suspend(struct drm_panel_follower *follower)
++{
++	struct ili_v3_ts_data *tsdata = container_of(follower,
++						     struct ili_v3_ts_data,
++						     panel_follower);
++	static u8 pll_wakeup[] = { 0xA3 };
++	static u8 gesture_symbol_msg[] = { 0x01, 0x0a, 0x08, 0xff, 0xff, 0xff };
++	static u8 gesture_msg[] = { 0x01, 0x0a, 0x02 };
++
++	mutex_lock(&tsdata->mutex);
++
++	input_set_poll_interval(tsdata->input, ILI_V3_POLL_SLEEP_INTERVAL);
++
++	ili_v3_i2c_transfer(tsdata->client, pll_wakeup, sizeof(pll_wakeup),
++			    NULL, 0);
++
++	ili_v3_i2c_transfer(tsdata->client, gesture_symbol_msg,
++			    sizeof(gesture_symbol_msg), NULL, 0);
++	ili_v3_i2c_transfer(tsdata->client, gesture_msg, sizeof(gesture_msg),
++			    NULL, 0);
++
++	tsdata->asleep = true;
++	mutex_unlock(&tsdata->mutex);
++
++	return 0;
++}
++
++static int ili_v3_ts_resume(struct drm_panel_follower *follower)
++{
++	struct ili_v3_ts_data *tsdata = container_of(follower,
++						     struct ili_v3_ts_data,
++						     panel_follower);
++	mutex_lock(&tsdata->mutex);
++
++	tsdata->asleep = false;
++
++	gpiod_set_value_cansleep(tsdata->reset_gpio, 0);
++	mdelay(1);
++	gpiod_set_value_cansleep(tsdata->reset_gpio, 1);
++	mdelay(5);
++	gpiod_set_value_cansleep(tsdata->reset_gpio, 0);
++	msleep(RESET_DELAY_MS);
++
++	input_set_poll_interval(tsdata->input, ILI_V3_POLL_INTERVAL);
++
++	mutex_unlock(&tsdata->mutex);
++
++	return 0;
++}
++
++static const struct drm_panel_follower_funcs ili_v3_follower_funcs = {
++	.panel_prepared = ili_v3_ts_resume,
++	.panel_unpreparing = ili_v3_ts_suspend,
++};
++
++static int ili_v3_ts_probe(struct i2c_client *client)
++{
++	const struct i2c_device_id *id = i2c_client_get_device_id(client);
++	const struct ili_v3_i2c_chip_data *chip_data;
++	struct ili_v3_ts_data *tsdata;
++	struct input_dev *input;
++	unsigned long irq_flags;
++	int error;
++
++	tsdata = devm_kzalloc(&client->dev, sizeof(*tsdata), GFP_KERNEL);
++	if (!tsdata)
++		return -ENOMEM;
++
++	tsdata->client = client;
++	i2c_set_clientdata(client, tsdata);
++
++	chip_data = device_get_match_data(&client->dev);
++	if (!chip_data)
++		chip_data = (const struct ili_v3_i2c_chip_data *)id->driver_data;
++	if (!chip_data || !chip_data->max_support_points) {
++		dev_err(&client->dev, "invalid or missing chip data\n");
++		return -EINVAL;
++	}
++
++	tsdata->max_support_points = chip_data->max_support_points;
++
++	tsdata->vcc = devm_regulator_get(&client->dev, "vcc");
++	if (IS_ERR(tsdata->vcc))
++		return dev_err_probe(&client->dev, PTR_ERR(tsdata->vcc),
++				     "failed to request regulator\n");
++
++	tsdata->iovcc = devm_regulator_get(&client->dev, "iovcc");
++	if (IS_ERR(tsdata->iovcc)) {
++		error = PTR_ERR(tsdata->iovcc);
++		if (error != -EPROBE_DEFER)
++			dev_err(&client->dev,
++				"failed to request iovcc regulator: %d\n", error);
++		return error;
++	}
++
++	tsdata->slave_addr = i2c_new_dummy_device(client->adapter, 0x4f);
++	if (IS_ERR(tsdata->slave_addr))
++		return PTR_ERR(tsdata->slave_addr);
++
++	error = regulator_enable(tsdata->iovcc);
++	if (error < 0) {
++		dev_err(&client->dev, "failed to enable iovcc: %d\n", error);
++		goto fail_release_i2c;
++	}
++
++	/* Delay enabling VCC for > 10us (T_ivd) after IOVCC */
++	usleep_range(10, 100);
++
++	error = regulator_enable(tsdata->vcc);
++	if (error < 0) {
++		dev_err(&client->dev, "failed to enable vcc: %d\n", error);
++		regulator_disable(tsdata->iovcc);
++		goto fail_release_i2c;
++	}
++	msleep(100);
++	error = devm_add_action_or_reset(&client->dev,
++					 ili_v3_disable_regulators,
++					 tsdata);
++	if (error) {
++		regulator_disable(tsdata->iovcc);
++		regulator_disable(tsdata->vcc);
++		goto fail_release_i2c;
++	}
++
++	tsdata->reset_gpio = devm_gpiod_get_optional(&client->dev,
++						     "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(tsdata->reset_gpio)) {
++		error = PTR_ERR(tsdata->reset_gpio);
++		dev_err(&client->dev,
++			"Failed to request GPIO reset pin, error %d\n", error);
++		goto fail_release_i2c;
++	}
++
++	mutex_init(&tsdata->mutex);
++	tsdata->client = client;
++	i2c_set_clientdata(client, tsdata);
++
++	error = ili_v3_init(tsdata);
++	if (error) {
++		dev_err(&client->dev, "touchscreen probe failed\n");
++		goto fail_release_i2c;
++	}
++
++	tsdata->panel_follower.funcs = &ili_v3_follower_funcs;
++
++	input = devm_input_allocate_device(&client->dev);
++	if (!input) {
++		dev_err(&client->dev, "failed to allocate input device.\n");
++		error = -ENOMEM;
++		goto fail_reset_gpio;
++	}
++	tsdata->input = input;
++
++	input->name = tsdata->name;
++	input->id.bustype = BUS_I2C;
++	input->dev.parent = &client->dev;
++	input_set_drvdata(input, tsdata);
++
++	input_set_abs_params(input, ABS_MT_POSITION_X,
++			     0, tsdata->panel_width - 1, 0, 0);
++	input_set_abs_params(input, ABS_MT_POSITION_Y,
++			     0, tsdata->panel_height - 1, 0, 0);
++
++	touchscreen_parse_properties(input, true, &tsdata->prop);
++
++	error = input_mt_init_slots(input, tsdata->max_support_points,
++				    INPUT_MT_DIRECT);
++	if (error) {
++		dev_err(&client->dev, "Unable to init MT slots.\n");
++		goto fail_reset_gpio;
++	}
++
++	if (client->irq) {
++		irq_flags = irq_get_trigger_type(client->irq);
++		if (irq_flags == IRQF_TRIGGER_NONE)
++			irq_flags = IRQF_TRIGGER_FALLING;
++		irq_flags |= IRQF_ONESHOT;
++
++		error = devm_request_threaded_irq(&client->dev, client->irq,
++						  NULL, ili_v3_ts_isr,
++						  irq_flags, client->name,
++						  tsdata);
++		if (error) {
++			dev_err(&client->dev, "Unable to request touchscreen IRQ.\n");
++			goto fail_reset_gpio;
++		}
++	} else {
++		error = input_setup_polling(input, ili_v3_ts_work_i2c_poll);
++		if (error) {
++			dev_err(&client->dev, "could not set up polling mode, %d\n",
++				error);
++			goto fail_reset_gpio;
++		}
++
++		input_set_poll_interval(input, ILI_V3_POLL_INTERVAL);
++	}
++
++	error = input_register_device(input);
++	if (error)
++		goto fail_reset_gpio;
++
++	error = drm_panel_add_follower(&client->dev, &tsdata->panel_follower);
++	if (error) {
++		dev_err(&client->dev, "Failed to add panel follower - %d\n", error);
++		goto fail_reset_gpio;
++	}
++
++	return 0;
++
++fail_reset_gpio:
++	gpiod_set_value_cansleep(tsdata->reset_gpio, 1);
++fail_release_i2c:
++	i2c_unregister_device(tsdata->slave_addr);
++
++	return error;
++}
++
++static void ili_v3_remove(struct i2c_client *client)
++{
++	struct ili_v3_ts_data *tsdata = i2c_get_clientdata(client);
++
++	gpiod_set_value_cansleep(tsdata->reset_gpio, 1);
++	drm_panel_remove_follower(&tsdata->panel_follower);
++	i2c_unregister_device(tsdata->slave_addr);
++}
++
++static const struct ili_v3_i2c_chip_data ili_v3_data = {
++	.max_support_points = 10,
++};
++
++static const struct i2c_device_id ili_v3_ts_id[] = {
++	{ .name = "ili79600a", .driver_data = (long)&ili_v3_data },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(i2c, ili_v3_ts_id);
++
++static const struct of_device_id ili_v3_of_match[] = {
++	{ .compatible = "ilitek,ili79600a", .data = &ili_v3_data },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, ili_v3_of_match);
++
++static struct i2c_driver ili_v3_ts_driver = {
++	.driver = {
++		.name = "ilitek_v3",
++		.of_match_table = ili_v3_of_match,
++		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
++	},
++	.id_table = ili_v3_ts_id,
++	.probe    = ili_v3_ts_probe,
++	.remove   = ili_v3_remove,
++};
++
++module_i2c_driver(ili_v3_ts_driver);
++
++MODULE_AUTHOR("Dave Stevenson <dave.stevenson@raspberrypi.com>");
++MODULE_DESCRIPTION("Ilitek V3 I2C Touchscreen Driver");
++MODULE_LICENSE("GPL");
 diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
 --- a/drivers/iommu/Kconfig
 +++ b/drivers/iommu/Kconfig
@@ -110684,7 +112306,7 @@ diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
  };
  #define to_adv7180_sd(_ctrl) (&container_of(_ctrl->handler,		\
  					    struct adv7180_state,	\
-@@ -403,10 +418,24 @@ static int adv7180_s_routing(struct v4l2_subdev *sd, u32 input,
+@@ -403,10 +418,24 @@ out:
  	return ret;
  }
  
@@ -110732,7 +112354,7 @@ diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
  	*norm = state->curr_norm;
  
  	return 0;
-@@ -601,6 +636,9 @@ static int adv7180_s_ctrl(struct v4l2_ctrl *ctrl)
+@@ -608,6 +643,9 @@ static int adv7180_s_ctrl(struct v4l2_ctrl *ctrl)
  
  	if (ret)
  		return ret;
@@ -110742,7 +112364,7 @@ diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
  	val = ctrl->val;
  	switch (ctrl->id) {
  	case V4L2_CID_BRIGHTNESS:
-@@ -642,6 +680,7 @@ static int adv7180_s_ctrl(struct v4l2_ctrl *ctrl)
+@@ -649,6 +687,7 @@ static int adv7180_s_ctrl(struct v4l2_ctrl *ctrl)
  		ret = -EINVAL;
  	}
  
@@ -110750,7 +112372,7 @@ diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
  	mutex_unlock(&state->mutex);
  	return ret;
  }
-@@ -662,7 +701,7 @@ static const struct v4l2_ctrl_config adv7180_ctrl_fast_switch = {
+@@ -669,7 +708,7 @@ static const struct v4l2_ctrl_config adv7180_ctrl_fast_switch = {
  
  static int adv7180_init_controls(struct adv7180_state *state)
  {
@@ -110759,7 +112381,7 @@ diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
  
  	v4l2_ctrl_new_std(&state->ctrl_hdl, &adv7180_ctrl_ops,
  			  V4L2_CID_BRIGHTNESS, ADV7180_BRI_MIN,
-@@ -688,6 +727,17 @@ static int adv7180_init_controls(struct adv7180_state *state)
+@@ -695,6 +734,17 @@ static int adv7180_init_controls(struct adv7180_state *state)
  					     test_pattern_menu);
  	}
  
@@ -110777,7 +112399,7 @@ diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
  	state->sd.ctrl_handler = &state->ctrl_hdl;
  	if (state->ctrl_hdl.error) {
  		int err = state->ctrl_hdl.error;
-@@ -708,10 +758,15 @@ static int adv7180_enum_mbus_code(struct v4l2_subdev *sd,
+@@ -715,10 +765,15 @@ static int adv7180_enum_mbus_code(struct v4l2_subdev *sd,
  				  struct v4l2_subdev_state *sd_state,
  				  struct v4l2_subdev_mbus_code_enum *code)
  {
@@ -110794,7 +112416,7 @@ diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
  
  	return 0;
  }
-@@ -721,7 +776,10 @@ static int adv7180_mbus_fmt(struct v4l2_subdev *sd,
+@@ -728,7 +783,10 @@ static int adv7180_mbus_fmt(struct v4l2_subdev *sd,
  {
  	struct adv7180_state *state = to_state(sd);
  
@@ -110806,7 +112428,7 @@ diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
  	fmt->colorspace = V4L2_COLORSPACE_SMPTE170M;
  	fmt->width = 720;
  	fmt->height = state->curr_norm & V4L2_STD_525_60 ? 480 : 576;
-@@ -807,7 +865,16 @@ static int adv7180_set_pad_format(struct v4l2_subdev *sd,
+@@ -814,7 +872,16 @@ static int adv7180_set_pad_format(struct v4l2_subdev *sd,
  	ret = adv7180_mbus_fmt(sd,  &format->format);
  
  	if (format->which == V4L2_SUBDEV_FORMAT_ACTIVE) {
@@ -110824,7 +112446,7 @@ diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
  	} else {
  		framefmt = v4l2_subdev_state_get_format(sd_state, 0);
  		*framefmt = format->format;
-@@ -890,6 +957,8 @@ static int adv7180_s_stream(struct v4l2_subdev *sd, int enable)
+@@ -897,6 +964,8 @@ static int adv7180_s_stream(struct v4l2_subdev *sd, int enable)
  		return 0;
  	}
  
@@ -110833,7 +112455,7 @@ diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
  	/* Must wait until querystd released the lock */
  	ret = mutex_lock_interruptible(&state->mutex);
  	if (ret)
-@@ -1341,6 +1410,7 @@ static const struct adv7180_chip_info adv7282_m_info = {
+@@ -1348,6 +1417,7 @@ static const struct adv7180_chip_info adv7282_m_info = {
  		BIT(ADV7182_INPUT_SVIDEO_AIN1_AIN2) |
  		BIT(ADV7182_INPUT_SVIDEO_AIN3_AIN4) |
  		BIT(ADV7182_INPUT_SVIDEO_AIN7_AIN8) |
@@ -110841,7 +112463,7 @@ diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
  		BIT(ADV7182_INPUT_DIFF_CVBS_AIN1_AIN2) |
  		BIT(ADV7182_INPUT_DIFF_CVBS_AIN3_AIN4) |
  		BIT(ADV7182_INPUT_DIFF_CVBS_AIN7_AIN8),
-@@ -1352,6 +1422,7 @@ static const struct adv7180_chip_info adv7282_m_info = {
+@@ -1359,6 +1429,7 @@ static const struct adv7180_chip_info adv7282_m_info = {
  static int init_device(struct adv7180_state *state)
  {
  	int ret;
@@ -110849,7 +112471,7 @@ diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
  
  	mutex_lock(&state->mutex);
  
-@@ -1399,6 +1470,18 @@ static int init_device(struct adv7180_state *state)
+@@ -1406,6 +1477,18 @@ static int init_device(struct adv7180_state *state)
  			goto out_unlock;
  	}
  
@@ -117275,7 +118897,7 @@ diff --git a/drivers/media/i2c/imx335.c b/drivers/media/i2c/imx335.c
  
  	return ret;
  }
-@@ -1077,7 +1243,7 @@ static int imx335_parse_hw_config(struct imx335 *imx335)
+@@ -1077,7 +1243,7 @@ done_endpoint_free:
  
  /* V4l2 subdevice ops */
  static const struct v4l2_subdev_video_ops imx335_video_ops = {
@@ -117405,7 +119027,7 @@ diff --git a/drivers/media/i2c/imx335.c b/drivers/media/i2c/imx335.c
  
  	return ret;
  }
-@@ -1367,9 +1547,9 @@ static int imx335_probe(struct i2c_client *client)
+@@ -1367,9 +1547,9 @@ error_mutex_destroy:
  static void imx335_remove(struct i2c_client *client)
  {
  	struct v4l2_subdev *sd = i2c_get_clientdata(client);
@@ -132621,17 +134243,8 @@ diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
  #define OV5647_REG_FRAME_OFF_NUMBER	0x4202
  #define OV5647_REG_MIPI_CTRL00		0x4800
  #define OV5647_REG_MIPI_CTRL14		0x4814
-@@ -69,18 +74,36 @@
- #define OV5647_NATIVE_HEIGHT		1956U
- 
- #define OV5647_PIXEL_ARRAY_LEFT		16U
--#define OV5647_PIXEL_ARRAY_TOP		16U
-+#define OV5647_PIXEL_ARRAY_TOP		6U
- #define OV5647_PIXEL_ARRAY_WIDTH	2592U
- #define OV5647_PIXEL_ARRAY_HEIGHT	1944U
- 
--#define OV5647_VBLANK_MIN		4
-+#define OV5647_VBLANK_MIN		24
+@@ -76,11 +81,29 @@
+ #define OV5647_VBLANK_MIN		24
  #define OV5647_VTS_MAX			32767
  
 +#define OV5647_HTS_MAX			0x1fff
@@ -133071,15 +134684,6 @@ diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
  	{0x0100, 0x01},
  };
  
-@@ -508,7 +373,7 @@ static const struct ov5647_mode ov5647_modes[] = {
- 	{
- 		.format = {
- 			.code		= MEDIA_BUS_FMT_SBGGR10_1X10,
--			.colorspace	= V4L2_COLORSPACE_SRGB,
-+			.colorspace	= V4L2_COLORSPACE_RAW,
- 			.field		= V4L2_FIELD_NONE,
- 			.width		= 2592,
- 			.height		= 1944
 @@ -520,6 +385,7 @@ static const struct ov5647_mode ov5647_modes[] = {
  			.height		= 1944
  		},
@@ -133088,15 +134692,6 @@ diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
  		.hts		= 2844,
  		.vts		= 0x7b0,
  		.reg_list	= ov5647_2592x1944_10bpp,
-@@ -529,7 +395,7 @@ static const struct ov5647_mode ov5647_modes[] = {
- 	{
- 		.format = {
- 			.code		= MEDIA_BUS_FMT_SBGGR10_1X10,
--			.colorspace	= V4L2_COLORSPACE_SRGB,
-+			.colorspace	= V4L2_COLORSPACE_RAW,
- 			.field		= V4L2_FIELD_NONE,
- 			.width		= 1920,
- 			.height		= 1080
 @@ -540,7 +406,8 @@ static const struct ov5647_mode ov5647_modes[] = {
  			.width		= 1928,
  			.height		= 1080,
@@ -133107,15 +134702,6 @@ diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
  		.hts		= 2416,
  		.vts		= 0x450,
  		.reg_list	= ov5647_1080p30_10bpp,
-@@ -550,7 +417,7 @@ static const struct ov5647_mode ov5647_modes[] = {
- 	{
- 		.format = {
- 			.code		= MEDIA_BUS_FMT_SBGGR10_1X10,
--			.colorspace	= V4L2_COLORSPACE_SRGB,
-+			.colorspace	= V4L2_COLORSPACE_RAW,
- 			.field		= V4L2_FIELD_NONE,
- 			.width		= 1296,
- 			.height		= 972
 @@ -561,7 +428,8 @@ static const struct ov5647_mode ov5647_modes[] = {
  			.width		= 2592,
  			.height		= 1944,
@@ -133126,19 +134712,12 @@ diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
  		.hts		= 1896,
  		.vts		= 0x59b,
  		.reg_list	= ov5647_2x2binned_10bpp,
-@@ -571,7 +439,7 @@ static const struct ov5647_mode ov5647_modes[] = {
- 	{
- 		.format = {
- 			.code		= MEDIA_BUS_FMT_SBGGR10_1X10,
--			.colorspace	= V4L2_COLORSPACE_SRGB,
-+			.colorspace	= V4L2_COLORSPACE_RAW,
- 			.field		= V4L2_FIELD_NONE,
- 			.width		= 640,
- 			.height		= 480
-@@ -583,6 +451,7 @@ static const struct ov5647_mode ov5647_modes[] = {
+@@ -582,7 +450,8 @@ static const struct ov5647_mode ov5647_modes[] = {
+ 			.width		= 2560,
  			.height		= 1920,
  		},
- 		.pixel_rate	= 55000000,
+-		.pixel_rate	= 58333000,
++		.pixel_rate	= 55000000,
 +		.link_freq_index = FREQ_INDEX_VGA,
  		.hts		= 1852,
  		.vts		= 0x1f8,
@@ -133205,7 +134784,7 @@ diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
  	if (sensor->pwdn) {
  		gpiod_set_value_cansleep(sensor->pwdn, 0);
  		msleep(PWDN_ACTIVE_DELAY_MS);
-@@ -808,6 +703,7 @@ static int ov5647_power_on(struct device *dev)
+@@ -808,6 +703,7 @@ error_clk_disable:
  	clk_disable_unprepare(sensor->xclk);
  error_pwdn:
  	gpiod_set_value_cansleep(sensor->pwdn, 1);
@@ -133362,7 +134941,7 @@ diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
  	default:
  		dev_info(&client->dev,
  			 "Control (id:0x%x, val:0x%x) not supported\n",
-@@ -1284,12 +1239,25 @@ static const struct v4l2_ctrl_ops ov5647_ctrl_ops = {
+@@ -1284,14 +1239,25 @@ static const struct v4l2_ctrl_ops ov5647_ctrl_ops = {
  	.s_ctrl = ov5647_s_ctrl,
  };
  
@@ -133386,11 +134965,13 @@ diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
 +	struct v4l2_fwnode_device_properties props;
  
 -	v4l2_ctrl_handler_init(&sensor->ctrls, 9);
+-
+-	sensor->ctrls.lock = &sensor->lock;
 +	v4l2_ctrl_handler_init(&sensor->ctrls, 10);
  
  	v4l2_ctrl_new_std(&sensor->ctrls, &ov5647_ctrl_ops,
  			  V4L2_CID_AUTOGAIN, 0, 1, 1, 0);
-@@ -1320,10 +1288,11 @@ static int ov5647_init_controls(struct ov5647 *sensor)
+@@ -1322,10 +1288,11 @@ static int ov5647_init_controls(struct ov5647 *sensor)
  					       sensor->mode->pixel_rate, 1,
  					       sensor->mode->pixel_rate);
  
@@ -133404,7 +134985,7 @@ diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
  					   hblank);
  
  	sensor->vblank = v4l2_ctrl_new_std(&sensor->ctrls, &ov5647_ctrl_ops,
-@@ -1338,11 +1307,33 @@ static int ov5647_init_controls(struct ov5647 *sensor)
+@@ -1340,11 +1307,33 @@ static int ov5647_init_controls(struct ov5647 *sensor)
  				     ARRAY_SIZE(ov5647_test_pattern_menu) - 1,
  				     0, 0, ov5647_test_pattern_menu);
  
@@ -133439,7 +135020,7 @@ diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
  	sensor->sd.ctrl_handler = &sensor->ctrls;
  
  	return 0;
-@@ -1417,11 +1408,17 @@ static int ov5647_probe(struct i2c_client *client)
+@@ -1419,19 +1408,25 @@ static int ov5647_probe(struct i2c_client *client)
  		return -EINVAL;
  	}
  
@@ -133453,12 +135034,23 @@ diff --git a/drivers/media/i2c/ov5647.c b/drivers/media/i2c/ov5647.c
  
  	sensor->mode = OV5647_DEFAULT_MODE;
  
--	ret = ov5647_init_controls(sensor);
 +	ret = ov5647_init_controls(sensor, dev);
- 	if (ret)
- 		goto mutex_destroy;
++	if (ret)
++		goto mutex_destroy;
++
+ 	sd = &sensor->sd;
+ 	v4l2_i2c_subdev_init(sd, client, &ov5647_subdev_ops);
+ 	sd->internal_ops = &ov5647_subdev_internal_ops;
+ 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
  
-@@ -1444,7 +1441,7 @@ static int ov5647_probe(struct i2c_client *client)
+-	ret = ov5647_init_controls(sensor);
+-	if (ret)
+-		goto mutex_destroy;
+-
+ 	sensor->pad.flags = MEDIA_PAD_FL_SOURCE;
+ 	sd->entity.function = MEDIA_ENT_F_CAM_SENSOR;
+ 	ret = media_entity_pads_init(&sd->entity, 1, &sensor->pad);
+@@ -1446,7 +1441,7 @@ static int ov5647_probe(struct i2c_client *client)
  	if (ret < 0)
  		goto power_off;
  
@@ -133730,7 +135322,7 @@ diff --git a/drivers/media/i2c/ov9282.c b/drivers/media/i2c/ov9282.c
  }
  
  /**
-@@ -1069,12 +1135,16 @@ static int ov9282_set_stream(struct v4l2_subdev *sd, int enable)
+@@ -1069,12 +1135,16 @@ error_unlock:
  static int ov9282_detect(struct ov9282 *ov9282)
  {
  	int ret;
@@ -134114,7 +135706,7 @@ diff --git a/drivers/media/mc/mc-request.c b/drivers/media/mc/mc-request.c
  		req->state = MEDIA_REQUEST_STATE_COMPLETE;
  		wake_up_interruptible_all(&req->poll_wait);
  		completed = true;
-@@ -505,3 +513,35 @@ void media_request_object_complete(struct media_request_object *obj)
+@@ -505,3 +513,35 @@ unlock:
  		media_request_put(req);
  }
  EXPORT_SYMBOL_GPL(media_request_object_complete);
@@ -143403,7 +144995,7 @@ diff --git a/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c b/drivers/medi
  
  	return ret;
  }
-@@ -915,9 +932,10 @@ static int pispbe_node_start_streaming(struct vb2_queue *q, unsigned int count)
+@@ -915,9 +932,10 @@ err_return_buffers:
  static void pispbe_node_stop_streaming(struct vb2_queue *q)
  {
  	struct pispbe_node *node = vb2_get_drv_priv(q);
@@ -143713,7 +145305,7 @@ diff --git a/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c b/drivers/medi
  	if (ret)
  		goto error;
  
-@@ -1522,36 +1557,43 @@ static int pispbe_init_subdev(struct pispbe_dev *pispbe)
+@@ -1522,36 +1557,43 @@ error:
  	return ret;
  }
  
@@ -143782,7 +145374,7 @@ diff --git a/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c b/drivers/medi
  		dev_err(pispbe->dev, "Unable to allocate cached config buffers.\n");
  		ret = -ENOMEM;
  		goto err_unregister_mdev;
-@@ -1577,11 +1619,11 @@ static int pispbe_init_devices(struct pispbe_dev *pispbe)
+@@ -1577,11 +1619,11 @@ err_unregister_mdev:
  	media_device_unregister(mdev);
  err_unregister_nodes:
  	while (num_regist-- > 0) {
@@ -143798,7 +145390,7 @@ diff --git a/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c b/drivers/medi
  err_unregister_v4l2:
  	v4l2_device_unregister(v4l2_dev);
  err_media_dev_cleanup:
-@@ -1589,31 +1631,33 @@ static int pispbe_init_devices(struct pispbe_dev *pispbe)
+@@ -1589,31 +1631,33 @@ err_media_dev_cleanup:
  	return ret;
  }
  
@@ -149782,7 +151374,7 @@ diff --git a/drivers/media/v4l2-core/v4l2-ioctl.c b/drivers/media/v4l2-core/v4l2
 diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
 --- a/drivers/mfd/Kconfig
 +++ b/drivers/mfd/Kconfig
-@@ -1186,6 +1186,16 @@ config MFD_SY7636A
+@@ -1210,6 +1210,16 @@ config MFD_SY7636A
  	  To enable support for building sub-devices as modules,
  	  choose M here.
  
@@ -149799,7 +151391,7 @@ diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
  config MFD_RDC321X
  	tristate "RDC R-321x southbridge"
  	select MFD_CORE
-@@ -2374,6 +2384,18 @@ config MFD_INTEL_M10_BMC_PMCI
+@@ -2398,6 +2408,18 @@ config MFD_INTEL_M10_BMC_PMCI
  	  additional drivers must be enabled in order to use the functionality
  	  of the device.
  
@@ -150283,15 +151875,15 @@ diff --git a/drivers/mfd/simple-mfd-i2c.c b/drivers/mfd/simple-mfd-i2c.c
  static int simple_mfd_i2c_probe(struct i2c_client *i2c)
  {
  	const struct simple_mfd_data *simple_mfd_data;
-@@ -88,6 +97,8 @@ static const struct of_device_id simple_mfd_i2c_of_match[] = {
- 	{ .compatible = "silergy,sy7636a", .data = &silergy_sy7636a},
+@@ -117,6 +126,8 @@ static const struct of_device_id simple_mfd_i2c_of_match[] = {
  	{ .compatible = "maxim,max5970", .data = &maxim_max5970},
  	{ .compatible = "maxim,max5978", .data = &maxim_max5970},
+ 	{ .compatible = "maxim,max77705-battery", .data = &maxim_mon_max77705},
 +	{ .compatible = "raspberrypi,poe-core", &rpi_poe_core },
 +	{ .compatible = "raspberrypi,sensehat" },
+ 	{ .compatible = "silergy,sy7636a", .data = &silergy_sy7636a},
+ 	{ .compatible = "spacemit,p1", .data = &spacemit_p1, },
  	{}
- };
- MODULE_DEVICE_TABLE(of, simple_mfd_i2c_of_match);
 diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
 --- a/drivers/misc/Kconfig
 +++ b/drivers/misc/Kconfig
@@ -154112,7 +155704,7 @@ diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
  	return err;
  }
  
-@@ -1445,6 +1387,7 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
+@@ -1445,6 +1387,7 @@ retry:
  
  		card->ocr = ocr;
  		card->type = MMC_TYPE_SD;
@@ -154120,7 +155712,7 @@ diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
  		memcpy(card->raw_cid, cid, sizeof(card->raw_cid));
  	}
  
-@@ -1562,7 +1505,7 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
+@@ -1562,7 +1505,7 @@ retry:
  cont:
  	if (!oldcard) {
  		/* Read/parse the extension registers. */
@@ -154129,7 +155721,7 @@ diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
  		if (err)
  			goto free_card;
  	}
-@@ -1574,13 +1517,45 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
+@@ -1574,13 +1517,45 @@ cont:
  			goto free_card;
  	}
  
@@ -158977,7 +160569,7 @@ diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
  	if (match_priv->cfginit)
  		match_priv->cfginit(host);
  
-@@ -481,7 +734,6 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
+@@ -481,7 +734,6 @@ add_host:
  	if (res)
  		goto err;
  
@@ -159081,7 +160673,7 @@ diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwc
  	},
  	.init = dwcmshc_rk35xx_init,
  	.postinit = dwcmshc_rk35xx_postinit,
-@@ -1360,6 +1390,10 @@ static void dwcmshc_cqhci_init(struct sdhci_host *host, struct platform_device *
+@@ -1360,6 +1390,10 @@ dsbl_cqe_caps:
  }
  
  static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
@@ -159125,7 +160717,7 @@ diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwc
  
  	priv->vendor_specific_area1 =
  		sdhci_readl(host, DWCMSHC_P_VENDOR_AREA1) & DWCMSHC_AREA1_MASK;
-@@ -1519,6 +1572,7 @@ static int dwcmshc_probe(struct platform_device *pdev)
+@@ -1519,6 +1572,7 @@ err_rpm:
  	pm_runtime_put_noidle(dev);
  err_clk:
  	clk_disable_unprepare(pltfm_host->clk);
@@ -159512,7 +161104,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  }
  
  static int macb_mdio_read_c22(struct mii_bus *bus, int mii_id, int regnum)
-@@ -493,6 +496,19 @@ static int macb_mdio_write_c45(struct mii_bus *bus, int mii_id,
+@@ -493,6 +496,19 @@ mdio_pm_exit:
  	return status;
  }
  
@@ -159532,26 +161124,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  static void macb_init_buffers(struct macb *bp)
  {
  	struct macb_queue *queue;
-@@ -756,14 +772,12 @@ static void macb_mac_link_up(struct phylink_config *config,
- 		if (rx_pause)
- 			ctrl |= MACB_BIT(PAE);
- 
--		/* Initialize rings & buffers as clearing MACB_BIT(TE) in link down
--		 * cleared the pipeline and control registers.
--		 */
--		macb_init_buffers(bp);
--
--		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
-+		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
-+			queue->tx_head = 0;
-+			queue->tx_tail = 0;
- 			queue_writel(queue, IER,
- 				     bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP));
-+		}
- 	}
- 
- 	macb_or_gem_writel(bp, NCFGR, ctrl);
-@@ -976,6 +990,7 @@ static int macb_mii_init(struct macb *bp)
+@@ -974,6 +990,7 @@ static int macb_mii_init(struct macb *bp)
  	bp->mii_bus->write = &macb_mdio_write_c22;
  	bp->mii_bus->read_c45 = &macb_mdio_read_c45;
  	bp->mii_bus->write_c45 = &macb_mdio_write_c45;
@@ -159559,7 +161132,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	snprintf(bp->mii_bus->id, MII_BUS_ID_SIZE, "%s-%x",
  		 bp->pdev->name, bp->pdev->id);
  	bp->mii_bus->priv = bp;
-@@ -1641,6 +1656,11 @@ static int macb_rx(struct macb_queue *queue, struct napi_struct *napi,
+@@ -1639,6 +1656,11 @@ static int macb_rx(struct macb_queue *queue, struct napi_struct *napi,
  
  		macb_init_rx_ring(queue);
  		queue_writel(queue, RBQP, queue->rx_ring_dma);
@@ -159571,7 +161144,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  
  		macb_writel(bp, NCR, ctrl | MACB_BIT(RE));
  
-@@ -1943,8 +1963,9 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
+@@ -1941,8 +1963,9 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
  				queue_writel(queue, ISR, MACB_BIT(TCOMP) |
  							 MACB_BIT(TXUBR));
  
@@ -159582,7 +161155,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  				wmb(); // ensure softirq can see update
  			}
  
-@@ -2400,6 +2421,11 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+@@ -2398,6 +2421,11 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
  	skb_tx_timestamp(skb);
  
  	spin_lock(&bp->lock);
@@ -159594,7 +161167,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
  	spin_unlock(&bp->lock);
  
-@@ -2806,6 +2832,37 @@ static void macb_configure_dma(struct macb *bp)
+@@ -2804,6 +2832,37 @@ static void macb_configure_dma(struct macb *bp)
  	}
  }
  
@@ -159632,7 +161205,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  static void macb_init_hw(struct macb *bp)
  {
  	u32 config;
-@@ -2834,6 +2891,11 @@ static void macb_init_hw(struct macb *bp)
+@@ -2832,6 +2891,11 @@ static void macb_init_hw(struct macb *bp)
  	if (bp->caps & MACB_CAPS_JUMBO)
  		bp->rx_frm_len_mask = MACB_RX_JFRMLEN_MASK;
  
@@ -159644,15 +161217,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	macb_configure_dma(bp);
  
  	/* Enable RX partial store and forward and set watermark */
-@@ -2985,6 +3047,7 @@ static int macb_open(struct net_device *dev)
- 	}
- 
- 	bp->macbgem_ops.mog_init_rings(bp);
-+	macb_init_buffers(bp);
- 
- 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
- 		napi_enable(&queue->napi_rx);
-@@ -3200,6 +3263,52 @@ static void gem_get_ethtool_strings(struct net_device *dev, u32 sset, u8 *p)
+@@ -3199,6 +3263,52 @@ static void gem_get_ethtool_strings(struct net_device *dev, u32 sset, u8 *p)
  	}
  }
  
@@ -159705,7 +161270,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  static struct net_device_stats *macb_get_stats(struct net_device *dev)
  {
  	struct macb *bp = netdev_priv(dev);
-@@ -3784,6 +3893,8 @@ static const struct ethtool_ops macb_ethtool_ops = {
+@@ -3783,6 +3893,8 @@ static const struct ethtool_ops macb_ethtool_ops = {
  };
  
  static const struct ethtool_ops gem_ethtool_ops = {
@@ -159714,7 +161279,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	.get_regs_len		= macb_get_regs_len,
  	.get_regs		= macb_get_regs,
  	.get_wol		= macb_get_wol,
-@@ -3793,6 +3904,8 @@ static const struct ethtool_ops gem_ethtool_ops = {
+@@ -3792,6 +3904,8 @@ static const struct ethtool_ops gem_ethtool_ops = {
  	.get_ethtool_stats	= gem_get_ethtool_stats,
  	.get_strings		= gem_get_ethtool_strings,
  	.get_sset_count		= gem_get_sset_count,
@@ -159723,7 +161288,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	.get_link_ksettings     = macb_get_link_ksettings,
  	.set_link_ksettings     = macb_set_link_ksettings,
  	.get_ringparam		= macb_get_ringparam,
-@@ -4963,6 +5076,17 @@ static const struct macb_config versal_config = {
+@@ -4962,6 +5076,17 @@ static const struct macb_config versal_config = {
  	.usrio = &macb_default_usrio,
  };
  
@@ -159741,7 +161306,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  static const struct of_device_id macb_dt_ids[] = {
  	{ .compatible = "cdns,at91sam9260-macb", .data = &at91sam9260_config },
  	{ .compatible = "cdns,macb" },
-@@ -4983,6 +5107,7 @@ static const struct of_device_id macb_dt_ids[] = {
+@@ -4982,6 +5107,7 @@ static const struct of_device_id macb_dt_ids[] = {
  	{ .compatible = "microchip,mpfs-macb", .data = &mpfs_config },
  	{ .compatible = "microchip,sama7g5-gem", .data = &sama7g5_gem_config },
  	{ .compatible = "microchip,sama7g5-emac", .data = &sama7g5_emac_config },
@@ -159749,7 +161314,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	{ .compatible = "xlnx,zynqmp-gem", .data = &zynqmp_config},
  	{ .compatible = "xlnx,zynq-gem", .data = &zynq_config },
  	{ .compatible = "xlnx,versal-gem", .data = &versal_config},
-@@ -5114,6 +5239,11 @@ static int macb_probe(struct platform_device *pdev)
+@@ -5113,6 +5239,11 @@ static int macb_probe(struct platform_device *pdev)
  			}
  		}
  	}
@@ -159761,7 +161326,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	spin_lock_init(&bp->lock);
  	spin_lock_init(&bp->stats_lock);
  
-@@ -5174,6 +5304,21 @@ static int macb_probe(struct platform_device *pdev)
+@@ -5173,6 +5304,21 @@ static int macb_probe(struct platform_device *pdev)
  	else
  		bp->phy_interface = interface;
  
@@ -159783,7 +161348,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	/* IP specific init */
  	err = init(pdev);
  	if (err)
-@@ -5245,6 +5390,19 @@ static void macb_remove(struct platform_device *pdev)
+@@ -5244,6 +5390,19 @@ static void macb_remove(struct platform_device *pdev)
  	}
  }
  
@@ -159803,7 +161368,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  static int __maybe_unused macb_suspend(struct device *dev)
  {
  	struct net_device *netdev = dev_get_drvdata(dev);
-@@ -5498,6 +5656,7 @@ static const struct dev_pm_ops macb_pm_ops = {
+@@ -5497,6 +5656,7 @@ static const struct dev_pm_ops macb_pm_ops = {
  static struct platform_driver macb_driver = {
  	.probe		= macb_probe,
  	.remove_new	= macb_remove,
@@ -160046,6 +161611,62 @@ diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
  	ret = genphy_c45_an_config_eee_aneg(phydev);
  	if (ret > 0) {
  		ret = phy_restart_aneg(phydev);
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -1728,7 +1728,7 @@ EXPORT_SYMBOL(phy_ethtool_get_eee);
+  * phy_ethtool_set_eee_noneg - Adjusts MAC LPI configuration without PHY
+  *			       renegotiation
+  * @phydev: pointer to the target PHY device structure
+- * @data: pointer to the ethtool_keee structure containing the new EEE settings
++ * @old_cfg: pointer to the eee_config structure containing the old EEE settings
+  *
+  * This function updates the Energy Efficient Ethernet (EEE) configuration
+  * for cases where only the MAC's Low Power Idle (LPI) configuration changes,
+@@ -1739,11 +1739,10 @@ EXPORT_SYMBOL(phy_ethtool_get_eee);
+  * configuration.
+  */
+ static void phy_ethtool_set_eee_noneg(struct phy_device *phydev,
+-				      struct ethtool_keee *data)
++				      const struct eee_config *old_cfg)
+ {
+-	if (phydev->eee_cfg.tx_lpi_enabled != data->tx_lpi_enabled ||
+-	    phydev->eee_cfg.tx_lpi_timer != data->tx_lpi_timer) {
+-		eee_to_eeecfg(&phydev->eee_cfg, data);
++	if (phydev->eee_cfg.tx_lpi_enabled != old_cfg->tx_lpi_enabled ||
++	    phydev->eee_cfg.tx_lpi_timer != old_cfg->tx_lpi_timer) {
+ 		phydev->enable_tx_lpi = eeecfg_mac_can_tx_lpi(&phydev->eee_cfg);
+ 		if (phydev->link) {
+ 			phydev->link = false;
+@@ -1763,18 +1762,23 @@ static void phy_ethtool_set_eee_noneg(struct phy_device *phydev,
+  */
+ int phy_ethtool_set_eee(struct phy_device *phydev, struct ethtool_keee *data)
+ {
++	struct eee_config old_cfg;
+ 	int ret;
+ 
+ 	if (!phydev->drv)
+ 		return -EIO;
+ 
+ 	mutex_lock(&phydev->lock);
++
++	old_cfg = phydev->eee_cfg;
++	eee_to_eeecfg(&phydev->eee_cfg, data);
++
+ 	ret = genphy_c45_ethtool_set_eee(phydev, data);
+-	if (ret >= 0) {
+-		if (ret == 0)
+-			phy_ethtool_set_eee_noneg(phydev, data);
+-		eee_to_eeecfg(&phydev->eee_cfg, data);
+-	}
++	if (ret == 0)
++		phy_ethtool_set_eee_noneg(phydev, &old_cfg);
++	else if (ret < 0)
++		phydev->eee_cfg = old_cfg;
++
+ 	mutex_unlock(&phydev->lock);
+ 
+ 	return ret < 0 ? ret : 0;
 diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
 --- a/drivers/net/phy/phy_device.c
 +++ b/drivers/net/phy/phy_device.c
@@ -160124,7 +161745,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  };
  
  static int lan78xx_init_mac_address(struct lan78xx_net *dev)
-@@ -2422,7 +2437,26 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+@@ -2420,7 +2435,26 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
  	mii_adv_to_linkmode_adv_t(fc, mii_adv);
  	linkmode_or(phydev->advertising, fc, phydev->advertising);
  
@@ -160152,7 +161773,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  
  	if (phydev->mdio.dev.of_node) {
  		u32 reg;
-@@ -2897,6 +2931,11 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+@@ -2895,6 +2929,11 @@ static int lan78xx_reset(struct lan78xx_net *dev)
  	int ret;
  	u32 buf;
  	u8 sig;
@@ -160164,7 +161785,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  
  	ret = lan78xx_read_reg(dev, HW_CFG, &buf);
  	if (ret < 0)
-@@ -2965,6 +3004,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+@@ -2963,6 +3002,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
  	buf |= HW_CFG_CLK125_EN_;
  	buf |= HW_CFG_REFCLK25_EN_;
  
@@ -160175,7 +161796,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  	ret = lan78xx_write_reg(dev, HW_CFG, buf);
  	if (ret < 0)
  		return ret;
-@@ -3067,6 +3110,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+@@ -3065,6 +3108,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
  			buf |= MAC_CR_AUTO_DUPLEX_ | MAC_CR_AUTO_SPEED_;
  		}
  	}
@@ -160185,7 +161806,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  	ret = lan78xx_write_reg(dev, MAC_CR, buf);
  	if (ret < 0)
  		return ret;
-@@ -3464,8 +3510,14 @@ static int lan78xx_bind(struct lan78xx_net *dev, struct usb_interface *intf)
+@@ -3462,8 +3508,14 @@ static int lan78xx_bind(struct lan78xx_net *dev, struct usb_interface *intf)
  	if (DEFAULT_RX_CSUM_ENABLE)
  		dev->net->features |= NETIF_F_RXCSUM;
  
@@ -160202,7 +161823,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  
  	if (DEFAULT_VLAN_RX_OFFLOAD)
  		dev->net->features |= NETIF_F_HW_VLAN_CTAG_RX;
-@@ -4433,7 +4485,13 @@ static int lan78xx_probe(struct usb_interface *intf,
+@@ -4431,7 +4483,13 @@ static int lan78xx_probe(struct usb_interface *intf,
  	if (ret < 0)
  		goto out4;
  
@@ -163098,7 +164719,7 @@ diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie
  
  	return ret;
  }
-@@ -1656,6 +2162,7 @@ static int brcm_pcie_resume_noirq(struct device *dev)
+@@ -1656,6 +2162,7 @@ err_disable_clk:
  
  static void __brcm_pcie_remove(struct brcm_pcie *pcie)
  {
@@ -163294,7 +164915,7 @@ diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie
 diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
 --- a/drivers/pci/probe.c
 +++ b/drivers/pci/probe.c
-@@ -992,9 +992,6 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
+@@ -996,9 +996,6 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
  	else
  		pr_info("PCI host bridge to bus %s\n", name);
  
@@ -163307,7 +164928,7 @@ diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
 diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
 --- a/drivers/pci/quirks.c
 +++ b/drivers/pci/quirks.c
-@@ -6249,6 +6249,22 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56b0, aspm_l1_acceptable_latency
+@@ -6276,6 +6276,22 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56b0, aspm_l1_acceptable_latency
  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56b1, aspm_l1_acceptable_latency);
  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56c0, aspm_l1_acceptable_latency);
  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56c1, aspm_l1_acceptable_latency);
@@ -168677,7 +170298,7 @@ diff --git a/drivers/regulator/rpi-panel-v2-regulator.c b/drivers/regulator/rpi-
 new file mode 100644
 --- /dev/null
 +++ b/drivers/regulator/rpi-panel-v2-regulator.c
-@@ -0,0 +1,240 @@
+@@ -0,0 +1,241 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2022 Raspberry Pi Ltd.
@@ -168754,13 +170375,13 @@ new file mode 100644
 +static int rpi_panel_v2_update_status(struct backlight_device *bl)
 +{
 +	struct regmap *regmap = bl_get_data(bl);
-+	int brightness = bl->props.brightness;
++	int brightness = bl->props.brightness | PWM_BL_ENABLE;
 +
 +	if (bl->props.power != FB_BLANK_UNBLANK ||
 +	    bl->props.state & (BL_CORE_SUSPENDED | BL_CORE_FBBLANK))
 +		brightness = 0;
 +
-+	return regmap_write(regmap, REG_PWM, brightness | PWM_BL_ENABLE);
++	return regmap_write(regmap, REG_PWM, brightness);
 +}
 +
 +static const struct backlight_ops rpi_panel_v2_bl = {
@@ -168838,6 +170459,7 @@ new file mode 100644
 +	case 0x04: /* 7 inch - old */
 +	case 0x08: /* 5 inch - old */
 +	case 0x09: /* 5 inch */
++	case 0x0a: /* 10.1 inch */
 +		break;
 +	default:
 +		dev_err(&i2c->dev, "Unknown revision: 0x%02x\n",
@@ -171726,7 +173348,7 @@ diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -428,7 +428,7 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+@@ -415,7 +415,7 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
  			}
  
  			if (ctlr->use_gpio_descriptors && spi_get_csgpiod(spi, 0))
@@ -171735,7 +173357,7 @@ diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
  
  			tmp |= spi->mode & ~SPI_MODE_MASK;
  			spi->mode = tmp & SPI_MODE_USER_MASK;
-@@ -711,6 +711,7 @@ static const struct spi_device_id spidev_spi_ids[] = {
+@@ -693,6 +693,7 @@ static const struct spi_device_id spidev_spi_ids[] = {
  	{ .name = "spi-authenta" },
  	{ .name = "em3581" },
  	{ .name = "si3210" },
@@ -171743,7 +173365,7 @@ diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
  	{},
  };
  MODULE_DEVICE_TABLE(spi, spidev_spi_ids);
-@@ -721,7 +722,7 @@ MODULE_DEVICE_TABLE(spi, spidev_spi_ids);
+@@ -703,7 +704,7 @@ MODULE_DEVICE_TABLE(spi, spidev_spi_ids);
   */
  static int spidev_of_check(struct device *dev)
  {
@@ -184416,7 +186038,7 @@ diff --git a/drivers/usb/core/generic.c b/drivers/usb/core/generic.c
 diff --git a/drivers/usb/core/hcd.c b/drivers/usb/core/hcd.c
 --- a/drivers/usb/core/hcd.c
 +++ b/drivers/usb/core/hcd.c
-@@ -1951,6 +1951,16 @@ int usb_hcd_alloc_bandwidth(struct usb_device *udev,
+@@ -1951,6 +1951,16 @@ reset:
  	return ret;
  }
  
@@ -184470,7 +186092,7 @@ diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
  /**
   * usb_disable_endpoint -- Disable an endpoint by address
   * @dev: the device whose endpoint is being disabled
-@@ -2180,6 +2195,85 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+@@ -2180,6 +2195,85 @@ free_interfaces:
  	if (cp->string == NULL &&
  			!(dev->quirks & USB_QUIRK_CONFIG_INTF_STRINGS))
  		cp->string = usb_cache_string(dev, cp->desc.iConfiguration);
@@ -184811,7 +186433,7 @@ diff --git a/drivers/usb/dwc2/hcd.c b/drivers/usb/dwc2/hcd.c
  	/* Set the transfer attributes */
  	dwc2_hc_init_xfer(hsotg, chan, qtd);
  
-@@ -4526,8 +4562,13 @@ static int _dwc2_hcd_resume(struct usb_hcd *hcd)
+@@ -4526,8 +4562,13 @@ unlock:
  static int _dwc2_hcd_get_frame_number(struct usb_hcd *hcd)
  {
  	struct dwc2_hsotg *hsotg = dwc2_hcd_to_hsotg(hcd);
@@ -184977,7 +186599,7 @@ diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
  	dwc->tx_fifo_resize_max_num = tx_fifo_resize_max_num;
  }
  
-@@ -2187,6 +2249,12 @@ static int dwc3_probe(struct platform_device *pdev)
+@@ -2202,6 +2264,12 @@ static int dwc3_probe(struct platform_device *pdev)
  	if (IS_ERR(dwc->usb_psy))
  		return dev_err_probe(dev, PTR_ERR(dwc->usb_psy), "couldn't get usb power supply\n");
  
@@ -185015,7 +186637,7 @@ diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
  #define DWC3_GUCTL1_RESUME_OPMODE_HS_HOST	BIT(10)
  
  /* Global Status Register */
-@@ -1087,6 +1093,7 @@ struct dwc3_scratchpad_array {
+@@ -1089,6 +1095,7 @@ struct dwc3_scratchpad_array {
   * @tx_max_burst_prd: max periodic ESS transmit burst size
   * @tx_fifo_resize_max_num: max number of fifos allocated during txfifo resize
   * @clear_stall_protocol: endpoint number that requires a delayed status phase
@@ -185023,7 +186645,7 @@ diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
   * @hsphy_interface: "utmi" or "ulpi"
   * @connected: true when we're connected to a host, false otherwise
   * @softconnect: true when gadget connect is called, false when disconnect runs
-@@ -1138,10 +1145,14 @@ struct dwc3_scratchpad_array {
+@@ -1140,10 +1147,14 @@ struct dwc3_scratchpad_array {
   *			generation after resume from suspend.
   * @ulpi_ext_vbus_drv: Set to confiure the upli chip to drives CPEN pin
   *			VBUS with an external supply.
@@ -185042,7 +186664,7 @@ diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
   * @gfladj_refclk_lpm_sel: set if we need to enable SOF/ITP counter
   *                          running based on ref_clk
   * @tx_de_emphasis_quirk: set if we enable Tx de-emphasis quirk
-@@ -1338,6 +1349,7 @@ struct dwc3 {
+@@ -1342,6 +1353,7 @@ struct dwc3 {
  	u8			tx_max_burst_prd;
  	u8			tx_fifo_resize_max_num;
  	u8			clear_stall_protocol;
@@ -185050,7 +186672,7 @@ diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
  
  	const char		*hsphy_interface;
  
-@@ -1379,8 +1391,11 @@ struct dwc3 {
+@@ -1383,8 +1395,11 @@ struct dwc3 {
  	unsigned		dis_tx_ipgap_linecheck_quirk:1;
  	unsigned		resume_hs_terminations:1;
  	unsigned		ulpi_ext_vbus_drv:1;
@@ -185065,7 +186687,7 @@ diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
 diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
 --- a/drivers/usb/dwc3/host.c
 +++ b/drivers/usb/dwc3/host.c
-@@ -129,10 +129,12 @@ static int dwc3_host_get_irq(struct dwc3 *dwc)
+@@ -129,10 +129,12 @@ out:
  
  int dwc3_host_init(struct dwc3 *dwc)
  {
@@ -255069,7 +256691,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  
  	/*
  	 * Save nodes for mpol_to_str() to show the tmpfs mount options
-@@ -3297,7 +3397,30 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
+@@ -3297,7 +3397,30 @@ out:
  		*mpol = new;
  	return err;
  }
@@ -283480,7 +285102,7 @@ diff --git a/sound/usb/card.c b/sound/usb/card.c
 diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
 --- a/sound/usb/quirks.c
 +++ b/sound/usb/quirks.c
-@@ -2393,6 +2393,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+@@ -2395,6 +2395,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
  		   QUIRK_FLAG_ALIGN_TRANSFER),
  	DEVICE_FLG(0x534d, 0x2109, /* MacroSilicon MS2109 */
  		   QUIRK_FLAG_ALIGN_TRANSFER),
