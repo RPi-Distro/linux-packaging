@@ -1,3 +1,23 @@
+linux (1:6.18.29-1+rpt1) trixie; urgency=medium
+
+  * Raspberry Pi OS release
+  * d/control: Update Maintainer, Homepage and Vcs information
+  * Remove unecessary patches
+  * Disable unecessary architectures
+  * Don't sign arm64 kernels
+  * Compress arm64 kernels
+  * Add epoch support in version string
+  * Allow initramfs generation to be skipped in postinst
+  * Add rpi featureset
+  * Install overlays README
+  * Add +rpt to abiname
+  * Add update helper script
+  * Update Raspberry Pi patch
+  * Update debian/config
+  * Linux commit: 66318c5b5cd8145a662303af12ed39ac07eb27cc
+
+ -- Serge Schneider <serge@raspberrypi.com>  Tue, 12 May 2026 15:10:35 +0100
+
 linux (6.18.15-1~bpo13+1) trixie-backports; urgency=medium
 
   * Rebuild for trixie-backports
