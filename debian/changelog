@@ -1,3 +1,11 @@
+linux (1:6.12.87-1+rpt1~bookworm) bookworm; urgency=medium
+
+  * Raspberry Pi OS release
+  * Update Raspberry Pi patch
+  * Linux commit: ae4d75fb36deba0fe1a986d9bfae65755e082dd0
+
+ -- Serge Schneider <serge@raspberrypi.com>  Tue, 12 May 2026 15:35:32 +0100
+
 linux (1:6.12.75-1+rpt1~bookworm) bookworm; urgency=medium
 
   * Raspberry Pi OS release
