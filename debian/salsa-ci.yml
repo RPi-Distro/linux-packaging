@@ -65,7 +65,7 @@ orig:
 
 # Our modified build jobs
 
-build:
+build source:
   timeout: 3 hours
   cache:
     - key: "orig-${RELEASE}"
@@ -76,12 +76,13 @@ build:
     - job: orig
   extends:
     - .build-definition
+  variables:
+    DB_BUILD_TYPE: source
   rules:
     - if: $CI_COMMIT_TAG != null
       when: never
     - when: always
   script:
-    # Do the same as the common .build-definition script
     - !reference [.build-before-script]
     - !reference [.build-script-setup-environment]
 
@@ -125,20 +126,45 @@ build:
     # Build source package
     - dpkg-buildpackage -uc -us -S -sa -d
 
-    # Make everything accessible to build user
-    - chown -R 'salsa-ci:' ${BUILD_DIR} ${WORKING_DIR}
-
-    - !reference [.build-script-setup-build-command]
-    - !reference [.build-script-run-build-command]
-
-    # Try to put extra dpkg-buildpackage -S outputs into artfacts
-    - mv ../${source}_${version}_source.buildinfo ../${source}_${version}_source.changes ${WORKING_DIR} || true
+    # Publish the full source set as artefacts
+    - dcmd mv ../${source}_${version}_source.changes ${WORKING_DIR}
   after_script:
     # pass the RELEASE_FROM_CHANGELOG envvar to any consecutive job
     - echo "RELEASE_FROM_CHANGELOG=${RELEASE_FROM_CHANGELOG}" | tee ${CI_PROJECT_DIR}/salsa.env
     - ls -l ${CI_PROJECT_DIR}/salsa.env
     - cat ${CI_PROJECT_DIR}/salsa.env
     - !reference [.build-after-script]
+
+build:
+  timeout: 3 hours
+  needs:
+    - job: build source
+      artifacts: true
+  extends:
+    - .build-definition
+  rules:
+    - if: $CI_COMMIT_TAG != null
+      when: never
+    - when: always
+  script:
+    - !reference [.build-before-script]
+    - !reference [.build-script-setup-environment]
+
+    # Extract the canonical .dsc produced by 'build source'
+    - source=$(dpkg-parsechangelog -SSource)
+    - DSC=$(basename ${WORKING_DIR}/${source}_*.dsc)
+    - dpkg-source -x --no-check ${WORKING_DIR}/${DSC} ${BUILD_DIR}/${DSC%.dsc}
+    - cd ${BUILD_DIR}/${DSC%.dsc}
+
+    # Make everything accessible to build user
+    - chown -R 'salsa-ci:' ${BUILD_DIR} ${WORKING_DIR}
+
+    - !reference [.build-script-setup-build-command]
+    - !reference [.build-script-run-build-command]
+
+    # Drop source files forwarded from 'build source' so they're not
+    # republished in this binary build's artifacts
+    - dcmd rm -f ${WORKING_DIR}/${source}_*_source.changes
 
 build-armhf:
   extends: build
@@ -248,7 +274,7 @@ kconfig-static:
     - |
       if [ -s "$error_log" ]; then cat "$error_log"; false; fi
   needs:
-    - job: build
+    - job: build source
       artifacts: true
 
 # Sign code with the test key and certificate, build and test that
