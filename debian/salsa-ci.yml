@@ -1,5 +1,5 @@
 include:
-  - $CI_SERVER_URL/apt/salsa-ci/raw/pios/recipes/pios.yml
+  - $CI_SERVER_URL/apt/salsa-ci/raw/pios/salsa-ci.yml
 
 variables:
   RELEASE: 'trixie'
