@@ -1,5 +1,5 @@
 include:
-  - https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/salsa-ci.yml
+  - $CI_SERVER_URL/apt/salsa-ci/raw/pios/recipes/pios.yml
 
 variables:
   RELEASE: 'trixie-backports'
