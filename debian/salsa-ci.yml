@@ -2,7 +2,7 @@ include:
   - $CI_SERVER_URL/apt/salsa-ci/raw/pios/recipes/pios.yml
 
 variables:
-  RELEASE: 'trixie-backports'
+  RELEASE: 'trixie'
   # Run lintian from the above release
   SALSA_CI_IMAGES_LINTIAN: ${SALSA_CI_IMAGES}/lintian:${RELEASE}
   # Make that build quicker
@@ -46,6 +46,16 @@ orig:
 
     - apt-get update
     - eatmydata apt-get install --no-install-recommends -y devscripts git
+
+    # Fail loudly if RELEASE drifts from debian/changelog
+    - |
+      changelog_dist=$(dpkg-parsechangelog --show-field=distribution)
+      if [ "$changelog_dist" != "$RELEASE" ]; then
+          echo "RELEASE='$RELEASE' in debian/salsa-ci.yml does not match debian/changelog distribution '$changelog_dist'" >&2
+          echo "Update one or the other to match." >&2
+          exit 1
+      fi
+
     - USCAN_VCS_EXPORT_UNCOMPRESSED=yes origtargz -dt
 
     # Move orig tarballs back to where GitLab wants them
