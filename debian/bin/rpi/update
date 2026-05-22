@@ -14,12 +14,10 @@ KVER=$(
   echo "$VERSION.$PATCHLEVEL.$SUBLEVEL"
 )
 
-# Get orig tarball
-if ! [ -f "../linux_$KVER.orig.tar.xz" ]; then
-  wget "https://cdn.kernel.org/pub/linux/kernel/v$(echo "$KVER" | cut -f1 -d.).x/linux-${KVER}.tar.xz" -O "../linux_$KVER.orig.tar.xz"
-fi
-
 dch -v "1:$KVER-1+rptN" -b "Raspberry Pi OS release"
+
+# Get orig tarball
+origtargz -d
 
 # Generate rpi.patch
 mkdir -p debian/patches/rpi/
