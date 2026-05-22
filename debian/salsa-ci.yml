@@ -41,7 +41,7 @@ orig:
     # Move orig tarball cache
     - |
       if [ -d orig ]; then
-          mv orig/* ..
+          mv orig/* .. || true
           rmdir orig
       fi
 
