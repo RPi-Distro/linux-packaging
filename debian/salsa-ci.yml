@@ -59,7 +59,7 @@ orig:
 
     # Move orig tarballs back to where GitLab wants them
     - mkdir orig
-    - mv ../*.orig.tar.* orig
+    - find .. -maxdepth 1 -name '*.orig.tar.*' ! \( -name '*.asc' -o -name '*.sig' -o -name '*.sign' \) -exec mv {} orig/ \;
 
 # Our modified build jobs
 
