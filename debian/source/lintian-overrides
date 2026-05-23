@@ -21,3 +21,10 @@ linux source: source-contains-prebuilt-windows-binary *tools/perf/tests/pe-file.
 # Headers depends on the correct version of images, which might be
 # signed.
 linux source: version-substvar-for-external-package Depends ${binary:Version} linux-headers-*
+
+# Our versions carry a 1: epoch; upstream version moves forward each release.
+linux source: epoch-changed-but-upstream-version-did-not-go-backwards
+
+# False positive - lintian matches "invariant" in GFDL-no-invariants boilerplate.
+linux source: license-problem-gfdl-invariants * [Documentation/userspace-api/media/v4l/pixfmt-meta-bcm2835-isp-stats.rst]
+linux source: license-problem-gfdl-invariants * [Documentation/userspace-api/media/v4l/pixfmt-meta-sensor-data.rst]
