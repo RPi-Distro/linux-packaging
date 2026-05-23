@@ -2,8 +2,8 @@ linux (1:6.18.29-1+rpt1) trixie; urgency=medium
 
   * Raspberry Pi OS release
   * d/control: Update Maintainer, Homepage and Vcs information
-  * Remove unecessary patches
-  * Disable unecessary architectures
+  * Remove unnecessary patches
+  * Disable unnecessary architectures
   * Don't sign arm64 kernels
   * Compress arm64 kernels
   * Add epoch support in version string
