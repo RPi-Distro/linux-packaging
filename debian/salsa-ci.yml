@@ -117,8 +117,8 @@ build source:
     - cd ${BUILD_DIR}/${source}-${upstream_version}
 
     # Fudge source version and distribution *before* gencontrol.py
-    - sed -i -e '1 s/) [^;]*/+salsaci) UNRELEASED/' debian/changelog
-    - version=${version}+salsaci
+    # - sed -i -e '1 s/) [^;]*/+salsaci) UNRELEASED/' debian/changelog
+    # - version=${version}+salsaci
 
     # Merge upstream source
     - debian/rules orig
