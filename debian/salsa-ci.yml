@@ -126,8 +126,8 @@ build source:
     # Build source package
     - dpkg-buildpackage -uc -us -S -sa -d
 
-    # Publish the full source set as artefacts
-    - dcmd mv ../${source}_${version}_source.changes ${WORKING_DIR}
+    # Publish the full source set as artefacts (strip epoch for filename)
+    - dcmd mv ../${source}_${version#*:}_source.changes ${WORKING_DIR}
   after_script:
     # pass the RELEASE_FROM_CHANGELOG envvar to any consecutive job
     - echo "RELEASE_FROM_CHANGELOG=${RELEASE_FROM_CHANGELOG}" | tee ${CI_PROJECT_DIR}/salsa.env
