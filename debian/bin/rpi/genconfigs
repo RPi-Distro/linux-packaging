@@ -9,17 +9,17 @@ defconfigs=(
 )
 
 find_common () {
-  if [ ${#} -gt 0 ]; then
+  if [ ${#} -ge 2 ]; then
     sort -u "$1" > "$1.sorted"
     file1="$1.sorted"
     shift
-  fi
-
-  if ! [ -t 0 ]; then
-    file2='-'
-  elif [ ${#} -gt 0 ]; then
     sort -u "$1" > "$1.sorted"
     file2="$1.sorted"
+    shift
+  else
+    sort -u "$1" > "$1.sorted"
+    file1="$1.sorted"
+    file2='-'
     shift
   fi
 
@@ -40,13 +40,12 @@ for defconfig in "${defconfigs[@]}"; do
   fi
 done
 
-find debian/config/{kernelarch-arm,armhf,arm64} -maxdepth 1 -type f -name "config" -exec truncate -s0 {} \;
+find debian/config/{kernelarch-arm,armhf,arm64,featureset-rpi} -maxdepth 1 -type f -name "config" -exec truncate -s0 {} \;
 
-mkdir -p debian/config/{featureset-rpi,arm{hf,64}/rpi}/
+mkdir -p debian/config/arm{hf,64}/rpi/
 
-find_common ${defconfigs[@]} > debian/config/featureset-rpi/config
-find_common ${defconfigs_armhf[@]} | comm -13 debian/config/featureset-rpi/config - > debian/config/armhf/rpi/config
-find_common ${defconfigs_arm64[@]} | comm -13 debian/config/featureset-rpi/config - > debian/config/arm64/rpi/config
+find_common ${defconfigs_armhf[@]} > debian/config/armhf/rpi/config
+find_common ${defconfigs_arm64[@]} > debian/config/arm64/rpi/config
 
 for defconfig in "${defconfigs[@]}"; do
   arch=$(echo "$defconfig" | cut -f2 -d/)
@@ -75,7 +74,7 @@ for defconfig in "${defconfigs[@]}"; do
       exit 1
       ;;
   esac
-  sort -u debian/config/{featureset-rpi,$arch/rpi}/config \
+  sort -u debian/config/$arch/rpi/config \
     | comm -13 - <(sort -u "$defconfig") \
     > "debian/config/$arch/rpi/config.$flavour"
 done
