@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+"""Reorder the top debian/changelog entry so foreign-maintainer sections
+appear first and the current maintainer's section (matching the entry
+trailer) is last, with its bullets merged into a single block. Run after
+gbp dch + dch so the trailing 'Linux commit: ...' bullet added by update
+lands as the last bullet of the entry.
+"""
+import pathlib
+import re
+import sys
+
+CHANGELOG = pathlib.Path('debian/changelog')
+lines = CHANGELOG.read_text().splitlines(keepends=True)
+
+trailer_i = next((i for i, ln in enumerate(lines) if ln.startswith(' -- ')), None)
+if trailer_i is None:
+    sys.exit(0)
+m = re.match(r' -- (.+?) <', lines[trailer_i])
+if not m:
+    sys.exit(0)
+current = m.group(1)
+
+body = lines[1:trailer_i]
+
+sections = []
+cur_author = None
+cur_lines = []
+for ln in body:
+    hm = re.match(r'  \[ (.+?) \]\s*$', ln)
+    if hm:
+        sections.append((cur_author, cur_lines))
+        cur_author = hm.group(1)
+        cur_lines = []
+    else:
+        cur_lines.append(ln)
+sections.append((cur_author, cur_lines))
+
+foreign = [s for s in sections if s[0] is not None and s[0] != current]
+mine = [s for s in sections if s[0] == current]
+if not foreign or not mine:
+    sys.exit(0)
+
+
+def strip_trailing_blanks(items):
+    while items and items[-1].strip() == '':
+        items.pop()
+    return items
+
+
+preamble = [s for s in sections if s[0] is None]
+
+new_body = []
+for _, b in preamble:
+    new_body.extend(b)
+for author, b in foreign:
+    new_body.append(f'  [ {author} ]\n')
+    new_body.extend(strip_trailing_blanks(list(b)))
+    new_body.append('\n')
+new_body.append(f'  [ {current} ]\n')
+for _, b in mine:
+    new_body.extend(strip_trailing_blanks(list(b)))
+new_body.append('\n')
+
+CHANGELOG.write_text(''.join(lines[:1]) + ''.join(new_body) + ''.join(lines[trailer_i:]))

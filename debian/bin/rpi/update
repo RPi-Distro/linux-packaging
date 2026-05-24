@@ -1,27 +1,64 @@
 #!/bin/bash -e
 
+LINUX_REPO=
+POSITIONAL=()
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --linux-repo=*)
+      LINUX_REPO="${1#*=}"
+      shift
+      ;;
+    --linux-repo)
+      LINUX_REPO="$2"
+      shift 2
+      ;;
+    *)
+      POSITIONAL+=("$1")
+      shift
+      ;;
+  esac
+done
+set -- "${POSITIONAL[@]}"
+
+linux_git() {
+  if [ -n "$LINUX_REPO" ]; then
+    git -C "$LINUX_REPO" "$@"
+  else
+    git "$@"
+  fi
+}
+
 if [ -z "$1" ]; then
   GIT_HASH="$(curl -Ss https://raw.githubusercontent.com/raspberrypi/firmware/stable/extra/git_hash)"
 else
-  GIT_HASH="$(git rev-parse "$1")"
+  GIT_HASH="$1"
 fi
+GIT_HASH="$(linux_git rev-parse --verify "$GIT_HASH^{commit}")"
 
 KVER=$(
-  MAKEFILE_HEAD=$(git show "${GIT_HASH}:Makefile" | head)
+  MAKEFILE_HEAD=$(linux_git show "${GIT_HASH}:Makefile" | head)
   VERSION=$(echo "$MAKEFILE_HEAD" | sed -n 's/^VERSION = \(.*\)$/\1/p')
   PATCHLEVEL=$(echo "$MAKEFILE_HEAD" | sed -n 's/^PATCHLEVEL = \(.*\)$/\1/p')
   SUBLEVEL=$(echo "$MAKEFILE_HEAD" | sed -n 's/^SUBLEVEL = \(.*\)$/\1/p')
   echo "$VERSION.$PATCHLEVEL.$SUBLEVEL"
 )
 
-dch -v "1:$KVER-1+rptN" -b "Raspberry Pi OS release"
+CURRENT=$(dpkg-parsechangelog -SVersion)
+CURRENT_KVER=$(echo "$CURRENT" | sed -E 's/^[0-9]+://; s/-[0-9]+\+rpt[0-9]+$//')
+if [ "$CURRENT_KVER" = "$KVER" ]; then
+  N=$(echo "$CURRENT" | sed -nE 's/.*\+rpt([0-9]+)$/\1/p')
+  NEW_VERSION="1:$KVER-1+rpt$((N + 1))"
+else
+  NEW_VERSION="1:$KVER-1+rpt1"
+fi
+dch -v "$NEW_VERSION" -b "Raspberry Pi OS release"
 
 # Get orig tarball
 origtargz -d
 
 # Generate rpi.patch
 mkdir -p debian/patches/rpi/
-git diff "v$KVER..$GIT_HASH" | grep -v "^index" > debian/patches/rpi/rpi.patch
+linux_git diff "v$KVER..$GIT_HASH" | grep -v "^index" > debian/patches/rpi/rpi.patch
 
 if [ -n "$(git status --porcelain -- debian/patches/rpi)" ]; then
   git add debian/patches/rpi -f
@@ -32,11 +69,11 @@ fi
 origtargz -u
 
 # Update configs
-while read patch; do
+while read -r patch; do
   patch -s -p1 < debian/patches/"$patch"
 done < <(quilt series)
 debian/bin/rpi/genconfigs
-while read patch; do
+while read -r patch; do
   patch -s -p1 -R < debian/patches/"$patch"
 done < <(quilt series | tac)
 
@@ -45,5 +82,19 @@ if [ -n "$(git status --porcelain -- debian/config)" ]; then
   git commit -m "Update debian/config"
 fi
 
+# Absorb intermediate commit messages into the changelog
+gbp dch --ignore-branch \
+  --multimaint-merge \
+  --customizations=/usr/share/doc/git-buildpackage/examples/wrap_cl.py
+
+# Append the Linux commit hash as the last bullet
 dch "Linux commit: $GIT_HASH"
-gbp dch -R --commit --distribution=trixie --force-distribution --ignore-branch
+
+# Finalize the release entry
+dch -r --distribution=trixie --force-distribution ""
+
+# Move the current maintainer's section to the bottom of the entry
+debian/bin/rpi/reorder-changelog
+
+git add -f debian/changelog
+git commit -m "Update changelog for $NEW_VERSION"
