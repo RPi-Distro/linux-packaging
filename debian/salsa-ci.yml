@@ -11,6 +11,7 @@ variables:
   SALSA_CI_DISABLE_VERSION_BUMP: 'true'
   # Output is limited to 4 MiB total, so use 'terse'.
   DEB_BUILD_OPTIONS: 'terse parallel=auto'
+  SALSA_CI_SBUILD_VERBOSE: 'false'
 
 # Add stages for signed packages
 stages:
