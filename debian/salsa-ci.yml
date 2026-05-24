@@ -10,9 +10,7 @@ variables:
   # We have to bump the version in source preparation, not later
   SALSA_CI_DISABLE_VERSION_BUMP: 'true'
   # Output is limited to 4 MiB total, so use 'terse'.
-  # Current runners have 2 CPUs but have slow I/O so 'parallel=4' is
-  # a bit faster.
-  DEB_BUILD_OPTIONS: 'terse parallel=4'
+  DEB_BUILD_OPTIONS: 'terse parallel=auto'
 
 # Add stages for signed packages
 stages:
