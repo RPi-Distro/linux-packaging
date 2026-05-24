@@ -171,6 +171,7 @@ build-armhf:
   image: $SALSA_CI_IMAGES_BUILD_ARM32V7
   variables:
     BUILD_ARCH: 'armhf'
+    SALSA_CI_SBUILD_ARGS: '--arch-any --no-arch-all'
 
 # The folllowing jobs are the standard tests, excluding any that
 # require building again
