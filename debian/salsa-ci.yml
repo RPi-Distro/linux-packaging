@@ -6,7 +6,7 @@ variables:
   # Run lintian from the above release
   SALSA_CI_IMAGES_LINTIAN: ${SALSA_CI_IMAGES}/lintian:${RELEASE}
   # Make that build quicker
-  DEB_BUILD_PROFILES: pkg.linux.quick
+  # DEB_BUILD_PROFILES: pkg.linux.quick
   # We have to bump the version in source preparation, not later
   SALSA_CI_DISABLE_VERSION_BUMP: 'true'
   # Output is limited to 4 MiB total, so use 'terse'.
