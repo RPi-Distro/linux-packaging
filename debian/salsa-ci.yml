@@ -145,6 +145,8 @@ build:
     - if: $CI_COMMIT_TAG != null
       when: never
     - when: always
+  variables:
+    SALSA_CI_SBUILD_ARGS: '--arch-any --no-arch-all'
   script:
     - !reference [.build-before-script]
     - !reference [.build-script-setup-environment]
@@ -172,31 +174,104 @@ build-armhf:
     BUILD_ARCH: 'armhf'
     SALSA_CI_SBUILD_ARGS: '--arch-any --no-arch-all'
 
+build-all:
+  extends: build
+  variables:
+    SALSA_CI_SBUILD_ARGS: '--arch-all --no-arch-any'
+
 # The folllowing jobs are the standard tests, excluding any that
 # require building again
 
-lintian:
+.lintian-template:
   extends: .test-lintian
+  timeout: 2 hours
   script:
   - lintian --suppress-tags 'unreleased-changes,changelog-distribution-does-not-match-changes-file' --suppress-tags "${SALSA_CI_LINTIAN_SUPPRESS_TAGS}" --display-info --pedantic --fail-on error --allow-root ${SALSA_CI_LINTIAN_SHOW_OVERRIDES_ARG} ${SALSA_CI_LINTIAN_ARGS} ${WORKING_DIR}/*.changes | tee lintian.output || ECODE=$?
   - lintian2junit.py --lintian-file lintian.output > ${WORKING_DIR}/lintian.xml
   - exit ${ECODE-0}
+
+lintian-source:
+  extends: .lintian-template
+  needs:
+  - job: build source
+    artifacts: true
+
+lintian-arm64:
+  extends: .lintian-template
   needs:
   - job: build
     artifacts: true
   # - job: build-signed
   #   artifacts: true
 
-autopkgtest:
-    extends: .test-autopkgtest
+lintian-armhf:
+  extends: .lintian-template
+  needs:
+  - job: build-armhf
+    artifacts: true
+  # - job: build-signed
+  #   artifacts: true
+
+lintian-all:
+  extends: .lintian-template
+  needs:
+  - job: build-all
+    artifacts: true
+
+autopkgtest-arm64:
+  extends: .test-autopkgtest
+  needs:
+  - job: build source
+    artifacts: true
+  - job: build
+    artifacts: true
+  - job: build-all
+    artifacts: true
+  # - job: build-signed
+  #   artifacts: true
+
+autopkgtest-armhf:
+  extends: .test-autopkgtest-armhf
+  needs:
+  - job: build source
+    artifacts: true
+  - job: build-armhf
+    artifacts: true
+  - job: build-all
+    artifacts: true
+  # - job: build-signed
+  #   artifacts: true
 
 blhc:
-    extends: .test-blhc
+  extends: .test-blhc
+  needs:
+  - job: build
+    artifacts: true
+  - job: build-armhf
+    artifacts: true
+  - job: build-all
+    artifacts: true
+  # - job: build-signed
+  #   artifacts: true
 
-piuparts:
+piuparts-arm64:
   extends: .test-piuparts
   needs:
   - job: build
+    artifacts: true
+  - job: build-all
+    artifacts: true
+  # - job: build-signed
+  #   artifacts: true
+
+piuparts-armhf:
+  extends: .test-piuparts
+  variables:
+    SALSA_CI_IMAGES_BASE: $SALSA_CI_IMAGES_BASE_ARM32V7
+  needs:
+  - job: build-armhf
+    artifacts: true
+  - job: build-all
     artifacts: true
   # - job: build-signed
   #   artifacts: true
