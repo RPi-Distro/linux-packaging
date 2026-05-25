@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 LINUX_REPO=
+BETA=
 POSITIONAL=()
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -11,6 +12,10 @@ while [ $# -gt 0 ]; do
     --linux-repo)
       LINUX_REPO="$2"
       shift 2
+      ;;
+    --beta)
+      BETA=1
+      shift
       ;;
     *)
       POSITIONAL+=("$1")
@@ -44,12 +49,44 @@ KVER=$(
 )
 
 CURRENT=$(dpkg-parsechangelog -SVersion)
-CURRENT_KVER=$(echo "$CURRENT" | sed -E 's/^[0-9]+://; s/-[0-9]+\+rpt[0-9]+$//')
-if [ "$CURRENT_KVER" = "$KVER" ]; then
-  N=$(echo "$CURRENT" | sed -nE 's/.*\+rpt([0-9]+)$/\1/p')
-  NEW_VERSION="1:$KVER-1+rpt$((N + 1))"
+
+# In --beta, the local trixie-beta-base tracks the last released trixie,
+# not previously-published betas, so without consulting trixie-beta we'd
+# bump to the same version twice for back-to-back beta builds that
+# share a KVER.
+if [ -n "$BETA" ]; then
+  git fetch origin pios/trixie-beta 2>/dev/null || true
+  if git rev-parse --verify origin/pios/trixie-beta >/dev/null 2>&1; then
+    PUBLISHED=$(git show origin/pios/trixie-beta:debian/changelog 2>/dev/null \
+                | sed -nE '1s/^[^ ]+ \(([^)]+)\).*/\1/p')
+    if [ -n "$PUBLISHED" ] && dpkg --compare-versions "$PUBLISHED" gt "$CURRENT"; then
+      CURRENT="$PUBLISHED"
+    fi
+  fi
+fi
+
+CURRENT_KVER=$(echo "$CURRENT" | sed -E 's/^[0-9]+://; s/-[0-9]+\+rpt[0-9]+(~beta[0-9]+)?$//')
+CURRENT_RPT=$(echo "$CURRENT" | sed -nE 's/.*\+rpt([0-9]+)(~beta[0-9]+)?$/\1/p')
+CURRENT_BETA=$(echo "$CURRENT" | sed -nE 's/.*~beta([0-9]+)$/\1/p')
+
+if [ "$CURRENT_KVER" != "$KVER" ]; then
+  if [ -n "$BETA" ]; then
+    NEW_VERSION="1:$KVER-1+rpt1~beta1"
+  else
+    NEW_VERSION="1:$KVER-1+rpt1"
+  fi
+elif [ -n "$BETA" ]; then
+  if [ -n "$CURRENT_BETA" ]; then
+    NEW_VERSION="1:$KVER-1+rpt${CURRENT_RPT}~beta$((CURRENT_BETA + 1))"
+  else
+    NEW_VERSION="1:$KVER-1+rpt$((CURRENT_RPT + 1))~beta1"
+  fi
 else
-  NEW_VERSION="1:$KVER-1+rpt1"
+  if [ -n "$CURRENT_BETA" ]; then
+    NEW_VERSION="1:$KVER-1+rpt${CURRENT_RPT}"
+  else
+    NEW_VERSION="1:$KVER-1+rpt$((CURRENT_RPT + 1))"
+  fi
 fi
 dch -v "$NEW_VERSION" -b "Raspberry Pi OS release"
 
