@@ -437,3 +437,120 @@ build-signed:
       artifacts: true
     - job: sign-code
       artifacts: true
+
+publish-internal-main:
+  extends: .publish-public
+  variables:
+    DEPLOY_TARGET: 'internal'
+    DEPLOY_COMPONENT: 'main'
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
+      when: on_success
+  needs:
+    - job: build source
+      artifacts: true
+    - job: build
+      artifacts: true
+    - job: build-armhf
+      artifacts: true
+    - job: build-all
+      artifacts: true
+    - job: lintian-source
+      artifacts: false
+    - job: lintian-arm64
+      artifacts: false
+    - job: lintian-armhf
+      artifacts: false
+    - job: lintian-all
+      artifacts: false
+    - job: blhc
+      artifacts: false
+    - job: piuparts-arm64
+      artifacts: false
+    - job: piuparts-armhf
+      artifacts: false
+    - job: python-static
+      artifacts: false
+    - job: kconfig-static
+      artifacts: false
+
+publish-public-beta:
+  extends: .publish-public
+  variables:
+    DEPLOY_TARGET: 'public'
+    DEPLOY_COMPONENT: 'beta'
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-beta-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-beta-next$/
+      when: on_success
+  needs:
+    - job: build source
+      artifacts: true
+    - job: build
+      artifacts: true
+    - job: build-armhf
+      artifacts: true
+    - job: build-all
+      artifacts: true
+    - job: lintian-source
+      artifacts: false
+    - job: lintian-arm64
+      artifacts: false
+    - job: lintian-armhf
+      artifacts: false
+    - job: lintian-all
+      artifacts: false
+    - job: blhc
+      artifacts: false
+    - job: piuparts-arm64
+      artifacts: false
+    - job: piuparts-armhf
+      artifacts: false
+    - job: python-static
+      artifacts: false
+    - job: kconfig-static
+      artifacts: false
+
+publish-public-main:
+  extends: .publish-public
+  variables:
+    DEPLOY_TARGET: 'public'
+    DEPLOY_COMPONENT: 'main'
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
+      when: manual
+  needs:
+    - job: build source
+      artifacts: true
+    - job: build
+      artifacts: true
+    - job: build-armhf
+      artifacts: true
+    - job: build-all
+      artifacts: true
+    - job: lintian-source
+      artifacts: false
+    - job: lintian-arm64
+      artifacts: false
+    - job: lintian-armhf
+      artifacts: false
+    - job: lintian-all
+      artifacts: false
+    - job: blhc
+      artifacts: false
+    - job: piuparts-arm64
+      artifacts: false
+    - job: piuparts-armhf
+      artifacts: false
+    - job: python-static
+      artifacts: false
+    - job: kconfig-static
+      artifacts: false
