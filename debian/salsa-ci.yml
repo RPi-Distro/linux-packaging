@@ -572,3 +572,28 @@ publish-public-main:
       artifacts: false
     - job: kconfig-static
       artifacts: false
+
+# Promote $RELEASE-beta-next -> $RELEASE-beta on a green publish-public-beta.
+# Authenticates with `$CI_JOB_TOKEN`; requires Settings -> CI/CD ->
+# "Allow Git push requests to the repository" to be enabled, and the
+# user who triggered the pipeline must have push permission to the
+# target protected branch (the job token inherits their access).
+# Job-token pushes don't trigger pipelines, so no `-o ci.skip` is needed.
+promote-beta:
+  stage: publish
+  image: $SALSA_CI_IMAGES_BASE
+  variables:
+    # Full history so the fast-forward check against pios/$RELEASE-beta
+    # has the ancestry it needs (default GIT_DEPTH=1 means just HEAD).
+    GIT_DEPTH: 0
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-beta-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-beta-next$/
+      when: on_success
+  needs:
+    - job: publish-public-beta
+  script:
+    - apt-get update && eatmydata apt-get install --no-install-recommends -y git
+    - git push --force "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "HEAD:refs/heads/pios/${RELEASE}-beta"
