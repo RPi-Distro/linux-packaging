@@ -623,3 +623,34 @@ promote-main:
     - URL="https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
     - git push "$URL" "HEAD:refs/heads/pios/${RELEASE}"
     - git push "$URL" "HEAD:refs/heads/pios/${RELEASE}-base"
+
+# Conditionally push $RELEASE-next -> $RELEASE-beta-base after
+# promote-main. Reads BETA_BASE_WAS_SYNCED from the dotenv exported by
+# orig: pushes only if $RELEASE-base and $RELEASE-beta-base were already
+# in sync at pipeline start. Otherwise skips and logs - staged beta
+# divergence is preserved.
+sync-beta-base:
+  stage: publish
+  image: $SALSA_CI_IMAGES_BASE
+  variables:
+    # Full history so the fast-forward check against pios/$RELEASE-beta-base
+    # has the ancestry it needs.
+    GIT_DEPTH: 0
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
+      when: on_success
+  needs:
+    - job: orig
+      artifacts: true
+    - job: promote-main
+  script:
+    - apt-get update && eatmydata apt-get install --no-install-recommends -y git
+    - |
+      if [ "$BETA_BASE_WAS_SYNCED" = "1" ]; then
+          git push "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "HEAD:refs/heads/pios/${RELEASE}-beta-base"
+      else
+          echo "$RELEASE-base diverged from $RELEASE-beta-base at orig time; preserving staged divergence"
+      fi
