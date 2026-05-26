@@ -654,3 +654,36 @@ sync-beta-base:
       else
           echo "$RELEASE-base diverged from $RELEASE-beta-base at orig time; preserving staged divergence"
       fi
+
+# Mirror the released packaging to GitHub: push HEAD to pios/$RELEASE
+# and a pios/<version> tag. Requires two CI variables:
+#   GITHUB_PACKAGING_REPO        owner/name of the target GitHub repo
+#   GITHUB_PACKAGING_PUSH_TOKEN  masked GitHub PAT, write access to that repo
+mirror-to-github:
+  stage: publish
+  image: $SALSA_CI_IMAGES_BASE
+  variables:
+    # Full history so dpkg-parsechangelog has the changelog and the tag
+    # can be created against the actual release commit.
+    GIT_DEPTH: 0
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
+      when: on_success
+  needs:
+    - job: promote-main
+  script:
+    - apt-get update && eatmydata apt-get install --no-install-recommends -y devscripts git
+    - |
+      if [ -z "$GITHUB_PACKAGING_REPO" ]; then
+          echo "GITHUB_PACKAGING_REPO not set; cannot push tag" >&2
+          exit 1
+      fi
+    - version=$(dpkg-parsechangelog -SVersion)
+    - tag="pios/${version//:/%}"
+    - git config user.email "ci@raspberrypi.invalid"
+    - git config user.name "Raspberry Pi CI"
+    - git tag -m "Release ${version}" "${tag}"
+    - git push "https://x-access-token:${GITHUB_PACKAGING_PUSH_TOKEN}@github.com/${GITHUB_PACKAGING_REPO}.git" "HEAD:refs/heads/pios/${RELEASE}" "${tag}"
