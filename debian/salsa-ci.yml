@@ -17,10 +17,10 @@ variables:
 stages:
   - provisioning
   - build
-  - publish
   - sign-code
   - build-signed
   - test
+  - publish
 
 orig:
   stage: provisioning
