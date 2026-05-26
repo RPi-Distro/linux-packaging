@@ -597,3 +597,29 @@ promote-beta:
   script:
     - apt-get update && eatmydata apt-get install --no-install-recommends -y git
     - git push --force "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "HEAD:refs/heads/pios/${RELEASE}-beta"
+
+# Promote $RELEASE-next -> $RELEASE (canonical history) AND reset
+# $RELEASE-base to the just-released tip. $RELEASE-base is a resolution
+# branch that always starts the next cycle from the latest release,
+# so the reset is unconditional. Same gating + credentials as
+# promote-beta.
+promote-main:
+  stage: publish
+  image: $SALSA_CI_IMAGES_BASE
+  variables:
+    # Full history so the fast-forward check against pios/$RELEASE has the
+    # ancestry it needs (default GIT_DEPTH=1 means just HEAD).
+    GIT_DEPTH: 0
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
+      when: on_success
+  needs:
+    - job: publish-public-main
+  script:
+    - apt-get update && eatmydata apt-get install --no-install-recommends -y git
+    - URL="https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+    - git push "$URL" "HEAD:refs/heads/pios/${RELEASE}"
+    - git push "$URL" "HEAD:refs/heads/pios/${RELEASE}-base"
