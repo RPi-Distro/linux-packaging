@@ -34,6 +34,9 @@ orig:
   except:
     variables:
       - $CI_COMMIT_TAG != null
+  artifacts:
+    reports:
+      dotenv: shas.env
   script:
     - rm -f ../linux*.tar*
 
@@ -45,7 +48,22 @@ orig:
       fi
 
     - apt-get update
-    - eatmydata apt-get install --no-install-recommends -y devscripts git
+    - eatmydata apt-get install --no-install-recommends -y curl devscripts git jq
+
+    # Record whether pios/$RELEASE-base and pios/$RELEASE-beta-base
+    # were in sync at pipeline start. sync-beta-base reads
+    # BETA_BASE_WAS_SYNCED at release-promotion time to decide whether
+    # to push -next -> -beta-base or preserve staged divergence.
+    - |
+      api="$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/branches"
+      auth="JOB-TOKEN: $CI_JOB_TOKEN"
+      base_sha=$(curl -sS -H "$auth" "$api/pios%2F${RELEASE}-base" | jq -r .commit.id)
+      beta_base_sha=$(curl -sS -H "$auth" "$api/pios%2F${RELEASE}-beta-base" | jq -r .commit.id)
+      if [ "$base_sha" = "$beta_base_sha" ]; then
+          echo "BETA_BASE_WAS_SYNCED=1" > shas.env
+      else
+          echo "BETA_BASE_WAS_SYNCED=0" > shas.env
+      fi
 
     # Fail loudly if RELEASE drifts from debian/changelog
     - |
