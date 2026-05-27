@@ -25,6 +25,10 @@ linux source: version-substvar-for-external-package Depends ${binary:Version} li
 # Our versions carry a 1: epoch; upstream version moves forward each release.
 linux source: epoch-changed-but-upstream-version-did-not-go-backwards
 
+# loong64 was added to Debian post-bookworm; the bookworm lintian image
+# doesn't know it yet but kernel d/control references it.
+linux source: invalid-arch-string-in-source-relation loong64 *
+
 # False positive - lintian matches "invariant" in GFDL-no-invariants boilerplate.
 linux source: license-problem-gfdl-invariants * [Documentation/userspace-api/media/v4l/pixfmt-meta-bcm2835-isp-stats.rst]
 linux source: license-problem-gfdl-invariants * [Documentation/userspace-api/media/v4l/pixfmt-meta-sensor-data.rst]
