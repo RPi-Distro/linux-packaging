@@ -1,37 +1,29 @@
 include:
-  - https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/salsa-ci.yml
+  - $CI_SERVER_URL/apt/salsa-ci/raw/pios/salsa-ci.yml
 
 variables:
-  RELEASE: 'bookworm-backports'
+  RELEASE: 'bookworm'
+  # Run lintian from the above release
+  SALSA_CI_IMAGES_LINTIAN: ${SALSA_CI_IMAGES}/lintian:${RELEASE}
   # Make that build quicker
-  DEB_BUILD_PROFILES: pkg.linux.quick
+  # DEB_BUILD_PROFILES: pkg.linux.quick
   # We have to bump the version in source preparation, not later
   SALSA_CI_DISABLE_VERSION_BUMP: 'true'
-  # Currently broken in quick build
-  DEBIAN_KERNEL_DISABLE_INSTALLER: 'true'
   # Output is limited to 4 MiB total, so use 'terse'.
-  # Current runners have 2 CPUs but have slow I/O so 'parallel=4' is
-  # a bit faster.
-  DEB_BUILD_OPTIONS: 'terse parallel=4'
-  DEBIAN_KERNEL_DISABLE_BUILD_PACKAGE_ARM64: 0
+  DEB_BUILD_OPTIONS: 'terse parallel=auto'
+  SALSA_CI_SBUILD_VERBOSE: 'false'
 
 # Add stages for signed packages
 stages:
   - provisioning
   - build
-  - publish
   - sign-code
   - build-signed
   - test
+  - publish
+  - notify
 
-# The common Salsa CI pipeline relies on keeping the unpacked source
-# as an artifact, but in our case this is far too large for the
-# current limits on Salsa (salsa-ci-team/pipeline#195).  So we
-# redefine the source extraction and build steps to use packed source.
-
-# Our modified extract-source and build jobs
-
-extract-source:
+orig:
   stage: provisioning
   image: $SALSA_CI_IMAGES_BASE
   cache:
@@ -40,26 +32,90 @@ extract-source:
       - orig
   extends:
     - .artifacts-default-expire
+  except:
+    variables:
+      - $CI_COMMIT_TAG != null
+  artifacts:
+    reports:
+      dotenv: shas.env
+  script:
+    - rm -f ../linux*.tar*
+
+    # Move orig tarball cache
+    - |
+      if [ -d orig ]; then
+          mv orig/* .. || true
+          rmdir orig
+      fi
+
+    - apt-get update
+    - eatmydata apt-get install --no-install-recommends -y curl devscripts git jq
+
+    # Record whether pios/$RELEASE-base and pios/$RELEASE-beta-base
+    # were in sync at pipeline start. sync-beta-base reads
+    # BETA_BASE_WAS_SYNCED at release-promotion time to decide whether
+    # to push -next -> -beta-base or preserve staged divergence.
+    - |
+      api="$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/branches"
+      auth="JOB-TOKEN: $CI_JOB_TOKEN"
+      base_sha=$(curl -sS -H "$auth" "$api/pios%2F${RELEASE}-base" | jq -r .commit.id)
+      beta_base_sha=$(curl -sS -H "$auth" "$api/pios%2F${RELEASE}-beta-base" | jq -r .commit.id)
+      if [ "$base_sha" = "$beta_base_sha" ]; then
+          echo "BETA_BASE_WAS_SYNCED=1" > shas.env
+      else
+          echo "BETA_BASE_WAS_SYNCED=0" > shas.env
+      fi
+
+    # Fail loudly if RELEASE drifts from debian/changelog
+    - |
+      changelog_dist=$(dpkg-parsechangelog --show-field=distribution)
+      if [ "$changelog_dist" != "$RELEASE" ]; then
+          echo "RELEASE='$RELEASE' in debian/salsa-ci.yml does not match debian/changelog distribution '$changelog_dist'" >&2
+          echo "Update one or the other to match." >&2
+          exit 1
+      fi
+
+    - USCAN_VCS_EXPORT_UNCOMPRESSED=yes origtargz -dt
+
+    # Move orig tarballs back to where GitLab wants them
+    - mkdir orig
+    - find .. -maxdepth 1 -name '*.orig.tar.*' ! \( -name '*.asc' -o -name '*.sig' -o -name '*.sign' \) -exec mv {} orig/ \;
+
+# Our modified build jobs
+
+build source:
+  timeout: 3 hours
+  cache:
+    - key: "orig-${RELEASE}"
+      paths:
+        - orig
+      policy: pull
+  needs:
+    - job: orig
+  extends:
+    - .build-definition
+  variables:
+    DB_BUILD_TYPE: source
   rules:
     - if: $CI_COMMIT_TAG != null
       when: never
     - when: always
   script:
+    - !reference [.build-before-script]
+    - !reference [.build-script-setup-environment]
+
     # Move orig tarball cache
     - |
       if [ -d orig ]; then
-          mv orig/* ..
+          mv orig/* ${BUILD_DIR}/
           rmdir orig
       fi
 
     # Install dependencies of gencontrol.py and debian/rules orig
-    # plus origtargz
     - apt-get update
     - |
       eatmydata apt-get install --no-install-recommends -y \
         debhelper \
-        devscripts \
-        git \
         kernel-wedge \
         python3 \
         python3-dacite \
@@ -68,128 +124,176 @@ extract-source:
         quilt \
         rsync
 
+    - source=$(dpkg-parsechangelog -SSource)
     - version=$(dpkg-parsechangelog -SVersion)
     - upstream_version=$(echo $version | sed 's/-[^-]*$//')
 
-    # Merge upstream source
-    - USCAN_VCS_EXPORT_UNCOMPRESSED=yes origtargz -dt
-    - debian/rules orig
+    # Export source to build directory
+    - |
+      git archive --format=tar --prefix=${source}-${upstream_version}/ HEAD \
+        | tar -C ${BUILD_DIR} -x
+    - cd ${BUILD_DIR}/${source}-${upstream_version}
 
     # Fudge source version and distribution *before* gencontrol.py
-    - sed -i -e '1 s/) [^;]*/+salsaci) UNRELEASED/' debian/changelog
-    - version=${version}+salsaci
+    # - sed -i -e '1 s/) [^;]*/+salsaci) UNRELEASED/' debian/changelog
+    # - version=${version}+salsaci
 
-    # Run gencontrol.py
-    # - create temporary log
-    - log="$(mktemp)"
-    # - invoke debian/control-real rule and log output
-    - |
-      rc=0; debian/rules debian/control-real >"$log" 2>&1 || rc=$?
-    - cat "$log"
-    # - check for success message and error code
-    - test $rc = 2
-    - grep -q 'been generated SUCCESSFULLY' "$log"
+    # Merge upstream source
+    - debian/rules orig
 
-    # Put packed source in artifacts
+    # Build source package
     - dpkg-buildpackage -uc -us -S -sa -d
-    - mkdir -p ${WORKING_DIR}
-    - cp ../linux_${upstream_version}.orig.tar.xz ${WORKING_DIR}
-    - mv ../linux_${version}.dsc ../linux_${version}.debian.tar.xz ${WORKING_DIR}
 
-    # Move orig tarballs back to where GitLab wants them
-    - mkdir orig
-    - mv ../*.orig.tar.* orig
+    # Publish the full source set as artefacts (strip epoch for filename)
+    - dcmd mv ../${source}_${version#*:}_source.changes ${WORKING_DIR}
+  after_script:
+    # pass the RELEASE_FROM_CHANGELOG envvar to any consecutive job
+    - echo "RELEASE_FROM_CHANGELOG=${RELEASE_FROM_CHANGELOG}" | tee ${CI_PROJECT_DIR}/salsa.env
+    - ls -l ${CI_PROJECT_DIR}/salsa.env
+    - cat ${CI_PROJECT_DIR}/salsa.env
+    - !reference [.build-after-script]
 
 build:
-  stage: build
   timeout: 3 hours
-  image: $SALSA_CI_IMAGES_BASE
-  cache:
-    key: "build-${BUILD_ARCH}_${HOST_ARCH}"
-    paths:
-      - .ccache
+  needs:
+    - job: build source
+      artifacts: true
   extends:
-    - .artifacts-default-expire
+    - .build-definition
   rules:
     - if: $CI_COMMIT_TAG != null
       when: never
     - when: always
   variables:
-    CCACHE_TMP_DIR: ${CI_PROJECT_DIR}/../.ccache
-    CCACHE_WORK_DIR: ${CI_PROJECT_DIR}/.ccache
-    DB_BUILD_PARAM: ${SALSA_CI_DPKG_BUILDPACKAGE_ARGS}
-    DB_BUILD_TYPE: full
-  artifacts:
-    exclude:
-      - ${WORKING_DIR}/${SOURCE_DIR}/**/*
+    SALSA_CI_SBUILD_ARGS: '--arch-any --no-arch-all'
   script:
-    # Unpack the source
-    - |
-      apt-get update && eatmydata apt-get install --no-install-recommends -y \
-        dpkg-dev
-    - dpkg-source -x ${WORKING_DIR}/*.dsc ${WORKING_DIR}/${SOURCE_DIR}
-
-    # Do the same as the common .build-definition script
     - !reference [.build-before-script]
-    - !reference [.build-script]
-  after_script:
-    - !reference [.build-after-script]
-  dependencies:
-    - extract-source
+    - !reference [.build-script-setup-environment]
 
-build-arm64:
+    # Extract the canonical .dsc produced by 'build source'
+    - source=$(dpkg-parsechangelog -SSource)
+    - DSC=$(basename ${WORKING_DIR}/${source}_*.dsc)
+    - dpkg-source -x --no-check ${WORKING_DIR}/${DSC} ${BUILD_DIR}/${DSC%.dsc}
+    - cd ${BUILD_DIR}/${DSC%.dsc}
+
+    # Make everything accessible to build user
+    - chown -R 'salsa-ci:' ${BUILD_DIR} ${WORKING_DIR}
+
+    - !reference [.build-script-setup-build-command]
+    - !reference [.build-script-run-build-command]
+
+    # Drop source files forwarded from 'build source' so they're not
+    # republished in this binary build's artifacts
+    - dcmd rm -f ${WORKING_DIR}/${source}_*_source.changes
+
+build-armhf:
   extends: build
-  image: $SALSA_CI_IMAGES_BASE_ARM64
+  image: $SALSA_CI_IMAGES_BUILD_ARM32V7
   variables:
-    BUILD_ARCH: 'arm64'
-  tags:
-    - arm64
-  rules:
-    - if: $DEBIAN_KERNEL_DISABLE_BUILD_PACKAGE_ARM64 =~ /^(1|yes|true)$/
-      when: never
-    # Make it possible to override the rules below. E.g. when a project fork
-    # has an ARM64 runner available.
-    - if: $DEBIAN_KERNEL_ENABLE_BUILD_PACKAGE_ARM64 =~ /^(1|yes|true)$/
-      when: always
-    # While there isn't an ARM shared runner avilable, let's run this job
-    # manually in forks of the kernel-team/linux project, and in branches other
-    # than the default branch, and allow it to fail in that case
-    - if: $CI_PROJECT_NAMESPACE != "kernel-team"
-      allow_failure: true
-      when: manual
-    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
-      allow_failure: true
-      when: manual
-    - when: always
+    BUILD_ARCH: 'armhf'
+    SALSA_CI_SBUILD_ARGS: '--arch-any --no-arch-all'
+
+build-all:
+  extends: build
+  variables:
+    SALSA_CI_SBUILD_ARGS: '--arch-all --no-arch-any'
 
 # The folllowing jobs are the standard tests, excluding any that
 # require building again
 
-lintian:
+.lintian-template:
   extends: .test-lintian
+  timeout: 2 hours
   script:
-  - lintian --suppress-tags "${SALSA_CI_LINTIAN_SUPPRESS_TAGS}" --display-info --pedantic --fail-on error --allow-root ${SALSA_CI_LINTIAN_SHOW_OVERRIDES_ARG} ${SALSA_CI_LINTIAN_ARGS} ${WORKING_DIR}/*.changes | tee lintian.output || ECODE=$?
+  - lintian --suppress-tags 'unreleased-changes,changelog-distribution-does-not-match-changes-file' --suppress-tags "${SALSA_CI_LINTIAN_SUPPRESS_TAGS}" --display-info --pedantic --fail-on error --allow-root ${SALSA_CI_LINTIAN_SHOW_OVERRIDES_ARG} ${SALSA_CI_LINTIAN_ARGS} ${WORKING_DIR}/*.changes | tee lintian.output || ECODE=$?
   - lintian2junit.py --lintian-file lintian.output > ${WORKING_DIR}/lintian.xml
   - exit ${ECODE-0}
+
+lintian-source:
+  extends: .lintian-template
+  needs:
+  - job: build source
+    artifacts: true
+
+lintian-arm64:
+  extends: .lintian-template
   needs:
   - job: build
     artifacts: true
-  - job: build-signed
+  # - job: build-signed
+  #   artifacts: true
+
+lintian-armhf:
+  extends: .lintian-template
+  needs:
+  - job: build-armhf
+    artifacts: true
+  # - job: build-signed
+  #   artifacts: true
+
+lintian-all:
+  extends: .lintian-template
+  needs:
+  - job: build-all
     artifacts: true
 
-autopkgtest:
-    extends: .test-autopkgtest
+autopkgtest-arm64:
+  extends: .test-autopkgtest
+  needs:
+  - job: build source
+    artifacts: true
+  - job: build
+    artifacts: true
+  - job: build-all
+    artifacts: true
+  # - job: build-signed
+  #   artifacts: true
+
+autopkgtest-armhf:
+  extends: .test-autopkgtest-armhf
+  needs:
+  - job: build source
+    artifacts: true
+  - job: build-armhf
+    artifacts: true
+  - job: build-all
+    artifacts: true
+  # - job: build-signed
+  #   artifacts: true
 
 blhc:
-    extends: .test-blhc
+  extends: .test-blhc
+  needs:
+  - job: build
+    artifacts: true
+  - job: build-armhf
+    artifacts: true
+  - job: build-all
+    artifacts: true
+  # - job: build-signed
+  #   artifacts: true
 
-piuparts:
+piuparts-arm64:
   extends: .test-piuparts
   needs:
   - job: build
     artifacts: true
-  - job: build-signed
+  - job: build-all
     artifacts: true
+  # - job: build-signed
+  #   artifacts: true
+
+piuparts-armhf:
+  extends: .test-piuparts
+  variables:
+    SALSA_CI_IMAGES_BASE: $SALSA_CI_IMAGES_BASE_ARM32V7
+  needs:
+  - job: build-armhf
+    artifacts: true
+  - job: build-all
+    artifacts: true
+  # - job: build-signed
+  #   artifacts: true
 
 missing-breaks:
     extends: .test-missing-breaks
@@ -228,7 +332,7 @@ python-static:
     # on first failure
     - pass=true
     - xargs flake8 --max-line-length=100 < "$sources" || pass=false
-    - py.test debian/lib/python || pass=false
+    - pytest debian/lib/python || pass=false
     - $pass
   needs: []
 
@@ -264,7 +368,7 @@ kconfig-static:
     - |
       if [ -s "$error_log" ]; then cat "$error_log"; false; fi
   needs:
-    - job: extract-source
+    - job: build source
       artifacts: true
 
 # Sign code with the test key and certificate, build and test that
@@ -277,7 +381,7 @@ sign-code:
   rules:
     - if: $CI_COMMIT_TAG != null
       when: never
-    - when: always
+    # - when: always
   script:
     - |
       apt-get update && eatmydata apt-get install --no-install-recommends -y \
@@ -292,48 +396,45 @@ sign-code:
     # Sign the code and build a source package
     - |
       "$kernel_team_dir"/scripts/debian-test-sign \
-        ${WORKING_DIR}/linux_*_${BUILD_ARCH}.changes \
+        ${WORKING_DIR}/linux*_${BUILD_ARCH}.changes \
         debian/certs/ci-test-sign/ci-test-sign-key.pem \
         debian/certs/ci-test-sign/ci-test-sign.pem
   artifacts:
     paths:
-      - ${WORKING_DIR}/linux-signed-${BUILD_ARCH}_*
+      - ${WORKING_DIR}/linux-signed*-${BUILD_ARCH}_*
   needs:
     - job: build
       artifacts: true
 
 build-signed:
   stage: build-signed
-  image: $SALSA_CI_IMAGES_BASE
   extends:
-    - .artifacts-default-expire
+    - .build-definition
   rules:
     - if: $CI_COMMIT_TAG != null
       when: never
-    - when: always
+    # - when: always
   variables:
     SALSA_CI_DPKG_BUILDPACKAGE_ARGS: ''
-    CCACHE_TMP_DIR: ${CI_PROJECT_DIR}/../.ccache
-    CCACHE_WORK_DIR: ${CI_PROJECT_DIR}/.ccache
-    DB_BUILD_PARAM: ${SALSA_CI_DPKG_BUILDPACKAGE_ARGS}
-    DB_BUILD_TYPE: full
+    # We need linux-image-*-unsigned_*_${BUILD_ARCH}.deb build-dependencies
+    # from build job
+    SALSA_CI_SBUILD_EXTRA_PACKAGE: '${WORKING_DIR}/'
   script:
-    # Unpack the source
-    - |
-      apt-get update && eatmydata apt-get install --no-install-recommends -y \
-        dpkg-dev
-    - |
-      dpkg-source -x ${WORKING_DIR}/linux-signed-${BUILD_ARCH}_*.dsc \
-        ${WORKING_DIR}/${SOURCE_DIR}
-
-    # Install build-dependencies produced by build job
-    - |
-      apt-get install --no-install-recommends -y \
-        ${WORKING_DIR}/linux-image-*-unsigned_*_${BUILD_ARCH}.deb
-
     # Do the same as the common .build-definition script
     - !reference [.build-before-script]
-    - !reference [.build-script]
+    - !reference [.build-script-setup-environment]
+
+    # Move source to build directory and unpack it
+    - dcmd mv ${WORKING_DIR}/linux-signed*-${BUILD_ARCH}_*.dsc ${BUILD_DIR}
+    - cd ${BUILD_DIR}
+    - dpkg-source -x linux-signed*-${BUILD_ARCH}_*.dsc
+    - cd linux-signed*-${BUILD_ARCH}-*
+
+    # Make everything accessible to build user
+    - chown -R 'salsa-ci:' ${BUILD_DIR} ${WORKING_DIR}
+
+    - !reference [.build-script-setup-build-command]
+    - !reference [.build-script-run-build-command]
   after_script:
     - !reference [.build-after-script]
   artifacts:
@@ -341,11 +442,13 @@ build-signed:
     # packages, and (for piuparts) the versioned dependencies produced
     # by the build job
     paths:
-      - ${WORKING_DIR}/linux-signed-${BUILD_ARCH}_*
+      - ${WORKING_DIR}/linux-signed*-${BUILD_ARCH}_*
+      - ${WORKING_DIR}/linux-base-*_${BUILD_ARCH}.deb
       - ${WORKING_DIR}/linux-headers-*_${BUILD_ARCH}.deb
       - ${WORKING_DIR}/linux-headers-*-common_*_all.deb
       - ${WORKING_DIR}/linux-image-*_${BUILD_ARCH}.deb
       - ${WORKING_DIR}/linux-kbuild-*_${BUILD_ARCH}.deb
+      - ${WORKING_DIR}/kernel-image-*_${BUILD_ARCH}.udeb
     exclude:
       - ${WORKING_DIR}/linux-image-*-unsigned_*_${BUILD_ARCH}.deb
   needs:
@@ -353,3 +456,412 @@ build-signed:
       artifacts: true
     - job: sign-code
       artifacts: true
+
+publish-internal-main:
+  extends: .publish-public
+  variables:
+    DEPLOY_TARGET: 'internal'
+    DEPLOY_COMPONENT: 'main'
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
+      when: on_success
+  needs:
+    - job: build source
+      artifacts: true
+    - job: build
+      artifacts: true
+    - job: build-armhf
+      artifacts: true
+    - job: build-all
+      artifacts: true
+    - job: lintian-source
+      artifacts: false
+    - job: lintian-arm64
+      artifacts: false
+    - job: lintian-armhf
+      artifacts: false
+    - job: lintian-all
+      artifacts: false
+    - job: blhc
+      artifacts: false
+    - job: piuparts-arm64
+      artifacts: false
+    - job: piuparts-armhf
+      artifacts: false
+    - job: python-static
+      artifacts: false
+    - job: kconfig-static
+      artifacts: false
+
+publish-public-beta:
+  extends: .publish-public
+  variables:
+    DEPLOY_TARGET: 'public'
+    DEPLOY_COMPONENT: 'beta'
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-beta-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-beta-next$/
+      when: on_success
+  needs:
+    - job: build source
+      artifacts: true
+    - job: build
+      artifacts: true
+    - job: build-armhf
+      artifacts: true
+    - job: build-all
+      artifacts: true
+    - job: lintian-source
+      artifacts: false
+    - job: lintian-arm64
+      artifacts: false
+    - job: lintian-armhf
+      artifacts: false
+    - job: lintian-all
+      artifacts: false
+    - job: blhc
+      artifacts: false
+    - job: piuparts-arm64
+      artifacts: false
+    - job: piuparts-armhf
+      artifacts: false
+    - job: python-static
+      artifacts: false
+    - job: kconfig-static
+      artifacts: false
+  after_script:
+    - !reference [.gh-status-setup]
+    - |
+      case "$CI_JOB_STATUS" in
+        success)  gh_status success beta "Released to beta" ;;
+        canceled) gh_status error   beta "Publish canceled" ;;
+        *)        gh_status failure beta "Publish failed" ;;
+      esac
+
+publish-public-main:
+  extends: .publish-public
+  variables:
+    DEPLOY_TARGET: 'public'
+    DEPLOY_COMPONENT: 'main'
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
+      when: manual
+  needs:
+    - job: build source
+      artifacts: true
+    - job: build
+      artifacts: true
+    - job: build-armhf
+      artifacts: true
+    - job: build-all
+      artifacts: true
+    - job: lintian-source
+      artifacts: false
+    - job: lintian-arm64
+      artifacts: false
+    - job: lintian-armhf
+      artifacts: false
+    - job: lintian-all
+      artifacts: false
+    - job: blhc
+      artifacts: false
+    - job: piuparts-arm64
+      artifacts: false
+    - job: piuparts-armhf
+      artifacts: false
+    - job: python-static
+      artifacts: false
+    - job: kconfig-static
+      artifacts: false
+  # Post the terminal release status from the same job that actually
+  # performs the apt publish: after_script sees $CI_JOB_STATUS directly,
+  # so no needs:/rules: gymnastics across the cascade. Replaces the
+  # standalone notify-released job which fired prematurely whenever the
+  # cascade skipped (e.g. while publish-public-main was still manual).
+  after_script:
+    - !reference [.gh-status-setup]
+    - |
+      case "$CI_JOB_STATUS" in
+        success)  gh_status success release "Released" ;;
+        canceled) gh_status error   release "Publish canceled" ;;
+        *)        gh_status failure release "Publish failed" ;;
+      esac
+
+# Promote $RELEASE-beta-next -> $RELEASE-beta on a green publish-public-beta.
+# Authenticates with `$CI_JOB_TOKEN`; requires Settings -> CI/CD ->
+# "Allow Git push requests to the repository" to be enabled, and the
+# user who triggered the pipeline must have push permission to the
+# target protected branch (the job token inherits their access).
+# Job-token pushes don't trigger pipelines, so no `-o ci.skip` is needed.
+promote-beta:
+  stage: publish
+  image: $SALSA_CI_IMAGES_BASE
+  variables:
+    # Full history so the fast-forward check against pios/$RELEASE-beta
+    # has the ancestry it needs (default GIT_DEPTH=1 means just HEAD).
+    GIT_DEPTH: 0
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-beta-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-beta-next$/
+      when: on_success
+  needs:
+    - job: publish-public-beta
+  script:
+    - apt-get update && eatmydata apt-get install --no-install-recommends -y git
+    - git push --force "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "HEAD:refs/heads/pios/${RELEASE}-beta"
+
+# Promote $RELEASE-next -> $RELEASE (canonical history) AND reset
+# $RELEASE-base to the just-released tip. $RELEASE-base is a resolution
+# branch that always starts the next cycle from the latest release,
+# so the reset is unconditional. Same gating + credentials as
+# promote-beta.
+promote-main:
+  stage: publish
+  image: $SALSA_CI_IMAGES_BASE
+  variables:
+    # Full history so the fast-forward check against pios/$RELEASE has the
+    # ancestry it needs (default GIT_DEPTH=1 means just HEAD).
+    GIT_DEPTH: 0
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
+      when: on_success
+  needs:
+    - job: publish-public-main
+  script:
+    - apt-get update && eatmydata apt-get install --no-install-recommends -y git
+    - URL="https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+    - git push "$URL" "HEAD:refs/heads/pios/${RELEASE}"
+    - git push "$URL" "HEAD:refs/heads/pios/${RELEASE}-base"
+
+# Conditionally push $RELEASE-next -> $RELEASE-beta-base after
+# promote-main. Reads BETA_BASE_WAS_SYNCED from the dotenv exported by
+# orig: pushes only if $RELEASE-base and $RELEASE-beta-base were already
+# in sync at pipeline start. Otherwise skips and logs - staged beta
+# divergence is preserved.
+sync-beta-base:
+  stage: publish
+  image: $SALSA_CI_IMAGES_BASE
+  variables:
+    # Full history so the fast-forward check against pios/$RELEASE-beta-base
+    # has the ancestry it needs.
+    GIT_DEPTH: 0
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
+      when: on_success
+  needs:
+    - job: orig
+      artifacts: true
+    - job: promote-main
+  script:
+    - apt-get update && eatmydata apt-get install --no-install-recommends -y git
+    - |
+      if [ "$BETA_BASE_WAS_SYNCED" = "1" ]; then
+          git push "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "HEAD:refs/heads/pios/${RELEASE}-beta-base"
+      else
+          echo "$RELEASE-base diverged from $RELEASE-beta-base at orig time; preserving staged divergence"
+      fi
+
+# Mirror the released packaging to GitHub: push HEAD to pios/$RELEASE
+# and a pios/<version> tag. Requires two CI variables:
+#   GITHUB_PACKAGING_REPO        owner/name of the target GitHub repo
+#   GITHUB_PACKAGING_PUSH_TOKEN  masked GitHub PAT, write access to that repo
+mirror-to-github:
+  stage: publish
+  image: $SALSA_CI_IMAGES_BASE
+  variables:
+    # Full history so dpkg-parsechangelog has the changelog and the tag
+    # can be created against the actual release commit.
+    GIT_DEPTH: 0
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/ && $CI_DEPLOY_FREEZE
+      when: manual
+      allow_failure: true
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
+      when: on_success
+  needs:
+    - job: promote-main
+  script:
+    - apt-get update && eatmydata apt-get install --no-install-recommends -y devscripts git
+    - |
+      if [ -z "$GITHUB_PACKAGING_REPO" ]; then
+          echo "GITHUB_PACKAGING_REPO not set; cannot push tag" >&2
+          exit 1
+      fi
+    - version=$(dpkg-parsechangelog -SVersion)
+    - tag="pios/${version//:/%}"
+    - git config user.email "ci@raspberrypi.invalid"
+    - git config user.name "Raspberry Pi CI"
+    - git tag -m "Release ${version}" "${tag}"
+    - git push "https://x-access-token:${GITHUB_PACKAGING_PUSH_TOKEN}@github.com/${GITHUB_PACKAGING_REPO}.git" "HEAD:refs/heads/pios/${RELEASE}" "${tag}"
+
+# ---------------------------------------------------------------------------
+# GitHub commit status reporting. Posts to GitHub's Statuses API as the
+# pipeline progresses, against the kernel commit being built. See
+# README.md in the linux-build-bridge repo for the context lifecycle.
+#
+# Required CI variables (project settings):
+#   GITHUB_KERNEL_REPO          GitHub repo for the kernel source.
+#   GITHUB_KERNEL_STATUS_TOKEN  GitHub PAT (masked), "Commit statuses:
+#                               Write" on the kernel repo.
+# The commit SHA the statuses get posted against is parsed from the
+# "Linux commit:" line that rpi/update writes into debian/changelog.
+# ---------------------------------------------------------------------------
+
+# Hidden top-level keys hold the rule lists for each notify-* job.
+# !reference resolves these as whole lists at the rules: position; the
+# original nested-key form (.rules.notify-start etc.) silently produces
+# empty rules and the jobs get excluded from the pipeline. when: lives
+# inside each rule because the job-level + rules-level interaction is
+# under-documented.
+
+# notify-start fires at pipeline start. Default when:on_success is fine.
+.notify-start-rules:
+  - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+(-beta)?-next$/
+
+# notify-build, notify-test, notify-deploy each fire at the end of a
+# phase. when:always so they post a failure status when the phase failed.
+.notify-phase-rules:
+  - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+(-beta)?-next$/
+    when: always
+
+# Shared shell setup for any job that posts to GitHub Commit Statuses.
+# Inlined via !reference from both .gh-status (notify-* jobs) and
+# publish-public-main (release "Released"/failure post). after_script
+# runs in a fresh shell, so jobs that only need the setter there cannot
+# rely on before_script - hence the reference shape.
+.gh-status-setup:
+  - apt-get update
+  - eatmydata apt-get install --no-install-recommends -y curl jq
+  - |
+    FLOW=
+    case "$CI_COMMIT_REF_NAME" in
+      pios/*-beta-next) FLOW=beta ;;
+      pios/*-next)      FLOW=release ;;
+    esac
+    GITHUB_KERNEL_SHA=$(sed -n 's/.*Linux commit:[[:space:]]*\([0-9a-fA-F]\{7,40\}\).*/\1/p' debian/changelog | head -1)
+    [ -n "$GITHUB_KERNEL_SHA" ] || { echo "no 'Linux commit:' line in debian/changelog" >&2; exit 1; }
+    gh_status() {
+      local state="$1" context="$RELEASE/$2" description="$3"
+      : "${GITHUB_KERNEL_REPO:?must be set}"
+      : "${GITHUB_KERNEL_STATUS_TOKEN:?must be set}"
+      local payload
+      payload=$(jq -nc \
+        --arg state "$state" --arg context "$context" \
+        --arg description "$description" \
+        '{state:$state, context:$context, description:$description}')
+      curl -sS --fail-with-body -X POST \
+        -H "Authorization: Bearer $GITHUB_KERNEL_STATUS_TOKEN" \
+        -H "Accept: application/vnd.github+json" \
+        "https://api.github.com/repos/$GITHUB_KERNEL_REPO/statuses/$GITHUB_KERNEL_SHA" \
+        -d "$payload"
+    }
+
+.gh-status:
+  image: $SALSA_CI_IMAGES_BASE
+  before_script:
+    - !reference [.gh-status-setup]
+    - |
+      job_status() {
+        curl -sS -H "JOB-TOKEN: $CI_JOB_TOKEN" \
+          "$CI_API_V4_URL/projects/$CI_PROJECT_ID/pipelines/$CI_PIPELINE_ID/jobs?per_page=100" \
+          | jq -r --arg n "$1" '.[] | select(.name == $n) | .status' | head -1
+      }
+      failed_in_stage() {
+        curl -sS -H "JOB-TOKEN: $CI_JOB_TOKEN" \
+          "$CI_API_V4_URL/projects/$CI_PROJECT_ID/pipelines/$CI_PIPELINE_ID/jobs?per_page=100" \
+          | jq -r --arg s "$1" \
+              '[.[] | select(.stage == $s and .status == "failed") | .name] | join(", ")'
+      }
+
+notify-start:
+  extends: .gh-status
+  stage: provisioning
+  needs: []
+  rules:
+    - !reference [.notify-start-rules]
+  script:
+    - gh_status pending "$FLOW" "Building"
+
+notify-build:
+  extends: .gh-status
+  stage: test
+  rules:
+    - !reference [.notify-phase-rules]
+  script:
+    - |
+      failed=$(failed_in_stage build)
+      if [ -z "$failed" ]; then
+        gh_status pending "$FLOW" "Testing"
+      else
+        gh_status failure "$FLOW" "Build failed: $failed"
+      fi
+
+notify-test:
+  extends: .gh-status
+  stage: publish
+  rules:
+    - !reference [.notify-phase-rules]
+  script:
+    - |
+      # Skipped test jobs (because build failed) don't show up as "failed";
+      # check the build stage explicitly so we don't overwrite the failure
+      # status notify-build already posted.
+      if [ -n "$(failed_in_stage build)" ]; then
+        echo "build stage already failed; status owned by notify-build"
+        exit 0
+      fi
+      failed=$(failed_in_stage test)
+      if [ -z "$failed" ]; then
+        gh_status pending "$FLOW" "Publishing"
+      else
+        gh_status failure "$FLOW" "Test failed: $failed"
+      fi
+
+# notify-deploy now only fires on the release branch: posts "Staged"
+# pending status once publish-internal-main succeeds. Terminal beta and
+# release-publish statuses come from publish-public-beta and
+# publish-public-main's after_script directly.
+notify-deploy:
+  extends: .gh-status
+  stage: notify
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
+      when: always
+  needs:
+    - job: publish-internal-main
+      artifacts: false
+      optional: true
+  script:
+    - |
+      # needs:publish-internal-main lets this job fire as soon as that
+      # job reaches a terminal state - which happens immediately when an
+      # earlier stage failure causes publish-internal-main to be skipped.
+      # In that case the failure status belongs to notify-build (or
+      # notify-test), so don't overwrite it.
+      if [ -n "$(failed_in_stage build)" ] || [ -n "$(failed_in_stage test)" ]; then
+        echo "earlier stage already failed; status owned by an earlier notify-*"
+        exit 0
+      fi
+      st=$(job_status publish-internal-main)
+      if [ "$st" = success ]; then
+        gh_status pending release "Staged"
+      else
+        gh_status failure release "Publish failed: publish-internal-main ($st)"
+      fi
+
