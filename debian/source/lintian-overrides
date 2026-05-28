@@ -29,6 +29,11 @@ linux source: epoch-changed-but-upstream-version-did-not-go-backwards
 # doesn't know it yet but kernel d/control references it.
 linux source: invalid-arch-string-in-source-relation loong64 *
 
+# Precompiled eBPF test object shipped without source by upstream.
+# Debian kernel-team strips it via Files-Excluded at uscan repack; our
+# d/watch fetches the unmodified tarball so we override here instead.
+linux source: source-is-missing [tools/testing/selftests/tc-testing/action-ebpf]
+
 # False positive - lintian matches "invariant" in GFDL-no-invariants boilerplate.
 linux source: license-problem-gfdl-invariants * [Documentation/userspace-api/media/v4l/pixfmt-meta-bcm2835-isp-stats.rst]
 linux source: license-problem-gfdl-invariants * [Documentation/userspace-api/media/v4l/pixfmt-meta-sensor-data.rst]
