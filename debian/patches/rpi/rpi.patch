@@ -204,7 +204,7 @@ diff --git a/.github/workflows/kernel-build.yml b/.github/workflows/kernel-build
 new file mode 100644
 --- /dev/null
 +++ b/.github/workflows/kernel-build.yml
-@@ -0,0 +1,103 @@
+@@ -0,0 +1,110 @@
 +name: Pi kernel build tests
 +
 +on:
@@ -231,36 +231,43 @@ new file mode 100644
 +            arch: arm
 +            defconfig: bcm2835_defconfig
 +            kernel: kernel
++            retention: 5
 +
 +          - name: arm64
 +            arch: arm64
 +            defconfig: defconfig
 +            kernel: kernel8
++            retention: 5
 +
 +          - name: bcmrpi
 +            arch: arm
 +            defconfig: bcmrpi_defconfig
 +            kernel: kernel
++            retention: 90
 +
 +          - name: bcm2709
 +            arch: arm
 +            defconfig: bcm2709_defconfig
 +            kernel: kernel7
++            retention: 90
 +
 +          - name: bcm2711
 +            arch: arm64
 +            defconfig: bcm2711_defconfig
 +            kernel: kernel8
++            retention: 90
 +
 +          - name: bcm2711_rt
 +            arch: arm64
 +            defconfig: bcm2711_rt_defconfig
 +            kernel: kernel8_rt
++            retention: 30
 +
 +          - name: bcm2712
 +            arch: arm64
 +            defconfig: bcm2712_defconfig
 +            kernel: kernel_2712
++            retention: 90
 +
 +    steps:
 +    - name: Install armhf crossbuild toolchain
@@ -307,7 +314,7 @@ new file mode 100644
 +      with:
 +        name: ${{matrix.name}}_build
 +        path: ${{matrix.name}}_build.tar
-+        retention-days: 90
++        retention-days: ${{matrix.retention}}
 diff --git a/.github/workflows/kunit.yml b/.github/workflows/kunit.yml
 new file mode 100644
 --- /dev/null
@@ -6234,7 +6241,7 @@ diff --git a/arch/arm/boot/dts/broadcom/bcm2710-rpi-3-b-plus.dts b/arch/arm/boot
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/broadcom/bcm2710-rpi-3-b-plus.dts
-@@ -0,0 +1,295 @@
+@@ -0,0 +1,293 @@
 +/dts-v1/;
 +
 +#include "bcm2710.dtsi"
@@ -6495,8 +6502,6 @@ new file mode 100644
 +};
 +
 +&eth_phy {
-+	microchip,eee-enabled;
-+	microchip,tx-lpi-timer = <600>; /* non-aggressive*/
 +	microchip,downshift-after = <2>;
 +};
 +
@@ -6522,8 +6527,8 @@ new file mode 100644
 +		pwr_led_activelow = <&led_pwr>,"gpios:8";
 +		pwr_led_trigger = <&led_pwr>,"linux,default-trigger";
 +
-+		eee = <&eth_phy>,"microchip,eee-enabled?";
-+		tx_lpi_timer = <&eth_phy>,"microchip,tx-lpi-timer:0";
++		eee = <&eth_phy>,"eee-broken-1000t!",
++		      <&eth_phy>,"eee-broken-100tx!";
 +		eth_led0 = <&eth_phy>,"microchip,led-modes:0";
 +		eth_led1 = <&eth_phy>,"microchip,led-modes:4";
 +		eth_downshift_after = <&eth_phy>,"microchip,downshift-after:0";
@@ -10003,7 +10008,7 @@ diff --git a/arch/arm/boot/dts/overlays/README b/arch/arm/boot/dts/overlays/READ
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/README
-@@ -0,0 +1,6298 @@
+@@ -0,0 +1,6296 @@
 +Introduction
 +============
 +
@@ -10239,8 +10244,8 @@ new file mode 100644
 +        drm_fb2_vc4             Assign /dev/fb2 to the vc4 outputs
 +
 +        eee                     Enable Energy Efficient Ethernet support for
-+                                compatible devices (default "on"). See also
-+                                "tx_lpi_timer". Pi3B+, Pi4, CM4, Pi5 and CM5.
++                                compatible devices (default "on").
++                                Pi3B+, Pi4, CM4, Pi5 and CM5.
 +
 +        enable_eeprom           Set to "on" to enable the onboard bootloader
 +                                EEPROM by driving GPIO 57 low
@@ -10460,10 +10465,6 @@ new file mode 100644
 +
 +        suspend                 Make the power button trigger a suspend rather
 +                                than a power-off (2712 only, default "off")
-+
-+        tx_lpi_timer            Set the delay in microseconds between going idle
-+                                and entering the low power state (default 600).
-+                                Requires EEE to be enabled - see "eee".
 +
 +        uart0                   Set to "off" to disable uart0 (default "on")
 +
@@ -15728,6 +15729,7 @@ new file mode 100644
 +        touchscreen-inverted-y  Inverts Y direction of touch controller
 +        touchscreen-swapped-x-y Swaps X & Y axes of touch controller
 +        rotate                  Display rotation {0,90,180,270} (default 0)
++        backlight-pwm           Use PWM instead of GPIO for backlight
 +
 +
 +Name:   vc4-kms-dpi-hyperpixel4
@@ -15942,6 +15944,7 @@ new file mode 100644
 +        4_0_inchC               4.0" 720x720
 +        5_0_inch                5.0" 720x1280
 +        6_25_inch               6.25" 720x1560
++        6_25_inchB              6.25" B 720x1560
 +        8_8_inch                8.8" 480x1920
 +        7_0_inchC               7.0" C 1024x600
 +        7_0_inchH               7.0" H 1280x720
@@ -46528,7 +46531,7 @@ diff --git a/arch/arm/boot/dts/overlays/vc4-kms-dpi-hyperpixel2r-overlay.dts b/a
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/vc4-kms-dpi-hyperpixel2r-overlay.dts
-@@ -0,0 +1,114 @@
+@@ -0,0 +1,167 @@
 +/*
 + * vc4-kms-dpi-hyperpixel2r-overlay.dts
 + */
@@ -46562,7 +46565,6 @@ new file mode 100644
 +					reg = <0>;
 +					/* 100 kHz */
 +					spi-max-frequency = <100000>;
-+					backlight = <&backlight>;
 +					rotation = <0>;
 +
 +					port {
@@ -46571,11 +46573,6 @@ new file mode 100644
 +						};
 +					};
 +				};
-+			};
-+
-+			backlight: backlight {
-+				compatible = "gpio-backlight";
-+				gpios = <&gpio 19 0>;
 +			};
 +		};
 +	};
@@ -46634,12 +46631,71 @@ new file mode 100644
 +		};
 +	};
 +
++	fragment@4 {
++		target = <&panel>;
++		__overlay__ {
++			backlight = <&backlight>;
++		};
++	};
++
++	fragment@5 {
++		target-path = "/";
++		__overlay__ {
++			backlight: backlight {
++				compatible = "gpio-backlight";
++				gpios = <&gpio 19 0>;
++			};
++		};
++	};
++
++	fragment@6 {
++		target = <&panel>;
++		__dormant__ {
++			backlight = <&backlight_pwm>;
++		};
++	};
++
++	fragment@7 {
++		target-path = "/";
++		__dormant__ {
++			backlight_pwm: backlight_pwm {
++				compatible = "pwm-backlight";
++				pwms = <&pwm 1 200000 0>;
++				brightness-levels = <0 255>;
++				num-interpolated-steps = <255>;
++				default-brightness-level = <1>;
++			};
++
++		};
++	};
++
++	fragment@8 {
++		target = <&pwm>;
++		__dormant__ {
++			pinctrl-names = "default";
++			pinctrl-0 = <&pwm_pins>;
++			assigned-clock-rates = <1000000>;
++			status = "okay";
++		};
++	};
++
++	fragment@9 {
++		target = <&gpio>;
++		__dormant__ {
++			pwm_pins: pwm_pins {
++				brcm,pins = <19>;
++				brcm,function = <2>; /* Alt5 */
++			};
++		};
++	};
++
 +	__overrides__ {
 +		disable-touch = <0>,"-3";
 +		touchscreen-inverted-x = <&polytouch>,"touchscreen-inverted-x?";
 +		touchscreen-inverted-y = <&polytouch>,"touchscreen-inverted-y!";
 +		touchscreen-swapped-x-y = <&polytouch>,"touchscreen-swapped-x-y!";
 +		rotate = <&panel>, "rotation:0";
++		backlight-pwm = <0>,"-4-5+6+7+8+9";
 +	};
 +
 +};
@@ -47827,7 +47883,7 @@ diff --git a/arch/arm/boot/dts/overlays/vc4-kms-dsi-waveshare-panel-overlay.dts 
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/vc4-kms-dsi-waveshare-panel-overlay.dts
-@@ -0,0 +1,146 @@
+@@ -0,0 +1,149 @@
 +/*
 + * Device Tree overlay for Waveshare DSI Touchscreens
 + *
@@ -47953,6 +48009,9 @@ new file mode 100644
 +				   <&touch>, "touchscreen-inverted-x?",
 +				   <&touch>, "touchscreen-inverted-y?";
 +		6_25_inch = <&panel>, "compatible=waveshare,6.25inch-panel",
++				   <&touch>, "touchscreen-inverted-x?",
++				   <&touch>, "touchscreen-inverted-y?";
++		6_25_inchB = <&panel>, "compatible=waveshare,6.25inch-b-panel",
 +				   <&touch>, "touchscreen-inverted-x?",
 +				   <&touch>, "touchscreen-inverted-y?";
 +		8_8_inch = <&panel>, "compatible=waveshare,8.8inch-panel";
@@ -55241,18 +55300,25 @@ new file mode 100644
 diff --git a/arch/arm64/boot/dts/broadcom/bcm2712-d-rpi-5-b.dts b/arch/arm64/boot/dts/broadcom/bcm2712-d-rpi-5-b.dts
 --- a/arch/arm64/boot/dts/broadcom/bcm2712-d-rpi-5-b.dts
 +++ b/arch/arm64/boot/dts/broadcom/bcm2712-d-rpi-5-b.dts
-@@ -35,3 +35,11 @@ &gio_aon {
- 		"PMIC_SCL", // AON_SGPIO_04
+@@ -36,16 +36,10 @@ &gio_aon {
  		"PMIC_SDA"; // AON_SGPIO_05
  };
-+
-+&pinctrl_aon {
-+	compatible = "brcm,bcm2712d0-aon-pinctrl";
-+};
-+
+ 
+-&pinctrl {
+-	compatible = "brcm,bcm2712d0-pinctrl";
+-	reg = <0x7d504100 0x20>;
+-};
+-
+ &pinctrl_aon {
+ 	compatible = "brcm,bcm2712d0-aon-pinctrl";
+-	reg = <0x7d510700 0x1c>;
+ };
+ 
+-&uart10 {
+-	interrupts = <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>;
 +&pinctrl {
 +	compatible = "brcm,bcm2712c0-aon-pinctrl";
-+};
+ };
 diff --git a/arch/arm64/boot/dts/broadcom/bcm2712-ds.dtsi b/arch/arm64/boot/dts/broadcom/bcm2712-ds.dtsi
 new file mode 100644
 --- /dev/null
@@ -65402,6 +65468,18 @@ diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
  }
  
  void arch_sync_dma_for_cpu(phys_addr_t paddr, size_t size,
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -216,7 +216,7 @@ static const struct ata_port_info ahci_port_info[] = {
+ 	/* JMicron JMB582/585: 64-bit DMA is broken, force 32-bit */
+ 	[board_ahci_jmb585] = {
+ 		AHCI_HFLAGS	(AHCI_HFLAG_IGN_IRQ_IF_ERR |
+-				 AHCI_HFLAG_32BIT_ONLY),
++				 0*AHCI_HFLAG_32BIT_ONLY),
+ 		.flags		= AHCI_FLAG_COMMON,
+ 		.pio_mask	= ATA_PIO4,
+ 		.udma_mask	= ATA_UDMA6,
 diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
 --- a/drivers/bluetooth/btbcm.c
 +++ b/drivers/bluetooth/btbcm.c
@@ -66593,7 +66671,7 @@ diff --git a/drivers/char/broadcom/vcio.c b/drivers/char/broadcom/vcio.c
 new file mode 100644
 --- /dev/null
 +++ b/drivers/char/broadcom/vcio.c
-@@ -0,0 +1,187 @@
+@@ -0,0 +1,358 @@
 +/*
 + *  Copyright (C) 2010 Broadcom
 + *  Copyright (C) 2015 Noralf Trønnes
@@ -66626,12 +66704,138 @@ new file mode 100644
 +#define IOCTL_MBOX_PROPERTY32 _IOWR(VCIO_IOC_MAGIC, 0, compat_uptr_t)
 +#endif
 +
-+struct vcio_data {
-+	struct rpi_firmware *fw;
-+	struct miscdevice misc_dev;
++/* Tags permitted via /dev/vcio_provisioning. */
++static const u32 vcio_provisioning_tags[] = {
++	0x00038021, /* SET_CUSTOMER_OTP */
++	0x00038024, /* SET_USER_OTP */
++	0x00038082, /* SET_CUSTOMER_ETHER_MAC_OTP */
++	0x00038083, /* SET_CUSTOMER_WIFI_MAC_OTP */
++	0x00038084, /* SET_CUSTOMER_BT_MAC_OTP */
++	0x00030085, /* TST_MAC_OTP */
++	0x00030086, /* SET_CUSTOMER_OTP_LOCK */
 +};
 +
-+static int vcio_user_property_list(struct vcio_data *vcio, void *user)
++/* Tags permitted via /dev/vcio_ab. */
++static const u32 vcio_ab_tags[] = {
++	0x00030048, /* SET_NOTIFY_REBOOT */
++	0x00030057, /* SET_GLOBAL_RESET */
++	0x00030064, /* GET_REBOOT_FLAGS */
++	0x00038064, /* SET_REBOOT_FLAGS */
++	0x0003008b, /* GET_REBOOT_ORDER */
++	0x0003808b, /* SET_REBOOT_ORDER */
++	0x0003008c, /* GET_REBOOT_ARG */
++	0x0003808c, /* SET_REBOOT_ARG */
++	0x0003008d, /* GET_BOOT_COUNT */
++	0x0003808d, /* SET_BOOT_COUNT */
++	0x00040011, /* GET_RSTS */
++	0x00030096, /* GET_EEPROM_PACKET */
++	0x00038096, /* SET_EEPROM_PACKET */
++	0x00030097, /* GET_EEPROM_UPDATE_STATUS */
++	0x00038097, /* SET_EEPROM_UPDATE_STATUS */
++	0x00030098, /* GET_EEPROM_PARTITION */
++	0x00038098, /* SET_EEPROM_PARTITION */
++	0x00030099, /* GET_EEPROM_AB_PARAMS */
++	0x00038099, /* SET_EEPROM_AB_PARAMS */
++};
++
++/* Tags permitted via /dev/vcio_gencmd. */
++static const u32 vcio_gencmd_tags[] = {
++	0x00030080, /* GET_GENCMD_RESULT */
++};
++
++/* Tags permitted via /dev/vcio_crypto. */
++static const u32 vcio_crypto_tags[] = {
++	0x0003008e, /* GET_CRYPTO_LAST_ERROR */
++	0x0003008f, /* GET_CRYPTO_NUM_OTP_KEYS */
++	0x00030090, /* GET_CRYPTO_KEY_STATUS */
++	0x00038090, /* SET_CRYPTO_KEY_STATUS */
++	0x00030091, /* GET_CRYPTO_ECDSA_SIGN */
++	0x00030092, /* GET_CRYPTO_HMAC_SHA256 */
++	0x00030093, /* GET_CRYPTO_PUBLIC_KEY */
++	0x00030094, /* GET_CRYPTO_PRIVATE_KEY */
++	0x00030095, /* GET_CRYPTO_GEN_ECDSA */
++};
++
++struct vcio_group {
++	const char *name;
++	const u32 *tags;
++	size_t num_tags;
++};
++
++#define VCIO_GROUP(suffix) {						\
++	.name = "vcio_" #suffix,					\
++	.tags = vcio_ ## suffix ## _tags,				\
++	.num_tags = ARRAY_SIZE(vcio_ ## suffix ## _tags),		\
++}
++
++static const struct vcio_group vcio_groups[] = {
++	VCIO_GROUP(provisioning),
++	VCIO_GROUP(ab),
++	VCIO_GROUP(gencmd),
++	VCIO_GROUP(crypto),
++};
++
++struct vcio_dev {
++	struct miscdevice misc_dev;
++	struct rpi_firmware *fw;
++	const u32 *allowed_tags;
++	size_t num_allowed_tags;
++};
++
++struct vcio_data {
++	struct rpi_firmware *fw;
++	struct vcio_dev vcio;
++	struct vcio_dev groups[ARRAY_SIZE(vcio_groups)];
++};
++
++static bool vcio_tag_allowed(const struct vcio_dev *vdev, u32 tag)
++{
++	size_t i;
++
++	if (!vdev->allowed_tags)
++		return true;
++
++	for (i = 0; i < vdev->num_allowed_tags; i++)
++		if (vdev->allowed_tags[i] == tag)
++			return true;
++
++	return false;
++}
++
++static int vcio_check_tags(const struct vcio_dev *vdev, const u32 *buf,
++			   size_t size)
++{
++	size_t offset = 8; /* skip total size and status words */
++
++	if (!vdev->allowed_tags)
++		return 0;
++
++	while (offset + 12 <= size) {
++		u32 tag = buf[offset / 4];
++		u32 val_size;
++
++		if (tag == 0)
++			return 0;
++
++		if (!vcio_tag_allowed(vdev, tag)) {
++			pr_warn_ratelimited("%s: tag 0x%08x not permitted\n",
++					    vdev->misc_dev.name, tag);
++			return -EPERM;
++		}
++
++		val_size = buf[offset / 4 + 1];
++		if (val_size > size - offset - 12)
++			return -EINVAL;
++		offset += 12 + ALIGN(val_size, 4);
++
++		if (offset > size)
++			return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int vcio_user_property_list(struct vcio_dev *vdev, void *user)
 +{
 +	u32 *buf, size;
 +	int ret;
@@ -66639,6 +66843,9 @@ new file mode 100644
 +	/* The first 32-bit is the size of the buffer */
 +	if (copy_from_user(&size, user, sizeof(size)))
 +		return -EFAULT;
++
++	if (size < 12)
++		return -EINVAL;
 +
 +	buf = kmalloc(size, GFP_KERNEL);
 +	if (!buf)
@@ -66649,8 +66856,14 @@ new file mode 100644
 +		return -EFAULT;
 +	}
 +
++	ret = vcio_check_tags(vdev, buf, size);
++	if (ret) {
++		kfree(buf);
++		return ret;
++	}
++
 +	/* Strip off protocol encapsulation */
-+	ret = rpi_firmware_property_list(vcio->fw, &buf[2], size - 12);
++	ret = rpi_firmware_property_list(vdev->fw, &buf[2], size - 12);
 +	if (ret) {
 +		kfree(buf);
 +		return ret;
@@ -66682,12 +66895,12 @@ new file mode 100644
 +static long vcio_device_ioctl(struct file *file, unsigned int ioctl_num,
 +			      unsigned long ioctl_param)
 +{
-+	struct vcio_data *vcio = container_of(file->private_data,
-+					      struct vcio_data, misc_dev);
++	struct vcio_dev *vdev = container_of(file->private_data,
++					     struct vcio_dev, misc_dev);
 +
 +	switch (ioctl_num) {
 +	case IOCTL_MBOX_PROPERTY:
-+		return vcio_user_property_list(vcio, (void *)ioctl_param);
++		return vcio_user_property_list(vdev, (void *)ioctl_param);
 +	default:
 +		pr_err("unknown ioctl: %x\n", ioctl_num);
 +		return -EINVAL;
@@ -66698,12 +66911,12 @@ new file mode 100644
 +static long vcio_device_compat_ioctl(struct file *file, unsigned int ioctl_num,
 +				     unsigned long ioctl_param)
 +{
-+	struct vcio_data *vcio = container_of(file->private_data,
-+					      struct vcio_data, misc_dev);
++	struct vcio_dev *vdev = container_of(file->private_data,
++					     struct vcio_dev, misc_dev);
 +
 +	switch (ioctl_num) {
 +	case IOCTL_MBOX_PROPERTY32:
-+		return vcio_user_property_list(vcio, compat_ptr(ioctl_param));
++		return vcio_user_property_list(vdev, compat_ptr(ioctl_param));
 +	default:
 +		pr_err("unknown ioctl: %x\n", ioctl_num);
 +		return -EINVAL;
@@ -66720,6 +66933,21 @@ new file mode 100644
 +	.release = vcio_device_release,
 +};
 +
++static int vcio_register(struct device *dev, struct vcio_dev *vdev,
++			 struct rpi_firmware *fw, const char *name,
++			 const u32 *allowed_tags, size_t num_allowed_tags)
++{
++	vdev->fw = fw;
++	vdev->allowed_tags = allowed_tags;
++	vdev->num_allowed_tags = num_allowed_tags;
++	vdev->misc_dev.fops = &vcio_fops;
++	vdev->misc_dev.minor = MISC_DYNAMIC_MINOR;
++	vdev->misc_dev.name = name;
++	vdev->misc_dev.parent = dev;
++
++	return misc_register(&vdev->misc_dev);
++}
++
 +static int vcio_probe(struct platform_device *pdev)
 +{
 +	struct device *dev = &pdev->dev;
@@ -66727,6 +66955,8 @@ new file mode 100644
 +	struct device_node *fw_node;
 +	struct rpi_firmware *fw;
 +	struct vcio_data *vcio;
++	size_t i;
++	int ret;
 +
 +	fw_node = of_get_parent(np);
 +	if (!fw_node) {
@@ -66739,24 +66969,43 @@ new file mode 100644
 +	if (!fw)
 +		return -EPROBE_DEFER;
 +
-+	vcio = devm_kzalloc(dev, sizeof(struct vcio_data), GFP_KERNEL);
++	vcio = devm_kzalloc(dev, sizeof(*vcio), GFP_KERNEL);
 +	if (!vcio)
 +		return -ENOMEM;
 +
 +	vcio->fw = fw;
-+	vcio->misc_dev.fops = &vcio_fops;
-+	vcio->misc_dev.minor = MISC_DYNAMIC_MINOR;
-+	vcio->misc_dev.name = "vcio";
-+	vcio->misc_dev.parent = dev;
++	platform_set_drvdata(pdev, vcio);
 +
-+	return misc_register(&vcio->misc_dev);
++	ret = vcio_register(dev, &vcio->vcio, fw, "vcio", NULL, 0);
++	if (ret)
++		return ret;
++
++	for (i = 0; i < ARRAY_SIZE(vcio_groups); i++) {
++		const struct vcio_group *g = &vcio_groups[i];
++
++		ret = vcio_register(dev, &vcio->groups[i], fw, g->name,
++				    g->tags, g->num_tags);
++		if (ret)
++			goto err_groups;
++	}
++
++	return 0;
++
++err_groups:
++	while (i--)
++		misc_deregister(&vcio->groups[i].misc_dev);
++	misc_deregister(&vcio->vcio.misc_dev);
++	return ret;
 +}
 +
 +static void vcio_remove(struct platform_device *pdev)
 +{
-+	struct device *dev = &pdev->dev;
++	struct vcio_data *vcio = platform_get_drvdata(pdev);
++	size_t i = ARRAY_SIZE(vcio_groups);
 +
-+	misc_deregister(dev_get_drvdata(dev));
++	while (i--)
++		misc_deregister(&vcio->groups[i].misc_dev);
++	misc_deregister(&vcio->vcio.misc_dev);
 +}
 +
 +static const struct of_device_id vcio_ids[] = {
@@ -67302,12 +67551,13 @@ diff --git a/drivers/char/tpm/tpm_tis_spi_main.c b/drivers/char/tpm/tpm_tis_spi_
 diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
 --- a/drivers/clk/Kconfig
 +++ b/drivers/clk/Kconfig
-@@ -89,13 +89,19 @@ config COMMON_CLK_RK808
+@@ -89,13 +89,20 @@ config COMMON_CLK_RK808
  
  config COMMON_CLK_RP1
  	tristate "Raspberry Pi RP1-based clock support"
 -	depends on MISC_RP1 || COMPILE_TEST
 +	depends on MISC_RP1 || MFD_RP1 || COMPILE_TEST
++	select REGMAP_MMIO
  	default MISC_RP1
  	help
  	  Enable common clock framework support for Raspberry Pi RP1.
@@ -67323,7 +67573,7 @@ diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
  config COMMON_CLK_HI655X
  	tristate "Clock driver for Hi655x" if EXPERT
  	depends on (MFD_HI655X_PMIC || COMPILE_TEST)
-@@ -106,6 +112,12 @@ config COMMON_CLK_HI655X
+@@ -106,6 +113,12 @@ config COMMON_CLK_HI655X
  	  multi-function device has one fixed-rate oscillator, clocked
  	  at 32KHz.
  
@@ -71067,7 +71317,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  		return;
  	}
  
-@@ -657,34 +744,48 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
+@@ -655,34 +742,48 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
  	size_t axi_block_ts;
  	size_t block_ts;
  	u32 ctllo, ctlhi;
@@ -71125,7 +71375,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  			DWAXIDMAC_CH_CTL_L_INC << CH_CTL_L_DST_INC_POS |
  			DWAXIDMAC_CH_CTL_L_NOINC << CH_CTL_L_SRC_INC_POS;
  		block_ts = len >> reg_width;
-@@ -693,6 +794,11 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
+@@ -691,6 +792,11 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
  		return -EINVAL;
  	}
  
@@ -71137,7 +71387,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	if (block_ts > axi_block_ts)
  		return -EINVAL;
  
-@@ -703,7 +809,7 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
+@@ -701,7 +807,7 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
  	ctlhi = CH_CTL_H_LLI_VALID;
  
  	if (chan->chip->dw->hdata->restrict_axi_burst_len) {
@@ -71146,7 +71396,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  		ctlhi |= CH_CTL_H_ARLEN_EN | CH_CTL_H_AWLEN_EN |
  			 burst_len << CH_CTL_H_ARLEN_POS |
  			 burst_len << CH_CTL_H_AWLEN_POS;
-@@ -720,14 +826,17 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
+@@ -718,14 +824,17 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
  	}
  
  	hw_desc->lli->block_ts_lo = cpu_to_le32(block_ts - 1);
@@ -71167,7 +71417,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	return 0;
  }
  
-@@ -744,9 +853,6 @@ static size_t calculate_block_len(struct axi_dma_chan *chan,
+@@ -742,9 +851,6 @@ static size_t calculate_block_len(struct axi_dma_chan *chan,
  	case DMA_MEM_TO_DEV:
  		data_width = BIT(chan->chip->dw->hdata->m_data_width);
  		mem_width = __ffs(data_width | dma_addr | buf_len);
@@ -71177,7 +71427,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  		block_len = axi_block_ts << mem_width;
  		break;
  	case DMA_DEV_TO_MEM:
-@@ -817,6 +923,8 @@ dw_axi_dma_chan_prep_cyclic(struct dma_chan *dchan, dma_addr_t dma_addr,
+@@ -815,6 +921,8 @@ dw_axi_dma_chan_prep_cyclic(struct dma_chan *dchan, dma_addr_t dma_addr,
  		src_addr += segment_len;
  	}
  
@@ -71186,7 +71436,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	llp = desc->hw_desc[0].llp;
  
  	/* Managed transfer list */
-@@ -882,6 +990,9 @@ dw_axi_dma_chan_prep_slave_sg(struct dma_chan *dchan, struct scatterlist *sgl,
+@@ -880,6 +988,9 @@ dw_axi_dma_chan_prep_slave_sg(struct dma_chan *dchan, struct scatterlist *sgl,
  		mem = sg_dma_address(sg);
  		len = sg_dma_len(sg);
  		num_segments = DIV_ROUND_UP(sg_dma_len(sg), axi_block_len);
@@ -71196,7 +71446,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  		segment_len = DIV_ROUND_UP(sg_dma_len(sg), num_segments);
  
  		do {
-@@ -896,6 +1007,8 @@ dw_axi_dma_chan_prep_slave_sg(struct dma_chan *dchan, struct scatterlist *sgl,
+@@ -894,6 +1005,8 @@ dw_axi_dma_chan_prep_slave_sg(struct dma_chan *dchan, struct scatterlist *sgl,
  		} while (len >= segment_len);
  	}
  
@@ -71205,7 +71455,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	/* Set end-of-link to the last link descriptor of list */
  	set_desc_last(&desc->hw_desc[num_sgs - 1]);
  
-@@ -974,7 +1087,7 @@ dma_chan_prep_dma_memcpy(struct dma_chan *dchan, dma_addr_t dst_adr,
+@@ -972,7 +1085,7 @@ dma_chan_prep_dma_memcpy(struct dma_chan *dchan, dma_addr_t dst_adr,
  
  		reg = CH_CTL_H_LLI_VALID;
  		if (chan->chip->dw->hdata->restrict_axi_burst_len) {
@@ -71214,7 +71464,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  
  			reg |= (CH_CTL_H_ARLEN_EN |
  				burst_len << CH_CTL_H_ARLEN_POS |
-@@ -1003,6 +1116,8 @@ dma_chan_prep_dma_memcpy(struct dma_chan *dchan, dma_addr_t dst_adr,
+@@ -1001,6 +1114,8 @@ dma_chan_prep_dma_memcpy(struct dma_chan *dchan, dma_addr_t dst_adr,
  		num++;
  	}
  
@@ -71223,7 +71473,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	/* Set end-of-link to the last link descriptor of list */
  	set_desc_last(&desc->hw_desc[num - 1]);
  	/* Managed transfer list */
-@@ -1051,7 +1166,7 @@ static void axi_chan_dump_lli(struct axi_dma_chan *chan,
+@@ -1049,7 +1164,7 @@ static void axi_chan_dump_lli(struct axi_dma_chan *chan,
  static void axi_chan_list_dump_lli(struct axi_dma_chan *chan,
  				   struct axi_dma_desc *desc_head)
  {
@@ -71232,7 +71482,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	int i;
  
  	for (i = 0; i < count; i++)
-@@ -1094,11 +1209,11 @@ static noinline void axi_chan_handle_err(struct axi_dma_chan *chan, u32 status)
+@@ -1092,11 +1207,11 @@ static noinline void axi_chan_handle_err(struct axi_dma_chan *chan, u32 status)
  
  static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
  {
@@ -71245,7 +71495,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	u64 llp;
  	int i;
  
-@@ -1120,6 +1235,7 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
+@@ -1118,6 +1233,7 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
  	if (chan->cyclic) {
  		desc = vd_to_axi_desc(vd);
  		if (desc) {
@@ -71253,7 +71503,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  			llp = lo_hi_readq(chan->chan_regs + CH_LLP);
  			for (i = 0; i < count; i++) {
  				hw_desc = &desc->hw_desc[i];
-@@ -1140,6 +1256,9 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
+@@ -1138,6 +1254,9 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
  		/* Remove the completed descriptor from issued list before completing */
  		list_del(&vd->node);
  		vchan_cookie_complete(vd);
@@ -71263,7 +71513,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	}
  
  out:
-@@ -1357,19 +1476,85 @@ static int __maybe_unused axi_dma_runtime_resume(struct device *dev)
+@@ -1355,19 +1474,85 @@ static int __maybe_unused axi_dma_runtime_resume(struct device *dev)
  	return axi_dma_resume(chip);
  }
  
@@ -71353,7 +71603,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	return dchan;
  }
  
-@@ -1377,6 +1562,7 @@ static int parse_device_properties(struct axi_dma_chip *chip)
+@@ -1375,6 +1560,7 @@ static int parse_device_properties(struct axi_dma_chip *chip)
  {
  	struct device *dev = chip->dev;
  	u32 tmp, carr[DMAC_MAX_CHANNELS];
@@ -71361,7 +71611,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	int ret;
  
  	ret = device_property_read_u32(dev, "dma-channels", &tmp);
-@@ -1397,6 +1583,10 @@ static int parse_device_properties(struct axi_dma_chip *chip)
+@@ -1395,6 +1581,10 @@ static int parse_device_properties(struct axi_dma_chip *chip)
  
  	chip->dw->hdata->nr_masters = tmp;
  
@@ -71372,7 +71622,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	ret = device_property_read_u32(dev, "snps,data-width", &tmp);
  	if (ret)
  		return ret;
-@@ -1429,17 +1619,32 @@ static int parse_device_properties(struct axi_dma_chip *chip)
+@@ -1427,17 +1617,32 @@ static int parse_device_properties(struct axi_dma_chip *chip)
  	}
  
  	/* axi-max-burst-len is optional property */
@@ -71413,7 +71663,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	return 0;
  }
  
-@@ -1467,6 +1672,7 @@ static int dw_probe(struct platform_device *pdev)
+@@ -1465,6 +1670,7 @@ static int dw_probe(struct platform_device *pdev)
  	struct dw_axi_dma *dw;
  	struct dw_axi_dma_hcfg *hdata;
  	struct reset_control *resets;
@@ -71421,7 +71671,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	unsigned int flags;
  	u32 i;
  	int ret;
-@@ -1550,7 +1756,7 @@ static int dw_probe(struct platform_device *pdev)
+@@ -1548,7 +1754,7 @@ static int dw_probe(struct platform_device *pdev)
  	dma_cap_set(DMA_CYCLIC, dw->dma.cap_mask);
  
  	/* DMA capabilities */
@@ -71430,7 +71680,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	dw->dma.src_addr_widths = AXI_DMA_BUSWIDTHS;
  	dw->dma.dst_addr_widths = AXI_DMA_BUSWIDTHS;
  	dw->dma.directions = BIT(DMA_MEM_TO_MEM);
-@@ -1577,9 +1783,21 @@ static int dw_probe(struct platform_device *pdev)
+@@ -1575,9 +1781,21 @@ static int dw_probe(struct platform_device *pdev)
  	 * Synopsis DesignWare AxiDMA datasheet mentioned Maximum
  	 * supported blocks is 1024. Device register width is 4 bytes.
  	 * Therefore, set constraint to 1024 * 4.
@@ -76927,7 +77177,7 @@ diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-
  
  	/* Extract bus_flags from display_timing */
  	bus_flags = 0;
-@@ -478,6 +463,8 @@ static struct panel_desc *panel_dpi_probe(struct device *dev)
+@@ -478,10 +463,96 @@ static struct panel_desc *panel_dpi_probe(struct device *dev)
  
  	/* We do not know the connector for the DT node, so guess it */
  	desc->connector_type = DRM_MODE_CONNECTOR_DPI;
@@ -76936,7 +77186,115 @@ diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-
  
  	return desc;
  }
-@@ -693,12 +680,6 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
+ 
++static struct panel_desc *panel_dsi_probe(struct device *dev)
++{
++	const struct device_node *np = dev->of_node;
++	struct panel_desc_dsi *desc_dsi;
++	struct panel_desc *desc;
++	const char *dsi_color_format;
++	const char *dsi_mode_flags;
++	struct property *prop;
++	int dsi_lanes;
++
++	desc = panel_dpi_probe(dev);
++	if (IS_ERR(desc)) {
++		pr_err("Failed panel_dpi_probe\n");
++		return desc;
++	}
++
++	desc->connector_type = DRM_MODE_CONNECTOR_DSI;
++
++	desc_dsi = devm_kzalloc(dev, sizeof(*desc_dsi), GFP_KERNEL);
++	if (!desc_dsi)
++		return ERR_PTR(-ENOMEM);
++
++	desc_dsi->desc = *desc;
++	devm_kfree(dev, desc);
++
++	desc = &desc_dsi->desc;
++
++	dsi_lanes = drm_of_get_data_lanes_count_ep(np, 0, 0, 1, 4);
++
++	if (dsi_lanes < 0) {
++		dev_err(dev, "%pOF: no or too many data-lanes defined", np);
++		return ERR_PTR(dsi_lanes);
++	}
++
++	desc_dsi->lanes = dsi_lanes;
++
++	of_property_read_string(np, "dsi-color-format", &dsi_color_format);
++	if (!strcmp(dsi_color_format, "RGB888")) {
++		desc_dsi->format = MIPI_DSI_FMT_RGB888;
++		desc_dsi->desc.bpc = 8;
++	} else if (!strcmp(dsi_color_format, "RGB565")) {
++		desc_dsi->format = MIPI_DSI_FMT_RGB565;
++		desc_dsi->desc.bpc = 6;
++	} else if (!strcmp(dsi_color_format, "RGB666")) {
++		desc_dsi->format = MIPI_DSI_FMT_RGB666;
++		desc_dsi->desc.bpc = 6;
++	} else if (!strcmp(dsi_color_format, "RGB666_PACKED")) {
++		desc_dsi->format = MIPI_DSI_FMT_RGB666_PACKED;
++		desc_dsi->desc.bpc = 6;
++	} else {
++		dev_err(dev, "%pOF: no valid dsi-color-format defined", np);
++		return ERR_PTR(-EINVAL);
++	}
++
++	of_property_for_each_string(np, "mode", prop, dsi_mode_flags) {
++		if (!strcmp(dsi_mode_flags, "MODE_VIDEO"))
++			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO;
++		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_BURST"))
++			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_BURST;
++		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_SYNC_PULSE"))
++			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_SYNC_PULSE;
++		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_AUTO_VERT"))
++			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_AUTO_VERT;
++		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_HSE"))
++			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_HSE;
++		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_NO_HFP"))
++			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_NO_HFP;
++		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_NO_HBP"))
++			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_NO_HBP;
++		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_NO_HSA"))
++			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_NO_HSA;
++		else if (!strcmp(dsi_mode_flags, "MODE_NO_EOT_PACKET"))
++			desc_dsi->flags |= MIPI_DSI_MODE_NO_EOT_PACKET;
++		else if (!strcmp(dsi_mode_flags, "CLOCK_NON_CONTINUOUS"))
++			desc_dsi->flags |= MIPI_DSI_CLOCK_NON_CONTINUOUS;
++		else if (!strcmp(dsi_mode_flags, "MODE_LPM"))
++			desc_dsi->flags |= MIPI_DSI_MODE_LPM;
++		else if (!strcmp(dsi_mode_flags, "HS_PKT_END_ALIGNED"))
++			desc_dsi->flags |= MIPI_DSI_HS_PKT_END_ALIGNED;
++	}
++
++	return &desc_dsi->desc;
++}
++
+ #define PANEL_SIMPLE_BOUNDS_CHECK(to_check, bounds, field) \
+ 	(to_check->field.typ >= bounds->field.min && \
+ 	 to_check->field.typ <= bounds->field.max)
+@@ -581,8 +652,17 @@ static const struct panel_desc *panel_simple_get_desc(struct device *dev)
+ 		const struct panel_desc_dsi *dsi_desc;
+ 
+ 		dsi_desc = of_device_get_match_data(dev);
+-		if (!dsi_desc)
+-			return ERR_PTR(-ENODEV);
++		if (!dsi_desc) {
++			/*
++			 * panel-dsi probes without a descriptor and
++			 * panel_dsi_probe() will initialize one for us
++			 * based on the device tree.
++			 */
++			if (of_device_is_compatible(dev->of_node, "panel-dsi"))
++				return panel_dsi_probe(dev);
++			else
++				return ERR_PTR(-ENODEV);
++		}
+ 
+ 		return &dsi_desc->desc;
+ 	}
+@@ -693,12 +773,6 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
  		return dev_err_cast_probe(dev, panel->enable_gpio,
  					  "failed to request GPIO\n");
  
@@ -76949,7 +77307,17 @@ diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-
  	ddc = of_parse_phandle(dev->of_node, "ddc-i2c-bus", 0);
  	if (ddc) {
  		panel->ddc = of_find_i2c_adapter_by_node(ddc);
-@@ -2381,6 +2362,32 @@ static const struct panel_desc friendlyarm_hd702e = {
+@@ -708,7 +782,8 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
+ 			return ERR_PTR(-EPROBE_DEFER);
+ 	}
+ 
+-	if (!of_device_is_compatible(dev->of_node, "panel-dpi") &&
++	if (!(of_device_is_compatible(dev->of_node, "panel-dpi") ||
++	      of_device_is_compatible(dev->of_node, "panel-dsi")) &&
+ 	    !of_get_display_timing(dev->of_node, "panel-timing", &dt))
+ 		panel_simple_parse_panel_timing_node(dev, panel, &dt);
+ 
+@@ -2381,6 +2456,32 @@ static const struct panel_desc friendlyarm_hd702e = {
  	},
  };
  
@@ -76982,7 +77350,7 @@ diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-
  static const struct drm_display_mode giantplus_gpg482739qs5_mode = {
  	.clock = 9000,
  	.hdisplay = 480,
-@@ -2561,6 +2568,38 @@ static const struct panel_desc innolux_at043tn24 = {
+@@ -2561,6 +2662,38 @@ static const struct panel_desc innolux_at043tn24 = {
  	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE,
  };
  
@@ -77021,7 +77389,7 @@ diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-
  static const struct drm_display_mode innolux_at070tn92_mode = {
  	.clock = 33333,
  	.hdisplay = 800,
-@@ -4101,6 +4140,31 @@ static const struct panel_desc rocktech_rk043fn48h = {
+@@ -4101,6 +4234,31 @@ static const struct panel_desc rocktech_rk043fn48h = {
  	.connector_type = DRM_MODE_CONNECTOR_DPI,
  };
  
@@ -77053,7 +77421,7 @@ diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-
  static const struct display_timing rocktech_rk070er9427_timing = {
  	.pixelclock = { 26400000, 33300000, 46800000 },
  	.hactive = { 800, 800, 800 },
-@@ -5151,6 +5215,9 @@ static const struct of_device_id platform_of_match[] = {
+@@ -5151,6 +5309,9 @@ static const struct of_device_id platform_of_match[] = {
  	}, {
  		.compatible = "friendlyarm,hd702e",
  		.data = &friendlyarm_hd702e,
@@ -77063,7 +77431,7 @@ diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-
  	}, {
  		.compatible = "giantplus,gpg482739qs5",
  		.data = &giantplus_gpg482739qs5
-@@ -5172,6 +5239,9 @@ static const struct of_device_id platform_of_match[] = {
+@@ -5172,6 +5333,9 @@ static const struct of_device_id platform_of_match[] = {
  	}, {
  		.compatible = "innolux,at043tn24",
  		.data = &innolux_at043tn24,
@@ -77073,7 +77441,7 @@ diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-
  	}, {
  		.compatible = "innolux,at070tn92",
  		.data = &innolux_at070tn92,
-@@ -5346,6 +5416,9 @@ static const struct of_device_id platform_of_match[] = {
+@@ -5346,6 +5510,9 @@ static const struct of_device_id platform_of_match[] = {
  	}, {
  		.compatible = "rocktech,rk043fn48h",
  		.data = &rocktech_rk043fn48h,
@@ -77083,152 +77451,41 @@ diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-
  	}, {
  		.compatible = "rocktech,rk070er9427",
  		.data = &rocktech_rk070er9427,
-@@ -5709,6 +5782,9 @@ static const struct panel_desc_dsi osd101t2045_53ts = {
- 	.lanes = 4,
- };
- 
-+// for panels using generic panel-dsi binding
-+static struct panel_desc_dsi panel_dsi;
-+
- static const struct of_device_id dsi_of_match[] = {
- 	{
- 		.compatible = "auo,b080uan01",
-@@ -5731,12 +5807,113 @@ static const struct of_device_id dsi_of_match[] = {
+@@ -5731,6 +5898,9 @@ static const struct of_device_id dsi_of_match[] = {
  	}, {
  		.compatible = "osddisplays,osd101t2045-53ts",
  		.data = &osd101t2045_53ts
 +	}, {
 +		/* Must be the last entry */
 +		.compatible = "panel-dsi",
-+		.data = &panel_dsi,
  	}, {
  		/* sentinel */
  	}
- };
- MODULE_DEVICE_TABLE(of, dsi_of_match);
+@@ -5739,7 +5909,7 @@ MODULE_DEVICE_TABLE(of, dsi_of_match);
  
-+
-+/* Checks for DSI panel definition in device-tree, analog to panel_dpi */
-+static int panel_dsi_dt_probe(struct device *dev,
-+			  struct panel_desc_dsi *desc_dsi)
-+{
-+	struct panel_desc *desc;
-+	struct display_timing *timing;
-+	const struct device_node *np;
-+	const char *dsi_color_format;
-+	const char *dsi_mode_flags;
-+	struct property *prop;
-+	int dsi_lanes, ret;
-+
-+	np = dev->of_node;
-+
-+	desc = devm_kzalloc(dev, sizeof(*desc), GFP_KERNEL);
-+	if (!desc)
-+		return -ENOMEM;
-+
-+	timing = devm_kzalloc(dev, sizeof(*timing), GFP_KERNEL);
-+	if (!timing)
-+		return -ENOMEM;
-+
-+	ret = of_get_display_timing(np, "panel-timing", timing);
-+	if (ret < 0) {
-+		dev_err(dev, "%pOF: no panel-timing node found for \"panel-dsi\" binding\n",
-+			np);
-+		return ret;
-+	}
-+
-+	desc->timings = timing;
-+	desc->num_timings = 1;
-+
-+	of_property_read_u32(np, "width-mm", &desc->size.width);
-+	of_property_read_u32(np, "height-mm", &desc->size.height);
-+
-+	dsi_lanes = drm_of_get_data_lanes_count_ep(np, 0, 0, 1, 4);
-+
-+	if (dsi_lanes < 0) {
-+		dev_err(dev, "%pOF: no or too many data-lanes defined", np);
-+		return dsi_lanes;
-+	}
-+
-+	desc_dsi->lanes = dsi_lanes;
-+
-+	of_property_read_string(np, "dsi-color-format", &dsi_color_format);
-+	if (!strcmp(dsi_color_format, "RGB888")) {
-+		desc_dsi->format = MIPI_DSI_FMT_RGB888;
-+		desc->bpc = 8;
-+	} else if (!strcmp(dsi_color_format, "RGB565")) {
-+		desc_dsi->format = MIPI_DSI_FMT_RGB565;
-+		desc->bpc = 6;
-+	} else if (!strcmp(dsi_color_format, "RGB666")) {
-+		desc_dsi->format = MIPI_DSI_FMT_RGB666;
-+		desc->bpc = 6;
-+	} else if (!strcmp(dsi_color_format, "RGB666_PACKED")) {
-+		desc_dsi->format = MIPI_DSI_FMT_RGB666_PACKED;
-+		desc->bpc = 6;
-+	} else {
-+		dev_err(dev, "%pOF: no valid dsi-color-format defined", np);
-+		return -EINVAL;
-+	}
-+
-+
-+	of_property_for_each_string(np, "mode", prop, dsi_mode_flags) {
-+		if (!strcmp(dsi_mode_flags, "MODE_VIDEO"))
-+			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO;
-+		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_BURST"))
-+			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_BURST;
-+		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_SYNC_PULSE"))
-+			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_SYNC_PULSE;
-+		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_AUTO_VERT"))
-+			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_AUTO_VERT;
-+		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_HSE"))
-+			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_HSE;
-+		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_NO_HFP"))
-+			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_NO_HFP;
-+		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_NO_HBP"))
-+			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_NO_HBP;
-+		else if (!strcmp(dsi_mode_flags, "MODE_VIDEO_NO_HSA"))
-+			desc_dsi->flags |= MIPI_DSI_MODE_VIDEO_NO_HSA;
-+		else if (!strcmp(dsi_mode_flags, "MODE_NO_EOT_PACKET"))
-+			desc_dsi->flags |= MIPI_DSI_MODE_NO_EOT_PACKET;
-+		else if (!strcmp(dsi_mode_flags, "CLOCK_NON_CONTINUOUS"))
-+			desc_dsi->flags |= MIPI_DSI_CLOCK_NON_CONTINUOUS;
-+		else if (!strcmp(dsi_mode_flags, "MODE_LPM"))
-+			desc_dsi->flags |= MIPI_DSI_MODE_LPM;
-+		else if (!strcmp(dsi_mode_flags, "HS_PKT_END_ALIGNED"))
-+			desc_dsi->flags |= MIPI_DSI_HS_PKT_END_ALIGNED;
-+	}
-+
-+	desc->connector_type = DRM_MODE_CONNECTOR_DSI;
-+	desc_dsi->desc = *desc;
-+
-+	return 0;
-+}
-+
  static int panel_simple_dsi_probe(struct mipi_dsi_device *dsi)
  {
- 	const struct panel_desc_dsi *desc;
-@@ -5748,6 +5925,21 @@ static int panel_simple_dsi_probe(struct mipi_dsi_device *dsi)
+-	const struct panel_desc_dsi *desc;
++	const struct panel_desc_dsi *dsi_desc;
+ 	struct panel_simple *panel;
+ 	int err;
+ 
+@@ -5747,10 +5917,11 @@ static int panel_simple_dsi_probe(struct mipi_dsi_device *dsi)
+ 	if (IS_ERR(panel))
  		return PTR_ERR(panel);
  
- 	desc = container_of(panel->desc, struct panel_desc_dsi, desc);
+-	desc = container_of(panel->desc, struct panel_desc_dsi, desc);
+-	dsi->mode_flags = desc->flags;
+-	dsi->format = desc->format;
+-	dsi->lanes = desc->lanes;
++	dsi_desc = container_of(panel->desc, struct panel_desc_dsi, desc);
 +
-+	if (desc == &panel_dsi) {
-+		/* Handle the generic panel-dsi binding */
-+		struct panel_desc_dsi *dt_desc;
-+		dt_desc = devm_kzalloc(&dsi->dev, sizeof(*dt_desc), GFP_KERNEL);
-+		if (!dt_desc)
-+			return -ENOMEM;
-+
-+		err = panel_dsi_dt_probe(&dsi->dev, dt_desc);
-+		if (err < 0)
-+			return err;
-+
-+		desc = dt_desc;
-+	}
-+
- 	dsi->mode_flags = desc->flags;
- 	dsi->format = desc->format;
- 	dsi->lanes = desc->lanes;
++	dsi->mode_flags = dsi_desc->flags;
++	dsi->format = dsi_desc->format;
++	dsi->lanes = dsi_desc->lanes;
+ 
+ 	err = mipi_dsi_attach(dsi);
+ 	if (err) {
 diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7701.c b/drivers/gpu/drm/panel/panel-sitronix-st7701.c
 --- a/drivers/gpu/drm/panel/panel-sitronix-st7701.c
 +++ b/drivers/gpu/drm/panel/panel-sitronix-st7701.c
@@ -80663,7 +80920,7 @@ diff --git a/drivers/gpu/drm/panel/panel-waveshare-dsi.c b/drivers/gpu/drm/panel
 new file mode 100644
 --- /dev/null
 +++ b/drivers/gpu/drm/panel/panel-waveshare-dsi.c
-@@ -0,0 +1,633 @@
+@@ -0,0 +1,657 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright © 2023 Raspberry Pi Ltd
@@ -80908,6 +81165,27 @@ new file mode 100644
 +
 +static const struct ws_panel_data ws_panel_6_25_data = {
 +	.mode = &ws_panel_6_25_mode,
++	.lanes = 2,
++	.mode_flags = MIPI_DSI_MODE_VIDEO_HSE | MIPI_DSI_MODE_VIDEO | MIPI_DSI_CLOCK_NON_CONTINUOUS,
++};
++
++/* 6.25inch B 720x1560
++ * https://www.waveshare.com/6.25inch-dsi-lcd-b.htm
++ */
++static const struct drm_display_mode ws_panel_6_25_b_mode = {
++	.clock = 83333,
++	.hdisplay = 720,
++	.hsync_start = 720 + 50,
++	.hsync_end = 720 + 50 + 50,
++	.htotal = 720 + 50 + 50 + 50,
++	.vdisplay = 1560,
++	.vsync_start = 1560 + 9,
++	.vsync_end = 1560 + 9 + 9,
++	.vtotal = 1560 + 9 + 9 + 9,
++};
++
++static const struct ws_panel_data ws_panel_6_25_b_data = {
++	.mode = &ws_panel_6_25_b_mode,
 +	.lanes = 2,
 +	.mode_flags = MIPI_DSI_MODE_VIDEO_HSE | MIPI_DSI_MODE_VIDEO | MIPI_DSI_CLOCK_NON_CONTINUOUS,
 +};
@@ -81265,6 +81543,9 @@ new file mode 100644
 +	}, {
 +		.compatible = "waveshare,6.25inch-panel",
 +		.data = &ws_panel_6_25_data,
++	}, {
++		.compatible = "waveshare,6.25inch-b-panel",
++		.data = &ws_panel_6_25_b_data,
 +	}, {
 +		.compatible = "waveshare,8.8inch-panel",
 +		.data = &ws_panel_8_8_data,
@@ -88421,7 +88702,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  		return 0;
  	}
  
-@@ -286,36 +299,6 @@ static const struct of_device_id v3d_of_match[] = {
+@@ -294,36 +307,6 @@ static const struct of_device_id v3d_of_match[] = {
  };
  MODULE_DEVICE_TABLE(of, v3d_of_match);
  
@@ -88458,7 +88739,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  static int
  map_regs(struct v3d_dev *v3d, void __iomem **regs, const char *name)
  {
-@@ -359,23 +342,66 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
+@@ -367,23 +350,66 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
  			return ret;
  	}
  
@@ -88530,7 +88811,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  
  	dma_set_max_seg_size(&pdev->dev, UINT_MAX);
  
-@@ -395,66 +421,32 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
+@@ -403,66 +429,32 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
  	ident3 = V3D_READ(V3D_HUB_IDENT3);
  	v3d->rev = V3D_GET_FIELD(ident3, V3D_HUB_IDENT3_IPREV);
  
@@ -88606,7 +88887,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  	return ret;
  }
  
-@@ -468,22 +460,27 @@ static void v3d_platform_drm_remove(struct platform_device *pdev)
+@@ -476,22 +468,27 @@ static void v3d_platform_drm_remove(struct platform_device *pdev)
  
  	drm_dev_unregister(drm);
  
@@ -88729,7 +89010,22 @@ diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
  static void
  v3d_idle_axi(struct v3d_dev *v3d, int core)
  {
-@@ -258,6 +252,13 @@ v3d_invalidate_caches(struct v3d_dev *v3d)
+@@ -212,6 +206,14 @@ v3d_clean_caches(struct v3d_dev *v3d)
+ 
+ 	trace_v3d_cache_clean_begin(dev);
+ 
++	/* GFXH-1897: Ensure pending flushes complete before writing L2TCACTL */
++	if (v3d->ver < V3D_GEN_71) {
++		if (wait_for(!(V3D_CORE_READ(core, V3D_CTL_L2TCACTL) &
++			       V3D_L2TCACTL_L2TFLS), 100)) {
++			DRM_ERROR("Timeout waiting for L2T clean\n");
++		}
++	}
++
+ 	V3D_CORE_WRITE(core, V3D_CTL_L2TCACTL, V3D_L2TCACTL_TMUWCF);
+ 	if (wait_for(!(V3D_CORE_READ(core, V3D_CTL_L2TCACTL) &
+ 		       V3D_L2TCACTL_TMUWCF), 100)) {
+@@ -258,6 +260,13 @@ v3d_invalidate_caches(struct v3d_dev *v3d)
  	v3d_invalidate_slices(v3d, 0);
  }
  
@@ -88743,7 +89039,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
  int
  v3d_gem_init(struct drm_device *dev)
  {
-@@ -306,9 +307,6 @@ v3d_gem_init(struct drm_device *dev)
+@@ -306,9 +315,6 @@ v3d_gem_init(struct drm_device *dev)
  		return -ENOMEM;
  	}
  
@@ -88833,37 +89129,50 @@ diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
 diff --git a/drivers/gpu/drm/v3d/v3d_mmu.c b/drivers/gpu/drm/v3d/v3d_mmu.c
 --- a/drivers/gpu/drm/v3d/v3d_mmu.c
 +++ b/drivers/gpu/drm/v3d/v3d_mmu.c
-@@ -37,7 +37,11 @@ static bool v3d_mmu_is_aligned(u32 page, u32 page_address, size_t alignment)
+@@ -35,7 +35,12 @@ static bool v3d_mmu_is_aligned(u32 page, u32 page_address, size_t alignment)
+ 		IS_ALIGNED(page_address, alignment >> V3D_MMU_PAGE_SHIFT);
+ }
  
- int v3d_mmu_flush_all(struct v3d_dev *v3d)
+-int v3d_mmu_flush_all(struct v3d_dev *v3d)
++/*
++ * Issue the MMUC flush and TLB clear unconditionally. The caller must
++ * already know that V3D is reachable. In particular, this is used from
++ * the runtime resume callback.
++ */
++static int v3d_mmu_flush_all_locked(struct v3d_dev *v3d)
  {
--	int ret;
-+	int ret = 0;
+ 	int ret;
+ 
+@@ -60,6 +65,20 @@ int v3d_mmu_flush_all(struct v3d_dev *v3d)
+ 	return ret;
+ }
+ 
++int v3d_mmu_flush_all(struct v3d_dev *v3d)
++{
++	int ret;
 +
 +	/* Flush the PTs only if we're already awake */
 +	if (!pm_runtime_get_if_active(v3d->drm.dev))
 +		return 0;
- 
- 	V3D_WRITE(V3D_MMUC_CONTROL, V3D_MMUC_CONTROL_FLUSH |
- 		  V3D_MMUC_CONTROL_ENABLE);
-@@ -46,7 +50,7 @@ int v3d_mmu_flush_all(struct v3d_dev *v3d)
- 			 V3D_MMUC_CONTROL_FLUSHING), 100);
- 	if (ret) {
- 		dev_err(v3d->drm.dev, "MMUC flush wait idle failed\n");
--		return ret;
-+		goto pm_put;
- 	}
- 
- 	V3D_WRITE(V3D_MMU_CTL, V3D_READ(V3D_MMU_CTL) |
-@@ -57,6 +61,8 @@ int v3d_mmu_flush_all(struct v3d_dev *v3d)
- 	if (ret)
- 		dev_err(v3d->drm.dev, "MMU TLB clear wait idle failed\n");
- 
-+pm_put:
++
++	ret = v3d_mmu_flush_all_locked(v3d);
++
 +	v3d_pm_runtime_put(v3d);
- 	return ret;
++	return ret;
++}
++
+ int v3d_mmu_set_page_table(struct v3d_dev *v3d)
+ {
+ 	V3D_WRITE(V3D_MMU_PT_PA_BASE, v3d->pt_paddr >> V3D_MMU_PAGE_SHIFT);
+@@ -77,7 +96,7 @@ int v3d_mmu_set_page_table(struct v3d_dev *v3d)
+ 		  V3D_MMU_ILLEGAL_ADDR_ENABLE);
+ 	V3D_WRITE(V3D_MMUC_CONTROL, V3D_MMUC_CONTROL_ENABLE);
+ 
+-	return v3d_mmu_flush_all(v3d);
++	return v3d_mmu_flush_all_locked(v3d);
  }
  
+ void v3d_mmu_insert_ptes(struct v3d_bo *bo)
 diff --git a/drivers/gpu/drm/v3d/v3d_perfmon.c b/drivers/gpu/drm/v3d/v3d_perfmon.c
 --- a/drivers/gpu/drm/v3d/v3d_perfmon.c
 +++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
@@ -88918,58 +89227,69 @@ diff --git a/drivers/gpu/drm/v3d/v3d_power.c b/drivers/gpu/drm/v3d/v3d_power.c
 new file mode 100644
 --- /dev/null
 +++ b/drivers/gpu/drm/v3d/v3d_power.c
-@@ -0,0 +1,83 @@
+@@ -0,0 +1,90 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/* Copyright (C) 2026 Raspberry Pi */
 +
 +#include <linux/clk.h>
-+#include <linux/reset.h>
 +
 +#include <drm/drm_print.h>
 +
 +#include "v3d_drv.h"
 +#include "v3d_regs.h"
 +
-+static void
++static int
 +v3d_resume_sms(struct v3d_dev *v3d)
 +{
 +	if (v3d->ver < V3D_GEN_71)
-+		return;
++		return 0;
 +
 +	V3D_SMS_WRITE(V3D_SMS_TEE_CS, V3D_SMS_CLEAR_POWER_OFF);
 +
 +	if (wait_for((V3D_GET_FIELD(V3D_SMS_READ(V3D_SMS_TEE_CS),
 +				    V3D_SMS_STATE) == V3D_SMS_IDLE), 100)) {
 +		drm_err(&v3d->drm, "Failed to power up SMS\n");
++		return -ETIMEDOUT;
 +	}
 +
 +	v3d_reset_sms(v3d);
++
++	return 0;
 +}
 +
-+static void
++static int
 +v3d_suspend_sms(struct v3d_dev *v3d)
 +{
 +	if (v3d->ver < V3D_GEN_71)
-+		return;
++		return 0;
 +
 +	V3D_SMS_WRITE(V3D_SMS_TEE_CS, V3D_SMS_POWER_OFF);
 +
 +	if (wait_for((V3D_GET_FIELD(V3D_SMS_READ(V3D_SMS_TEE_CS),
 +				    V3D_SMS_STATE) == V3D_SMS_POWER_OFF_STATE), 100)) {
 +		drm_err(&v3d->drm, "Failed to power off SMS\n");
++		return -ETIMEDOUT;
 +	}
++
++	return 0;
 +}
 +
 +int v3d_power_suspend(struct device *dev)
 +{
 +	struct drm_device *drm = dev_get_drvdata(dev);
 +	struct v3d_dev *v3d = to_v3d_dev(drm);
++	int ret;
 +
 +	v3d_irq_disable(v3d);
-+	v3d_suspend_sms(v3d);
 +
-+	if (v3d->reset)
-+		reset_control_assert(v3d->reset);
++	/* Always clean V3D caches on shutdown. */
++	v3d_clean_caches(v3d);
++
++	ret = v3d_suspend_sms(v3d);
++	if (ret) {
++		v3d_irq_enable(v3d);
++		return ret;
++	}
 +
 +	clk_disable_unprepare(v3d->clk);
 +
@@ -88986,21 +89306,17 @@ new file mode 100644
 +	if (ret)
 +		return ret;
 +
-+	if (v3d->reset) {
-+		ret = reset_control_deassert(v3d->reset);
-+		if (ret)
-+			goto clk_disable;
++	ret = v3d_resume_sms(v3d);
++	if (ret) {
++		clk_disable_unprepare(v3d->clk);
++		return ret;
 +	}
 +
-+	v3d_resume_sms(v3d);
++	v3d_init_hw_state(v3d);
 +	v3d_mmu_set_page_table(v3d);
 +	v3d_irq_enable(v3d);
 +
 +	return 0;
-+
-+clk_disable:
-+	clk_disable_unprepare(v3d->clk);
-+	return ret;
 +}
 diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
 --- a/drivers/gpu/drm/v3d/v3d_submit.c
@@ -96053,7 +96369,7 @@ diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
  module_param_named(mousepoll, hid_mousepoll_interval, uint, 0644);
  MODULE_PARM_DESC(mousepoll, "Polling interval of mice");
  
-@@ -1132,7 +1132,9 @@ static int usbhid_start(struct hid_device *hid)
+@@ -1133,7 +1133,9 @@ static int usbhid_start(struct hid_device *hid)
  		 */
  		switch (hid->collection->usage) {
  		case HID_GD_MOUSE:
@@ -96064,7 +96380,7 @@ diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
  				interval = hid_mousepoll_interval;
  			break;
  		case HID_GD_JOYSTICK:
-@@ -1144,6 +1146,7 @@ static int usbhid_start(struct hid_device *hid)
+@@ -1145,6 +1147,7 @@ static int usbhid_start(struct hid_device *hid)
  				interval = hid_kbpoll_interval;
  			break;
  		}
@@ -106851,189 +107167,6 @@ diff --git a/drivers/media/i2c/dw9807-vcm.c b/drivers/media/i2c/dw9807-vcm.c
  MODULE_DEVICE_TABLE(of, dw9807_of_table);
  
  static const struct dev_pm_ops dw9807_pm_ops = {
-diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
---- a/drivers/media/i2c/imx219.c
-+++ b/drivers/media/i2c/imx219.c
-@@ -146,6 +146,12 @@
- #define IMX219_PIXEL_ARRAY_WIDTH	3280U
- #define IMX219_PIXEL_ARRAY_HEIGHT	2464U
- 
-+enum binning_bit_depths {
-+	BINNING_IDX_8_BIT,
-+	BINNING_IDX_10_BIT,
-+	BINNING_IDX_MAX
-+};
-+
- /* Mode : resolution and related config&values */
- struct imx219_mode {
- 	/* Frame width */
-@@ -155,6 +161,10 @@ struct imx219_mode {
- 
- 	/* V-timing */
- 	unsigned int fll_def;
-+	unsigned int vts_def;
-+
-+	/* binning mode based on format code */
-+	unsigned int binning[BINNING_IDX_MAX];
- };
- 
- static const struct cci_reg_sequence imx219_common_regs[] = {
-@@ -313,24 +323,44 @@ static const struct imx219_mode supported_modes[] = {
- 		.width = 3280,
- 		.height = 2464,
- 		.fll_def = 3526,
-+		.vts_def = 3526,
-+		.binning = {
-+			[BINNING_IDX_8_BIT] = IMX219_BINNING_NONE,
-+			[BINNING_IDX_10_BIT] = IMX219_BINNING_NONE,
-+		},
- 	},
- 	{
- 		/* 1080P 30fps cropped */
- 		.width = 1920,
- 		.height = 1080,
- 		.fll_def = 1763,
-+		.vts_def = 1763,
-+		.binning = {
-+			[BINNING_IDX_8_BIT] = IMX219_BINNING_NONE,
-+			[BINNING_IDX_10_BIT] = IMX219_BINNING_NONE,
-+		},
- 	},
- 	{
- 		/* 2x2 binned 60fps mode */
- 		.width = 1640,
- 		.height = 1232,
- 		.fll_def = 1707,
-+		.vts_def = 1763,
-+		.binning = {
-+			[BINNING_IDX_8_BIT] = IMX219_BINNING_X2_ANALOG,
-+			[BINNING_IDX_10_BIT] = IMX219_BINNING_X2,
-+		},
- 	},
- 	{
- 		/* 640x480 60fps mode */
- 		.width = 640,
- 		.height = 480,
- 		.fll_def = 1707,
-+		.vts_def = 1763,
-+		.binning = {
-+			[BINNING_IDX_8_BIT] = IMX219_BINNING_X2_ANALOG,
-+			[BINNING_IDX_10_BIT] = IMX219_BINNING_X2_ANALOG,
-+		},
- 	},
- };
- 
-@@ -400,42 +430,57 @@ static u32 imx219_get_format_bpp(const struct v4l2_mbus_framefmt *format)
- 	}
- }
- 
--static void imx219_get_binning(struct v4l2_subdev_state *state, u8 *bin_h,
--			       u8 *bin_v)
-+static unsigned int imx219_get_binning(struct v4l2_subdev_state *state,
-+				       u8 *bin_h, u8 *bin_v)
- {
- 	const struct v4l2_mbus_framefmt *format =
- 		v4l2_subdev_state_get_format(state, 0);
--	const struct v4l2_rect *crop = v4l2_subdev_state_get_crop(state, 0);
--	u32 hbin = crop->width / format->width;
--	u32 vbin = crop->height / format->height;
-+	unsigned int bin_mode = IMX219_BINNING_NONE;
-+	const struct imx219_mode *mode =
-+		v4l2_find_nearest_size(supported_modes,
-+				       ARRAY_SIZE(supported_modes),
-+				       width, height,
-+				       format->width, format->height);
-+	switch (format->code) {
-+	case MEDIA_BUS_FMT_SRGGB8_1X8:
-+	case MEDIA_BUS_FMT_SGRBG8_1X8:
-+	case MEDIA_BUS_FMT_SGBRG8_1X8:
-+	case MEDIA_BUS_FMT_SBGGR8_1X8:
-+		bin_mode = mode->binning[BINNING_IDX_8_BIT];
-+		break;
-+
-+	case MEDIA_BUS_FMT_SRGGB10_1X10:
-+	case MEDIA_BUS_FMT_SGRBG10_1X10:
-+	case MEDIA_BUS_FMT_SGBRG10_1X10:
-+	case MEDIA_BUS_FMT_SBGGR10_1X10:
-+		bin_mode = mode->binning[BINNING_IDX_10_BIT];
-+		break;
-+	}
- 
- 	*bin_h = IMX219_BINNING_NONE;
- 	*bin_v = IMX219_BINNING_NONE;
- 
--	/*
--	 * Use analog binning only if both dimensions are binned, as it crops
--	 * the other dimension.
--	 */
--	if (hbin == 2 && vbin == 2) {
--		*bin_h = IMX219_BINNING_X2_ANALOG;
--		*bin_v = IMX219_BINNING_X2_ANALOG;
--
--		return;
--	}
--
--	if (hbin == 2)
--		*bin_h = IMX219_BINNING_X2;
--	if (vbin == 2)
--		*bin_v = IMX219_BINNING_X2;
-+	if (*bin_h == 2 && *bin_v == 2)
-+		return bin_mode;
-+	else if (*bin_h == 2 || *bin_v == 2)
-+		/*
-+		 * Don't use analog binning if only one dimension
-+		 * is binned, as it crops the other dimension
-+		 */
-+		return IMX219_BINNING_X2;
-+	else
-+		return IMX219_BINNING_NONE;
- }
- 
- static inline u32 imx219_get_rate_factor(struct v4l2_subdev_state *state)
- {
- 	u8 bin_h, bin_v;
-+	unsigned int binning = imx219_get_binning(state, &bin_h, &bin_v);
- 
--	imx219_get_binning(state, &bin_h, &bin_v);
-+	if (binning == IMX219_BINNING_X2_ANALOG)
-+		return 2;
- 
--	return (bin_h & bin_v) == IMX219_BINNING_X2_ANALOG ? 2 : 1;
-+	return 1;
- }
- 
- /* -----------------------------------------------------------------------------
-@@ -671,6 +716,7 @@ static int imx219_set_framefmt(struct imx219 *imx219,
- {
- 	const struct v4l2_mbus_framefmt *format;
- 	const struct v4l2_rect *crop;
-+	unsigned int binning;
- 	u8 bin_h, bin_v;
- 	u32 bpp;
- 	int ret = 0;
-@@ -688,9 +734,11 @@ static int imx219_set_framefmt(struct imx219 *imx219,
- 	cci_write(imx219->regmap, IMX219_REG_Y_ADD_END_A,
- 		  crop->top - IMX219_PIXEL_ARRAY_TOP + crop->height - 1, &ret);
- 
--	imx219_get_binning(state, &bin_h, &bin_v);
--	cci_write(imx219->regmap, IMX219_REG_BINNING_MODE_H, bin_h, &ret);
--	cci_write(imx219->regmap, IMX219_REG_BINNING_MODE_V, bin_v, &ret);
-+	binning = imx219_get_binning(state, &bin_h, &bin_v);
-+	cci_write(imx219->regmap, IMX219_REG_BINNING_MODE_H,
-+		  (bin_h == 2) ? binning : IMX219_BINNING_NONE, &ret);
-+	cci_write(imx219->regmap, IMX219_REG_BINNING_MODE_V,
-+		  (bin_v == 2) ? binning : IMX219_BINNING_NONE, &ret);
- 
- 	cci_write(imx219->regmap, IMX219_REG_X_OUTPUT_SIZE,
- 		  format->width, &ret);
-@@ -876,6 +924,7 @@ static int imx219_set_pad_format(struct v4l2_subdev *sd,
- 	 */
- 	bin_h = min(IMX219_PIXEL_ARRAY_WIDTH / format->width, 2U);
- 	bin_v = min(IMX219_PIXEL_ARRAY_HEIGHT / format->height, 2U);
-+	binning = min(bin_h, bin_v);
- 
- 	/* Ensure bin_h and bin_v are same to avoid 1:2 or 2:1 stretching */
- 	binning = min(bin_h, bin_v);
 diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
 --- a/drivers/media/i2c/imx290.c
 +++ b/drivers/media/i2c/imx290.c
@@ -129113,7 +129246,7 @@ diff --git a/drivers/media/platform/raspberrypi/hevc_dec/hevc_d_h265.c b/drivers
 new file mode 100644
 --- /dev/null
 +++ b/drivers/media/platform/raspberrypi/hevc_dec/hevc_d_h265.c
-@@ -0,0 +1,2493 @@
+@@ -0,0 +1,2505 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
 + * Raspberry Pi HEVC driver
@@ -130694,6 +130827,8 @@ new file mode 100644
 +	bool slice_temporal_mvp;
 +	unsigned int ctb_size_y;
 +	bool sps_changed = false;
++	/* Old (downstream only) bit size meanings */
++	bool old_bits = false;
 +
 +	de = dec_env_new(ctx);
 +	if (!de) {
@@ -130762,6 +130897,7 @@ new file mode 100644
 +		de->chroma_stride = de->luma_stride;
 +		de->frame_chroma_addr = de->frame_luma_addr +
 +					(ctx->dst_fmt.height * 128);
++		old_bits = true;
 +		break;
 +	}
 +
@@ -130892,15 +131028,24 @@ new file mode 100644
 +	for (i = 0; i != run->h265.slice_ents; ++i) {
 +		const struct v4l2_ctrl_hevc_slice_params *const sh = sh0 + i;
 +		const bool last_slice = i + 1 == run->h265.slice_ents;
-+		const u32 byte_size = DIV_ROUND_UP(sh->bit_size, 8);
++		unsigned int bit_size = old_bits ? sh->bit_size - 8 * sh->data_byte_offset :
++						   sh->bit_size;
++		const u32 byte_size = DIV_ROUND_UP(bit_size, 8);
 +		unsigned int j;
 +
 +		s->sh = sh;
 +
++		if (old_bits && sh->bit_size <= 8 * sh->data_byte_offset) {
++			v4l2_warn(&dev->v4l2_dev,
++				  "data_byte_offset %d * 8 >= bits %d\n",
++				  sh->data_byte_offset, sh->bit_size);
++			goto fail;
++		}
++
 +		if (sh->data_byte_offset + byte_size > run->src->planes[0].bytesused) {
 +			v4l2_warn(&dev->v4l2_dev,
 +				  "data_byte_offset %d + bits %d (= %d bytes) > bytesused %d\n",
-+				  sh->data_byte_offset, sh->bit_size, byte_size,
++				  sh->data_byte_offset, bit_size, byte_size,
 +				  run->src->planes[0].bytesused);
 +			goto fail;
 +		}
@@ -130910,7 +131055,7 @@ new file mode 100644
 +		 * actual size of the buffer (which may well be what is used to set
 +		 * bit_size if the caller isn't being very pedantic).
 +		 */
-+		s->data_len = min(sh->bit_size / 8 + 1,
++		s->data_len = min(bit_size / 8 + 1,
 +				  run->src->planes[0].bytesused - sh->data_byte_offset);
 +
 +		s->slice_qp = 26 + s->pps.init_qp_minus26 + sh->slice_qp_delta;
@@ -132541,7 +132686,7 @@ new file mode 100644
 +	case V4L2_PIX_FMT_NV12_COL128:
 +		/* Width rounds up to columns */
 +		width = ALIGN(width, 128);
-+		height = ALIGN(height, 8);
++		height = ALIGN(height, 16);
 +
 +		/* column height
 +		 * Accept suggested shape if at least min & < 2 * min
@@ -132555,7 +132700,7 @@ new file mode 100644
 +		 * columns
 +		 */
 +		width = ALIGN(((width + 2) / 3), 32) * 3;
-+		height = ALIGN(height, 8);
++		height = ALIGN(height, 16);
 +
 +		/* column height
 +		 * Accept suggested shape if at least min & < 2 * min
@@ -144235,21 +144380,23 @@ diff --git a/drivers/mmc/core/bus.c b/drivers/mmc/core/bus.c
 diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
 --- a/drivers/mmc/core/card.h
 +++ b/drivers/mmc/core/card.h
-@@ -88,11 +88,13 @@ struct mmc_fixup {
+@@ -88,12 +88,15 @@ struct mmc_fixup {
  #define CID_MANFID_GIGASTONE    0x12
  #define CID_MANFID_MICRON       0x13
  #define CID_MANFID_SAMSUNG      0x15
 +#define CID_MANFID_SAMSUNG_SD	0x1b
  #define CID_MANFID_APACER       0x27
+ #define CID_MANFID_SANDISK_MMC  0x45
  #define CID_MANFID_SWISSBIT     0x5D
  #define CID_MANFID_KINGSTON     0x70
++#define CID_MANFID_TRANSCEND_SD 0x74
  #define CID_MANFID_HYNIX	0x90
  #define CID_MANFID_KINGSTON_SD	0x9F
 +#define CID_MANFID_LONGSYS_SD	0xAD
  #define CID_MANFID_NUMONYX	0xFE
  
  #define END_FIXUP { NULL }
-@@ -305,4 +307,9 @@ static inline int mmc_card_no_uhs_ddr50_tuning(const struct mmc_card *c)
+@@ -306,6 +309,11 @@ static inline int mmc_card_no_uhs_ddr50_tuning(const struct mmc_card *c)
  	return c->quirks & MMC_QUIRK_NO_UHS_DDR50_TUNING;
  }
  
@@ -144258,7 +144405,9 @@ diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
 +	return c->quirks & MMC_QUIRK_WORKING_SD_CQ;
 +}
 +
- #endif
+ static inline int mmc_card_broken_mdt(const struct mmc_card *c)
+ {
+ 	return c->quirks & MMC_QUIRK_BROKEN_MDT;
 diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
 --- a/drivers/mmc/core/core.c
 +++ b/drivers/mmc/core/core.c
@@ -144344,7 +144493,7 @@ diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
 diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
 --- a/drivers/mmc/core/mmc.c
 +++ b/drivers/mmc/core/mmc.c
-@@ -1668,6 +1668,7 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
+@@ -1680,6 +1680,7 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
  		card->ocr = ocr;
  		card->type = MMC_TYPE_MMC;
  		card->rca = 1;
@@ -144352,7 +144501,7 @@ diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
  		memcpy(card->raw_cid, cid, sizeof(card->raw_cid));
  	}
  
-@@ -1926,13 +1927,14 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
+@@ -1938,13 +1939,14 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
  			host->cqe_enabled = true;
  
  			if (card->ext_csd.cmdq_en) {
@@ -144372,7 +144521,7 @@ diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
 diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
 --- a/drivers/mmc/core/queue.c
 +++ b/drivers/mmc/core/queue.c
-@@ -266,6 +266,11 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
+@@ -271,6 +271,11 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
  			spin_unlock_irq(&mq->lock);
  			return BLK_STS_RESOURCE;
  		}
@@ -144384,7 +144533,7 @@ diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
  		break;
  	default:
  		/*
-@@ -282,6 +287,8 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
+@@ -287,6 +292,8 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
  	/* Parallel dispatch of requests is not supported at the moment */
  	mq->busy = true;
  
@@ -144393,7 +144542,7 @@ diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
  	mq->in_flight[issue_type] += 1;
  	get_card = (mmc_tot_in_flight(mq) == 1);
  	cqe_retune_ok = (mmc_cqe_qcnt(mq) == 1);
-@@ -321,6 +328,8 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
+@@ -326,6 +333,8 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
  		bool put_card = false;
  
  		spin_lock_irq(&mq->lock);
@@ -144442,7 +144591,7 @@ diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
  		   0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
  		   MMC_QUIRK_BROKEN_SD_CACHE, EXT_CSD_REV_ANY),
  
-@@ -50,6 +62,32 @@ static const struct mmc_fixup __maybe_unused mmc_sd_fixups[] = {
+@@ -50,6 +62,36 @@ static const struct mmc_fixup __maybe_unused mmc_sd_fixups[] = {
  	MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_SD, 0x5344, add_quirk_sd,
  		  MMC_QUIRK_BROKEN_SD_DISCARD),
  
@@ -144472,12 +144621,16 @@ diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
 +		   cid_rev(1, 0, 0, 0), -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
 +		   MMC_QUIRK_WORKING_SD_CQ, EXT_CSD_REV_ANY),
 +
++	_FIXUP_EXT(CID_NAME_ANY, CID_MANFID_TRANSCEND_SD, 0x4a60, CID_YEAR_ANY, CID_MONTH_ANY,
++		   cid_rev(2, 0, 2026, 4), -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
++		   MMC_QUIRK_WORKING_SD_CQ, EXT_CSD_REV_ANY),
++
  	END_FIXUP
  };
  
-@@ -153,6 +191,29 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
- 	MMC_FIXUP("M62704", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
- 		  MMC_QUIRK_TRIM_BROKEN),
+@@ -162,6 +204,29 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
+ 	MMC_FIXUP("IB2932", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
+ 		  MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME),
  
 +	/*
 +	 * Some SD cards reports discard support while they don't
@@ -147789,7 +147942,25 @@ diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2721,7 +2721,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
+@@ -1369,13 +1369,12 @@ void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
+ 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
+ 	bcmgenet_writel(reg, priv->base + off);
+ 
+-	/* Do the same for thing for RBUF */
++	/* RBUF EEE/PM can break the RX path on GENET. Keep it disabled. */
+ 	reg = bcmgenet_rbuf_readl(priv, RBUF_ENERGY_CTRL);
+-	if (enable)
+-		reg |= RBUF_EEE_EN | RBUF_PM_EN;
+-	else
++	if (reg & (RBUF_EEE_EN | RBUF_PM_EN)) {
+ 		reg &= ~(RBUF_EEE_EN | RBUF_PM_EN);
+-	bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
++		bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
++	}
+ 
+ 	if (!enable && priv->clk_eee_enabled) {
+ 		clk_disable_unprepare(priv->clk_eee);
+@@ -2723,7 +2722,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
  
  	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_PROD_INDEX);
  	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_CONS_INDEX);
@@ -147798,7 +147969,7 @@ diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethern
  	/* Disable rate control for now */
  	bcmgenet_tdma_ring_writel(priv, index, flow_period_val,
  				  TDMA_FLOW_PERIOD);
-@@ -4082,8 +4082,10 @@ static int bcmgenet_probe(struct platform_device *pdev)
+@@ -4080,8 +4079,10 @@ static int bcmgenet_probe(struct platform_device *pdev)
  	netif_set_real_num_rx_queues(priv->dev, priv->hw_params->rx_queues + 1);
  
  	/* Set default coalescing parameters */
@@ -147810,18 +147981,6 @@ diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethern
  
  	/* Initialize u64 stats seq counter for 32bit machines */
  	for (i = 0; i <= priv->hw_params->rx_queues; i++)
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -34,7 +34,7 @@
- #define ENET_PAD		8
- #define ENET_MAX_MTU_SIZE	(ETH_DATA_LEN + ETH_HLEN + VLAN_HLEN + \
- 				 ENET_BRCM_TAG_LEN + ETH_FCS_LEN + ENET_PAD)
--#define DMA_MAX_BURST_LENGTH    0x10
-+#define DMA_MAX_BURST_LENGTH    0x08
- 
- /* misc. configuration */
- #define MAX_NUM_OF_FS_RULES		16
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/ethernet/broadcom/genet/bcmmii.c
 --- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
@@ -148845,6 +149004,19 @@ diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
  	return -EOPNOTSUPP;
  }
  
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -2818,7 +2818,8 @@ EXPORT_SYMBOL_GPL(phy_advertise_eee_all);
+  */
+ void phy_support_eee(struct phy_device *phydev)
+ {
+-	linkmode_copy(phydev->advertising_eee, phydev->supported_eee);
++	linkmode_andnot(phydev->advertising_eee, phydev->supported_eee,
++			phydev->eee_disabled_modes);
+ 	phydev->eee_cfg.tx_lpi_enabled = true;
+ 	phydev->eee_cfg.eee_enabled = true;
+ }
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
@@ -148887,82 +149059,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  }
  
  /* some work can't be done in tasklets, so we use keventd
-@@ -1795,15 +1818,34 @@ static int lan78xx_set_wol(struct net_device *netdev,
- static int lan78xx_get_eee(struct net_device *net, struct ethtool_keee *edata)
- {
- 	struct lan78xx_net *dev = netdev_priv(net);
-+	u32 buf;
-+	int ret;
-+
-+	ret = phylink_ethtool_get_eee(dev->phylink, edata);
-+	if (ret < 0)
-+		return ret;
- 
--	return phylink_ethtool_get_eee(dev->phylink, edata);
-+	ret = lan78xx_read_reg(dev, EEE_TX_LPI_REQ_DLY, &buf);
-+	if (ret >= 0)
-+		edata->tx_lpi_timer = buf;
-+	else
-+		edata->tx_lpi_timer = 0;
-+
-+	return 0;
- }
- 
- static int lan78xx_set_eee(struct net_device *net, struct ethtool_keee *edata)
- {
- 	struct lan78xx_net *dev = netdev_priv(net);
-+	u32 buf;
-+	int ret;
- 
--	return phylink_ethtool_set_eee(dev->phylink, edata);
-+	ret = phylink_ethtool_set_eee(dev->phylink, edata);
-+	if (ret < 0)
-+		return ret;
-+
-+	buf = (u32)edata->tx_lpi_timer;
-+	return lan78xx_write_reg(dev, EEE_TX_LPI_REQ_DLY, buf);
- }
- 
- static void lan78xx_get_drvinfo(struct net_device *net,
-@@ -1918,6 +1960,7 @@ static const struct ethtool_ops lan78xx_ethtool_ops = {
- 	.set_link_ksettings = lan78xx_set_link_ksettings,
- 	.get_regs_len	= lan78xx_get_regs_len,
- 	.get_regs	= lan78xx_get_regs,
-+	.get_ts_info    = ethtool_op_get_ts_info,
- };
- 
- static int lan78xx_init_mac_address(struct lan78xx_net *dev)
-@@ -2874,6 +2917,29 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
- 		goto phylink_uninit;
- 	}
- 
-+	if (of_property_read_bool(phydev->mdio.dev.of_node,
-+				  "microchip,eee-enabled")) {
-+		struct ethtool_keee edata;
-+		memset(&edata, 0, sizeof(edata));
-+
-+		linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
-+			edata.advertised);
-+		linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT,
-+			edata.advertised);
-+
-+		edata.eee_enabled = true;
-+		edata.tx_lpi_enabled = true;
-+		if (of_property_read_u32(phydev->mdio.dev.of_node,
-+					 "microchip,tx-lpi-timer",
-+					 &edata.tx_lpi_timer))
-+			edata.tx_lpi_timer = 600; /* non-aggressive */
-+		rtnl_lock();
-+		(void)lan78xx_set_eee(dev->net, &edata);
-+		rtnl_unlock();
-+
-+		phy_support_eee(phydev);
-+	}
-+
- 	ret = lan78xx_configure_leds_from_dt(dev, phydev);
- 	if (ret < 0)
- 		goto phylink_uninit;
-@@ -3226,6 +3292,11 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+@@ -3226,6 +3249,11 @@ static int lan78xx_reset(struct lan78xx_net *dev)
  	unsigned long timeout;
  	int ret;
  	u32 buf;
@@ -148974,7 +149071,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  
  	ret = lan78xx_read_reg(dev, HW_CFG, &buf);
  	if (ret < 0)
-@@ -3296,6 +3367,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+@@ -3296,6 +3324,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
  	buf |= HW_CFG_CLK125_EN_;
  	buf |= HW_CFG_REFCLK25_EN_;
  
@@ -148985,7 +149082,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  	ret = lan78xx_write_reg(dev, HW_CFG, buf);
  	if (ret < 0)
  		return ret;
-@@ -3388,6 +3463,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+@@ -3388,6 +3420,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
  	if (dev->chipid == ID_REV_CHIP_ID_7801_)
  		buf &= ~MAC_CR_GMII_EN_;
  
@@ -148996,7 +149093,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  	ret = lan78xx_write_reg(dev, MAC_CR, buf);
  	if (ret < 0)
  		return ret;
-@@ -3758,8 +3837,14 @@ static int lan78xx_bind(struct lan78xx_net *dev, struct usb_interface *intf)
+@@ -3758,8 +3794,14 @@ static int lan78xx_bind(struct lan78xx_net *dev, struct usb_interface *intf)
  	if (DEFAULT_RX_CSUM_ENABLE)
  		dev->net->features |= NETIF_F_RXCSUM;
  
@@ -149013,7 +149110,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  
  	if (DEFAULT_VLAN_RX_OFFLOAD)
  		dev->net->features |= NETIF_F_HW_VLAN_CTAG_RX;
-@@ -4722,7 +4807,13 @@ static int lan78xx_probe(struct usb_interface *intf,
+@@ -4722,7 +4764,13 @@ static int lan78xx_probe(struct usb_interface *intf,
  	if (ret < 0)
  		goto out4;
  
@@ -149671,7 +149768,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  
  	return intstatus;
  }
-@@ -2580,6 +2596,182 @@ static int brcmf_sdio_intr_rstatus(struct brcmf_sdio *bus)
+@@ -2581,6 +2597,182 @@ static int brcmf_sdio_intr_rstatus(struct brcmf_sdio *bus)
  	return ret;
  }
  
@@ -149854,7 +149951,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
  {
  	struct brcmf_sdio_dev *sdiod = bus->sdiodev;
-@@ -2651,8 +2843,11 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
+@@ -2652,8 +2844,11 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
  
  	/* Handle host mailbox indication */
  	if (intstatus & I_HMB_HOST_INT) {
@@ -149867,7 +149964,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  	}
  
  	sdio_release_host(bus->sdiodev->func1);
-@@ -2697,7 +2892,7 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
+@@ -2698,7 +2893,7 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
  	brcmf_sdio_clrintr(bus);
  
  	if (bus->ctrl_frame_stat && (bus->clkstate == CLK_AVAIL) &&
@@ -149876,7 +149973,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  		sdio_claim_host(bus->sdiodev->func1);
  		if (bus->ctrl_frame_stat) {
  			err = brcmf_sdio_tx_ctrlframe(bus,  bus->ctrl_frame_buf,
-@@ -3568,6 +3763,10 @@ static int brcmf_sdio_bus_preinit(struct device *dev)
+@@ -3569,6 +3764,10 @@ static int brcmf_sdio_bus_preinit(struct device *dev)
  	if (err < 0)
  		goto done;
  
@@ -149887,7 +149984,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  	bus->tx_hdrlen = SDPCM_HWHDR_LEN + SDPCM_SWHDR_LEN;
  	if (sdiodev->sg_support) {
  		bus->txglom = false;
-@@ -4218,7 +4417,7 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
+@@ -4219,7 +4418,7 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
  	u8 saveclk, bpreq;
  	u8 devctl;
  
@@ -149896,7 +149993,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  
  	if (err)
  		goto fail;
-@@ -4396,12 +4595,25 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
+@@ -4397,12 +4596,25 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
  	}
  
  	/* Attach to the common layer, reserve hdr space */
@@ -149923,7 +150020,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  	/* ready */
  	return;
  
-@@ -4649,3 +4861,40 @@ int brcmf_sdio_sleep(struct brcmf_sdio *bus, bool sleep)
+@@ -4651,3 +4863,40 @@ int brcmf_sdio_sleep(struct brcmf_sdio *bus, bool sleep)
  
  	return ret;
  }
@@ -150142,7 +150239,7 @@ diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
  	void **host_mem_desc_bufs;
  	unsigned int nr_allocated_queues;
  	unsigned int nr_write_queues;
-@@ -2300,6 +2302,13 @@ static int nvme_set_host_mem(struct nvme_dev *dev, u32 bits)
+@@ -2301,6 +2303,13 @@ static int nvme_set_host_mem(struct nvme_dev *dev, u32 bits)
  	return ret;
  }
  
@@ -150156,7 +150253,7 @@ diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
  static void nvme_free_host_mem_multi(struct nvme_dev *dev)
  {
  	int i;
-@@ -2316,6 +2325,7 @@ static void nvme_free_host_mem_multi(struct nvme_dev *dev)
+@@ -2317,6 +2326,7 @@ static void nvme_free_host_mem_multi(struct nvme_dev *dev)
  	kfree(dev->host_mem_desc_bufs);
  	dev->host_mem_desc_bufs = NULL;
  }
@@ -150164,7 +150261,7 @@ diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
  
  static void nvme_free_host_mem(struct nvme_dev *dev)
  {
-@@ -2358,6 +2368,93 @@ static int nvme_alloc_host_mem_single(struct nvme_dev *dev, u64 size)
+@@ -2359,6 +2369,93 @@ static int nvme_alloc_host_mem_single(struct nvme_dev *dev, u64 size)
  	return 0;
  }
  
@@ -150258,7 +150355,7 @@ diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
  static int nvme_alloc_host_mem_multi(struct nvme_dev *dev, u64 preferred,
  		u32 chunk_size)
  {
-@@ -2418,6 +2515,7 @@ static int nvme_alloc_host_mem_multi(struct nvme_dev *dev, u64 preferred,
+@@ -2419,6 +2516,7 @@ static int nvme_alloc_host_mem_multi(struct nvme_dev *dev, u64 preferred,
  	dev->host_mem_descs = NULL;
  	return -ENOMEM;
  }
@@ -154525,6 +154622,15 @@ diff --git a/drivers/pmdomain/bcm/bcm2835-power.c b/drivers/pmdomain/bcm/bcm2835
  #define PM_ENAB				BIT(12)
  #define PM_ISPRSTN			BIT(8)
  #define PM_H264RSTN			BIT(7)
+@@ -174,7 +175,7 @@ static int bcm2835_asb_control(struct bcm2835_power *power, u32 reg, bool enable
+ 	writel(PM_PASSWORD | val, base + reg);
+ 
+ 	if (readl_poll_timeout_atomic(base + reg, val,
+-				      !!(val & ASB_ACK) != enable, 0, 5))
++				      !!(val & ASB_ACK) != enable, 0, 100))
+ 		return -ETIMEDOUT;
+ 
+ 	return 0;
 @@ -377,6 +378,9 @@ static int bcm2835_power_pd_power_on(struct generic_pm_domain *domain)
  		return bcm2835_power_power_on(pd, PM_GRAFX);
  
@@ -171750,11 +171856,11 @@ diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
 +		dev_err(dev, "Invalid axi_pipe_limit property\n");
 +		return;
 +	}
-+	cfg = dwc3_readl(dwc->regs, DWC3_GSBUSCFG1);
++	cfg = dwc3_readl(dwc, DWC3_GSBUSCFG1);
 +	cfg &= ~DWC3_GSBUSCFG1_PIPETRANSLIMIT(15);
 +	cfg |= DWC3_GSBUSCFG1_PIPETRANSLIMIT(dwc->axi_pipe_limit - 1);
 +
-+	dwc3_writel(dwc->regs, DWC3_GSBUSCFG1, cfg);
++	dwc3_writel(dwc, DWC3_GSBUSCFG1, cfg);
 +}
 +
  /**
@@ -171792,7 +171898,7 @@ diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
  			if (dwc->maximum_speed == USB_SPEED_FULL ||
  			    dwc->maximum_speed == USB_SPEED_HIGH)
 @@ -1520,6 +1549,24 @@ static int dwc3_core_init(struct dwc3 *dwc)
- 		dwc3_writel(dwc->regs, DWC3_GUCTL3, reg);
+ 		dwc3_writel(dwc, DWC3_GUCTL3, reg);
  	}
  
 +	if (DWC3_IP_IS(DWC3) && dwc->dr_mode == USB_DR_MODE_HOST) {
@@ -171800,7 +171906,7 @@ diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
 +		u8 tx_maxburst = dwc->tx_max_burst_prd;
 +
 +		if (tx_thr_num && tx_maxburst) {
-+			reg = dwc3_readl(dwc->regs, DWC3_GTXTHRCFG);
++			reg = dwc3_readl(dwc, DWC3_GTXTHRCFG);
 +			reg |= DWC3_GTXTHRCFG_PKTCNTSEL;
 +
 +			reg &= ~DWC3_GTXTHRCFG_TXPKTCNT(~0);
@@ -171809,7 +171915,7 @@ diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
 +			reg &= ~DWC3_GTXTHRCFG_MAXTXBURSTSIZE(~0);
 +			reg |= DWC3_GTXTHRCFG_MAXTXBURSTSIZE(tx_maxburst);
 +
-+			dwc3_writel(dwc->regs, DWC3_GTXTHRCFG, reg);
++			dwc3_writel(dwc, DWC3_GTXTHRCFG, reg);
 +		}
 +	}
 +
@@ -171907,7 +172013,7 @@ diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
  #define DWC3_GUCTL1_RESUME_OPMODE_HS_HOST	BIT(10)
  
  /* Global Status Register */
-@@ -1098,6 +1104,7 @@ struct dwc3_glue_ops {
+@@ -1096,6 +1102,7 @@ struct dwc3_glue_ops {
   * @tx_fifo_resize_max_num: max number of fifos allocated during txfifo resize
   * @clear_stall_protocol: endpoint number that requires a delayed status phase
   * @num_hc_interrupters: number of host controller interrupters
@@ -171915,7 +172021,7 @@ diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
   * @hsphy_interface: "utmi" or "ulpi"
   * @connected: true when we're connected to a host, false otherwise
   * @softconnect: true when gadget connect is called, false when disconnect runs
-@@ -1149,10 +1156,14 @@ struct dwc3_glue_ops {
+@@ -1147,10 +1154,14 @@ struct dwc3_glue_ops {
   *			generation after resume from suspend.
   * @ulpi_ext_vbus_drv: Set to confiure the upli chip to drives CPEN pin
   *			VBUS with an external supply.
@@ -171934,7 +172040,7 @@ diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
   * @gfladj_refclk_lpm_sel: set if we need to enable SOF/ITP counter
   *                          running based on ref_clk
   * @tx_de_emphasis_quirk: set if we enable Tx de-emphasis quirk
-@@ -1354,6 +1365,7 @@ struct dwc3 {
+@@ -1352,6 +1363,7 @@ struct dwc3 {
  	u8			tx_fifo_resize_max_num;
  	u8			clear_stall_protocol;
  	u16			num_hc_interrupters;
@@ -171942,7 +172048,7 @@ diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
  
  	const char		*hsphy_interface;
  
-@@ -1395,8 +1407,11 @@ struct dwc3 {
+@@ -1393,8 +1405,11 @@ struct dwc3 {
  	unsigned		dis_tx_ipgap_linecheck_quirk:1;
  	unsigned		resume_hs_terminations:1;
  	unsigned		ulpi_ext_vbus_drv:1;
@@ -233704,7 +233810,7 @@ diff --git a/drivers/video/fbdev/core/fb_chrdev.c b/drivers/video/fbdev/core/fb_
 diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
 --- a/drivers/video/fbdev/core/fb_defio.c
 +++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -337,7 +337,8 @@ EXPORT_SYMBOL_GPL(fb_deferred_io_open);
+@@ -435,7 +435,8 @@ EXPORT_SYMBOL_GPL(fb_deferred_io_open);
  
  static void fb_deferred_io_lastclose(struct fb_info *info)
  {
@@ -234114,7 +234220,7 @@ diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
 @@ -599,6 +609,8 @@ static void fbcon_prepare_logo(struct vc_data *vc, struct fb_info *info,
  	if (fb_get_color_depth(&info->var, &info->fix) == 1)
  		erase &= ~0x400;
- 	logo_height = fb_prepare_logo(info, ops->rotate);
+ 	logo_height = fb_prepare_logo(info, par->rotate);
 +	if (fullscreen_logo_enabled)
 +		logo_height = info->var.yres - vc->vc_font.height;
  	logo_lines = DIV_ROUND_UP(logo_height, vc->vc_font.height);
@@ -238329,7 +238435,7 @@ diff --git a/include/linux/cma.h b/include/linux/cma.h
 diff --git a/include/linux/fb.h b/include/linux/fb.h
 --- a/include/linux/fb.h
 +++ b/include/linux/fb.h
-@@ -515,6 +515,7 @@ struct fb_info {
+@@ -517,6 +517,7 @@ struct fb_info {
  
  	bool skip_vt_switch; /* no VT switch on suspend/resume required */
  	bool skip_panic; /* Do not write to the fb after a panic */
@@ -238337,7 +238443,7 @@ diff --git a/include/linux/fb.h b/include/linux/fb.h
  };
  
  /* This will go away
-@@ -604,6 +605,7 @@ extern ssize_t fb_sys_write(struct fb_info *info, const char __user *buf,
+@@ -606,6 +607,7 @@ extern ssize_t fb_sys_write(struct fb_info *info, const char __user *buf,
  	.fb_imageblit	= sys_imageblit
  
  /* fbmem.c */
@@ -238516,16 +238622,16 @@ diff --git a/include/linux/mii_timestamper.h b/include/linux/mii_timestamper.h
 diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
 --- a/include/linux/mmc/card.h
 +++ b/include/linux/mmc/card.h
-@@ -330,6 +330,8 @@ struct mmc_card {
- #define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
- #define MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY	(1<<17) /* Disable broken SD poweroff notify support */
+@@ -332,6 +332,8 @@ struct mmc_card {
  #define MMC_QUIRK_NO_UHS_DDR50_TUNING	(1<<18) /* Disable DDR50 tuning */
+ #define MMC_QUIRK_BROKEN_MDT    (1<<19) /* Wrong manufacturing year */
+ #define MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME	(1<<20) /* Secure erase/trim time is fixed regardless of size */
 +#define MMC_QUIRK_WORKING_SD_CQ	(1<<30)		/* SD card has known-good CQ implementation */
 +#define MMC_QUIRK_ERASE_BROKEN	(1<<31)		/* Skip erase */
  
  	bool			written_flag;	/* Indicates eMMC has been written since power on */
  	bool			reenable_cmdq;	/* Re-enable Command Queue */
-@@ -354,6 +356,7 @@ struct mmc_card {
+@@ -356,6 +358,7 @@ struct mmc_card {
  	struct sd_switch_caps	sw_caps;	/* switch (CMD6) caps */
  	struct sd_ext_reg	ext_power;	/* SD extension reg for PM */
  	struct sd_ext_reg	ext_perf;	/* SD extension reg for PERF */
@@ -238533,7 +238639,7 @@ diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
  
  	struct sd_uhs2_config	uhs2_config;	/* SD UHS-II config */
  
-@@ -378,6 +381,8 @@ struct mmc_card {
+@@ -380,6 +383,8 @@ struct mmc_card {
  	unsigned int    nr_parts;
  
  	struct workqueue_struct *complete_wq;	/* Private workqueue */
@@ -241595,7 +241701,7 @@ new file mode 100644
 diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
 --- a/kernel/cgroup/cgroup.c
 +++ b/kernel/cgroup/cgroup.c
-@@ -7067,6 +7067,39 @@ static int __init cgroup_disable(char *str)
+@@ -7077,6 +7077,39 @@ static int __init cgroup_disable(char *str)
  }
  __setup("cgroup_disable=", cgroup_disable);
  
