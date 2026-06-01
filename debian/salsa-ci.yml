@@ -869,13 +869,12 @@ notify-released:
   stage: notify
   rules:
     - !reference [.notify-released-rules]
+  # Only depend on mirror-to-github (tail of the release-promotion
+  # cascade). publish-public-main is `when: manual`, which GitLab treats
+  # as terminal for needs: purposes, so depending on it directly causes
+  # notify-released to fire too early - before the bridge plays the
+  # publish job - and report a spurious failure.
   needs:
-    - job: publish-public-main
-      artifacts: false
-    - job: promote-main
-      artifacts: false
-    - job: sync-beta-base
-      artifacts: false
     - job: mirror-to-github
       artifacts: false
   script:
