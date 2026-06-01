@@ -1,3 +1,46 @@
+linux (1:6.18.33-1+rpt1) trixie; urgency=medium
+
+  [ Bastian Blank ]
+  * Fix lintian tag package-installs-python-pycache-dir
+
+  [ Serge Schneider ]
+  * Raspberry Pi OS release
+  * d/watch: fetch unmodified upstream tarball from cdn.kernel.org
+  * rpi/genconfigs: split configs per arch instead of shared featureset
+  * rpi/update: make non-interactive
+  * rpi/update: add --beta flag for beta-channel builds
+  * lintian: override our epoch and GFDL false-positive errors
+  * linux-image: revert dracut as preferred initramfs generator
+  * salsa-ci: use internal fork
+  * salsa-ci: build for trixie and guard against changelog/RELEASE drift
+  * salsa-ci: replace build-arm64 with build-armhf
+  * salsa-ci: cache only tarballs in orig job, exclude signatures
+  * salsa-ci: clean stale orig tarballs between runner reuses
+  * salsa-ci: tolerate empty cached orig directory
+  * salsa-ci: include salsa-ci.yml directly, not the pios recipe bundle
+  * salsa-ci: add kernel-specific build source job; share prep with build
+  * salsa-ci: strip epoch in build source .changes filename
+  * salsa-ci: disable build source version tagging
+  * salsa-ci: disable sign-code and build-signed jobs
+  * salsa-ci: build full kernel set instead of 'pkg.linux.quick' subset
+  * salsa-ci: only build arch-specific packages on armhf
+  * salsa-ci: pass parallel=auto to dpkg-buildpackage
+  * salsa-ci: quiet sbuild output by default
+  * salsa-ci: split arch-all packages into a dedicated build job
+  * salsa-ci: add publish jobs
+  * salsa-ci: capture beta-base sync state in orig
+  * salsa-ci: add promote-beta job
+  * salsa-ci: add promote-main job
+  * salsa-ci: add sync-beta-base job
+  * salsa-ci: add mirror-to-github job
+  * salsa-ci: move publish stage after test
+  * salsa-ci: add GitHub commit status reporting
+  * Update Raspberry Pi patch
+  * Update debian/config
+  * Linux commit: 95b85bebbedcaedfa7ca79116ed38b7376fba412
+
+ -- Serge Schneider <serge@raspberrypi.com>  Mon, 01 Jun 2026 17:10:47 +0100
+
 linux (1:6.18.29-1+rpt1) trixie; urgency=medium
 
   * Raspberry Pi OS release
