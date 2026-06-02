@@ -772,19 +772,7 @@ notify-start:
   rules:
     - !reference [.notify-start-rules]
   script:
-    - |
-      case "$FLOW" in
-        beta)
-          gh_status pending beta-built    "Building"
-          gh_status pending beta-tested   "Awaiting tests"
-          gh_status pending beta-released "Awaiting publish"
-          ;;
-        release)
-          gh_status pending release-built  "Building"
-          gh_status pending release-tested "Awaiting tests"
-          gh_status pending release-staged "Awaiting publish"
-          ;;
-      esac
+    - gh_status pending "$FLOW" "Building"
 
 notify-build:
   extends: .gh-status
@@ -793,12 +781,11 @@ notify-build:
     - !reference [.notify-phase-rules]
   script:
     - |
-      ctx="${FLOW}-built"
       failed=$(failed_in_stage build)
       if [ -z "$failed" ]; then
-        gh_status success "$ctx" "Built"
+        gh_status pending "$FLOW" "Testing"
       else
-        gh_status failure "$ctx" "Failed: $failed"
+        gh_status failure "$FLOW" "Build failed: $failed"
       fi
 
 notify-test:
@@ -808,12 +795,11 @@ notify-test:
     - !reference [.notify-phase-rules]
   script:
     - |
-      ctx="${FLOW}-tested"
       failed=$(failed_in_stage test)
       if [ -z "$failed" ]; then
-        gh_status success "$ctx" "Tested"
+        gh_status pending "$FLOW" "Publishing"
       else
-        gh_status failure "$ctx" "Failed: $failed"
+        gh_status failure "$FLOW" "Test failed: $failed"
       fi
 
 notify-deploy:
@@ -833,8 +819,7 @@ notify-deploy:
       optional: true
   script:
     - |
-      check_all_green() {
-        local label="$1" success_msg="$2"; shift 2
+      check_failed() {
         local failed=""
         for j in "$@"; do
           st=$(job_status "$j")
@@ -843,23 +828,23 @@ notify-deploy:
           [ "$st" = skipped ] && continue
           failed="${failed:+$failed, }$j"
         done
-        if [ -z "$failed" ]; then
-          gh_status success "$label" "$success_msg"
-        else
-          gh_status failure "$label" "Failed: $failed"
-        fi
+        echo "$failed"
       }
       case "$FLOW" in
         beta)
-          check_all_green beta-released "Released to beta" \
-            publish-public-beta promote-beta
+          failed=$(check_failed publish-public-beta promote-beta)
+          if [ -z "$failed" ]; then
+            gh_status success beta "Released to beta"
+          else
+            gh_status failure beta "Publish failed: $failed"
+          fi
           ;;
         release)
-          check_all_green release-staged "Staged for release" \
-            publish-internal-main
-          # Park 'released' at pending only if release-staged actually succeeded.
-          if [ "$(job_status publish-internal-main)" = success ]; then
-            gh_status pending released "Ready for release"
+          failed=$(check_failed publish-internal-main)
+          if [ -z "$failed" ]; then
+            gh_status pending release "Staged"
+          else
+            gh_status failure release "Publish failed: $failed"
           fi
           ;;
       esac
@@ -888,7 +873,7 @@ notify-released:
         failed="${failed:+$failed, }$j"
       done
       if [ -z "$failed" ]; then
-        gh_status success released "Released"
+        gh_status success release "Released"
       else
-        gh_status failure released "Release failed: $failed"
+        gh_status failure release "Release failed: $failed"
       fi
