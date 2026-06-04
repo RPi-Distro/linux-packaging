@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+export QUILT_PATCHES=debian/patches
+
 LINUX_REPO=
 BETA=
 POSITIONAL=()
@@ -108,11 +110,11 @@ origtargz -u
 # Update configs
 while read -r patch; do
   patch -s -p1 < debian/patches/"$patch"
-done < <(quilt series)
+done < <(quilt --quiltrc - series)
 debian/bin/rpi/genconfigs
 while read -r patch; do
   patch -s -p1 -R < debian/patches/"$patch"
-done < <(quilt series | tac)
+done < <(quilt --quiltrc - series | tac)
 
 if [ -n "$(git status --porcelain -- debian/config)" ]; then
   git add debian/config -f
