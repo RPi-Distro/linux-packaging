@@ -711,6 +711,89 @@ diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b
          # Innolux AT070TN92 7.0" WQVGA TFT LCD panel
        - innolux,at070tn92
          # Innolux G070ACE-L01 7" WVGA (800x480) TFT LCD panel
+diff --git a/Documentation/devicetree/bindings/display/panel/waveshare,dsi-touch.yaml b/Documentation/devicetree/bindings/display/panel/waveshare,dsi-touch.yaml
+new file mode 100644
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/waveshare,dsi-touch.yaml
+@@ -0,0 +1,78 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/waveshare,dsi-touch.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Waveshare DSI Touchscreen Panels
++
++maintainers:
++  - Waveshare_Team <support@waveshare.com>
++
++description: |
++  Waveshare DSI touchscreen panels with integrated touch controller.
++  These panels use MIPI DSI interface and come in various sizes from
++  3.4" to 12.3".
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - waveshare,3.4-dsi-touch-c
++          - waveshare,4.0-dsi-touch-a
++          - waveshare,4.0-dsi-touch-c
++          - waveshare,4.3-dsi-touch-a
++          - waveshare,5.0-dsi-touch-a
++          - waveshare,5.5-dsi-touch-a
++          - waveshare,7.0-dsi-touch-a
++          - waveshare,7.0-dsi-touch-b
++          - waveshare,7.0-dsi-touch-c
++          - waveshare,8.0-dsi-touch-a
++          - waveshare,8.0-dsi-touch-a-4lane
++          - waveshare,8.8-dsi-touch-a
++          - waveshare,9.0-dsi-touch-b
++          - waveshare,9.0-dsi-touch-b,4lane
++          - waveshare,10.1-dsi-touch-a
++          - waveshare,10.1-dsi-touch-a-4lane
++          - waveshare,10.1-dsi-touch-b
++          - waveshare,10.1-dsi-touch-b,4lane
++          - waveshare,12.3-dsi-touch-a,4lane
++
++  reg:
++    description: DSI virtual channel
++    maxItems: 1
++
++  port: true
++  reset-gpios: true
++  rotation: true
++  backlight: true
++
++required:
++  - compatible
++  - reg
++  - port
++
++allOf:
++  - $ref: panel-common.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "waveshare,4.0-dsi-touch-a";
++            reg = <0>;
++            reset-gpios = <&gpio 4 1 GPIO_ACTIVE_HIGH>;
++            backlight = <&backlight>;
++
++            port {
++                panel_in: endpoint {
++                    remote-endpoint = <&dsi_out>;
++                };
++            };
++        };
++    };
 diff --git a/Documentation/devicetree/bindings/gpu/brcm,bcm-v3d.yaml b/Documentation/devicetree/bindings/gpu/brcm,bcm-v3d.yaml
 --- a/Documentation/devicetree/bindings/gpu/brcm,bcm-v3d.yaml
 +++ b/Documentation/devicetree/bindings/gpu/brcm,bcm-v3d.yaml
@@ -10008,7 +10091,7 @@ diff --git a/arch/arm/boot/dts/overlays/README b/arch/arm/boot/dts/overlays/READ
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/README
-@@ -0,0 +1,6296 @@
+@@ -0,0 +1,6302 @@
 +Introduction
 +============
 +
@@ -10956,6 +11039,7 @@ new file mode 100644
 +        cam1-sync-sink          Set camera on port 1 as vsync sink
 +
 +        cam0                    Connect the mux to CAM0 port (default is CAM1)
++        gpio-sel                Set the GPIO used to control the mux
 +
 +
 +Name:   camera-mux-4port
@@ -11025,6 +11109,9 @@ new file mode 100644
 +        cam3-sync-sink          Set camera on port 3 as vsync sink
 +
 +        cam0                    Connect the mux to CAM0 port (default is CAM1)
++        gpio-sel                Set the GPIO used to control the mux select line
++        gpio-en1                Set the GPIO used to control the mux en1 line
++        gpio-en2                Set the GPIO used to control the mux en2 line
 +
 +
 +Name:   cap1106
@@ -15969,7 +16056,9 @@ new file mode 100644
 +        Requires vc4-kms-v3d to be loaded.
 +Load:   dtoverlay=vc4-kms-dsi-waveshare-panel-v2,<param>
 +Params: 3_4_inch_c              3.4" 800x800 2lane
++        4_0_inch_a              4.0" 480x800 2lane
 +        4_0_inch_c              4.0" 720x720 2lane
++        4_3_inch_a              4.3" 480x800 2lane
 +        5_0_inch_a              5.0" 720x1280 2lane
 +        5_5_inch_a              5.5" 720x1280 2lane
 +        7_0_inch_a              7.0" A 720x1280 2lane
@@ -18759,7 +18848,7 @@ diff --git a/arch/arm/boot/dts/overlays/camera-mux-2port-overlay.dts b/arch/arm/
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/camera-mux-2port-overlay.dts
-@@ -0,0 +1,545 @@
+@@ -0,0 +1,554 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +// Overlay to configure a 2 port camera multiplexer
 +//
@@ -19101,15 +19190,17 @@ new file mode 100644
 +	fragment@203 {
 +		target-path="/";
 +		__overlay__ {
-+			mux: mux-controller {
++			mux: mux-controller@1 {
 +				compatible = "gpio-mux";
++				reg = <1>;
 +				#mux-control-cells = <0>;
 +
 +				mux-gpios = <&gpio 4 GPIO_ACTIVE_HIGH>;
 +			};
 +
-+			video-mux {
++			videomux: video-mux@1 {
 +				compatible = "video-mux";
++				reg = <1>;
 +				mux-controls = <&mux>;
 +				#address-cells = <1>;
 +				#size-cells = <0>;
@@ -19140,7 +19231,7 @@ new file mode 100644
 +				};
 +			};
 +
-+			clk_24mhz: clk_24mhz {
++			clk_24mhz: clk_24mhz_1 {
 +				compatible = "fixed-clock";
 +				#clock-cells = <0>;
 +
@@ -19148,7 +19239,7 @@ new file mode 100644
 +				status = "okay";
 +			};
 +
-+			clk_25mhz: clk_25mhz {
++			clk_25mhz: clk_25mhz_1 {
 +				compatible = "fixed-clock";
 +				#clock-cells = <0>;
 +
@@ -19156,7 +19247,7 @@ new file mode 100644
 +				status = "okay";
 +			};
 +
-+			clk_imx290: clk_imx290 {
++			clk_imx290: clk_imx290_1 {
 +				compatible = "fixed-clock";
 +				#clock-cells = <0>;
 +
@@ -19297,19 +19388,26 @@ new file mode 100644
 +				       <&imx290_1>,"clock-frequency:0";
 +
 +		cam0 = <&i2c_frag>, "target:0=",<&i2c_csi_dsi0>,
-+		       <&csi_frag>, "target:0=",<&csi0>;
++		       <&csi_frag>, "target:0=",<&csi0>,
++		       <&mux>, "reg:0=0",
++		       <&videomux>, "reg:0=0",
++		       <&clk_24mhz>, "name=clk_24mhz_0",
++		       <&clk_25mhz>, "name=clk_25mhz_0",
++		       <&clk_imx290>, "name=clk_imx290_0";
 +
 +		cam0-sync-source = <&imx477_0>, "trigger-mode:0=1";
 +		cam0-sync-sink = <&imx477_0>, "trigger-mode:0=2";
 +		cam1-sync-source = <&imx477_1>, "trigger-mode:0=1";
 +		cam1-sync-sink = <&imx477_1>, "trigger-mode:0=2";
++
++		gpio-sel = <&mux>, "mux-gpios:4";
 +	};
 +};
 diff --git a/arch/arm/boot/dts/overlays/camera-mux-4port-overlay.dts b/arch/arm/boot/dts/overlays/camera-mux-4port-overlay.dts
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/camera-mux-4port-overlay.dts
-@@ -0,0 +1,954 @@
+@@ -0,0 +1,965 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +
 +// Overlay to configure a 4 port camera multiplexer
@@ -19929,8 +20027,9 @@ new file mode 100644
 +	fragment@203 {
 +		target-path="/";
 +		__overlay__ {
-+			mux: mux-controller {
++			mux: mux-controller@1 {
 +				compatible = "gpio-mux";
++				reg = <1>;
 +				#mux-control-cells = <0>;
 +
 +				/* SEL, En2, En1 */
@@ -19939,8 +20038,9 @@ new file mode 100644
 +					    <&gpio 17 GPIO_ACTIVE_HIGH>;
 +			};
 +
-+			video-mux {
++			videomux: video-mux@1 {
 +				compatible = "video-mux";
++				reg = <1>;
 +				mux-controls = <&mux>;
 +				#address-cells = <1>;
 +				#size-cells = <0>;
@@ -19996,7 +20096,7 @@ new file mode 100644
 +				};
 +			};
 +
-+			clk_24mhz: clk_24mhz {
++			clk_24mhz: clk_24mhz_1 {
 +				compatible = "fixed-clock";
 +				#clock-cells = <0>;
 +
@@ -20004,7 +20104,7 @@ new file mode 100644
 +				status = "okay";
 +			};
 +
-+			clk_25mhz: clk_25mhz {
++			clk_25mhz: clk_25mhz_1 {
 +				compatible = "fixed-clock";
 +				#clock-cells = <0>;
 +
@@ -20012,7 +20112,7 @@ new file mode 100644
 +				status = "okay";
 +			};
 +
-+			clk_imx290: clk_imx290 {
++			clk_imx290: clk_imx290_1 {
 +				compatible = "fixed-clock";
 +				#clock-cells = <0>;
 +
@@ -20252,7 +20352,12 @@ new file mode 100644
 +				       <&imx290_3>,"clock-frequency:0";
 +
 +		cam0 = <&i2c_frag>, "target:0=",<&i2c_csi_dsi0>,
-+		       <&csi_frag>, "target:0=",<&csi0>;
++		       <&csi_frag>, "target:0=",<&csi0>,
++		       <&mux>, "reg:0=0",
++		       <&videomux>, "reg:0=0",
++		       <&clk_24mhz>, "name=clk_24mhz_0",
++		       <&clk_25mhz>, "name=clk_25mhz_0",
++		       <&clk_imx290>, "name=clk_imx290_0";
 +
 +		cam0-sync-source = <&imx477_0>, "trigger-mode:0=1";
 +		cam0-sync-sink = <&imx477_0>, "trigger-mode:0=2";
@@ -20262,6 +20367,10 @@ new file mode 100644
 +		cam2-sync-sink = <&imx477_2>, "trigger-mode:0=2";
 +		cam3-sync-source = <&imx477_3>, "trigger-mode:0=1";
 +		cam3-sync-sink = <&imx477_3>, "trigger-mode:0=2";
++
++		gpio-sel = <&mux>, "mux-gpios:4";
++		gpio-en2 = <&mux>, "mux-gpios:16";
++		gpio-en1 = <&mux>, "mux-gpios:28";
 +	};
 +};
 diff --git a/arch/arm/boot/dts/overlays/cap1106-overlay.dts b/arch/arm/boot/dts/overlays/cap1106-overlay.dts
@@ -48037,7 +48146,7 @@ diff --git a/arch/arm/boot/dts/overlays/vc4-kms-dsi-waveshare-panel-v2-overlay.d
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/vc4-kms-dsi-waveshare-panel-v2-overlay.dts
-@@ -0,0 +1,111 @@
+@@ -0,0 +1,114 @@
 +/*
 + * vc4-kms-dsi-waveshare-panel-v2-overlay.dts
 + */
@@ -48119,7 +48228,9 @@ new file mode 100644
 +
 +	__overrides__ {
 +		3_4_inch_c = <&dsi_panel>, "compatible=waveshare,3.4-dsi-touch-c";
++		4_0_inch_a = <&dsi_panel>, "compatible=waveshare,4.0-dsi-touch-a";
 +		4_0_inch_c = <&dsi_panel>, "compatible=waveshare,4.0-dsi-touch-c";
++		4_3_inch_a = <&dsi_panel>, "compatible=waveshare,4.3-dsi-touch-a";
 +		5_0_inch_a = <&dsi_panel>, "compatible=waveshare,5.0-dsi-touch-a";
 +		5_5_inch_a = <&dsi_panel>, "compatible=waveshare,5.5-dsi-touch-a";
 +		7_0_inch_a = <&dsi_panel>, "compatible=waveshare,7.0-dsi-touch-a";
@@ -48127,7 +48238,8 @@ new file mode 100644
 +		7_0_inch_c = <&dsi_panel>, "compatible=waveshare,7.0-dsi-touch-c";
 +		8_0_inch_a = <&dsi_panel>, "compatible=waveshare,8.0-dsi-touch-a";
 +		8_0_inch_a_4lane = <&dsi_panel>, "compatible=waveshare,8.0-dsi-touch-a-4lane";
-+		8_8_inch_a = <&dsi_panel>, "compatible=waveshare,8.8-dsi-touch-a";
++		8_8_inch_a = <&dsi_panel>, "compatible=waveshare,8.8-dsi-touch-a",
++			     <&display_mcu>, "pre-power-on?";
 +		9_0_inch_b = <&dsi_panel>, "compatible=waveshare,9.0-dsi-touch-b",
 +			     <&touch>, "touchscreen-inverted-x";
 +		9_0_inch_b_4lane = <&dsi_panel>, "compatible=waveshare,9.0-dsi-touch-b,4lane",
@@ -55323,7 +55435,7 @@ diff --git a/arch/arm64/boot/dts/broadcom/bcm2712-ds.dtsi b/arch/arm64/boot/dts/
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm64/boot/dts/broadcom/bcm2712-ds.dtsi
-@@ -0,0 +1,482 @@
+@@ -0,0 +1,493 @@
 +// SPDX-License-Identifier: GPL-2.0
 +#include <dt-bindings/soc/bcm2835-pm.h>
 +
@@ -55384,6 +55496,17 @@ new file mode 100644
 +		compatible = "usb-nop-xceiv";
 +		#phy-cells = <0>;
 +	};
++};
++
++/*
++ * With a #size-cells of 2, the 'size' property should be 2 cells long.
++ * Unfortunately the old firmware will only write the CMA value correctly
++ * if the property is 1 cell long. Fortunately the new firmware silently
++ * makes 'size' 2 cells long, so create what is actually an invalid DTS file
++ * on the understanding that it will be patched up as needed.
++ */
++&cma {
++	size = <0x4000000>; /* 64MB */
 +};
 +
 +&soc {
@@ -58398,10 +58521,19 @@ diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/bro
  	};
  
  	cpus: cpus {
-@@ -250,39 +243,6 @@ uart10: serial@7d001000 {
+@@ -250,48 +243,6 @@ uart10: serial@7d001000 {
  			status = "disabled";
  		};
  
+-		pm: watchdog@7d200000 {
+-			compatible = "brcm,bcm2712-pm", "brcm,bcm2835-pm-wdt";
+-			reg = <0x7d200000 0x604>;
+-			reg-names = "pm";
+-			#power-domain-cells = <1>;
+-			#reset-cells = <1>;
+-			system-power-controller;
+-		};
+-
 -		pinctrl: pinctrl@7d504100 {
 -			compatible = "brcm,bcm2712c0-pinctrl";
 -			reg = <0x7d504100 0x30>;
@@ -58438,7 +58570,7 @@ diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/bro
  		interrupt-controller@7d517000 {
  			compatible = "brcm,bcm7271-l2-intc";
  			reg = <0x7d517000 0x10>;
-@@ -303,21 +263,6 @@ gio_aon: gpio@7d517c00 {
+@@ -312,21 +263,6 @@ gio_aon: gpio@7d517c00 {
  			 */
  		};
  
@@ -58460,7 +58592,7 @@ diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/bro
  		gicv2: interrupt-controller@7fff9000 {
  			compatible = "arm,gic-400";
  			reg = <0x7fff9000 0x1000>,
-@@ -667,5 +612,6 @@ hvs: hvs@107c580000 {
+@@ -676,5 +612,6 @@ hvs: hvs@107c580000 {
  		interrupt-parent = <&disp_intr>;
  		interrupts = <2>, <9>, <16>;
  		interrupt-names = "ch0-eof", "ch1-eof", "ch2-eof";
@@ -59954,7 +60086,7 @@ diff --git a/arch/arm64/configs/bcm2711_defconfig b/arch/arm64/configs/bcm2711_d
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm64/configs/bcm2711_defconfig
-@@ -0,0 +1,1766 @@
+@@ -0,0 +1,1768 @@
 +CONFIG_LOCALVERSION="-v8"
 +# CONFIG_LOCALVERSION_AUTO is not set
 +CONFIG_SYSVIPC=y
@@ -60483,6 +60615,8 @@ new file mode 100644
 +CONFIG_NETKIT=y
 +CONFIG_NET_VRF=m
 +CONFIG_VSOCKMON=m
++CONFIG_NET_DSA_MICROCHIP_KSZ_COMMON=m
++CONFIG_NET_DSA_MICROCHIP_KSZ_SPI=m
 +CONFIG_BCMGENET=y
 +CONFIG_MACB=y
 +CONFIG_IGB=m
@@ -61725,7 +61859,7 @@ diff --git a/arch/arm64/configs/bcm2711_rt_defconfig b/arch/arm64/configs/bcm271
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm64/configs/bcm2711_rt_defconfig
-@@ -0,0 +1,1763 @@
+@@ -0,0 +1,1765 @@
 +CONFIG_LOCALVERSION="-v8-rt"
 +# CONFIG_LOCALVERSION_AUTO is not set
 +CONFIG_SYSVIPC=y
@@ -62254,6 +62388,8 @@ new file mode 100644
 +CONFIG_NETKIT=y
 +CONFIG_NET_VRF=m
 +CONFIG_VSOCKMON=m
++CONFIG_NET_DSA_MICROCHIP_KSZ_COMMON=m
++CONFIG_NET_DSA_MICROCHIP_KSZ_SPI=m
 +CONFIG_BCMGENET=y
 +CONFIG_MACB=y
 +CONFIG_IGB=m
@@ -63493,7 +63629,7 @@ diff --git a/arch/arm64/configs/bcm2712_defconfig b/arch/arm64/configs/bcm2712_d
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm64/configs/bcm2712_defconfig
-@@ -0,0 +1,1768 @@
+@@ -0,0 +1,1770 @@
 +CONFIG_LOCALVERSION="-v8-16k"
 +# CONFIG_LOCALVERSION_AUTO is not set
 +CONFIG_SYSVIPC=y
@@ -64025,6 +64161,8 @@ new file mode 100644
 +CONFIG_NETKIT=y
 +CONFIG_NET_VRF=m
 +CONFIG_VSOCKMON=m
++CONFIG_NET_DSA_MICROCHIP_KSZ_COMMON=m
++CONFIG_NET_DSA_MICROCHIP_KSZ_SPI=m
 +CONFIG_BCMGENET=y
 +CONFIG_MACB=y
 +CONFIG_IGB=m
@@ -74285,7 +74423,7 @@ diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
 diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
 --- a/drivers/gpu/drm/Makefile
 +++ b/drivers/gpu/drm/Makefile
-@@ -252,3 +252,5 @@ quiet_cmd_hdrtest = HDRTEST $(patsubst %.hdrtest,%.h,$@)
+@@ -253,3 +253,5 @@ quiet_cmd_hdrtest = HDRTEST $(patsubst %.hdrtest,%.h,$@)
  
  $(obj)/%.hdrtest: $(src)/%.h FORCE
  	$(call if_changed_dep,hdrtest)
@@ -78588,7 +78726,7 @@ diff --git a/drivers/gpu/drm/panel/panel-waveshare-dsi-v2.c b/drivers/gpu/drm/pa
 new file mode 100644
 --- /dev/null
 +++ b/drivers/gpu/drm/panel/panel-waveshare-dsi-v2.c
-@@ -0,0 +1,2327 @@
+@@ -0,0 +1,2472 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2024 Waveshare International Limited
@@ -80081,6 +80219,103 @@ new file mode 100644
 +	{},
 +};
 +
++static const struct panel_init_cmd ws_panel_4_3_a_init[] = {
++	_INIT_DCS_CMD(0xFF, 0x77, 0x01, 0x00, 0x00, 0x13),
++	_INIT_DCS_CMD(0xEF, 0x08),
++	_INIT_DCS_CMD(0xFF, 0x77, 0x01, 0x00, 0x00, 0x10),
++	_INIT_DCS_CMD(0xC0, 0x63, 0x00),
++	_INIT_DCS_CMD(0xC1, 0x0D, 0x02),
++	_INIT_DCS_CMD(0xC2, 0x17, 0x08),
++	_INIT_DCS_CMD(0xCC, 0x10),
++	_INIT_DCS_CMD(0xB0, 0x40, 0xC9, 0x94, 0x0E, 0x10, 0x05, 0x0B, 0x09,
++		      0x08, 0x26, 0x04, 0x52, 0x10, 0x69, 0x6B, 0x69),
++	_INIT_DCS_CMD(0xB1, 0x40, 0xD2, 0x98, 0x0C, 0x92, 0x07, 0x09, 0x08,
++		      0x07, 0x25, 0x02, 0x0E, 0x0C, 0x6E, 0x78, 0x55),
++	_INIT_DCS_CMD(0xFF, 0x77, 0x01, 0x00, 0x00, 0x11),
++	_INIT_DCS_CMD(0xB0, 0x5D),
++	_INIT_DCS_CMD(0xB1, 0x4E),
++	_INIT_DCS_CMD(0xB2, 0x87),
++	_INIT_DCS_CMD(0xB3, 0x80),
++	_INIT_DCS_CMD(0xB5, 0x4E),
++	_INIT_DCS_CMD(0xB7, 0x85),
++	_INIT_DCS_CMD(0xB8, 0x21),
++	_INIT_DCS_CMD(0xB9, 0x10, 0x1F),
++	_INIT_DCS_CMD(0xBB, 0x03),
++	_INIT_DCS_CMD(0xBC, 0x00),
++	_INIT_DCS_CMD(0xC1, 0x78),
++	_INIT_DCS_CMD(0xC2, 0x78),
++	_INIT_DCS_CMD(0xD0, 0x88),
++	_INIT_DCS_CMD(0xE0, 0x00, 0x3A, 0x02),
++	_INIT_DCS_CMD(0xE1, 0x04, 0xA0, 0x00, 0xA0, 0x05, 0xA0, 0x00, 0xA0,
++		      0x00, 0x40, 0x40),
++	_INIT_DCS_CMD(0xE2, 0x30, 0x00, 0x40, 0x40, 0x32, 0xA0, 0x00, 0xA0,
++		      0x00, 0xA0, 0x00, 0xA0, 0x00),
++	_INIT_DCS_CMD(0xE3, 0x00, 0x00, 0x33, 0x33),
++	_INIT_DCS_CMD(0xE4, 0x44, 0x44),
++	_INIT_DCS_CMD(0xE5, 0x09, 0x2E, 0xA0, 0xA0, 0x0B, 0x30, 0xA0, 0xA0,
++		      0x05, 0x2A, 0xA0, 0xA0, 0x07, 0x2C, 0xA0, 0xA0),
++	_INIT_DCS_CMD(0xE6, 0x00, 0x00, 0x33, 0x33),
++	_INIT_DCS_CMD(0xE7, 0x44, 0x44),
++	_INIT_DCS_CMD(0xE8, 0x08, 0x2D, 0xA0, 0xA0, 0x0A, 0x2F, 0xA0, 0xA0,
++		      0x04, 0x29, 0xA0, 0xA0, 0x06, 0x2B, 0xA0, 0xA0),
++	_INIT_DCS_CMD(0xEB, 0x00, 0x00, 0x4E, 0x4E, 0x00, 0x00, 0x00),
++	_INIT_DCS_CMD(0xEC, 0x08, 0x01),
++	_INIT_DCS_CMD(0xED, 0xB0, 0x2B, 0x98, 0xA4, 0x56, 0x7F, 0xFF, 0xFF,
++		      0xFF, 0xFF, 0xF7, 0x65, 0x4A, 0x89, 0xB2, 0x0B),
++	_INIT_DCS_CMD(0xEF, 0x08, 0x08, 0x08, 0x45, 0x3F, 0x54),
++	_INIT_DCS_CMD(0xFF, 0x77, 0x01, 0x00, 0x00, 0x00),
++	_INIT_DCS_CMD(0x11),
++	_INIT_DELAY_CMD(120),
++	_INIT_DCS_CMD(0x29),
++	_INIT_DELAY_CMD(20),
++	{},
++};
++
++static const struct panel_init_cmd ws_panel_4_a_init[] = {
++	_INIT_DCS_CMD(0x11),
++	_INIT_DELAY_CMD(200),
++	_INIT_DCS_CMD(0xFF, 0x77, 0x01, 0x00, 0x00, 0x10),
++	_INIT_DCS_CMD(0xC0, 0x63, 0x00),
++	_INIT_DCS_CMD(0xC1, 0x0A, 0x02),
++	_INIT_DCS_CMD(0xC2, 0x31, 0x08),
++	_INIT_DCS_CMD(0xB0, 0x00, 0x11, 0x19, 0x0C, 0x10, 0x06, 0x07, 0x0A,
++		      0x09, 0x22, 0x04, 0x10, 0x0E, 0x28, 0x30, 0x1C),
++	_INIT_DCS_CMD(0xB1, 0x00, 0x12, 0x19, 0x0D, 0x10, 0x04, 0x06, 0x07,
++		      0x08, 0x23, 0x04, 0x12, 0x11, 0x28, 0x30, 0x1C),
++	_INIT_DCS_CMD(0xFF, 0x77, 0x01, 0x00, 0x00, 0x11),
++	_INIT_DCS_CMD(0xB0, 0x4D),
++	_INIT_DCS_CMD(0xB1, 0x3E),
++	_INIT_DCS_CMD(0xB2, 0x07),
++	_INIT_DCS_CMD(0xB3, 0x80),
++	_INIT_DCS_CMD(0xB5, 0x47),
++	_INIT_DCS_CMD(0xB7, 0x8A),
++	_INIT_DCS_CMD(0xB8, 0x21),
++	_INIT_DCS_CMD(0xC1, 0x78),
++	_INIT_DCS_CMD(0xC2, 0x78),
++	_INIT_DCS_CMD(0xD0, 0x88),
++	_INIT_DELAY_CMD(100),
++	_INIT_DCS_CMD(0xE0, 0x00, 0x00, 0x02),
++	_INIT_DCS_CMD(0xE1, 0x04, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00,
++		      0x00, 0x20, 0x20),
++	_INIT_DCS_CMD(0xE2, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		      0x00, 0x00, 0x00, 0x00, 0x00),
++	_INIT_DCS_CMD(0xE3, 0x00, 0x00, 0x33, 0x00),
++	_INIT_DCS_CMD(0xE4, 0x22, 0x00),
++	_INIT_DCS_CMD(0xE5, 0x04, 0x34, 0xAA, 0xAA, 0x06, 0x34, 0xAA, 0xAA,
++		      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00),
++	_INIT_DCS_CMD(0xE6, 0x00, 0x00, 0x33, 0x00),
++	_INIT_DCS_CMD(0xE7, 0x22, 0x00),
++	_INIT_DCS_CMD(0xE8, 0x05, 0x34, 0xAA, 0xAA, 0x07, 0x34, 0xAA, 0xAA,
++		      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00),
++	_INIT_DCS_CMD(0xEB, 0x02, 0x00, 0x40, 0x40, 0x00, 0x00, 0x00),
++	_INIT_DCS_CMD(0xED, 0xFA, 0x45, 0x0B, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
++		      0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xB0, 0x54, 0xAF),
++	_INIT_DCS_CMD(0xFF, 0x77, 0x01, 0x00, 0x00, 0x00),
++	_INIT_DELAY_CMD(10),
++	_INIT_DCS_CMD(0x29),
++	{},
++};
++
 +static const struct panel_init_cmd ws_panel_4_c_init[] = {
 +	_INIT_DCS_CMD(0xE0, 0x00), _INIT_DCS_CMD(0xE1, 0x93),
 +	_INIT_DCS_CMD(0xE2, 0x65), _INIT_DCS_CMD(0xE3, 0xF8),
@@ -80554,6 +80789,34 @@ new file mode 100644
 +	.height_mm = 110,
 +};
 +
++static const struct drm_display_mode ws_panel_4_3_a_mode = {
++	.clock = 30000,
++	.hdisplay = 480,
++	.hsync_start = 480 + 42,
++	.hsync_end = 480 + 42 + 12,
++	.htotal = 480 + 42 + 12 + 42,
++	.vdisplay = 800,
++	.vsync_start = 800 + 60,
++	.vsync_end = 800 + 60 + 8,
++	.vtotal = 800 + 60 + 8 + 2,
++	.width_mm = 56,
++	.height_mm = 93,
++};
++
++static const struct drm_display_mode ws_panel_4_a_mode = {
++	.clock = 27200,
++	.hdisplay = 480,
++	.hsync_start = 480 + 30,
++	.hsync_end = 480 + 30 + 30,
++	.htotal = 480 + 30 + 30 + 8,
++	.vdisplay = 800,
++	.vsync_start = 800 + 12,
++	.vsync_end = 800 + 12 + 12,
++	.vtotal = 800 + 12 + 12 + 2,
++	.width_mm = 51,
++	.height_mm = 86,
++};
++
 +static const struct drm_display_mode ws_panel_4_c_mode = {
 +	.clock = 36500,
 +	.hdisplay = 720,
@@ -80643,17 +80906,17 @@ new file mode 100644
 +	drm_panel_init(&ctx->panel, &dsi->dev, &ws_panel_funcs,
 +		       DRM_MODE_CONNECTOR_DSI);
 +
-+	ctx->reset = devm_gpiod_get_optional(&dsi->dev, "reset", GPIOD_OUT_LOW);
++	ctx->reset = devm_gpiod_get_optional(&dsi->dev, "reset", GPIOD_ASIS);
 +	if (IS_ERR(ctx->reset))
 +		return dev_err_probe(&dsi->dev, PTR_ERR(ctx->reset),
 +				     "Couldn't get our reset GPIO\n");
 +
-+	ctx->iovcc = devm_gpiod_get_optional(&dsi->dev, "iovcc", GPIOD_OUT_LOW);
++	ctx->iovcc = devm_gpiod_get_optional(&dsi->dev, "iovcc", GPIOD_ASIS);
 +	if (IS_ERR(ctx->iovcc))
 +		return dev_err_probe(&dsi->dev, PTR_ERR(ctx->iovcc),
 +				     "Couldn't get our iovcc GPIO\n");
 +
-+	ctx->avdd = devm_gpiod_get_optional(&dsi->dev, "avdd", GPIOD_OUT_LOW);
++	ctx->avdd = devm_gpiod_get_optional(&dsi->dev, "avdd", GPIOD_ASIS);
 +	if (IS_ERR(ctx->avdd))
 +		return dev_err_probe(&dsi->dev, PTR_ERR(ctx->avdd),
 +				     "Couldn't get our avdd GPIO\n");
@@ -80852,6 +81115,24 @@ new file mode 100644
 +	.format = MIPI_DSI_FMT_RGB888,
 +};
 +
++static const struct ws_panel_desc ws_panel_4_3_inch_a_desc = {
++	.init = ws_panel_4_3_a_init,
++	.mode = &ws_panel_4_3_a_mode,
++	.mode_flags = MIPI_DSI_MODE_VIDEO_HSE | MIPI_DSI_MODE_VIDEO |
++		      MIPI_DSI_MODE_LPM | MIPI_DSI_CLOCK_NON_CONTINUOUS,
++	.lanes = 2,
++	.format = MIPI_DSI_FMT_RGB888,
++};
++
++static const struct ws_panel_desc ws_panel_4_inch_a_desc = {
++	.init = ws_panel_4_a_init,
++	.mode = &ws_panel_4_a_mode,
++	.mode_flags = MIPI_DSI_MODE_VIDEO_HSE | MIPI_DSI_MODE_VIDEO |
++		      MIPI_DSI_MODE_LPM | MIPI_DSI_CLOCK_NON_CONTINUOUS,
++	.lanes = 2,
++	.format = MIPI_DSI_FMT_RGB888,
++};
++
 +static const struct ws_panel_desc ws_panel_4_inch_c_desc = {
 +	.init = ws_panel_4_c_init,
 +	.mode = &ws_panel_4_c_mode,
@@ -80895,6 +81176,8 @@ new file mode 100644
 +	{ .compatible = "waveshare,5.5-dsi-touch-a",
 +	  &ws_panel_5_5_inch_a_desc },
 +	{ .compatible = "waveshare,5.0-dsi-touch-a", &ws_panel_5_inch_a_desc },
++	{ .compatible = "waveshare,4.3-dsi-touch-a", &ws_panel_4_3_inch_a_desc },
++	{ .compatible = "waveshare,4.0-dsi-touch-a", &ws_panel_4_inch_a_desc },
 +	{ .compatible = "waveshare,4.0-dsi-touch-c", &ws_panel_4_inch_c_desc },
 +	{ .compatible = "waveshare,3.4-dsi-touch-c",
 +	  &ws_panel_3_4_inch_c_desc },
@@ -88855,7 +89138,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
 -	ret = v3d_irq_init(v3d);
 -	if (ret)
 -		goto gem_destroy;
-+	pm_runtime_set_autosuspend_delay(dev, 100);
++	pm_runtime_set_autosuspend_delay(dev, 50);
 +	pm_runtime_use_autosuspend(dev);
  
  	ret = drm_dev_register(drm, 0);
@@ -89331,7 +89614,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
  	kfree(job);
  }
  
-@@ -183,13 +186,13 @@ v3d_job_init(struct v3d_dev *v3d, struct drm_file *file_priv,
+@@ -201,13 +204,13 @@ v3d_job_init(struct v3d_dev *v3d, struct drm_file *file_priv,
  				if (copy_from_user(&in, handle++, sizeof(in))) {
  					ret = -EFAULT;
  					DRM_DEBUG("Failed to copy wait dep handle.\n");
@@ -89347,7 +89630,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
  			}
  		}
  	} else {
-@@ -197,14 +200,22 @@ v3d_job_init(struct v3d_dev *v3d, struct drm_file *file_priv,
+@@ -215,14 +218,22 @@ v3d_job_init(struct v3d_dev *v3d, struct drm_file *file_priv,
  
  		// TODO: Investigate why this was filtered out for the IOCTL.
  		if (ret && ret != -ENOENT)
@@ -140703,7 +140986,7 @@ diff --git a/drivers/mfd/bcm2835-pm.c b/drivers/mfd/bcm2835-pm.c
  	pm = devm_kzalloc(dev, sizeof(*pm), GFP_KERNEL);
  	if (!pm)
  		return -ENOMEM;
-@@ -97,21 +115,13 @@ static int bcm2835_pm_probe(struct platform_device *pdev)
+@@ -97,22 +115,13 @@ static int bcm2835_pm_probe(struct platform_device *pdev)
  	 * bcm2835-pm binding as the key for whether we can reference
  	 * the full PM register range and support power domains.
  	 */
@@ -140719,6 +141002,7 @@ diff --git a/drivers/mfd/bcm2835-pm.c b/drivers/mfd/bcm2835-pm.c
 -	{ .compatible = "brcm,bcm2835-pm-wdt", },
 -	{ .compatible = "brcm,bcm2835-pm", },
 -	{ .compatible = "brcm,bcm2711-pm", },
+-	{ .compatible = "brcm,bcm2712-pm", },
 -	{},
 -};
 -MODULE_DEVICE_TABLE(of, bcm2835_pm_of_match);
@@ -147942,25 +148226,7 @@ diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1369,13 +1369,12 @@ void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
- 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
- 	bcmgenet_writel(reg, priv->base + off);
- 
--	/* Do the same for thing for RBUF */
-+	/* RBUF EEE/PM can break the RX path on GENET. Keep it disabled. */
- 	reg = bcmgenet_rbuf_readl(priv, RBUF_ENERGY_CTRL);
--	if (enable)
--		reg |= RBUF_EEE_EN | RBUF_PM_EN;
--	else
-+	if (reg & (RBUF_EEE_EN | RBUF_PM_EN)) {
- 		reg &= ~(RBUF_EEE_EN | RBUF_PM_EN);
--	bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
-+		bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
-+	}
- 
- 	if (!enable && priv->clk_eee_enabled) {
- 		clk_disable_unprepare(priv->clk_eee);
-@@ -2723,7 +2722,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
+@@ -2722,7 +2722,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
  
  	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_PROD_INDEX);
  	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_CONS_INDEX);
@@ -147969,7 +148235,7 @@ diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethern
  	/* Disable rate control for now */
  	bcmgenet_tdma_ring_writel(priv, index, flow_period_val,
  				  TDMA_FLOW_PERIOD);
-@@ -4080,8 +4079,10 @@ static int bcmgenet_probe(struct platform_device *pdev)
+@@ -4079,8 +4079,10 @@ static int bcmgenet_probe(struct platform_device *pdev)
  	netif_set_real_num_rx_queues(priv->dev, priv->hw_params->rx_queues + 1);
  
  	/* Set default coalescing parameters */
@@ -149004,19 +149270,6 @@ diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
  	return -EOPNOTSUPP;
  }
  
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -2818,7 +2818,8 @@ EXPORT_SYMBOL_GPL(phy_advertise_eee_all);
-  */
- void phy_support_eee(struct phy_device *phydev)
- {
--	linkmode_copy(phydev->advertising_eee, phydev->supported_eee);
-+	linkmode_andnot(phydev->advertising_eee, phydev->supported_eee,
-+			phydev->eee_disabled_modes);
- 	phydev->eee_cfg.tx_lpi_enabled = true;
- 	phydev->eee_cfg.eee_enabled = true;
- }
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
@@ -150261,7 +150514,7 @@ diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
  
  static void nvme_free_host_mem(struct nvme_dev *dev)
  {
-@@ -2359,6 +2369,93 @@ static int nvme_alloc_host_mem_single(struct nvme_dev *dev, u64 size)
+@@ -2361,6 +2371,93 @@ static int nvme_alloc_host_mem_single(struct nvme_dev *dev, u64 size)
  	return 0;
  }
  
@@ -150327,9 +150580,9 @@ diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
 +	i = dev->nr_host_mem_descs = mapped_nents;
 +
 +	while (--i >= 0) {
-+		descs[i].addr = sg_dma_address(&slist[i]);
++		descs[i].addr = cpu_to_le64(sg_dma_address(&slist[i]));
 +		WARN_ON_ONCE(sg_dma_len(&slist[i]) & (NVME_CTRL_PAGE_SIZE - 1));
-+		descs[i].size = sg_dma_len(&slist[i]) / NVME_CTRL_PAGE_SIZE;
++		descs[i].size = cpu_to_le32(sg_dma_len(&slist[i]) / NVME_CTRL_PAGE_SIZE);
 +	}
 +
 +	dev->host_mem_size = size;
@@ -150355,7 +150608,7 @@ diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
  static int nvme_alloc_host_mem_multi(struct nvme_dev *dev, u64 preferred,
  		u32 chunk_size)
  {
-@@ -2419,6 +2516,7 @@ static int nvme_alloc_host_mem_multi(struct nvme_dev *dev, u64 preferred,
+@@ -2421,6 +2518,7 @@ static int nvme_alloc_host_mem_multi(struct nvme_dev *dev, u64 preferred,
  	dev->host_mem_descs = NULL;
  	return -ENOMEM;
  }
@@ -150849,6 +151102,150 @@ new file mode 100644
 +	return ret;
 +}
 +late_initcall(of_cfs_init);
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -1033,6 +1033,7 @@ int __init early_init_dt_scan_memory(void)
+ 
+ 	fdt_for_each_subnode(node, fdt, 0) {
+ 		const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
++		int actual_size_cells = dt_root_size_cells;
+ 		const __be32 *reg, *endp;
+ 		int l;
+ 		bool hotpluggable;
+@@ -1050,17 +1051,41 @@ int __init early_init_dt_scan_memory(void)
+ 		if (reg == NULL)
+ 			continue;
+ 
++		if (dt_root_size_cells == 2 &&
++		    l % ((dt_root_addr_cells + 1) * sizeof(__be32)) == 0) {
++			const int size_cells = 1;
++			const __be32 *r = reg;
++			bool ok = true;
++
++			/* Scan reg to see if the content makes sense with size-cells == 1 */
++			endp = reg + (l / sizeof(__be32));
++			while ((endp - r) >= (dt_root_addr_cells + size_cells)) {
++				const u64 megabyte = 1024 * 1024ull;
++				const u64 max_memory = 64 * 1024 * 1024 * 1024ull;
++				u64 base, size;
++
++				base = dt_mem_next_cell(dt_root_addr_cells, &r);
++				size = dt_mem_next_cell(size_cells, &r);
++				if (base % megabyte != 0 || base >= max_memory ||
++				    size % megabyte != 0 || size >= max_memory ||
++				    size == 0)
++					ok = false;
++			}
++			if (ok)
++				actual_size_cells = size_cells;
++		}
++
+ 		endp = reg + (l / sizeof(__be32));
+ 		hotpluggable = of_get_flat_dt_prop(node, "hotpluggable", NULL);
+ 
+ 		pr_debug("memory scan node %s, reg size %d,\n",
+ 			 fdt_get_name(fdt, node, NULL), l);
+ 
+-		while ((endp - reg) >= (dt_root_addr_cells + dt_root_size_cells)) {
++		while ((endp - reg) >= (dt_root_addr_cells + actual_size_cells)) {
+ 			u64 base, size;
+ 
+ 			base = dt_mem_next_cell(dt_root_addr_cells, &reg);
+-			size = dt_mem_next_cell(dt_root_size_cells, &reg);
++			size = dt_mem_next_cell(actual_size_cells, &reg);
+ 
+ 			if (size == 0)
+ 				continue;
+diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -159,11 +159,25 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
+ 	int len;
+ 	const __be32 *prop;
+ 	bool nomap, default_cma;
++	int actual_size_cells = 0;
+ 
+ 	prop = of_get_flat_dt_prop(node, "reg", &len);
+ 	if (!prop)
+ 		return -ENOENT;
+ 
++	if (dt_root_addr_cells == 2 &&
++		dt_root_size_cells == 2 &&
++		len == (2 + 1) * sizeof(__be32)) {
++		pr_warn("invalid reg property size in '%s' - firmware out-of-date?\n",
++			uname);
++		actual_size_cells = 1;
++		t_len = (dt_root_addr_cells + actual_size_cells) * sizeof(__be32);
++	} else {
++		actual_size_cells = dt_root_size_cells;
++	}
++
++	t_len = (dt_root_addr_cells + actual_size_cells) * sizeof(__be32);
++
+ 	if (len && len % t_len != 0) {
+ 		pr_err("Reserved memory: invalid reg property in '%s', skipping node.\n",
+ 		       uname);
+@@ -180,7 +194,7 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
+ 
+ 	while (len >= t_len) {
+ 		base = dt_mem_next_cell(dt_root_addr_cells, &prop);
+-		size = dt_mem_next_cell(dt_root_size_cells, &prop);
++		size = dt_mem_next_cell(actual_size_cells, &prop);
+ 
+ 		if (size && early_init_dt_reserve_memory(base, size, nomap) == 0) {
+ 			/* Architecture specific contiguous memory fixup. */
+@@ -267,8 +281,21 @@ void __init fdt_scan_reserved_mem_reg_nodes(void)
+ 		if (default_cma && cma_skip_dt_default_reserved_mem())
+ 			continue;
+ 
+-		if (!of_flat_dt_get_addr_size(child, "reg", &b, &s))
+-			continue;
++		if (!of_flat_dt_get_addr_size(child, "reg", &b, &s)) {
++			const __be32 *prop;
++			int size;
++
++			prop = of_get_flat_dt_prop(child, "reg", &size);
++			if (dt_root_addr_cells == 2 &&
++			    dt_root_size_cells == 2 &&
++			    size == 12) {
++				/* Handle this specific error case from old firmware */
++				b = of_read_number(prop, dt_root_addr_cells);
++				s = of_read_number(prop + 2, 1);
++			} else {
++				continue;
++			}
++		}
+ 
+ 		base = b;
+ 		size = s;
+@@ -406,16 +433,24 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
+ 	const __be32 *prop;
+ 	bool nomap, default_cma;
+ 	int ret;
++	int actual_size_cells;
+ 
+ 	prop = of_get_flat_dt_prop(node, "size", &len);
+ 	if (!prop)
+ 		return -EINVAL;
++	if (dt_root_size_cells == 2 && len == sizeof(__be32)) {
++		pr_warn("invalid reg property size in '%s' - firmware out-of-date?\n",
++			uname);
++		actual_size_cells = 1;
++	} else {
++		actual_size_cells = dt_root_size_cells;
++	}
+ 
+-	if (len != dt_root_size_cells * sizeof(__be32)) {
++	if (len != actual_size_cells * sizeof(__be32)) {
+ 		pr_err("invalid size property in '%s' node.\n", uname);
+ 		return -EINVAL;
+ 	}
+-	size = dt_mem_next_cell(dt_root_size_cells, &prop);
++	size = dt_mem_next_cell(actual_size_cells, &prop);
+ 
+ 	prop = of_get_flat_dt_prop(node, "alignment", &len);
+ 	if (prop) {
 diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
 --- a/drivers/of/overlay.c
 +++ b/drivers/of/overlay.c
@@ -151238,27 +151635,7 @@ diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie
  	return 0;
  }
  
-@@ -1278,7 +1575,7 @@ static void brcm_config_clkreq(struct brcm_pcie *pcie)
- {
- 	static const char err_msg[] = "invalid 'brcm,clkreq-mode' DT string\n";
- 	const char *mode = "default";
--	u32 clkreq_cntl;
-+	u32 clkreq_cntl = 0;
- 	int ret, tmp;
- 
- 	ret = of_property_read_string(pcie->np, "brcm,clkreq-mode", &mode);
-@@ -1287,10 +1584,6 @@ static void brcm_config_clkreq(struct brcm_pcie *pcie)
- 		mode = "safe";
- 	}
- 
--	/* Start out assuming safe mode (both mode bits cleared) */
--	clkreq_cntl = readl(pcie->base + HARD_DEBUG(pcie));
--	clkreq_cntl &= ~PCIE_CLKREQ_MASK;
--
- 	if (strcmp(mode, "no-l1ss") == 0) {
- 		/*
- 		 * "no-l1ss" -- Provides Clock Power Management, L0s, and
-@@ -1324,35 +1617,203 @@ static void brcm_config_clkreq(struct brcm_pcie *pcie)
+@@ -1324,35 +1621,203 @@ static void brcm_config_clkreq(struct brcm_pcie *pcie)
  
  	} else {
  		/*
@@ -151465,7 +151842,7 @@ diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie
  	msleep(PCIE_RESET_CONFIG_WAIT_MS);
  
  	/*
-@@ -1385,6 +1846,20 @@ static int brcm_pcie_start_link(struct brcm_pcie *pcie)
+@@ -1385,6 +1850,20 @@ static int brcm_pcie_start_link(struct brcm_pcie *pcie)
  		 pci_speed_string(pcie_link_speed[cls]), nlw,
  		 ssc_good ? "(SSC)" : "(!SSC)");
  
@@ -151486,7 +151863,7 @@ diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie
  	return 0;
  }
  
-@@ -1705,6 +2180,7 @@ static int brcm_pcie_resume_noirq(struct device *dev)
+@@ -1705,6 +2184,7 @@ static int brcm_pcie_resume_noirq(struct device *dev)
  
  static void __brcm_pcie_remove(struct brcm_pcie *pcie)
  {
@@ -151494,7 +151871,7 @@ diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie
  	brcm_msi_remove(pcie);
  	brcm_pcie_turn_off(pcie);
  	if (brcm_phy_stop(pcie))
-@@ -1778,7 +2254,7 @@ static const struct pcie_cfg_data bcm2712_cfg = {
+@@ -1778,7 +2258,7 @@ static const struct pcie_cfg_data bcm2712_cfg = {
  	.perst_set	= brcm_pcie_perst_set_7278,
  	.bridge_sw_init_set = brcm_pcie_bridge_sw_init_set_generic,
  	.post_setup	= brcm_pcie_post_setup_bcm2712,
@@ -151503,7 +151880,7 @@ diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie
  	.num_inbound_wins = 10,
  };
  
-@@ -1861,6 +2337,98 @@ static struct pci_ops brcm7425_pcie_ops = {
+@@ -1861,6 +2341,98 @@ static struct pci_ops brcm7425_pcie_ops = {
  	.remove_bus = brcm_pcie_remove_bus,
  };
  
@@ -151602,7 +151979,7 @@ diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie
  static int brcm_pcie_probe(struct platform_device *pdev)
  {
  	struct device_node *np = pdev->dev.of_node;
-@@ -1883,6 +2451,19 @@ static int brcm_pcie_probe(struct platform_device *pdev)
+@@ -1883,6 +2455,19 @@ static int brcm_pcie_probe(struct platform_device *pdev)
  	pcie->dev = &pdev->dev;
  	pcie->np = np;
  	pcie->cfg = data;
@@ -151622,7 +151999,7 @@ diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie
  
  	pcie->base = devm_platform_ioremap_resource(pdev, 0);
  	if (IS_ERR(pcie->base))
-@@ -1895,7 +2476,10 @@ static int brcm_pcie_probe(struct platform_device *pdev)
+@@ -1895,7 +2480,10 @@ static int brcm_pcie_probe(struct platform_device *pdev)
  	ret = of_pci_get_max_link_speed(np);
  	pcie->gen = (ret < 0) ? 0 : ret;
  
@@ -155887,7 +156264,7 @@ diff --git a/drivers/regulator/waveshare-panel-regulator.c b/drivers/regulator/w
 new file mode 100644
 --- /dev/null
 +++ b/drivers/regulator/waveshare-panel-regulator.c
-@@ -0,0 +1,327 @@
+@@ -0,0 +1,335 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2024 Waveshare International Limited
@@ -156097,6 +156474,7 @@ new file mode 100644
 +	struct waveshare_panel_lcd *state;
 +	struct regmap *regmap;
 +	unsigned int data;
++	bool pre_power_on;
 +	int ret;
 +
 +	state = devm_kzalloc(&i2c->dev, sizeof(*state), GFP_KERNEL);
@@ -156116,6 +156494,8 @@ new file mode 100644
 +		goto error;
 +	}
 +
++	pre_power_on = device_property_read_bool(&i2c->dev, "pre-power-on");
++
 +	ret = waveshare_panel_i2c_read(i2c, REG_ID, &data);
 +	if (ret == 0)
 +		dev_info(&i2c->dev, "waveshare panel hw id = 0x%x\n", data);
@@ -156131,9 +156511,14 @@ new file mode 100644
 +
 +	state->direction_state = 0;
 +	state->poweron_state = BIT(9) | BIT(8); // Enable VCC
++	if (pre_power_on)
++		state->poweron_state |= BIT(4) | BIT(1) | BIT(0);
 +	regmap_write(regmap, REG_TP, state->poweron_state >> 8);
 +	regmap_write(regmap, REG_LCD, state->poweron_state & 0xff);
-+	msleep(20);
++	if (pre_power_on)
++		msleep(200);
++	else
++		msleep(20);
 +
 +	state->regmap = regmap;
 +	state->gc.parent = &i2c->dev;
