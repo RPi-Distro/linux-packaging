@@ -534,6 +534,14 @@ publish-public-beta:
       artifacts: false
     - job: kconfig-static
       artifacts: false
+  after_script:
+    - !reference [.gh-status-setup]
+    - |
+      case "$CI_JOB_STATUS" in
+        success)  gh_status success beta "Released to beta" ;;
+        canceled) gh_status error   beta "Publish canceled" ;;
+        *)        gh_status failure beta "Publish failed" ;;
+      esac
 
 publish-public-main:
   extends: .publish-public
@@ -573,6 +581,19 @@ publish-public-main:
       artifacts: false
     - job: kconfig-static
       artifacts: false
+  # Post the terminal release status from the same job that actually
+  # performs the apt publish: after_script sees $CI_JOB_STATUS directly,
+  # so no needs:/rules: gymnastics across the cascade. Replaces the
+  # standalone notify-released job which fired prematurely whenever the
+  # cascade skipped (e.g. while publish-public-main was still manual).
+  after_script:
+    - !reference [.gh-status-setup]
+    - |
+      case "$CI_JOB_STATUS" in
+        success)  gh_status success release "Released" ;;
+        canceled) gh_status error   release "Publish canceled" ;;
+        *)        gh_status failure release "Publish failed" ;;
+      esac
 
 # Promote $RELEASE-beta-next -> $RELEASE-beta on a green publish-public-beta.
 # Authenticates with `$CI_JOB_TOKEN`; requires Settings -> CI/CD ->
@@ -719,40 +740,43 @@ mirror-to-github:
   - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+(-beta)?-next$/
     when: always
 
-# notify-released fires after the release-promotion cascade. Release
-# branch only; when:always so failures get reported too.
-.notify-released-rules:
-  - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
-    when: always
+# Shared shell setup for any job that posts to GitHub Commit Statuses.
+# Inlined via !reference from both .gh-status (notify-* jobs) and
+# publish-public-main (release "Released"/failure post). after_script
+# runs in a fresh shell, so jobs that only need the setter there cannot
+# rely on before_script - hence the reference shape.
+.gh-status-setup:
+  - apt-get update
+  - eatmydata apt-get install --no-install-recommends -y curl jq
+  - |
+    FLOW=
+    case "$CI_COMMIT_REF_NAME" in
+      pios/*-beta-next) FLOW=beta ;;
+      pios/*-next)      FLOW=release ;;
+    esac
+    GITHUB_KERNEL_SHA=$(sed -n 's/.*Linux commit:[[:space:]]*\([0-9a-fA-F]\{7,40\}\).*/\1/p' debian/changelog | head -1)
+    [ -n "$GITHUB_KERNEL_SHA" ] || { echo "no 'Linux commit:' line in debian/changelog" >&2; exit 1; }
+    gh_status() {
+      local state="$1" context="$RELEASE/$2" description="$3"
+      : "${GITHUB_KERNEL_REPO:?must be set}"
+      : "${GITHUB_KERNEL_STATUS_TOKEN:?must be set}"
+      local payload
+      payload=$(jq -nc \
+        --arg state "$state" --arg context "$context" \
+        --arg description "$description" \
+        '{state:$state, context:$context, description:$description}')
+      curl -sS --fail-with-body -X POST \
+        -H "Authorization: Bearer $GITHUB_KERNEL_STATUS_TOKEN" \
+        -H "Accept: application/vnd.github+json" \
+        "https://api.github.com/repos/$GITHUB_KERNEL_REPO/statuses/$GITHUB_KERNEL_SHA" \
+        -d "$payload"
+    }
 
 .gh-status:
   image: $SALSA_CI_IMAGES_BASE
   before_script:
-    - apt-get update
-    - eatmydata apt-get install --no-install-recommends -y curl jq
+    - !reference [.gh-status-setup]
     - |
-      FLOW=
-      case "$CI_COMMIT_REF_NAME" in
-        pios/*-beta-next) FLOW=beta ;;
-        pios/*-next)      FLOW=release ;;
-      esac
-      GITHUB_KERNEL_SHA=$(sed -n 's/.*Linux commit:[[:space:]]*\([0-9a-fA-F]\{7,40\}\).*/\1/p' debian/changelog | head -1)
-      [ -n "$GITHUB_KERNEL_SHA" ] || { echo "no 'Linux commit:' line in debian/changelog" >&2; exit 1; }
-      gh_status() {
-        local state="$1" context="$RELEASE/$2" description="$3"
-        : "${GITHUB_KERNEL_REPO:?must be set}"
-        : "${GITHUB_KERNEL_STATUS_TOKEN:?must be set}"
-        local payload
-        payload=$(jq -nc \
-          --arg state "$state" --arg context "$context" \
-          --arg description "$description" \
-          '{state:$state, context:$context, description:$description}')
-        curl -sS --fail-with-body -X POST \
-          -H "Authorization: Bearer $GITHUB_KERNEL_STATUS_TOKEN" \
-          -H "Accept: application/vnd.github+json" \
-          "https://api.github.com/repos/$GITHUB_KERNEL_REPO/statuses/$GITHUB_KERNEL_SHA" \
-          -d "$payload"
-      }
       job_status() {
         curl -sS -H "JOB-TOKEN: $CI_JOB_TOKEN" \
           "$CI_API_V4_URL/projects/$CI_PROJECT_ID/pipelines/$CI_PIPELINE_ID/jobs?per_page=100" \
@@ -802,78 +826,26 @@ notify-test:
         gh_status failure "$FLOW" "Test failed: $failed"
       fi
 
+# notify-deploy now only fires on the release branch: posts "Staged"
+# pending status once publish-internal-main succeeds. Terminal beta and
+# release-publish statuses come from publish-public-beta and
+# publish-public-main's after_script directly.
 notify-deploy:
   extends: .gh-status
   stage: notify
   rules:
-    - !reference [.notify-phase-rules]
+    - if: $CI_COMMIT_REF_NAME =~ /^pios\/[a-z]+-next$/
+      when: always
   needs:
-    - job: publish-public-beta
-      artifacts: false
-      optional: true
-    - job: promote-beta
-      artifacts: false
-      optional: true
     - job: publish-internal-main
       artifacts: false
       optional: true
   script:
     - |
-      check_failed() {
-        local failed=""
-        for j in "$@"; do
-          st=$(job_status "$j")
-          [ -z "$st" ] && continue
-          [ "$st" = success ] && continue
-          [ "$st" = skipped ] && continue
-          failed="${failed:+$failed, }$j"
-        done
-        echo "$failed"
-      }
-      case "$FLOW" in
-        beta)
-          failed=$(check_failed publish-public-beta promote-beta)
-          if [ -z "$failed" ]; then
-            gh_status success beta "Released to beta"
-          else
-            gh_status failure beta "Publish failed: $failed"
-          fi
-          ;;
-        release)
-          failed=$(check_failed publish-internal-main)
-          if [ -z "$failed" ]; then
-            gh_status pending release "Staged"
-          else
-            gh_status failure release "Publish failed: $failed"
-          fi
-          ;;
-      esac
-
-notify-released:
-  extends: .gh-status
-  stage: notify
-  rules:
-    - !reference [.notify-released-rules]
-  # Only depend on mirror-to-github (tail of the release-promotion
-  # cascade). publish-public-main is `when: manual`, which GitLab treats
-  # as terminal for needs: purposes, so depending on it directly causes
-  # notify-released to fire too early - before the bridge plays the
-  # publish job - and report a spurious failure.
-  needs:
-    - job: mirror-to-github
-      artifacts: false
-  script:
-    - |
-      failed=""
-      for j in publish-public-main promote-main sync-beta-base mirror-to-github; do
-        st=$(job_status "$j")
-        [ -z "$st" ] && continue
-        [ "$st" = success ] && continue
-        [ "$st" = skipped ] && continue
-        failed="${failed:+$failed, }$j"
-      done
-      if [ -z "$failed" ]; then
-        gh_status success release "Released"
+      st=$(job_status publish-internal-main)
+      if [ "$st" = success ]; then
+        gh_status pending release "Staged"
       else
-        gh_status failure release "Release failed: $failed"
+        gh_status failure release "Publish failed: publish-internal-main ($st)"
       fi
+
