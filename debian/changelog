@@ -1,3 +1,15 @@
+linux (1:6.18.34-1+rpt1) trixie; urgency=medium
+
+  * Raspberry Pi OS release
+  * salsa-ci: narrow notify-released needs: to mirror-to-github only
+  * salsa-ci: collapse notify-* contexts to one per flow
+  * rpi/update: pin QUILT_PATCHES and skip quiltrc
+  * Update Raspberry Pi patch
+  * Update debian/config
+  * Linux commit: c8c7494100e99ee05b11aaa4f0588a223a63d1af
+
+ -- Serge Schneider <serge@raspberrypi.com>  Tue, 09 Jun 2026 14:55:28 +0100
+
 linux (1:6.18.33-1+rpt1) trixie; urgency=medium
 
   [ Bastian Blank ]
