@@ -66920,6 +66920,18 @@ diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
  }
  
  void arch_sync_dma_for_cpu(phys_addr_t paddr, size_t size,
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -216,7 +216,7 @@ static const struct ata_port_info ahci_port_info[] = {
+ 	/* JMicron JMB582/585: 64-bit DMA is broken, force 32-bit */
+ 	[board_ahci_jmb585] = {
+ 		AHCI_HFLAGS	(AHCI_HFLAG_IGN_IRQ_IF_ERR |
+-				 AHCI_HFLAG_32BIT_ONLY),
++				 0*AHCI_HFLAG_32BIT_ONLY),
+ 		.flags		= AHCI_FLAG_COMMON,
+ 		.pio_mask	= ATA_PIO4,
+ 		.udma_mask	= ATA_UDMA6,
 diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
 --- a/drivers/bluetooth/btbcm.c
 +++ b/drivers/bluetooth/btbcm.c
@@ -74846,7 +74858,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  		return;
  	}
  
-@@ -657,34 +744,48 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
+@@ -655,34 +742,48 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
  	size_t axi_block_ts;
  	size_t block_ts;
  	u32 ctllo, ctlhi;
@@ -74904,7 +74916,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  			DWAXIDMAC_CH_CTL_L_INC << CH_CTL_L_DST_INC_POS |
  			DWAXIDMAC_CH_CTL_L_NOINC << CH_CTL_L_SRC_INC_POS;
  		block_ts = len >> reg_width;
-@@ -693,6 +794,11 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
+@@ -691,6 +792,11 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
  		return -EINVAL;
  	}
  
@@ -74916,7 +74928,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	if (block_ts > axi_block_ts)
  		return -EINVAL;
  
-@@ -703,7 +809,7 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
+@@ -701,7 +807,7 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
  	ctlhi = CH_CTL_H_LLI_VALID;
  
  	if (chan->chip->dw->hdata->restrict_axi_burst_len) {
@@ -74925,7 +74937,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  		ctlhi |= CH_CTL_H_ARLEN_EN | CH_CTL_H_AWLEN_EN |
  			 burst_len << CH_CTL_H_ARLEN_POS |
  			 burst_len << CH_CTL_H_AWLEN_POS;
-@@ -720,14 +826,17 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
+@@ -718,14 +824,17 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
  	}
  
  	hw_desc->lli->block_ts_lo = cpu_to_le32(block_ts - 1);
@@ -74946,7 +74958,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	return 0;
  }
  
-@@ -744,9 +853,6 @@ static size_t calculate_block_len(struct axi_dma_chan *chan,
+@@ -742,9 +851,6 @@ static size_t calculate_block_len(struct axi_dma_chan *chan,
  	case DMA_MEM_TO_DEV:
  		data_width = BIT(chan->chip->dw->hdata->m_data_width);
  		mem_width = __ffs(data_width | dma_addr | buf_len);
@@ -74956,7 +74968,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  		block_len = axi_block_ts << mem_width;
  		break;
  	case DMA_DEV_TO_MEM:
-@@ -817,6 +923,8 @@ dw_axi_dma_chan_prep_cyclic(struct dma_chan *dchan, dma_addr_t dma_addr,
+@@ -815,6 +921,8 @@ dw_axi_dma_chan_prep_cyclic(struct dma_chan *dchan, dma_addr_t dma_addr,
  		src_addr += segment_len;
  	}
  
@@ -74965,7 +74977,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	llp = desc->hw_desc[0].llp;
  
  	/* Managed transfer list */
-@@ -882,6 +990,9 @@ dw_axi_dma_chan_prep_slave_sg(struct dma_chan *dchan, struct scatterlist *sgl,
+@@ -880,6 +988,9 @@ dw_axi_dma_chan_prep_slave_sg(struct dma_chan *dchan, struct scatterlist *sgl,
  		mem = sg_dma_address(sg);
  		len = sg_dma_len(sg);
  		num_segments = DIV_ROUND_UP(sg_dma_len(sg), axi_block_len);
@@ -74975,7 +74987,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  		segment_len = DIV_ROUND_UP(sg_dma_len(sg), num_segments);
  
  		do {
-@@ -896,6 +1007,8 @@ dw_axi_dma_chan_prep_slave_sg(struct dma_chan *dchan, struct scatterlist *sgl,
+@@ -894,6 +1005,8 @@ dw_axi_dma_chan_prep_slave_sg(struct dma_chan *dchan, struct scatterlist *sgl,
  		} while (len >= segment_len);
  	}
  
@@ -74984,7 +74996,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	/* Set end-of-link to the last link descriptor of list */
  	set_desc_last(&desc->hw_desc[num_sgs - 1]);
  
-@@ -974,7 +1087,7 @@ dma_chan_prep_dma_memcpy(struct dma_chan *dchan, dma_addr_t dst_adr,
+@@ -972,7 +1085,7 @@ dma_chan_prep_dma_memcpy(struct dma_chan *dchan, dma_addr_t dst_adr,
  
  		reg = CH_CTL_H_LLI_VALID;
  		if (chan->chip->dw->hdata->restrict_axi_burst_len) {
@@ -74993,7 +75005,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  
  			reg |= (CH_CTL_H_ARLEN_EN |
  				burst_len << CH_CTL_H_ARLEN_POS |
-@@ -1003,6 +1116,8 @@ dma_chan_prep_dma_memcpy(struct dma_chan *dchan, dma_addr_t dst_adr,
+@@ -1001,6 +1114,8 @@ dma_chan_prep_dma_memcpy(struct dma_chan *dchan, dma_addr_t dst_adr,
  		num++;
  	}
  
@@ -75002,7 +75014,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	/* Set end-of-link to the last link descriptor of list */
  	set_desc_last(&desc->hw_desc[num - 1]);
  	/* Managed transfer list */
-@@ -1051,7 +1166,7 @@ static void axi_chan_dump_lli(struct axi_dma_chan *chan,
+@@ -1049,7 +1164,7 @@ static void axi_chan_dump_lli(struct axi_dma_chan *chan,
  static void axi_chan_list_dump_lli(struct axi_dma_chan *chan,
  				   struct axi_dma_desc *desc_head)
  {
@@ -75011,7 +75023,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	int i;
  
  	for (i = 0; i < count; i++)
-@@ -1094,11 +1209,11 @@ static noinline void axi_chan_handle_err(struct axi_dma_chan *chan, u32 status)
+@@ -1092,11 +1207,11 @@ static noinline void axi_chan_handle_err(struct axi_dma_chan *chan, u32 status)
  
  static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
  {
@@ -75024,7 +75036,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	u64 llp;
  	int i;
  
-@@ -1120,6 +1235,7 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
+@@ -1118,6 +1233,7 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
  	if (chan->cyclic) {
  		desc = vd_to_axi_desc(vd);
  		if (desc) {
@@ -75032,7 +75044,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  			llp = lo_hi_readq(chan->chan_regs + CH_LLP);
  			for (i = 0; i < count; i++) {
  				hw_desc = &desc->hw_desc[i];
-@@ -1140,6 +1256,9 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
+@@ -1138,6 +1254,9 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
  		/* Remove the completed descriptor from issued list before completing */
  		list_del(&vd->node);
  		vchan_cookie_complete(vd);
@@ -75042,7 +75054,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	}
  
  out:
-@@ -1357,19 +1476,85 @@ static int __maybe_unused axi_dma_runtime_resume(struct device *dev)
+@@ -1355,19 +1474,85 @@ static int __maybe_unused axi_dma_runtime_resume(struct device *dev)
  	return axi_dma_resume(chip);
  }
  
@@ -75132,7 +75144,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	return dchan;
  }
  
-@@ -1377,6 +1562,7 @@ static int parse_device_properties(struct axi_dma_chip *chip)
+@@ -1375,6 +1560,7 @@ static int parse_device_properties(struct axi_dma_chip *chip)
  {
  	struct device *dev = chip->dev;
  	u32 tmp, carr[DMAC_MAX_CHANNELS];
@@ -75140,7 +75152,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	int ret;
  
  	ret = device_property_read_u32(dev, "dma-channels", &tmp);
-@@ -1397,6 +1583,10 @@ static int parse_device_properties(struct axi_dma_chip *chip)
+@@ -1395,6 +1581,10 @@ static int parse_device_properties(struct axi_dma_chip *chip)
  
  	chip->dw->hdata->nr_masters = tmp;
  
@@ -75151,7 +75163,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	ret = device_property_read_u32(dev, "snps,data-width", &tmp);
  	if (ret)
  		return ret;
-@@ -1429,17 +1619,32 @@ static int parse_device_properties(struct axi_dma_chip *chip)
+@@ -1427,17 +1617,32 @@ static int parse_device_properties(struct axi_dma_chip *chip)
  	}
  
  	/* axi-max-burst-len is optional property */
@@ -75192,7 +75204,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	return 0;
  }
  
-@@ -1467,6 +1672,7 @@ static int dw_probe(struct platform_device *pdev)
+@@ -1465,6 +1670,7 @@ static int dw_probe(struct platform_device *pdev)
  	struct dw_axi_dma *dw;
  	struct dw_axi_dma_hcfg *hdata;
  	struct reset_control *resets;
@@ -75200,7 +75212,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	unsigned int flags;
  	u32 i;
  	int ret;
-@@ -1550,7 +1756,7 @@ static int dw_probe(struct platform_device *pdev)
+@@ -1548,7 +1754,7 @@ static int dw_probe(struct platform_device *pdev)
  	dma_cap_set(DMA_CYCLIC, dw->dma.cap_mask);
  
  	/* DMA capabilities */
@@ -75209,7 +75221,7 @@ diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi
  	dw->dma.src_addr_widths = AXI_DMA_BUSWIDTHS;
  	dw->dma.dst_addr_widths = AXI_DMA_BUSWIDTHS;
  	dw->dma.directions = BIT(DMA_MEM_TO_MEM);
-@@ -1577,9 +1783,21 @@ static int dw_probe(struct platform_device *pdev)
+@@ -1575,9 +1781,21 @@ static int dw_probe(struct platform_device *pdev)
  	 * Synopsis DesignWare AxiDMA datasheet mentioned Maximum
  	 * supported blocks is 1024. Device register width is 4 bytes.
  	 * Therefore, set constraint to 1024 * 4.
@@ -92476,7 +92488,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  	default:
  		DRM_DEBUG("Unknown parameter %d\n", args->param);
  		return -EINVAL;
-@@ -136,12 +154,24 @@ v3d_open(struct drm_device *dev, struct drm_file *file)
+@@ -144,12 +162,24 @@ v3d_open(struct drm_device *dev, struct drm_file *file)
  static void
  v3d_postclose(struct drm_device *dev, struct drm_file *file)
  {
@@ -92502,7 +92514,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  	v3d_perfmon_close_file(v3d_priv);
  	kfree(v3d_priv);
  }
-@@ -214,6 +244,7 @@ static const struct drm_ioctl_desc v3d_drm_ioctls[] = {
+@@ -222,6 +252,7 @@ static const struct drm_ioctl_desc v3d_drm_ioctls[] = {
  	DRM_IOCTL_DEF_DRV(V3D_PERFMON_GET_VALUES, v3d_perfmon_get_values_ioctl, DRM_RENDER_ALLOW),
  	DRM_IOCTL_DEF_DRV(V3D_SUBMIT_CPU, v3d_submit_cpu_ioctl, DRM_RENDER_ALLOW | DRM_AUTH),
  	DRM_IOCTL_DEF_DRV(V3D_PERFMON_GET_COUNTER, v3d_perfmon_get_counter_ioctl, DRM_RENDER_ALLOW),
@@ -92510,7 +92522,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  };
  
  static const struct drm_driver v3d_drm_driver = {
-@@ -245,14 +276,44 @@ static const struct drm_driver v3d_drm_driver = {
+@@ -253,14 +284,44 @@ static const struct drm_driver v3d_drm_driver = {
  };
  
  static const struct of_device_id v3d_of_match[] = {
@@ -92559,7 +92571,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  static int
  map_regs(struct v3d_dev *v3d, void __iomem **regs, const char *name)
  {
-@@ -263,8 +324,11 @@ map_regs(struct v3d_dev *v3d, void __iomem **regs, const char *name)
+@@ -271,8 +332,11 @@ map_regs(struct v3d_dev *v3d, void __iomem **regs, const char *name)
  static int v3d_platform_drm_probe(struct platform_device *pdev)
  {
  	struct device *dev = &pdev->dev;
@@ -92571,7 +92583,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  	int ret;
  	u32 mmu_debug;
  	u32 ident1, ident3;
-@@ -278,6 +342,9 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
+@@ -286,6 +350,9 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
  
  	platform_set_drvdata(pdev, drm);
  
@@ -92581,7 +92593,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  	ret = map_regs(v3d, &v3d->hub_regs, "hub");
  	if (ret)
  		return ret;
-@@ -286,6 +353,12 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
+@@ -294,6 +361,12 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
  	if (ret)
  		return ret;
  
@@ -92594,7 +92606,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  	v3d->clk = devm_clk_get_optional(dev, NULL);
  	if (IS_ERR(v3d->clk))
  		return dev_err_probe(dev, PTR_ERR(v3d->clk), "Failed to get V3D clock\n");
-@@ -296,6 +369,8 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
+@@ -304,6 +377,8 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
  		return ret;
  	}
  
@@ -92603,7 +92615,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  	mmu_debug = V3D_READ(V3D_MMU_DEBUG_INFO);
  	mask = DMA_BIT_MASK(30 + V3D_GET_FIELD(mmu_debug, V3D_MMU_PA_WIDTH));
  	ret = dma_set_mask_and_coherent(dev, mask);
-@@ -309,6 +384,11 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
+@@ -317,6 +392,11 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
  	ident1 = V3D_READ(V3D_HUB_IDENT1);
  	v3d->ver = (V3D_GET_FIELD(ident1, V3D_HUB_IDENT1_TVER) * 10 +
  		    V3D_GET_FIELD(ident1, V3D_HUB_IDENT1_REV));
@@ -92615,7 +92627,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  	v3d->cores = V3D_GET_FIELD(ident1, V3D_HUB_IDENT1_NCORES);
  	WARN_ON(v3d->cores > 1); /* multicore not yet implemented */
  
-@@ -333,7 +413,32 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
+@@ -341,7 +421,32 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
  		}
  	}
  
@@ -92649,7 +92661,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  		ret = map_regs(v3d, &v3d->gca_regs, "gca");
  		if (ret)
  			goto clk_disable;
-@@ -362,6 +467,8 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
+@@ -370,6 +475,8 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
  	ret = v3d_sysfs_init(dev);
  	if (ret)
  		goto drm_unregister;
@@ -92658,7 +92670,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
  
  	return 0;
  
-@@ -393,6 +500,8 @@ static void v3d_platform_drm_remove(struct platform_device *pdev)
+@@ -401,6 +508,8 @@ static void v3d_platform_drm_remove(struct platform_device *pdev)
  	dma_free_wc(v3d->drm.dev, 4096, v3d->mmu_scratch,
  		    v3d->mmu_scratch_paddr);
  
@@ -93531,7 +93543,24 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
   * semaphores to interlock between them.
   */
  
-@@ -120,18 +120,26 @@ v3d_cpu_job_free(struct drm_sched_job *sched_job)
+@@ -103,21 +103,43 @@ v3d_performance_query_info_free(struct v3d_performance_query_info *query_info,
+ 	}
+ }
+ 
++static void
++v3d_cpu_job_free(struct drm_sched_job *sched_job)
++{
++	struct v3d_cpu_job *job = to_cpu_job(sched_job);
++
++	v3d_timestamp_query_info_free(&job->timestamp_query,
++				      job->timestamp_query.count);
++
++	v3d_performance_query_info_free(&job->performance_query,
++					job->performance_query.count);
++
++	v3d_job_cleanup(&job->base);
++}
++
  static void
  v3d_switch_perfmon(struct v3d_dev *v3d, struct v3d_job *job)
  {
@@ -93562,7 +93591,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  	struct v3d_stats *global_stats = &v3d->queue[queue].stats;
  	struct v3d_stats *local_stats = &file->stats[queue];
  	u64 now = local_clock();
-@@ -186,11 +194,11 @@ v3d_stats_update(struct v3d_stats *stats, u64 now)
+@@ -172,11 +194,11 @@ v3d_stats_update(struct v3d_stats *stats, u64 now)
  }
  
  void
@@ -93577,7 +93606,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  	u64 now = local_clock();
  	unsigned long flags;
  
-@@ -201,10 +209,10 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
+@@ -187,10 +209,10 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
  		preempt_disable();
  
  	/* Don't update the local stats if the file context has already closed */
@@ -93592,7 +93621,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  
  	v3d_stats_update(global_stats, now);
  
-@@ -218,23 +226,28 @@ static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
+@@ -204,23 +226,28 @@ static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
  {
  	struct v3d_bin_job *job = to_bin_job(sched_job);
  	struct v3d_dev *v3d = job->base.v3d;
@@ -93625,7 +93654,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  
  	v3d_invalidate_caches(v3d);
  
-@@ -277,10 +290,12 @@ static struct dma_fence *v3d_render_job_run(struct drm_sched_job *sched_job)
+@@ -263,10 +290,12 @@ static struct dma_fence *v3d_render_job_run(struct drm_sched_job *sched_job)
  	struct drm_device *dev = &v3d->drm;
  	struct dma_fence *fence;
  
@@ -93640,7 +93669,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  
  	/* Can we avoid this flush?  We need to be careful of
  	 * scheduling, though -- imagine job0 rendering to texture and
-@@ -323,10 +338,12 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
+@@ -309,10 +338,12 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
  	struct drm_device *dev = &v3d->drm;
  	struct dma_fence *fence;
  
@@ -93655,7 +93684,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  
  	fence = v3d_fence_create(v3d, V3D_TFU);
  	if (IS_ERR(fence))
-@@ -345,11 +362,11 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
+@@ -331,11 +362,11 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
  	V3D_WRITE(V3D_TFU_ICA(v3d->ver), job->args.ica);
  	V3D_WRITE(V3D_TFU_IUA(v3d->ver), job->args.iua);
  	V3D_WRITE(V3D_TFU_IOA(v3d->ver), job->args.ioa);
@@ -93669,7 +93698,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  		V3D_WRITE(V3D_TFU_COEF1(v3d->ver), job->args.coef[1]);
  		V3D_WRITE(V3D_TFU_COEF2(v3d->ver), job->args.coef[2]);
  		V3D_WRITE(V3D_TFU_COEF3(v3d->ver), job->args.coef[3]);
-@@ -369,10 +386,12 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
+@@ -355,10 +386,12 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
  	struct dma_fence *fence;
  	int i, csd_cfg0_reg;
  
@@ -93684,7 +93713,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  
  	v3d_invalidate_caches(v3d);
  
-@@ -398,7 +417,7 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
+@@ -384,7 +417,7 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
  	 *
  	 * XXX: Set the CFG7 register
  	 */
@@ -93693,7 +93722,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  		V3D_CORE_WRITE(0, V3D_V7_CSD_QUEUED_CFG7, 0);
  
  	/* CFG0 write kicks off the job. */
-@@ -556,7 +575,7 @@ static void
+@@ -542,7 +575,7 @@ static void
  v3d_reset_performance_queries(struct v3d_cpu_job *job)
  {
  	struct v3d_performance_query_info *performance_query = &job->performance_query;
@@ -93702,7 +93731,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  	struct v3d_dev *v3d = job->base.v3d;
  	struct v3d_perfmon *perfmon;
  
-@@ -586,7 +605,7 @@ v3d_write_performance_query_result(struct v3d_cpu_job *job, void *data,
+@@ -572,7 +605,7 @@ v3d_write_performance_query_result(struct v3d_cpu_job *job, void *data,
  {
  	struct v3d_performance_query_info *performance_query =
  						&job->performance_query;
@@ -93711,7 +93740,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  	struct v3d_performance_query *perf_query =
  			&performance_query->queries[query];
  	struct v3d_dev *v3d = job->base.v3d;
-@@ -669,8 +688,6 @@ v3d_cpu_job_run(struct drm_sched_job *sched_job)
+@@ -655,8 +688,6 @@ v3d_cpu_job_run(struct drm_sched_job *sched_job)
  	struct v3d_cpu_job *job = to_cpu_job(sched_job);
  	struct v3d_dev *v3d = job->base.v3d;
  
@@ -93720,6 +93749,15 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  	if (job->job_type >= ARRAY_SIZE(cpu_job_function)) {
  		DRM_DEBUG_DRIVER("Unknown CPU job: %d\n", job->job_type);
  		return NULL;
+@@ -832,7 +863,7 @@ static const struct drm_sched_backend_ops v3d_cache_clean_sched_ops = {
+ static const struct drm_sched_backend_ops v3d_cpu_sched_ops = {
+ 	.run_job = v3d_cpu_job_run,
+ 	.timedout_job = v3d_generic_job_timedout,
+-	.free_job = v3d_sched_job_free
++	.free_job = v3d_cpu_job_free
+ };
+ 
+ int
 diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
 --- a/drivers/gpu/drm/v3d/v3d_submit.c
 +++ b/drivers/gpu/drm/v3d/v3d_submit.c
@@ -93811,7 +93849,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
  	int i;
  
  	if (job->bo) {
-@@ -98,12 +141,31 @@ v3d_job_free(struct kref *ref)
+@@ -98,6 +141,9 @@ v3d_job_free(struct kref *ref)
  	dma_fence_put(job->irq_fence);
  	dma_fence_put(job->done_fence);
  
@@ -93821,29 +93859,56 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
  	if (job->perfmon)
  		v3d_perfmon_put(job->perfmon);
  
- 	kfree(job);
+@@ -105,33 +151,31 @@ v3d_job_free(struct kref *ref)
  }
  
-+static void
+ static void
+-v3d_render_job_free(struct kref *ref)
 +v3d_job_free(struct kref *ref)
-+{
+ {
+-	struct v3d_render_job *job = container_of(ref, struct v3d_render_job,
+-						  base.refcount);
+-	struct v3d_bo *bo, *save;
+-
+-	list_for_each_entry_safe(bo, save, &job->unref_list, unref_head) {
+-		drm_gem_object_put(&bo->base.base);
+-	}
 +	struct v3d_job *job = container_of(ref, struct v3d_job, refcount);
-+
+ 
+-	v3d_job_free(ref);
 +	v3d_job_free_common(job, true);
-+}
-+
-+static void
-+v3d_cpu_job_free(struct kref *ref)
-+{
+ }
+ 
+ static void
+ v3d_cpu_job_free(struct kref *ref)
+ {
+-	struct v3d_cpu_job *job = container_of(ref, struct v3d_cpu_job,
+-					       base.refcount);
 +	struct v3d_job *job = container_of(ref, struct v3d_job, refcount);
-+
+ 
+-	v3d_timestamp_query_info_free(&job->timestamp_query,
+-				      job->timestamp_query.count);
 +	v3d_job_free_common(job, false);
 +}
-+
- static void
- v3d_render_job_free(struct kref *ref)
- {
-@@ -165,7 +227,7 @@ v3d_job_init(struct v3d_dev *v3d, struct drm_file *file_priv,
+ 
+-	v3d_performance_query_info_free(&job->performance_query,
+-					job->performance_query.count);
++static void
++v3d_render_job_free(struct kref *ref)
++{
++	struct v3d_render_job *job = container_of(ref, struct v3d_render_job,
++						  base.refcount);
++	struct v3d_bo *bo, *save;
+ 
+-	if (job->indirect_csd.indirect)
+-		drm_gem_object_put(job->indirect_csd.indirect);
++	list_for_each_entry_safe(bo, save, &job->unref_list, unref_head) {
++		drm_gem_object_put(&bo->base.base);
++	}
+ 
+ 	v3d_job_free(ref);
+ }
+@@ -183,7 +227,7 @@ v3d_job_init(struct v3d_dev *v3d, struct drm_file *file_priv,
  
  	job->v3d = v3d;
  	job->free = free;
@@ -93852,7 +93917,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
  
  	ret = drm_sched_job_init(&job->base, &v3d_priv->sched_entity[queue],
  				 1, v3d_priv);
-@@ -198,6 +260,8 @@ v3d_job_init(struct v3d_dev *v3d, struct drm_file *file_priv,
+@@ -216,6 +260,8 @@ v3d_job_init(struct v3d_dev *v3d, struct drm_file *file_priv,
  		if (ret && ret != -ENOENT)
  			goto fail_deps;
  	}
@@ -93861,7 +93926,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
  
  	kref_init(&job->refcount);
  
-@@ -981,6 +1045,11 @@ v3d_submit_cl_ioctl(struct drm_device *dev, void *data,
+@@ -1004,6 +1050,11 @@ v3d_submit_cl_ioctl(struct drm_device *dev, void *data,
  		goto fail;
  
  	if (args->perfmon_id) {
@@ -93873,7 +93938,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
  		render->base.perfmon = v3d_perfmon_find(v3d_priv,
  							args->perfmon_id);
  
-@@ -1196,6 +1265,11 @@ v3d_submit_csd_ioctl(struct drm_device *dev, void *data,
+@@ -1219,6 +1270,11 @@ v3d_submit_csd_ioctl(struct drm_device *dev, void *data,
  		goto fail;
  
  	if (args->perfmon_id) {
@@ -93885,16 +93950,12 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
  		job->base.perfmon = v3d_perfmon_find(v3d_priv,
  						     args->perfmon_id);
  		if (!job->base.perfmon) {
-@@ -1305,7 +1379,7 @@ v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
- 	trace_v3d_submit_cpu_ioctl(&v3d->drm, cpu_job->job_type);
- 
- 	ret = v3d_job_init(v3d, file_priv, &cpu_job->base,
--			   v3d_job_free, 0, &se, V3D_CPU);
-+			   v3d_cpu_job_free, 0, &se, V3D_CPU);
- 	if (ret) {
- 		v3d_job_deallocate((void *)&cpu_job);
- 		goto fail;
-@@ -1393,3 +1467,14 @@ v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
+@@ -1411,6 +1467,19 @@ v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
+ 	v3d_job_cleanup((void *)csd_job);
+ 	v3d_job_cleanup(clean_job);
+ 	v3d_put_multisync_post_deps(&se);
++	kvfree(cpu_job->timestamp_query.queries);
++	kvfree(cpu_job->performance_query.queries);
  
  	return ret;
  }
@@ -105954,7 +106015,7 @@ diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
  #define USB_VENDOR_ID_BELKIN		0x050d
  #define USB_DEVICE_ID_FLIP_KVM		0x3201
  
-@@ -1484,6 +1487,9 @@
+@@ -1485,6 +1488,9 @@
  #define USB_VENDOR_ID_XIAOMI		0x2717
  #define USB_DEVICE_ID_MI_SILENT_MOUSE	0x5014
  
@@ -105975,7 +106036,7 @@ diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
  	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_MULTI_TOUCH), HID_QUIRK_MULTI_INPUT },
  	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_PIXART_USB_OPTICAL_MOUSE), HID_QUIRK_ALWAYS_POLL },
  	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_PIXART_USB_OPTICAL_MOUSE2), HID_QUIRK_ALWAYS_POLL },
-@@ -217,6 +218,7 @@ static const struct hid_device_id hid_quirks[] = {
+@@ -218,6 +219,7 @@ static const struct hid_device_id hid_quirks[] = {
  	{ HID_USB_DEVICE(USB_VENDOR_ID_WISEGROUP, USB_DEVICE_ID_QUAD_USB_JOYPAD), HID_QUIRK_NOGET | HID_QUIRK_MULTI_INPUT },
  	{ HID_USB_DEVICE(USB_VENDOR_ID_XIN_MO, USB_DEVICE_ID_XIN_MO_DUAL_ARCADE), HID_QUIRK_MULTI_INPUT },
  	{ HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, USB_DEVICE_ID_LOGITECH_GROUP_AUDIO), HID_QUIRK_NOGET },
@@ -105995,7 +106056,7 @@ diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
  module_param_named(mousepoll, hid_mousepoll_interval, uint, 0644);
  MODULE_PARM_DESC(mousepoll, "Polling interval of mice");
  
-@@ -1132,7 +1132,9 @@ static int usbhid_start(struct hid_device *hid)
+@@ -1133,7 +1133,9 @@ static int usbhid_start(struct hid_device *hid)
  		 */
  		switch (hid->collection->usage) {
  		case HID_GD_MOUSE:
@@ -106006,7 +106067,7 @@ diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
  				interval = hid_mousepoll_interval;
  			break;
  		case HID_GD_JOYSTICK:
-@@ -1144,6 +1146,7 @@ static int usbhid_start(struct hid_device *hid)
+@@ -1145,6 +1147,7 @@ static int usbhid_start(struct hid_device *hid)
  				interval = hid_kbpoll_interval;
  			break;
  		}
@@ -155177,8 +155238,8 @@ diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
  #define CID_MANFID_NUMONYX	0xFE
  
  #define END_FIXUP { NULL }
-@@ -300,4 +302,9 @@ static inline int mmc_card_no_uhs_ddr50_tuning(const struct mmc_card *c)
- 	return c->quirks & MMC_QUIRK_NO_UHS_DDR50_TUNING;
+@@ -305,4 +307,9 @@ static inline int mmc_card_fixed_secure_erase_trim_time(const struct mmc_card *c
+ 	return c->quirks & MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME;
  }
  
 +static inline int mmc_card_working_sd_cq(const struct mmc_card *c)
@@ -155300,7 +155361,7 @@ diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
 diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
 --- a/drivers/mmc/core/queue.c
 +++ b/drivers/mmc/core/queue.c
-@@ -266,6 +266,11 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
+@@ -271,6 +271,11 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
  			spin_unlock_irq(&mq->lock);
  			return BLK_STS_RESOURCE;
  		}
@@ -155312,7 +155373,7 @@ diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
  		break;
  	default:
  		/*
-@@ -282,6 +287,8 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
+@@ -287,6 +292,8 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
  	/* Parallel dispatch of requests is not supported at the moment */
  	mq->busy = true;
  
@@ -155321,7 +155382,7 @@ diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
  	mq->in_flight[issue_type] += 1;
  	get_card = (mmc_tot_in_flight(mq) == 1);
  	cqe_retune_ok = (mmc_cqe_qcnt(mq) == 1);
-@@ -321,6 +328,8 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
+@@ -326,6 +333,8 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
  		bool put_card = false;
  
  		spin_lock_irq(&mq->lock);
@@ -155404,9 +155465,9 @@ diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
  
  	END_FIXUP
  };
-@@ -153,6 +185,29 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
- 	MMC_FIXUP("M62704", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
- 		  MMC_QUIRK_TRIM_BROKEN),
+@@ -162,6 +194,29 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
+ 	MMC_FIXUP("IB2932", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
+ 		  MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME),
  
 +	/*
 +	 * Some SD cards reports discard support while they don't
@@ -160956,7 +161017,7 @@ diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -67,6 +67,12 @@
+@@ -65,6 +65,12 @@
  
  /* Forward declarations */
  static void bcmgenet_set_rx_mode(struct net_device *dev);
@@ -160969,7 +161030,7 @@ diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethern
  
  static inline void bcmgenet_writel(u32 value, void __iomem *offset)
  {
-@@ -2486,6 +2492,11 @@ static void reset_umac(struct bcmgenet_priv *priv)
+@@ -2512,6 +2518,11 @@ static void reset_umac(struct bcmgenet_priv *priv)
  	bcmgenet_rbuf_ctrl_set(priv, 0);
  	udelay(10);
  
@@ -160981,7 +161042,7 @@ diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethern
  	/* issue soft reset and disable MAC while updating its registers */
  	spin_lock_bh(&priv->reg_lock);
  	bcmgenet_umac_writel(priv, CMD_SW_RESET, UMAC_CMD);
-@@ -2657,7 +2668,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
+@@ -2674,7 +2685,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
  
  	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_PROD_INDEX);
  	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_CONS_INDEX);
@@ -160990,7 +161051,7 @@ diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethern
  	/* Disable rate control for now */
  	bcmgenet_tdma_ring_writel(priv, index, flow_period_val,
  				  TDMA_FLOW_PERIOD);
-@@ -3415,6 +3426,17 @@ static int bcmgenet_open(struct net_device *dev)
+@@ -3351,6 +3362,17 @@ static int bcmgenet_open(struct net_device *dev)
  
  	bcmgenet_phy_pause_set(dev, priv->rx_pause, priv->tx_pause);
  
@@ -161008,24 +161069,22 @@ diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethern
  	bcmgenet_netif_start(dev);
  
  	netif_tx_start_all_queues(dev);
-@@ -4132,9 +4154,12 @@ static int bcmgenet_probe(struct platform_device *pdev)
+@@ -4073,8 +4095,10 @@ static int bcmgenet_probe(struct platform_device *pdev)
  	netif_set_real_num_rx_queues(priv->dev, priv->hw_params->rx_queues + 1);
  
  	/* Set default coalescing parameters */
--	for (i = 0; i < priv->hw_params->rx_queues; i++)
-+	for (i = 0; i < priv->hw_params->rx_queues; i++) {
+-	for (i = 0; i <= priv->hw_params->rx_queues; i++)
++	for (i = 0; i <= priv->hw_params->rx_queues; i++) {
  		priv->rx_rings[i].rx_max_coalesced_frames = 1;
 +		priv->rx_rings[i].rx_coalesce_usecs = 50;
 +	}
- 	priv->rx_rings[DESC_INDEX].rx_max_coalesced_frames = 1;
-+	priv->rx_rings[DESC_INDEX].rx_coalesce_usecs = 50;
  
- 	/* libphy will determine the link state */
- 	netif_carrier_off(dev);
+ 	/* Initialize u64 stats seq counter for 32bit machines */
+ 	for (i = 0; i <= priv->hw_params->rx_queues; i++)
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -31,7 +31,7 @@
+@@ -34,7 +34,7 @@
  #define ENET_PAD		8
  #define ENET_MAX_MTU_SIZE	(ETH_DATA_LEN + ETH_HLEN + VLAN_HLEN + \
  				 ENET_BRCM_TAG_LEN + ETH_FCS_LEN + ENET_PAD)
@@ -163003,7 +163062,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  
  	return intstatus;
  }
-@@ -2579,6 +2595,182 @@ static int brcmf_sdio_intr_rstatus(struct brcmf_sdio *bus)
+@@ -2580,6 +2596,182 @@ static int brcmf_sdio_intr_rstatus(struct brcmf_sdio *bus)
  	return ret;
  }
  
@@ -163186,7 +163245,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
  {
  	struct brcmf_sdio_dev *sdiod = bus->sdiodev;
-@@ -2650,8 +2842,11 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
+@@ -2651,8 +2843,11 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
  
  	/* Handle host mailbox indication */
  	if (intstatus & I_HMB_HOST_INT) {
@@ -163199,7 +163258,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  	}
  
  	sdio_release_host(bus->sdiodev->func1);
-@@ -2696,7 +2891,7 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
+@@ -2697,7 +2892,7 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
  	brcmf_sdio_clrintr(bus);
  
  	if (bus->ctrl_frame_stat && (bus->clkstate == CLK_AVAIL) &&
@@ -163208,7 +163267,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  		sdio_claim_host(bus->sdiodev->func1);
  		if (bus->ctrl_frame_stat) {
  			err = brcmf_sdio_tx_ctrlframe(bus,  bus->ctrl_frame_buf,
-@@ -3566,6 +3761,10 @@ static int brcmf_sdio_bus_preinit(struct device *dev)
+@@ -3567,6 +3762,10 @@ static int brcmf_sdio_bus_preinit(struct device *dev)
  	if (err < 0)
  		goto done;
  
@@ -163219,7 +163278,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  	bus->tx_hdrlen = SDPCM_HWHDR_LEN + SDPCM_SWHDR_LEN;
  	if (sdiodev->sg_support) {
  		bus->txglom = false;
-@@ -4214,7 +4413,7 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
+@@ -4215,7 +4414,7 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
  	u8 saveclk, bpreq;
  	u8 devctl;
  
@@ -163228,7 +163287,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  
  	if (err)
  		goto fail;
-@@ -4391,12 +4590,25 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
+@@ -4392,12 +4591,25 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
  	}
  
  	/* Attach to the common layer, reserve hdr space */
@@ -163255,7 +163314,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  	/* ready */
  	return;
  
-@@ -4639,3 +4851,40 @@ int brcmf_sdio_sleep(struct brcmf_sdio *bus, bool sleep)
+@@ -4641,3 +4853,40 @@ int brcmf_sdio_sleep(struct brcmf_sdio *bus, bool sleep)
  
  	return ret;
  }
@@ -186077,7 +186136,7 @@ diff --git a/drivers/usb/core/generic.c b/drivers/usb/core/generic.c
 diff --git a/drivers/usb/core/hcd.c b/drivers/usb/core/hcd.c
 --- a/drivers/usb/core/hcd.c
 +++ b/drivers/usb/core/hcd.c
-@@ -1951,6 +1951,16 @@ int usb_hcd_alloc_bandwidth(struct usb_device *udev,
+@@ -1949,6 +1949,16 @@ int usb_hcd_alloc_bandwidth(struct usb_device *udev,
  	return ret;
  }
  
@@ -248555,7 +248614,7 @@ diff --git a/drivers/video/fbdev/core/fb_chrdev.c b/drivers/video/fbdev/core/fb_
 diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
 --- a/drivers/video/fbdev/core/fb_defio.c
 +++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -346,7 +346,8 @@ static void fb_deferred_io_lastclose(struct fb_info *info)
+@@ -444,7 +444,8 @@ static void fb_deferred_io_lastclose(struct fb_info *info)
  {
  	unsigned long i;
  
@@ -253103,7 +253162,7 @@ diff --git a/include/linux/cma.h b/include/linux/cma.h
 diff --git a/include/linux/fb.h b/include/linux/fb.h
 --- a/include/linux/fb.h
 +++ b/include/linux/fb.h
-@@ -511,6 +511,7 @@ struct fb_info {
+@@ -513,6 +513,7 @@ struct fb_info {
  
  	bool skip_vt_switch; /* no VT switch on suspend/resume required */
  	bool skip_panic; /* Do not write to the fb after a panic */
@@ -253111,7 +253170,7 @@ diff --git a/include/linux/fb.h b/include/linux/fb.h
  };
  
  /* This will go away
-@@ -600,6 +601,7 @@ extern ssize_t fb_sys_write(struct fb_info *info, const char __user *buf,
+@@ -602,6 +603,7 @@ extern ssize_t fb_sys_write(struct fb_info *info, const char __user *buf,
  	.fb_imageblit	= sys_imageblit
  
  /* fbmem.c */
@@ -253240,16 +253299,16 @@ diff --git a/include/linux/microchipphy.h b/include/linux/microchipphy.h
 diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
 --- a/include/linux/mmc/card.h
 +++ b/include/linux/mmc/card.h
-@@ -296,6 +296,8 @@ struct mmc_card {
- #define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
+@@ -297,6 +297,8 @@ struct mmc_card {
  #define MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY	(1<<17) /* Disable broken SD poweroff notify support */
  #define MMC_QUIRK_NO_UHS_DDR50_TUNING	(1<<18) /* Disable DDR50 tuning */
+ #define MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME	(1<<20) /* Secure erase/trim time is fixed regardless of size */
 +#define MMC_QUIRK_WORKING_SD_CQ	(1<<30)		/* SD card has known-good CQ implementation */
 +#define MMC_QUIRK_ERASE_BROKEN	(1<<31)		/* Skip erase */
  
  	bool			written_flag;	/* Indicates eMMC has been written since power on */
  	bool			reenable_cmdq;	/* Re-enable Command Queue */
-@@ -320,6 +322,7 @@ struct mmc_card {
+@@ -321,6 +323,7 @@ struct mmc_card {
  	struct sd_switch_caps	sw_caps;	/* switch (CMD6) caps */
  	struct sd_ext_reg	ext_power;	/* SD extension reg for PM */
  	struct sd_ext_reg	ext_perf;	/* SD extension reg for PERF */
@@ -253257,7 +253316,7 @@ diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
  
  	unsigned int		sdio_funcs;	/* number of SDIO functions */
  	atomic_t		sdio_funcs_probed; /* number of probed SDIO funcs */
-@@ -342,6 +345,8 @@ struct mmc_card {
+@@ -343,6 +346,8 @@ struct mmc_card {
  	unsigned int    nr_parts;
  
  	struct workqueue_struct *complete_wq;	/* Private workqueue */
@@ -256365,7 +256424,7 @@ new file mode 100644
 diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
 --- a/kernel/cgroup/cgroup.c
 +++ b/kernel/cgroup/cgroup.c
-@@ -6933,6 +6933,39 @@ static int __init cgroup_disable(char *str)
+@@ -6935,6 +6935,39 @@ static int __init cgroup_disable(char *str)
  }
  __setup("cgroup_disable=", cgroup_disable);
  
@@ -256833,7 +256892,7 @@ diff --git a/mm/page_alloc.c b/mm/page_alloc.c
  #ifdef CONFIG_HUGETLB_PAGE_SIZE_VARIABLE
  unsigned int pageblock_order __read_mostly;
  #endif
-@@ -2292,12 +2313,13 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
+@@ -2293,12 +2314,13 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
  	if (IS_ENABLED(CONFIG_CMA)) {
  		/*
  		 * Balance movable allocations between regular and CMA areas by
