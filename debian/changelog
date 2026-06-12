@@ -1,3 +1,28 @@
+linux (1:6.12.93-1+rpt1) bookworm; urgency=medium
+
+  [ Bastian Blank ]
+  * Fix lintian tag package-installs-python-pycache-dir
+  * Run gencontrol from orig target
+
+  [ Salvatore Bonaccorso ]
+  * Backport "Fix various lintian errors and warnings"
+
+  [ Serge Schneider ]
+  * Raspberry Pi OS release
+  * d/watch: fetch unmodified upstream tarball from cdn.kernel.org
+  * rpi/genconfigs: split configs per arch instead of shared featureset
+  * rpi/update: make non-interactive
+  * rpi/update: add --beta flag for beta-channel builds
+  * lintian: override our epoch and GFDL false-positive errors
+  * salsa-ci: copy pipeline from trixie-base
+  * d/config: regenerate per-arch configs from kernel defconfigs
+  * lintian: override loong64 arch string unknown to bookworm lintian
+  * lintian: override source-is-missing for action-ebpf precompiled object
+  * Update Raspberry Pi patch
+  * Linux commit: d8ab4e908235da7727f22dd36ad5af224671677d
+
+ -- Serge Schneider <serge@raspberrypi.com>  Fri, 12 Jun 2026 13:43:44 +0100
+
 linux (1:6.12.87-1+rpt1~bookworm) bookworm; urgency=medium
 
   * Raspberry Pi OS release
