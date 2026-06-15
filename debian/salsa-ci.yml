@@ -819,6 +819,13 @@ notify-test:
     - !reference [.notify-phase-rules]
   script:
     - |
+      # Skipped test jobs (because build failed) don't show up as "failed";
+      # check the build stage explicitly so we don't overwrite the failure
+      # status notify-build already posted.
+      if [ -n "$(failed_in_stage build)" ]; then
+        echo "build stage already failed; status owned by notify-build"
+        exit 0
+      fi
       failed=$(failed_in_stage test)
       if [ -z "$failed" ]; then
         gh_status pending "$FLOW" "Publishing"
@@ -842,6 +849,15 @@ notify-deploy:
       optional: true
   script:
     - |
+      # needs:publish-internal-main lets this job fire as soon as that
+      # job reaches a terminal state - which happens immediately when an
+      # earlier stage failure causes publish-internal-main to be skipped.
+      # In that case the failure status belongs to notify-build (or
+      # notify-test), so don't overwrite it.
+      if [ -n "$(failed_in_stage build)" ] || [ -n "$(failed_in_stage test)" ]; then
+        echo "earlier stage already failed; status owned by an earlier notify-*"
+        exit 0
+      fi
       st=$(job_status publish-internal-main)
       if [ "$st" = success ]; then
         gh_status pending release "Staged"
