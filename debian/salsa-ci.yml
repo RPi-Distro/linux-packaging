@@ -754,8 +754,20 @@ mirror-to-github:
       pios/*-beta-next) FLOW=beta ;;
       pios/*-next)      FLOW=release ;;
     esac
-    GITHUB_KERNEL_SHA=$(sed -n 's/.*Linux commit:[[:space:]]*\([0-9a-fA-F]\{7,40\}\).*/\1/p' debian/changelog | head -1)
-    [ -n "$GITHUB_KERNEL_SHA" ] || { echo "no 'Linux commit:' line in debian/changelog" >&2; exit 1; }
+    # notify-* jobs run in the source tree (debian/changelog present).
+    # publish-public-* jobs' after_script runs without the source tree
+    # in cwd, but the .changes file produced by build source has the
+    # same "Linux commit:" line in its Changes: block.
+    # GitLab Runner sets `set -eo pipefail`; wrap sed in `|| true` so an
+    # unexpanded glob (notify-* in provisioning has no debian/output yet)
+    # doesn't propagate sed's non-zero exit and kill the script.
+    GITHUB_KERNEL_SHA=$(
+      { sed -n 's/.*Linux commit:[[:space:]]*\([0-9a-fA-F]\{7,40\}\).*/\1/p' \
+          debian/changelog \
+          debian/output/*.changes \
+          2>/dev/null || true; } | head -1
+    )
+    [ -n "$GITHUB_KERNEL_SHA" ] || { echo "no 'Linux commit:' line in debian/changelog or debian/output/*.changes" >&2; exit 1; }
     gh_status() {
       local state="$1" context="$RELEASE/$2" description="$3"
       : "${GITHUB_KERNEL_REPO:?must be set}"
