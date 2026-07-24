@@ -77752,19 +77752,19 @@ diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
  
  const char *gpiod_get_label(struct gpio_desc *desc)
  {
-@@ -925,6 +964,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+@@ -944,6 +983,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
  	unsigned int desc_index;
  	int base = 0;
- 	int ret = 0;
+ 	int ret;
 +	int id;
  
- 	/*
- 	 * First: allocate and populate the internal stat container, and
+ 	gdev = kzalloc(sizeof(*gdev), GFP_KERNEL);
+ 	if (!gdev)
 @@ -951,7 +991,16 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	else if (gc->parent)
- 		device_set_node(&gdev->dev, dev_fwnode(gc->parent));
+ 	gc->gpiodev = gdev;
+ 	gpiochip_set_data(gc, data);
  
--	gdev->id = ida_alloc(&gpio_ida, GFP_KERNEL);
+-	ret = ida_alloc(&gpio_ida, GFP_KERNEL);
 +	if (first_dynamic_gpiochip_num < 0) {
 +		id = of_alias_get_highest_id("gpiochip");
 +		first_dynamic_gpiochip_num = (id >= 0) ? (id + 1) : 0;
@@ -77774,11 +77774,11 @@ diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
 +	if (id < 0)
 +		id = first_dynamic_gpiochip_num;
 +
-+	gdev->id = ida_alloc_range(&gpio_ida, id, ~0, GFP_KERNEL);
- 	if (gdev->id < 0) {
- 		ret = gdev->id;
++	ret = ida_alloc_range(&gpio_ida, id, ~0, GFP_KERNEL);
+ 	if (ret < 0)
  		goto err_free_gdev;
-@@ -2813,8 +2862,8 @@ int gpiod_direction_output(struct gpio_desc *desc, int value)
+ 	gdev->id = ret;
+@@ -2815,8 +2864,8 @@ int gpiod_direction_output(struct gpio_desc *desc, int value)
  		value = !!value;
  
  	/* GPIOs used for enabled IRQs shall not be set as output */
@@ -77789,7 +77789,7 @@ diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
  		gpiod_err(desc,
  			  "%s: tried to set a GPIO tied to an IRQ as output\n",
  			  __func__);
-@@ -3765,8 +3814,8 @@ int gpiochip_lock_as_irq(struct gpio_chip *gc, unsigned int offset)
+@@ -3767,8 +3816,8 @@ int gpiochip_lock_as_irq(struct gpio_chip *gc, unsigned int offset)
  	}
  
  	/* To be valid for IRQ the line needs to be input or open drain */
@@ -92693,20 +92693,17 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
  
  #define V3D_MAX_QUEUES (V3D_CPU + 1)
  
-@@ -59,6 +58,12 @@ struct v3d_queue_state {
+@@ -62,6 +61,9 @@ struct v3d_queue_state {
  
- 	/* Stores the GPU stats for this queue in the global context. */
- 	struct v3d_stats stats;
-+
-+	/* Currently active job for this queue */
-+	struct v3d_job *active_job;
+ 	/* Currently active job for this queue */
+ 	struct v3d_job *active_job;
 +	spinlock_t queue_lock;
 +	/* Protect dma fence for signalling job completion */
 +	spinlock_t fence_lock;
  };
  
  /* Performance monitor object. The perform lifetime is controlled by userspace
-@@ -101,11 +106,18 @@ enum v3d_irq {
+@@ -104,11 +106,18 @@ enum v3d_irq {
  	V3D_MAX_IRQS,
  };
  
@@ -92726,7 +92723,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
  
  	/* Short representation (e.g. 5, 6) of the V3D tech revision */
  	int rev;
-@@ -120,7 +132,14 @@ struct v3d_dev {
+@@ -123,7 +132,14 @@ struct v3d_dev {
  	void __iomem *core_regs[3];
  	void __iomem *bridge_regs;
  	void __iomem *gca_regs;
@@ -92741,7 +92738,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
  	struct reset_control *reset;
  
  	/* Virtual and DMA addresses of the single shared page table. */
-@@ -145,21 +164,15 @@ struct v3d_dev {
+@@ -148,17 +164,15 @@ struct v3d_dev {
  	struct drm_mm mm;
  	spinlock_t mm_lock;
  
@@ -92751,10 +92748,6 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
 +	 */
 +	struct vfsmount *gemfs;
  
--	struct v3d_bin_job *bin_job;
--	struct v3d_render_job *render_job;
--	struct v3d_tfu_job *tfu_job;
--	struct v3d_csd_job *csd_job;
 -	struct v3d_cpu_job *cpu_job;
 +	struct work_struct overflow_mem_work;
  
@@ -92768,7 +92761,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
  	/* Used to track the active perfmon if any. */
  	struct v3d_perfmon *active_perfmon;
  
-@@ -187,6 +200,12 @@ struct v3d_dev {
+@@ -186,6 +200,12 @@ struct v3d_dev {
  		u32 num_allocated;
  		u32 pages_allocated;
  	} bo_stats;
@@ -92781,7 +92774,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
  };
  
  static inline struct v3d_dev *
-@@ -198,7 +217,7 @@ to_v3d_dev(struct drm_device *dev)
+@@ -197,7 +217,7 @@ to_v3d_dev(struct drm_device *dev)
  static inline bool
  v3d_has_csd(struct v3d_dev *v3d)
  {
@@ -92790,7 +92783,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
  }
  
  #define v3d_to_pdev(v3d) to_platform_device((v3d)->drm.dev)
-@@ -260,6 +279,15 @@ to_v3d_fence(struct dma_fence *fence)
+@@ -259,6 +279,15 @@ to_v3d_fence(struct dma_fence *fence)
  #define V3D_GCA_READ(offset) readl(v3d->gca_regs + offset)
  #define V3D_GCA_WRITE(offset, val) writel(val, v3d->gca_regs + offset)
  
@@ -92806,7 +92799,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
  #define V3D_CORE_READ(core, offset) readl(v3d->core_regs[core] + offset)
  #define V3D_CORE_WRITE(core, offset, val) writel(val, v3d->core_regs[core] + offset)
  
-@@ -290,9 +318,9 @@ struct v3d_job {
+@@ -289,9 +318,9 @@ struct v3d_job {
  	struct v3d_perfmon *perfmon;
  
  	/* File descriptor of the process that submitted the job that could be used
@@ -92818,7 +92811,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
  
  	/* Callback for the freeing of the job on refcount going to 0. */
  	void (*free)(struct kref *ref);
-@@ -533,15 +561,21 @@ void v3d_get_stats(const struct v3d_stats *stats, u64 timestamp,
+@@ -532,15 +561,21 @@ void v3d_get_stats(const struct v3d_stats *stats, u64 timestamp,
  
  /* v3d_fence.c */
  extern const struct dma_fence_ops v3d_fence_ops;
@@ -92841,7 +92834,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
  /* v3d_submit.c */
  void v3d_job_cleanup(struct v3d_job *job);
  void v3d_job_put(struct v3d_job *job);
-@@ -555,6 +589,7 @@ int v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
+@@ -554,6 +589,7 @@ int v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
  			 struct drm_file *file_priv);
  
  /* v3d_irq.c */
@@ -92849,7 +92842,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
  int v3d_irq_init(struct v3d_dev *v3d);
  void v3d_irq_enable(struct v3d_dev *v3d);
  void v3d_irq_disable(struct v3d_dev *v3d);
-@@ -571,7 +606,7 @@ void v3d_timestamp_query_info_free(struct v3d_timestamp_query_info *query_info,
+@@ -570,7 +606,7 @@ void v3d_timestamp_query_info_free(struct v3d_timestamp_query_info *query_info,
  				   unsigned int count);
  void v3d_performance_query_info_free(struct v3d_performance_query_info *query_info,
  				     unsigned int count);
@@ -92858,7 +92851,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
  int v3d_sched_init(struct v3d_dev *v3d);
  void v3d_sched_fini(struct v3d_dev *v3d);
  
-@@ -593,7 +628,10 @@ int v3d_perfmon_get_values_ioctl(struct drm_device *dev, void *data,
+@@ -592,7 +628,10 @@ int v3d_perfmon_get_values_ioctl(struct drm_device *dev, void *data,
  				 struct drm_file *file_priv);
  int v3d_perfmon_get_counter_ioctl(struct drm_device *dev, void *data,
  				  struct drm_file *file_priv);
@@ -93022,27 +93015,14 @@ diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
  	}
  
  	return 0;
-@@ -304,16 +329,16 @@ void
- v3d_gem_destroy(struct drm_device *dev)
- {
- 	struct v3d_dev *v3d = to_v3d_dev(dev);
-+	enum v3d_queue q;
+@@ -307,6 +332,7 @@ v3d_gem_destroy(struct drm_device *dev)
+ 	enum v3d_queue q;
  
  	v3d_sched_fini(v3d);
 +	v3d_gemfs_fini(v3d);
  
  	/* Waiting for jobs to finish would need to be done before
  	 * unregistering V3D.
- 	 */
--	WARN_ON(v3d->bin_job);
--	WARN_ON(v3d->render_job);
--	WARN_ON(v3d->tfu_job);
--	WARN_ON(v3d->csd_job);
-+	for (q = 0; q < V3D_MAX_QUEUES; q++)
-+		WARN_ON(v3d->queue[q].active_job);
- 
- 	drm_mm_takedown(&v3d->mm);
- 
 diff --git a/drivers/gpu/drm/v3d/v3d_gemfs.c b/drivers/gpu/drm/v3d/v3d_gemfs.c
 new file mode 100644
 --- /dev/null
@@ -93101,104 +93081,28 @@ new file mode 100644
 diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
 --- a/drivers/gpu/drm/v3d/v3d_irq.c
 +++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -42,6 +42,8 @@ v3d_overflow_mem_work(struct work_struct *work)
- 		container_of(work, struct v3d_dev, overflow_mem_work);
- 	struct drm_device *dev = &v3d->drm;
- 	struct v3d_bo *bo = v3d_bo_create(dev, NULL /* XXX: GMP */, 256 * 1024);
-+	struct v3d_queue_state *queue = &v3d->queue[V3D_BIN];
-+	struct v3d_bin_job *bin_job;
- 	struct drm_gem_object *obj;
- 	unsigned long irqflags;
- 
-@@ -60,15 +62,17 @@ v3d_overflow_mem_work(struct work_struct *work)
+@@ -62,17 +62,17 @@ v3d_overflow_mem_work(struct work_struct *work)
  	 * bin job got scheduled, that's fine.  We'll just give them
  	 * some binner pool anyway.
  	 */
 -	spin_lock_irqsave(&v3d->job_lock, irqflags);
--	if (!v3d->bin_job) {
--		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
 +	spin_lock_irqsave(&queue->queue_lock, irqflags);
-+	bin_job = (struct v3d_bin_job *)queue->active_job;
-+
-+	if (!bin_job) {
+ 	bin_job = (struct v3d_bin_job *)queue->active_job;
+ 
+ 	if (!bin_job) {
+-		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
 +		spin_unlock_irqrestore(&queue->queue_lock, irqflags);
  		goto out;
  	}
  
  	drm_gem_object_get(obj);
--	list_add_tail(&bo->unref_head, &v3d->bin_job->render->unref_list);
+ 	list_add_tail(&bo->unref_head, &bin_job->render->unref_list);
 -	spin_unlock_irqrestore(&v3d->job_lock, irqflags);
-+	list_add_tail(&bo->unref_head, &bin_job->render->unref_list);
 +	spin_unlock_irqrestore(&queue->queue_lock, irqflags);
  
  	v3d_mmu_flush_all(v3d);
  
-@@ -79,6 +83,20 @@ v3d_overflow_mem_work(struct work_struct *work)
- 	drm_gem_object_put(obj);
- }
- 
-+static void
-+v3d_irq_signal_fence(struct v3d_dev *v3d, enum v3d_queue q,
-+		     void (*trace_irq)(struct drm_device *, uint64_t))
-+{
-+	struct v3d_queue_state *queue = &v3d->queue[q];
-+	struct v3d_fence *fence = to_v3d_fence(queue->active_job->irq_fence);
-+
-+	v3d_job_update_stats(queue->active_job, q);
-+	trace_irq(&v3d->drm, fence->seqno);
-+
-+	queue->active_job = NULL;
-+	dma_fence_signal(&fence->base);
-+}
-+
- static irqreturn_t
- v3d_irq(int irq, void *arg)
- {
-@@ -102,48 +120,24 @@ v3d_irq(int irq, void *arg)
- 	}
- 
- 	if (intsts & V3D_INT_FLDONE) {
--		struct v3d_fence *fence =
--			to_v3d_fence(v3d->bin_job->base.irq_fence);
--
--		v3d_job_update_stats(&v3d->bin_job->base, V3D_BIN);
--		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
--
--		v3d->bin_job = NULL;
--		dma_fence_signal(&fence->base);
--
-+		v3d_irq_signal_fence(v3d, V3D_BIN, trace_v3d_bcl_irq);
- 		status = IRQ_HANDLED;
- 	}
- 
- 	if (intsts & V3D_INT_FRDONE) {
--		struct v3d_fence *fence =
--			to_v3d_fence(v3d->render_job->base.irq_fence);
--
--		v3d_job_update_stats(&v3d->render_job->base, V3D_RENDER);
--		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
--
--		v3d->render_job = NULL;
--		dma_fence_signal(&fence->base);
--
-+		v3d_irq_signal_fence(v3d, V3D_RENDER, trace_v3d_rcl_irq);
- 		status = IRQ_HANDLED;
- 	}
- 
- 	if (intsts & V3D_INT_CSDDONE(v3d->ver)) {
--		struct v3d_fence *fence =
--			to_v3d_fence(v3d->csd_job->base.irq_fence);
--
--		v3d_job_update_stats(&v3d->csd_job->base, V3D_CSD);
--		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
--
--		v3d->csd_job = NULL;
--		dma_fence_signal(&fence->base);
--
-+		v3d_irq_signal_fence(v3d, V3D_CSD, trace_v3d_csd_irq);
- 		status = IRQ_HANDLED;
- 	}
- 
+@@ -137,7 +137,7 @@ v3d_irq(int irq, void *arg)
  	/* We shouldn't be triggering these if we have GMP in
  	 * always-allowed mode.
  	 */
@@ -93207,24 +93111,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
  		dev_err(v3d->drm.dev, "GMP violation\n");
  
  	/* V3D 4.2 wires the hub and core IRQs together, so if we &
-@@ -168,15 +162,7 @@ v3d_hub_irq(int irq, void *arg)
- 	V3D_WRITE(V3D_HUB_INT_CLR, intsts);
- 
- 	if (intsts & V3D_HUB_INT_TFUC) {
--		struct v3d_fence *fence =
--			to_v3d_fence(v3d->tfu_job->base.irq_fence);
--
--		v3d_job_update_stats(&v3d->tfu_job->base, V3D_TFU);
--		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
--
--		v3d->tfu_job = NULL;
--		dma_fence_signal(&fence->base);
--
-+		v3d_irq_signal_fence(v3d, V3D_TFU, trace_v3d_tfu_irq);
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -197,27 +183,32 @@ v3d_hub_irq(int irq, void *arg)
+@@ -183,27 +183,32 @@ v3d_hub_irq(int irq, void *arg)
  			"GMP",
  		};
  		const char *client = "?";
@@ -93621,7 +93508,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  
  	v3d_stats_update(global_stats, now);
  
-@@ -204,23 +226,28 @@ static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
+@@ -204,27 +226,28 @@ static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
  {
  	struct v3d_bin_job *job = to_bin_job(sched_job);
  	struct v3d_dev *v3d = job->base.v3d;
@@ -93630,19 +93517,21 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  	struct dma_fence *fence;
  	unsigned long irqflags;
  
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
+ 	if (unlikely(job->base.base.s_fence->finished.error)) {
+-		spin_lock_irqsave(&v3d->job_lock, irqflags);
+-		v3d->queue[V3D_BIN].active_job = NULL;
+-		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
 +		spin_lock_irqsave(&queue->queue_lock, irqflags);
 +		queue->active_job = NULL;
 +		spin_unlock_irqrestore(&queue->queue_lock, irqflags);
  		return NULL;
-+	}
+ 	}
  
  	/* Lock required around bin_job update vs
  	 * v3d_overflow_mem_work().
  	 */
 -	spin_lock_irqsave(&v3d->job_lock, irqflags);
--	v3d->bin_job = job;
+-	v3d->queue[V3D_BIN].active_job = &job->base;
 +	spin_lock_irqsave(&queue->queue_lock, irqflags);
 +	queue->active_job = &job->base;
  	/* Clear out the overflow allocation, so we don't
@@ -93654,37 +93543,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  
  	v3d_invalidate_caches(v3d);
  
-@@ -263,10 +290,12 @@ static struct dma_fence *v3d_render_job_run(struct drm_sched_job *sched_job)
- 	struct drm_device *dev = &v3d->drm;
- 	struct dma_fence *fence;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		v3d->queue[V3D_RENDER].active_job = NULL;
- 		return NULL;
-+	}
- 
--	v3d->render_job = job;
-+	v3d->queue[V3D_RENDER].active_job = &job->base;
- 
- 	/* Can we avoid this flush?  We need to be careful of
- 	 * scheduling, though -- imagine job0 rendering to texture and
-@@ -309,10 +338,12 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
- 	struct drm_device *dev = &v3d->drm;
- 	struct dma_fence *fence;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		v3d->queue[V3D_TFU].active_job = NULL;
- 		return NULL;
-+	}
- 
--	v3d->tfu_job = job;
-+	v3d->queue[V3D_TFU].active_job = &job->base;
- 
- 	fence = v3d_fence_create(v3d, V3D_TFU);
- 	if (IS_ERR(fence))
-@@ -331,11 +362,11 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
+@@ -339,11 +362,11 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
  	V3D_WRITE(V3D_TFU_ICA(v3d->ver), job->args.ica);
  	V3D_WRITE(V3D_TFU_IUA(v3d->ver), job->args.iua);
  	V3D_WRITE(V3D_TFU_IOA(v3d->ver), job->args.ioa);
@@ -93698,22 +93557,24 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  		V3D_WRITE(V3D_TFU_COEF1(v3d->ver), job->args.coef[1]);
  		V3D_WRITE(V3D_TFU_COEF2(v3d->ver), job->args.coef[2]);
  		V3D_WRITE(V3D_TFU_COEF3(v3d->ver), job->args.coef[3]);
-@@ -355,10 +386,12 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
- 	struct dma_fence *fence;
- 	int i, csd_cfg0_reg;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		v3d->queue[V3D_CSD].active_job = NULL;
+@@ -368,16 +391,6 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
  		return NULL;
-+	}
+ 	}
  
--	v3d->csd_job = job;
-+	v3d->queue[V3D_CSD].active_job = &job->base;
+-	/* The HW interprets a workgroup size of 0 as 65536; however, the
+-	 * user-space driver exposes a maximum of 65535. Therefore, a 0 in
+-	 * any dimension means that we have no workgroups and the compute
+-	 * shader should not be dispatched.
+-	 */
+-	if (!V3D_GET_FIELD(job->args.cfg[0], V3D_CSD_QUEUED_CFG0_NUM_WGS_X) ||
+-	    !V3D_GET_FIELD(job->args.cfg[1], V3D_CSD_QUEUED_CFG1_NUM_WGS_Y) ||
+-	    !V3D_GET_FIELD(job->args.cfg[2], V3D_CSD_QUEUED_CFG2_NUM_WGS_Z))
+-		return NULL;
+-
+ 	v3d->queue[V3D_CSD].active_job = &job->base;
  
  	v3d_invalidate_caches(v3d);
- 
-@@ -384,7 +417,7 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
+@@ -404,7 +417,7 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
  	 *
  	 * XXX: Set the CFG7 register
  	 */
@@ -93722,7 +93583,24 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  		V3D_CORE_WRITE(0, V3D_V7_CSD_QUEUED_CFG7, 0);
  
  	/* CFG0 write kicks off the job. */
-@@ -542,7 +575,7 @@ static void
+@@ -428,13 +441,13 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
+ 
+ 	wg_counts = (uint32_t *)(bo->vaddr + indirect_csd->offset);
+ 
++	if (wg_counts[0] == 0 || wg_counts[1] == 0 || wg_counts[2] == 0)
++		goto unmap_bo;
++
+ 	args->cfg[0] = wg_counts[0] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+ 	args->cfg[1] = wg_counts[1] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+ 	args->cfg[2] = wg_counts[2] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+ 
+-	if (wg_counts[0] == 0 || wg_counts[1] == 0 || wg_counts[2] == 0)
+-		goto unmap_bo;
+-
+ 	num_batches = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
+ 		      (wg_counts[0] * wg_counts[1] * wg_counts[2]);
+ 
+@@ -563,7 +576,7 @@ static void
  v3d_reset_performance_queries(struct v3d_cpu_job *job)
  {
  	struct v3d_performance_query_info *performance_query = &job->performance_query;
@@ -93731,7 +93609,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  	struct v3d_dev *v3d = job->base.v3d;
  	struct v3d_perfmon *perfmon;
  
-@@ -572,7 +605,7 @@ v3d_write_performance_query_result(struct v3d_cpu_job *job, void *data,
+@@ -593,7 +606,7 @@ v3d_write_performance_query_result(struct v3d_cpu_job *job, void *data,
  {
  	struct v3d_performance_query_info *performance_query =
  						&job->performance_query;
@@ -93740,7 +93618,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  	struct v3d_performance_query *perf_query =
  			&performance_query->queries[query];
  	struct v3d_dev *v3d = job->base.v3d;
-@@ -655,8 +688,6 @@ v3d_cpu_job_run(struct drm_sched_job *sched_job)
+@@ -676,8 +689,6 @@ v3d_cpu_job_run(struct drm_sched_job *sched_job)
  	struct v3d_cpu_job *job = to_cpu_job(sched_job);
  	struct v3d_dev *v3d = job->base.v3d;
  
@@ -93749,7 +93627,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
  	if (job->job_type >= ARRAY_SIZE(cpu_job_function)) {
  		DRM_DEBUG_DRIVER("Unknown CPU job: %d\n", job->job_type);
  		return NULL;
-@@ -832,7 +863,7 @@ static const struct drm_sched_backend_ops v3d_cache_clean_sched_ops = {
+@@ -853,7 +864,7 @@ static const struct drm_sched_backend_ops v3d_cache_clean_sched_ops = {
  static const struct drm_sched_backend_ops v3d_cpu_sched_ops = {
  	.run_job = v3d_cpu_job_run,
  	.timedout_job = v3d_generic_job_timedout,
@@ -105576,7 +105454,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_validate.c b/drivers/gpu/drm/vc4/vc4_valida
 diff --git a/drivers/gpu/drm/vc4/vc4_validate_shaders.c b/drivers/gpu/drm/vc4/vc4_validate_shaders.c
 --- a/drivers/gpu/drm/vc4/vc4_validate_shaders.c
 +++ b/drivers/gpu/drm/vc4/vc4_validate_shaders.c
-@@ -786,7 +786,7 @@ vc4_validate_shader(struct drm_gem_dma_object *shader_obj)
+@@ -787,7 +787,7 @@ vc4_validate_shader(struct drm_gem_dma_object *shader_obj)
  	struct vc4_validated_shader_info *validated_shader = NULL;
  	struct vc4_shader_validation_state validation_state;
  
@@ -108569,7 +108447,7 @@ diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/good
  	return devm_request_threaded_irq(&ts->client->dev, ts->client->irq,
  					 NULL, goodix_ts_irq_handler,
  					 ts->irq_flags, ts->client->name, ts);
-@@ -1219,6 +1253,18 @@ static int goodix_configure_dev(struct goodix_ts_data *ts)
+@@ -1220,6 +1254,18 @@ static int goodix_configure_dev(struct goodix_ts_data *ts)
  		return error;
  	}
  
@@ -108588,7 +108466,7 @@ diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/good
  	error = input_register_device(ts->input_dev);
  	if (error) {
  		dev_err(&ts->client->dev,
-@@ -1422,7 +1468,7 @@ static int goodix_suspend(struct device *dev)
+@@ -1423,7 +1469,7 @@ static int goodix_suspend(struct device *dev)
  
  	/* We need gpio pins to suspend/resume */
  	if (ts->irq_pin_access_method == IRQ_PIN_ACCESS_NONE) {
@@ -108597,7 +108475,7 @@ diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/good
  		return 0;
  	}
  
-@@ -1466,7 +1512,7 @@ static int goodix_resume(struct device *dev)
+@@ -1467,7 +1513,7 @@ static int goodix_resume(struct device *dev)
  	int error;
  
  	if (ts->irq_pin_access_method == IRQ_PIN_ACCESS_NONE) {
@@ -155333,7 +155211,7 @@ diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
 diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
 --- a/drivers/mmc/core/mmc.c
 +++ b/drivers/mmc/core/mmc.c
-@@ -1657,6 +1657,7 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
+@@ -1659,6 +1659,7 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
  		card->ocr = ocr;
  		card->type = MMC_TYPE_MMC;
  		card->rca = 1;
@@ -155341,7 +155219,7 @@ diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
  		memcpy(card->raw_cid, cid, sizeof(card->raw_cid));
  	}
  
-@@ -1915,13 +1916,14 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
+@@ -1917,13 +1918,14 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
  			host->cqe_enabled = true;
  
  			if (card->ext_csd.cmdq_en) {
@@ -160951,7 +160829,7 @@ diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
  		} else {
  			host->cmd->error = -EILSEQ;
  			if (!mmc_op_tuning(host->cmd->opcode))
-@@ -4572,6 +4593,15 @@ int sdhci_setup_host(struct sdhci_host *host)
+@@ -4573,6 +4594,15 @@ int sdhci_setup_host(struct sdhci_host *host)
  	    !(host->quirks2 & SDHCI_QUIRK2_BROKEN_DDR50))
  		mmc->caps |= MMC_CAP_UHS_DDR50;
  
@@ -160967,7 +160845,7 @@ diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
  	/* Does the host need tuning for SDR50? */
  	if (host->caps1 & SDHCI_USE_SDR50_TUNING)
  		host->flags |= SDHCI_SDR50_NEEDS_TUNING;
-@@ -4686,11 +4716,16 @@ int sdhci_setup_host(struct sdhci_host *host)
+@@ -4687,11 +4717,16 @@ int sdhci_setup_host(struct sdhci_host *host)
  	spin_lock_init(&host->lock);
  
  	/*
@@ -161768,7 +161646,7 @@ diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
 diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
 --- a/drivers/net/phy/phy_device.c
 +++ b/drivers/net/phy/phy_device.c
-@@ -3619,12 +3619,12 @@ static int phy_probe(struct device *dev)
+@@ -3622,12 +3622,12 @@ static int phy_probe(struct device *dev)
  	/* There is no "enabled" flag. If PHY is advertising, assume it is
  	 * kind of enabled.
  	 */
@@ -165026,7 +164904,7 @@ diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
 diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
 --- a/drivers/pci/quirks.c
 +++ b/drivers/pci/quirks.c
-@@ -6276,6 +6276,22 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56b0, aspm_l1_acceptable_latency
+@@ -6265,6 +6265,22 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56b0, aspm_l1_acceptable_latency
  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56b1, aspm_l1_acceptable_latency);
  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56c0, aspm_l1_acceptable_latency);
  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56c1, aspm_l1_acceptable_latency);
@@ -246863,7 +246741,7 @@ diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
  /*
   * non-error returns are a promise to giveback() the urb later
   * we drop ownership so next owner (or urb unlink) can get it
-@@ -4688,7 +4800,7 @@ static u16 xhci_calculate_u1_timeout(struct xhci_hcd *xhci,
+@@ -4697,7 +4809,7 @@ static u16 xhci_calculate_u1_timeout(struct xhci_hcd *xhci,
  		}
  	}
  
@@ -246872,7 +246750,7 @@ diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
  		timeout_ns = xhci_calculate_intel_u1_timeout(udev, desc);
  	else
  		timeout_ns = udev->u1_params.sel;
-@@ -4752,7 +4864,7 @@ static u16 xhci_calculate_u2_timeout(struct xhci_hcd *xhci,
+@@ -4761,7 +4873,7 @@ static u16 xhci_calculate_u2_timeout(struct xhci_hcd *xhci,
  		}
  	}
  
@@ -246881,7 +246759,7 @@ diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
  		timeout_ns = xhci_calculate_intel_u2_timeout(udev, desc);
  	else
  		timeout_ns = udev->u2_params.sel;
-@@ -5386,6 +5498,7 @@ static const struct hc_driver xhci_hc_driver = {
+@@ -5395,6 +5507,7 @@ static const struct hc_driver xhci_hc_driver = {
  	.endpoint_reset =	xhci_endpoint_reset,
  	.check_bandwidth =	xhci_check_bandwidth,
  	.reset_bandwidth =	xhci_reset_bandwidth,
@@ -256924,7 +256802,7 @@ diff --git a/mm/vmscan.c b/mm/vmscan.c
 diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
 --- a/net/bluetooth/hci_sync.c
 +++ b/net/bluetooth/hci_sync.c
-@@ -4942,6 +4942,8 @@ static const struct {
+@@ -4961,6 +4961,8 @@ static const struct {
   */
  static int hci_dev_setup_sync(struct hci_dev *hdev)
  {
@@ -256933,7 +256811,7 @@ diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
  	int ret = 0;
  	bool invalid_bdaddr;
  	size_t i;
-@@ -4970,7 +4972,8 @@ static int hci_dev_setup_sync(struct hci_dev *hdev)
+@@ -4989,7 +4991,8 @@ static int hci_dev_setup_sync(struct hci_dev *hdev)
  			 test_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
  	if (!ret) {
  		if (test_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks) &&
