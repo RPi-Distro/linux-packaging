@@ -831,6 +831,13 @@ notify-test:
     - !reference [.notify-phase-rules]
   script:
     - |
+      # Failure-only: notify-test no longer posts a "Publishing" pending. That
+      # raced publish-public-beta's terminal status (same stage, no ordering)
+      # and a queue-delayed notify-test could overwrite "Released to beta" with
+      # a stale pending. Publishing runs in under a minute at the pipeline tail,
+      # so the pending added no signal. Terminal status is owned by the publish
+      # jobs' after_script; this job only reports test-stage failures.
+      #
       # Skipped test jobs (because build failed) don't show up as "failed";
       # check the build stage explicitly so we don't overwrite the failure
       # status notify-build already posted.
@@ -839,9 +846,7 @@ notify-test:
         exit 0
       fi
       failed=$(failed_in_stage test)
-      if [ -z "$failed" ]; then
-        gh_status pending "$FLOW" "Publishing"
-      else
+      if [ -n "$failed" ]; then
         gh_status failure "$FLOW" "Test failed: $failed"
       fi
 
