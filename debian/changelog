@@ -1,3 +1,18 @@
+linux (1:6.18.39-1+rpt1) trixie; urgency=medium
+
+  * Raspberry Pi OS release
+  * salsa-ci: fold terminal release status into publish jobs
+  * salsa-ci: guard notify-test and notify-deploy against earlier-stage
+    failures
+  * salsa-ci: find Linux commit in .changes when debian/changelog absent
+  * salsa-ci: make notify-test failure-only to stop racing the terminal
+    status
+  * Update Raspberry Pi patch
+  * Update debian/config
+  * Linux commit: 60ea684a8ace97bb0db1a16e20753bdd6ab371ff
+
+ -- Serge Schneider <serge@raspberrypi.com>  Wed, 29 Jul 2026 18:19:41 +0100
+
 linux (1:6.18.34-1+rpt1) trixie; urgency=medium
 
   * Raspberry Pi OS release
