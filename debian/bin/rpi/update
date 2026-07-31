@@ -50,6 +50,16 @@ KVER=$(
   echo "$VERSION.$PATCHLEVEL.$SUBLEVEL"
 )
 
+# rpi.patch is a diff against the vanilla release tag, which comes from the
+# upstream stable tree rather than the Raspberry Pi remote. Check it resolves
+# before anything below mutates the tree, so a linux repo missing the tag
+# fails here instead of part-way through with a bumped changelog and a
+# downloaded tarball.
+if ! linux_git rev-parse --verify --quiet "v$KVER^{commit}" >/dev/null; then
+  echo "rpi/update: v$KVER not found in the linux repo; fetch the upstream stable tags first" >&2
+  exit 1
+fi
+
 CURRENT=$(dpkg-parsechangelog -SVersion)
 
 # In --beta, the local trixie-beta-base tracks the last released trixie,
