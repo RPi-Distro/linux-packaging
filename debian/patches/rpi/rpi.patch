@@ -3396,58 +3396,6 @@ new file mode 100644
 +better suited to different use patterns. The firmware interface is what's
 +intended to be used by hardware managers in the kernel, while the copy interface
 +make sense for developers (since it avoids problems with namespaces).
-diff --git a/Documentation/hwmon/ina2xx.rst b/Documentation/hwmon/ina2xx.rst
---- a/Documentation/hwmon/ina2xx.rst
-+++ b/Documentation/hwmon/ina2xx.rst
-@@ -53,6 +53,16 @@ Supported chips:
- 
- 	       https://www.ti.com/
- 
-+  * Texas Instruments INA260
-+
-+    Prefix: 'ina260'
-+
-+    Addresses: I2C 0x40 - 0x4f
-+
-+    Datasheet: Publicly available at the Texas Instruments website
-+
-+	       https://www.ti.com/
-+
- Author: Lothar Felten <lothar.felten@gmail.com>
- 
- Description
-@@ -72,6 +82,9 @@ INA230 and INA231 are high or low side current shunt and power monitors
- with an I2C interface. The chips monitor both a shunt voltage drop and
- bus supply voltage.
- 
-+INA260 is a high or low side current and power monitor with integrated shunt
-+resistor.
-+
- The shunt value in micro-ohms can be set via platform data or device tree at
- compile-time or via the shunt_resistor attribute in sysfs at run-time. Please
- refer to the Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml for bindings
-@@ -87,16 +100,16 @@ The actual programmed interval may vary from the desired value.
- General sysfs entries
- ---------------------
- 
--======================= ===============================
-+======================= ===============================================
- in0_input		Shunt voltage(mV) channel
- in1_input		Bus voltage(mV) channel
- curr1_input		Current(mA) measurement channel
- power1_input		Power(uW) measurement channel
--shunt_resistor		Shunt resistance(uOhm) channel
--======================= ===============================
-+shunt_resistor		Shunt resistance(uOhm) channel (not for ina260)
-+======================= ===============================================
- 
--Sysfs entries for ina226, ina230 and ina231 only
--------------------------------------------------
-+Additional sysfs entries for ina226, ina230, ina231, and ina260
-+---------------------------------------------------------------
- 
- ======================= ====================================================
- curr1_lcrit		Critical low current
 diff --git a/Documentation/userspace-api/media/drivers/index.rst b/Documentation/userspace-api/media/drivers/index.rst
 --- a/Documentation/userspace-api/media/drivers/index.rst
 +++ b/Documentation/userspace-api/media/drivers/index.rst
@@ -3850,7 +3798,15 @@ diff --git a/MAINTAINERS b/MAINTAINERS
  BROADCOM BCM47XX MIPS ARCHITECTURE
  M:	Hauke Mehrtens <hauke@hauke-m.de>
  M:	Rafał Miłecki <zajec5@gmail.com>
-@@ -19319,6 +19351,22 @@ L:	linux-edac@vger.kernel.org
+@@ -14060,6 +14092,7 @@ MAXLINEAR ETHERNET PHY DRIVER
+ M:	Xu Liang <lxu@maxlinear.com>
+ L:	netdev@vger.kernel.org
+ S:	Supported
++F:	drivers/net/phy/mxl-86110.c
+ F:	drivers/net/phy/mxl-gpy.c
+ 
+ MCAN MMIO DEVICE DRIVER
+@@ -19324,6 +19357,22 @@ L:	linux-edac@vger.kernel.org
  S:	Maintained
  F:	drivers/ras/amd/fmpm.c
  
@@ -3873,7 +3829,7 @@ diff --git a/MAINTAINERS b/MAINTAINERS
  RASPBERRY PI PISP BACK END
  M:	Jacopo Mondi <jacopo.mondi@ideasonboard.com>
  L:	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>
-@@ -20026,6 +20074,13 @@ S:	Supported
+@@ -20031,6 +20080,13 @@ S:	Supported
  F:	drivers/iio/light/rohm-bu27008.c
  F:	drivers/iio/light/rohm-bu27034.c
  
@@ -3887,7 +3843,7 @@ diff --git a/MAINTAINERS b/MAINTAINERS
  ROHM MULTIFUNCTION BD9571MWV-M PMIC DEVICE DRIVERS
  M:	Marek Vasut <marek.vasut+renesas@gmail.com>
  L:	linux-kernel@vger.kernel.org
-@@ -21546,6 +21601,39 @@ T:	git git://linuxtv.org/media.git
+@@ -21551,6 +21607,39 @@ T:	git git://linuxtv.org/media.git
  F:	Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml
  F:	drivers/media/i2c/imx415.c
  
@@ -17923,7 +17879,7 @@ diff --git a/arch/arm/boot/dts/overlays/apds9960-overlay.dts b/arch/arm/boot/dts
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm/boot/dts/overlays/apds9960-overlay.dts
-@@ -0,0 +1,55 @@
+@@ -0,0 +1,57 @@
 +// Definitions for APDS-9960 ambient light and gesture sensor
 +
 +/dts-v1/;
@@ -17967,6 +17923,8 @@ new file mode 100644
 +			apds9960: apds@39 {
 +				compatible = "avago,apds9960";
 +				reg = <0x39>;
++				pinctrl-names = "default";
++				pinctrl-0 = <&apds9960_pins>;
 +				status = "okay";
 +			};
 +		};
@@ -59887,8 +59845,8 @@ diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/bro
  	};
  
  	timer {
-@@ -283,4 +596,31 @@ IRQ_TYPE_LEVEL_LOW)>,
- 			     <GIC_PPI 12 (GIC_CPU_MASK_SIMPLE(4) |
+@@ -281,4 +594,31 @@ IRQ_TYPE_LEVEL_LOW)>,
+ 			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) |
  					  IRQ_TYPE_LEVEL_LOW)>;
  	};
 +
@@ -61390,7 +61348,7 @@ diff --git a/arch/arm64/configs/bcm2711_defconfig b/arch/arm64/configs/bcm2711_d
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm64/configs/bcm2711_defconfig
-@@ -0,0 +1,1784 @@
+@@ -0,0 +1,1785 @@
 +CONFIG_LOCALVERSION="-v8"
 +# CONFIG_LOCALVERSION_AUTO is not set
 +CONFIG_SYSVIPC=y
@@ -61948,6 +61906,7 @@ new file mode 100644
 +CONFIG_MSE102X=m
 +CONFIG_WIZNET_W5100=m
 +CONFIG_WIZNET_W5100_SPI=m
++CONFIG_MAXLINEAR_86110_PHY=y
 +CONFIG_MICREL_PHY=y
 +CONFIG_CAN_VCAN=m
 +CONFIG_CAN_SLCAN=m
@@ -63179,7 +63138,7 @@ diff --git a/arch/arm64/configs/bcm2711_rt_defconfig b/arch/arm64/configs/bcm271
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm64/configs/bcm2711_rt_defconfig
-@@ -0,0 +1,1782 @@
+@@ -0,0 +1,1783 @@
 +CONFIG_LOCALVERSION="-v8-rt"
 +# CONFIG_LOCALVERSION_AUTO is not set
 +CONFIG_SYSVIPC=y
@@ -63737,6 +63696,7 @@ new file mode 100644
 +CONFIG_MSE102X=m
 +CONFIG_WIZNET_W5100=m
 +CONFIG_WIZNET_W5100_SPI=m
++CONFIG_MAXLINEAR_86110_PHY=y
 +CONFIG_MICREL_PHY=y
 +CONFIG_CAN_VCAN=m
 +CONFIG_CAN_SLCAN=m
@@ -64966,7 +64926,7 @@ diff --git a/arch/arm64/configs/bcm2712_defconfig b/arch/arm64/configs/bcm2712_d
 new file mode 100644
 --- /dev/null
 +++ b/arch/arm64/configs/bcm2712_defconfig
-@@ -0,0 +1,1786 @@
+@@ -0,0 +1,1787 @@
 +CONFIG_LOCALVERSION="-v8-16k"
 +# CONFIG_LOCALVERSION_AUTO is not set
 +CONFIG_SYSVIPC=y
@@ -65527,6 +65487,7 @@ new file mode 100644
 +CONFIG_MSE102X=m
 +CONFIG_WIZNET_W5100=m
 +CONFIG_WIZNET_W5100_SPI=m
++CONFIG_MAXLINEAR_86110_PHY=y
 +CONFIG_MICREL_PHY=y
 +CONFIG_CAN_VCAN=m
 +CONFIG_CAN_SLCAN=m
@@ -77540,7 +77501,7 @@ diff --git a/drivers/gpio/gpio-mmio.c b/drivers/gpio/gpio-mmio.c
 diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
 --- a/drivers/gpio/gpio-pca953x.c
 +++ b/drivers/gpio/gpio-pca953x.c
-@@ -1353,6 +1353,7 @@ static const struct of_device_id pca953x_dt_ids[] = {
+@@ -1364,6 +1364,7 @@ static const struct of_device_id pca953x_dt_ids[] = {
  	{ .compatible = "ti,tca9535", .data = OF_953X(16, PCA_INT), },
  	{ .compatible = "ti,tca9538", .data = OF_953X( 8, PCA_INT), },
  	{ .compatible = "ti,tca9539", .data = OF_953X(16, PCA_INT), },
@@ -77815,7 +77776,7 @@ diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
 diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
 --- a/drivers/gpu/drm/Makefile
 +++ b/drivers/gpu/drm/Makefile
-@@ -225,3 +225,4 @@ obj-y			+= solomon/
+@@ -224,3 +224,4 @@ obj-y			+= solomon/
  obj-$(CONFIG_DRM_SPRD) += sprd/
  obj-$(CONFIG_DRM_LOONGSON) += loongson/
  obj-$(CONFIG_DRM_POWERVR) += imagination/
@@ -78422,7 +78383,7 @@ diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
 diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
 --- a/drivers/gpu/drm/drm_fb_helper.c
 +++ b/drivers/gpu/drm/drm_fb_helper.c
-@@ -1797,7 +1797,7 @@ __drm_fb_helper_initial_config_and_unlock(struct drm_fb_helper *fb_helper)
+@@ -1774,7 +1774,7 @@ __drm_fb_helper_initial_config_and_unlock(struct drm_fb_helper *fb_helper)
  	struct drm_device *dev = fb_helper->dev;
  	struct fb_info *info;
  	unsigned int width, height;
@@ -78431,7 +78392,7 @@ diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
  
  	width = dev->mode_config.max_width;
  	height = dev->mode_config.max_height;
-@@ -1825,6 +1825,15 @@ __drm_fb_helper_initial_config_and_unlock(struct drm_fb_helper *fb_helper)
+@@ -1808,6 +1808,15 @@ __drm_fb_helper_initial_config_and_unlock(struct drm_fb_helper *fb_helper)
  	 * register the fbdev emulation instance in kernel_fb_helper_list. */
  	mutex_unlock(&fb_helper->lock);
  
@@ -93794,7 +93755,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
 +	job->file_priv = v3d_priv;
  
  	ret = drm_sched_job_init(&job->base, &v3d_priv->sched_entity[queue],
- 				 1, v3d_priv);
+ 				 1, v3d_priv, file_priv->client_id);
 @@ -216,6 +260,8 @@ v3d_job_init(struct v3d_dev *v3d, struct drm_file *file_priv,
  		if (ret && ret != -ENOENT)
  			goto fail_deps;
@@ -93804,7 +93765,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
  
  	kref_init(&job->refcount);
  
-@@ -1004,6 +1050,11 @@ v3d_submit_cl_ioctl(struct drm_device *dev, void *data,
+@@ -1006,6 +1052,11 @@ v3d_submit_cl_ioctl(struct drm_device *dev, void *data,
  		goto fail;
  
  	if (args->perfmon_id) {
@@ -93816,7 +93777,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
  		render->base.perfmon = v3d_perfmon_find(v3d_priv,
  							args->perfmon_id);
  
-@@ -1219,6 +1270,11 @@ v3d_submit_csd_ioctl(struct drm_device *dev, void *data,
+@@ -1221,6 +1272,11 @@ v3d_submit_csd_ioctl(struct drm_device *dev, void *data,
  		goto fail;
  
  	if (args->perfmon_id) {
@@ -93828,7 +93789,7 @@ diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
  		job->base.perfmon = v3d_perfmon_find(v3d_priv,
  						     args->perfmon_id);
  		if (!job->base.perfmon) {
-@@ -1411,6 +1467,19 @@ v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
+@@ -1413,6 +1469,19 @@ v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
  	v3d_job_cleanup((void *)csd_job);
  	v3d_job_cleanup(clean_job);
  	v3d_put_multisync_post_deps(&se);
@@ -95224,7 +95185,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
  		return;
  
  	/* Fast path: if the BO is still retained by someone, no need to test
-@@ -786,7 +786,7 @@ int vc4_create_bo_ioctl(struct drm_device *dev, void *data,
+@@ -790,7 +790,7 @@ int vc4_create_bo_ioctl(struct drm_device *dev, void *data,
  	struct vc4_bo *bo = NULL;
  	int ret;
  
@@ -95233,7 +95194,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
  		return -ENODEV;
  
  	ret = vc4_grab_bin_bo(vc4, vc4file);
-@@ -816,7 +816,7 @@ int vc4_mmap_bo_ioctl(struct drm_device *dev, void *data,
+@@ -820,7 +820,7 @@ int vc4_mmap_bo_ioctl(struct drm_device *dev, void *data,
  	struct drm_vc4_mmap_bo *args = data;
  	struct drm_gem_object *gem_obj;
  
@@ -95242,7 +95203,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
  		return -ENODEV;
  
  	gem_obj = drm_gem_object_lookup(file_priv, args->handle);
-@@ -842,7 +842,7 @@ vc4_create_shader_bo_ioctl(struct drm_device *dev, void *data,
+@@ -846,7 +846,7 @@ vc4_create_shader_bo_ioctl(struct drm_device *dev, void *data,
  	struct vc4_bo *bo = NULL;
  	int ret;
  
@@ -95251,7 +95212,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
  		return -ENODEV;
  
  	if (args->size == 0)
-@@ -921,7 +921,7 @@ int vc4_set_tiling_ioctl(struct drm_device *dev, void *data,
+@@ -925,7 +925,7 @@ int vc4_set_tiling_ioctl(struct drm_device *dev, void *data,
  	struct vc4_bo *bo;
  	bool t_format;
  
@@ -95260,7 +95221,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
  		return -ENODEV;
  
  	if (args->flags != 0)
-@@ -967,7 +967,7 @@ int vc4_get_tiling_ioctl(struct drm_device *dev, void *data,
+@@ -971,7 +971,7 @@ int vc4_get_tiling_ioctl(struct drm_device *dev, void *data,
  	struct drm_gem_object *gem_obj;
  	struct vc4_bo *bo;
  
@@ -95269,7 +95230,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
  		return -ENODEV;
  
  	if (args->flags != 0 || args->modifier != 0)
-@@ -1010,7 +1010,7 @@ int vc4_bo_cache_init(struct drm_device *dev)
+@@ -1014,7 +1014,7 @@ int vc4_bo_cache_init(struct drm_device *dev)
  	int ret;
  	int i;
  
@@ -95278,7 +95239,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
  		return -ENODEV;
  
  	/* Create the initial set of BO labels that the kernel will
-@@ -1074,7 +1074,7 @@ int vc4_label_bo_ioctl(struct drm_device *dev, void *data,
+@@ -1078,7 +1078,7 @@ int vc4_label_bo_ioctl(struct drm_device *dev, void *data,
  	struct drm_gem_object *gem_obj;
  	int ret = 0, label;
  
@@ -105433,7 +105394,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_validate.c b/drivers/gpu/drm/vc4/vc4_valida
  		return false;
  
  	/* The shaded vertex format stores signed 12.4 fixed point
-@@ -495,7 +495,7 @@ vc4_validate_bin_cl(struct drm_device *dev,
+@@ -512,7 +512,7 @@ vc4_validate_bin_cl(struct drm_device *dev,
  	uint32_t dst_offset = 0;
  	uint32_t src_offset = 0;
  
@@ -105442,7 +105403,7 @@ diff --git a/drivers/gpu/drm/vc4/vc4_validate.c b/drivers/gpu/drm/vc4/vc4_valida
  		return -ENODEV;
  
  	while (src_offset < len) {
-@@ -942,7 +942,7 @@ vc4_validate_shader_recs(struct drm_device *dev,
+@@ -959,7 +959,7 @@ vc4_validate_shader_recs(struct drm_device *dev,
  	uint32_t i;
  	int ret = 0;
  
@@ -105956,22 +105917,7 @@ diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
 diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
 --- a/drivers/hwmon/Kconfig
 +++ b/drivers/hwmon/Kconfig
-@@ -2167,11 +2167,12 @@ config SENSORS_INA2XX
- 	select REGMAP_I2C
- 	help
- 	  If you say yes here you get support for INA219, INA220, INA226,
--	  INA230, and INA231 power monitor chips.
-+	  INA230, INA231, and INA260 power monitor chips.
- 
- 	  The INA2xx driver is configured for the default configuration of
- 	  the part as described in the datasheet.
--	  Default value for Rshunt is 10 mOhms.
-+	  Default value for Rshunt is 10 mOhms except for INA260 which has an
-+	  internal 2 mOhm shunt resistor.
- 	  This driver can also be built as a module. If so, the module
- 	  will be called ina2xx.
- 
-@@ -2551,6 +2552,13 @@ config SENSORS_INTEL_M10_BMC_HWMON
+@@ -2555,6 +2555,13 @@ config SENSORS_INTEL_M10_BMC_HWMON
  	  sensors monitor various telemetry data of different components on the
  	  card, e.g. board temperature, FPGA core temperature/voltage/current.
  
@@ -106246,140 +106192,6 @@ diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
  	},
  	.probe = emc2305_probe,
  	.remove	  = emc2305_remove,
-diff --git a/drivers/hwmon/ina2xx.c b/drivers/hwmon/ina2xx.c
---- a/drivers/hwmon/ina2xx.c
-+++ b/drivers/hwmon/ina2xx.c
-@@ -56,12 +56,14 @@
- /* settings - depend on use case */
- #define INA219_CONFIG_DEFAULT		0x399F	/* PGA=8 */
- #define INA226_CONFIG_DEFAULT		0x4527	/* averages=16 */
-+#define INA260_CONFIG_DEFAULT		0x6527	/* averages=16 */
- 
- /* worst case is 68.10 ms (~14.6Hz, ina219) */
- #define INA2XX_CONVERSION_RATE		15
- #define INA2XX_MAX_DELAY		69 /* worst case delay in ms */
- 
- #define INA2XX_RSHUNT_DEFAULT		10000
-+#define INA260_RSHUNT			2000
- 
- /* bit mask for reading the averaging setting in the configuration register */
- #define INA226_AVG_RD_MASK		GENMASK(11, 9)
-@@ -125,10 +127,12 @@ static const struct regmap_config ina2xx_regmap_config = {
- 	.writeable_reg = ina2xx_writeable_reg,
- };
- 
--enum ina2xx_ids { ina219, ina226 };
-+enum ina2xx_ids { ina219, ina226, ina260 };
- 
- struct ina2xx_config {
- 	u16 config_default;
-+	bool has_alerts;	/* chip supports alerts and limits */
-+	bool has_ishunt;	/* chip has internal shunt resistor */
- 	int calibration_value;
- 	int shunt_div;
- 	int bus_voltage_shift;
-@@ -155,6 +159,8 @@ static const struct ina2xx_config ina2xx_config[] = {
- 		.bus_voltage_shift = 3,
- 		.bus_voltage_lsb = 4000,
- 		.power_lsb_factor = 20,
-+		.has_alerts = false,
-+		.has_ishunt = false,
- 	},
- 	[ina226] = {
- 		.config_default = INA226_CONFIG_DEFAULT,
-@@ -163,6 +169,17 @@ static const struct ina2xx_config ina2xx_config[] = {
- 		.bus_voltage_shift = 0,
- 		.bus_voltage_lsb = 1250,
- 		.power_lsb_factor = 25,
-+		.has_alerts = true,
-+		.has_ishunt = false,
-+	},
-+	[ina260] = {
-+		.config_default = INA260_CONFIG_DEFAULT,
-+		.shunt_div = 400,
-+		.bus_voltage_shift = 0,
-+		.bus_voltage_lsb = 1250,
-+		.power_lsb_factor = 8,
-+		.has_alerts = true,
-+		.has_ishunt = true,
- 	},
- };
- 
-@@ -254,6 +271,15 @@ static int ina2xx_read_init(struct device *dev, int reg, long *val)
- 	unsigned int regval;
- 	int ret, retry;
- 
-+	if (data->config->has_ishunt) {
-+		/* No calibration needed */
-+		ret = regmap_read(regmap, reg, &regval);
-+		if (ret < 0)
-+			return ret;
-+		*val = ina2xx_get_value(data, reg, regval);
-+		return 0;
-+	}
-+
- 	for (retry = 5; retry; retry--) {
- 		ret = regmap_read(regmap, reg, &regval);
- 		if (ret < 0)
-@@ -682,7 +708,7 @@ static umode_t ina2xx_is_visible(const void *_data, enum hwmon_sensor_types type
- 	case hwmon_chip:
- 		switch (attr) {
- 		case hwmon_chip_update_interval:
--			if (chip == ina226)
-+			if (chip == ina226 || chip == ina260)
- 				return 0644;
- 			break;
- 		default:
-@@ -791,7 +817,9 @@ static int ina2xx_init(struct device *dev, struct ina2xx_data *data)
- 	u32 shunt;
- 	int ret;
- 
--	if (device_property_read_u32(dev, "shunt-resistor", &shunt) < 0)
-+	if (data->config->has_ishunt)
-+		shunt = INA260_RSHUNT;
-+	else if (device_property_read_u32(dev, "shunt-resistor", &shunt) < 0)
- 		shunt = INA2XX_RSHUNT_DEFAULT;
- 
- 	ret = ina2xx_set_shunt(data, shunt);
-@@ -811,6 +839,9 @@ static int ina2xx_init(struct device *dev, struct ina2xx_data *data)
- 						FIELD_PREP(INA226_ALERT_POLARITY, active_high));
- 	}
- 
-+	if (data->config->has_ishunt)
-+		return 0;
-+
- 	/*
- 	 * Calibration register is set to the best value, which eliminates
- 	 * truncation errors on calculating current register in hardware.
-@@ -856,7 +887,8 @@ static int ina2xx_probe(struct i2c_client *client)
- 
- 	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name,
- 							 data, &ina2xx_chip_info,
--							 ina2xx_groups);
-+							 data->config->has_ishunt ?
-+								NULL : ina2xx_groups);
- 	if (IS_ERR(hwmon_dev))
- 		return PTR_ERR(hwmon_dev);
- 
-@@ -872,6 +904,7 @@ static const struct i2c_device_id ina2xx_id[] = {
- 	{ "ina226", ina226 },
- 	{ "ina230", ina226 },
- 	{ "ina231", ina226 },
-+	{ "ina260", ina260 },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, ina2xx_id);
-@@ -897,6 +930,10 @@ static const struct of_device_id __maybe_unused ina2xx_of_match[] = {
- 		.compatible = "ti,ina231",
- 		.data = (void *)ina226
- 	},
-+	{
-+		.compatible = "ti,ina260",
-+		.data = (void *)ina260
-+	},
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, ina2xx_of_match);
 diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
 --- a/drivers/hwmon/pwm-fan.c
 +++ b/drivers/hwmon/pwm-fan.c
@@ -106841,7 +106653,7 @@ new file mode 100644
 diff --git a/drivers/hwmon/sht3x.c b/drivers/hwmon/sht3x.c
 --- a/drivers/hwmon/sht3x.c
 +++ b/drivers/hwmon/sht3x.c
-@@ -961,19 +961,19 @@ static int sht3x_probe(struct i2c_client *client)
+@@ -962,19 +962,19 @@ static int sht3x_probe(struct i2c_client *client)
  	return PTR_ERR_OR_ZERO(hwmon_dev);
  }
  
@@ -117337,7 +117149,19 @@ diff --git a/drivers/media/i2c/dw9807-vcm.c b/drivers/media/i2c/dw9807-vcm.c
 diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
 --- a/drivers/media/i2c/imx219.c
 +++ b/drivers/media/i2c/imx219.c
-@@ -148,6 +148,12 @@
+@@ -71,8 +71,9 @@
+ #define IMX219_EXPOSURE_MAX		65535
+ 
+ /* V_TIMING internal */
+-#define IMX219_REG_FRM_LENGTH_A		CCI_REG16(0x0160)
+-#define IMX219_FLL_MAX			0xfffe
++#define IMX219_REG_VTS			CCI_REG16(0x0160)
++#define IMX219_VTS_MAX			0xffff
++
+ #define IMX219_VBLANK_MIN		32
+ 
+ /* HBLANK control - read only */
+@@ -147,6 +148,12 @@
  #define IMX219_PIXEL_ARRAY_WIDTH	3280U
  #define IMX219_PIXEL_ARRAY_HEIGHT	2464U
  
@@ -117350,20 +117174,24 @@ diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
  /* Mode : resolution and related config&values */
  struct imx219_mode {
  	/* Frame width */
-@@ -157,6 +163,9 @@ struct imx219_mode {
+@@ -155,7 +162,10 @@ struct imx219_mode {
+ 	unsigned int height;
  
  	/* V-timing */
- 	unsigned int vts_def;
+-	unsigned int fll_def;
++	unsigned int vts_def;
 +
 +	/* binning mode based on format code */
 +	unsigned int binning[BINNING_IDX_MAX];
  };
  
  static const struct cci_reg_sequence imx219_common_regs[] = {
-@@ -316,24 +325,40 @@ static const struct imx219_mode supported_modes[] = {
+@@ -314,25 +324,41 @@ static const struct imx219_mode supported_modes[] = {
+ 		/* 8MPix 15fps mode */
  		.width = 3280,
  		.height = 2464,
- 		.vts_def = 3526,
+-		.fll_def = 3526,
++		.vts_def = 3526,
 +		.binning = {
 +			[BINNING_IDX_8_BIT] = IMX219_BINNING_NONE,
 +			[BINNING_IDX_10_BIT] = IMX219_BINNING_NONE,
@@ -117373,7 +117201,8 @@ diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
  		/* 1080P 30fps cropped */
  		.width = 1920,
  		.height = 1080,
- 		.vts_def = 1763,
+-		.fll_def = 1763,
++		.vts_def = 1763,
 +		.binning = {
 +			[BINNING_IDX_8_BIT] = IMX219_BINNING_NONE,
 +			[BINNING_IDX_10_BIT] = IMX219_BINNING_NONE,
@@ -117384,7 +117213,8 @@ diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
 +		/* 2x2 binned 60fps mode */
  		.width = 1640,
  		.height = 1232,
- 		.vts_def = 1763,
+-		.fll_def = 1763,
++		.vts_def = 1763,
 +		.binning = {
 +			[BINNING_IDX_8_BIT] = IMX219_BINNING_X2_ANALOG,
 +			[BINNING_IDX_10_BIT] = IMX219_BINNING_X2,
@@ -117395,7 +117225,8 @@ diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
 +		/* 640x480 60fps mode */
  		.width = 640,
  		.height = 480,
- 		.vts_def = 1763,
+-		.fll_def = 1763,
++		.vts_def = 1763,
 +		.binning = {
 +			[BINNING_IDX_8_BIT] = IMX219_BINNING_X2_ANALOG,
 +			[BINNING_IDX_10_BIT] = IMX219_BINNING_X2_ANALOG,
@@ -117403,7 +117234,7 @@ diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
  	},
  };
  
-@@ -385,6 +410,80 @@ static u32 imx219_get_format_code(struct imx219 *imx219, u32 code)
+@@ -384,6 +410,80 @@ static u32 imx219_get_format_code(struct imx219 *imx219, u32 code)
  	return imx219_mbus_formats[i];
  }
  
@@ -117484,7 +117315,7 @@ diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
  /* -----------------------------------------------------------------------------
   * Controls
   */
-@@ -396,10 +495,12 @@ static int imx219_set_ctrl(struct v4l2_ctrl *ctrl)
+@@ -395,10 +495,12 @@ static int imx219_set_ctrl(struct v4l2_ctrl *ctrl)
  	struct i2c_client *client = v4l2_get_subdevdata(&imx219->sd);
  	const struct v4l2_mbus_framefmt *format;
  	struct v4l2_subdev_state *state;
@@ -117497,7 +117328,7 @@ diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
  
  	if (ctrl->id == V4L2_CID_VBLANK) {
  		int exposure_max, exposure_def;
-@@ -428,7 +529,7 @@ static int imx219_set_ctrl(struct v4l2_ctrl *ctrl)
+@@ -427,7 +529,7 @@ static int imx219_set_ctrl(struct v4l2_ctrl *ctrl)
  		break;
  	case V4L2_CID_EXPOSURE:
  		cci_write(imx219->regmap, IMX219_REG_EXPOSURE,
@@ -117506,16 +117337,37 @@ diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
  		break;
  	case V4L2_CID_DIGITAL_GAIN:
  		cci_write(imx219->regmap, IMX219_REG_DIGITAL_GAIN,
-@@ -445,7 +546,7 @@ static int imx219_set_ctrl(struct v4l2_ctrl *ctrl)
+@@ -443,8 +545,8 @@ static int imx219_set_ctrl(struct v4l2_ctrl *ctrl)
+ 			  imx219->hflip->val | imx219->vflip->val << 1, &ret);
  		break;
  	case V4L2_CID_VBLANK:
- 		cci_write(imx219->regmap, IMX219_REG_VTS,
+-		cci_write(imx219->regmap, IMX219_REG_FRM_LENGTH_A,
 -			  format->height + ctrl->val, &ret);
++		cci_write(imx219->regmap, IMX219_REG_VTS,
 +			  (format->height + ctrl->val) / rate_factor, &ret);
  		break;
  	case V4L2_CID_TEST_PATTERN_RED:
  		cci_write(imx219->regmap, IMX219_REG_TESTP_RED,
-@@ -613,29 +714,14 @@ static int imx219_set_framefmt(struct imx219 *imx219,
+@@ -518,15 +620,15 @@ static int imx219_init_controls(struct imx219 *imx219)
+ 	/* Initial vblank/hblank/exposure parameters based on current mode */
+ 	imx219->vblank = v4l2_ctrl_new_std(ctrl_hdlr, &imx219_ctrl_ops,
+ 					   V4L2_CID_VBLANK, IMX219_VBLANK_MIN,
+-					   IMX219_FLL_MAX - mode->height, 1,
+-					   mode->fll_def - mode->height);
++					   IMX219_VTS_MAX - mode->height, 1,
++					   mode->vts_def - mode->height);
+ 	hblank = IMX219_PPL_DEFAULT - mode->width;
+ 	imx219->hblank = v4l2_ctrl_new_std(ctrl_hdlr, &imx219_ctrl_ops,
+ 					   V4L2_CID_HBLANK, hblank, hblank,
+ 					   1, hblank);
+ 	if (imx219->hblank)
+ 		imx219->hblank->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+-	exposure_max = mode->fll_def - 4;
++	exposure_max = mode->vts_def - 4;
+ 	exposure_def = (exposure_max < IMX219_EXPOSURE_DEFAULT) ?
+ 		exposure_max : IMX219_EXPOSURE_DEFAULT;
+ 	imx219->exposure = v4l2_ctrl_new_std(ctrl_hdlr, &imx219_ctrl_ops,
+@@ -612,29 +714,14 @@ static int imx219_set_framefmt(struct imx219 *imx219,
  {
  	const struct v4l2_mbus_framefmt *format;
  	const struct v4l2_rect *crop;
@@ -117549,7 +117401,7 @@ diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
  
  	cci_write(imx219->regmap, IMX219_REG_X_ADD_STA_A,
  		  crop->left - IMX219_PIXEL_ARRAY_LEFT, &ret);
-@@ -646,28 +732,11 @@ static int imx219_set_framefmt(struct imx219 *imx219,
+@@ -645,28 +732,11 @@ static int imx219_set_framefmt(struct imx219 *imx219,
  	cci_write(imx219->regmap, IMX219_REG_Y_ADD_END_A,
  		  crop->top - IMX219_PIXEL_ARRAY_TOP + crop->height - 1, &ret);
  
@@ -117583,7 +117435,7 @@ diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
  
  	cci_write(imx219->regmap, IMX219_REG_X_OUTPUT_SIZE,
  		  format->width, &ret);
-@@ -861,6 +930,7 @@ static int imx219_set_pad_format(struct v4l2_subdev *sd,
+@@ -860,6 +930,7 @@ static int imx219_set_pad_format(struct v4l2_subdev *sd,
  	 */
  	bin_h = min(IMX219_PIXEL_ARRAY_WIDTH / format->width, 2U);
  	bin_v = min(IMX219_PIXEL_ARRAY_HEIGHT / format->height, 2U);
@@ -117591,7 +117443,7 @@ diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
  
  	/* Ensure bin_h and bin_v are same to avoid 1:2 or 2:1 stretching */
  	binning = min(bin_h, bin_v);
-@@ -875,6 +945,7 @@ static int imx219_set_pad_format(struct v4l2_subdev *sd,
+@@ -874,15 +945,16 @@ static int imx219_set_pad_format(struct v4l2_subdev *sd,
  		int exposure_max;
  		int exposure_def;
  		int hblank;
@@ -117599,7 +117451,20 @@ diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
  
  		/* Update limits and set FPS to default */
  		__v4l2_ctrl_modify_range(imx219->vblank, IMX219_VBLANK_MIN,
-@@ -898,6 +969,12 @@ static int imx219_set_pad_format(struct v4l2_subdev *sd,
+-					 IMX219_FLL_MAX - mode->height, 1,
+-					 mode->fll_def - mode->height);
++					 IMX219_VTS_MAX - mode->height, 1,
++					 mode->vts_def - mode->height);
+ 		__v4l2_ctrl_s_ctrl(imx219->vblank,
+-				   mode->fll_def - mode->height);
++				   mode->vts_def - mode->height);
+ 		/* Update max exposure while meeting expected vblanking */
+-		exposure_max = mode->fll_def - 4;
++		exposure_max = mode->vts_def - 4;
+ 		exposure_def = (exposure_max < IMX219_EXPOSURE_DEFAULT) ?
+ 			exposure_max : IMX219_EXPOSURE_DEFAULT;
+ 		__v4l2_ctrl_modify_range(imx219->exposure,
+@@ -897,6 +969,12 @@ static int imx219_set_pad_format(struct v4l2_subdev *sd,
  		hblank = IMX219_PPL_DEFAULT - mode->width;
  		__v4l2_ctrl_modify_range(imx219->hblank, hblank, hblank, 1,
  					 hblank);
@@ -152940,7 +152805,7 @@ diff --git a/drivers/misc/rp1-pio.c b/drivers/misc/rp1-pio.c
 new file mode 100644
 --- /dev/null
 +++ b/drivers/misc/rp1-pio.c
-@@ -0,0 +1,1408 @@
+@@ -0,0 +1,1423 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * PIO driver for RP1
@@ -153552,11 +153417,12 @@ new file mode 100644
 +	struct rp1_pio_sm_set_dmactrl_args set_dmactrl_args;
 +	struct rp1_pio_device *pio = client->pio;
 +	struct platform_device *pdev = pio->pdev;
-+	struct device *dev = &pdev->dev;
 +	struct dma_slave_config config = {};
++	struct device *dev = &pdev->dev;
 +	struct dma_slave_caps dma_caps;
++	struct dma_info *dma = NULL;
++	bool reconfigure = false;
 +	phys_addr_t fifo_addr;
-+	struct dma_info *dma;
 +	uint32_t dma_mask;
 +	char chan_name[4];
 +	int ret = 0;
@@ -153570,14 +153436,21 @@ new file mode 100644
 +
 +	dma_mask = 1 << (sm * 2 + dir);
 +
-+	dma = &pio->dma_configs[sm][dir];
-+
 +	spin_lock(&pio->lock);
-+	if (pio->claimed_dmas & dma_mask)
-+		rp1_pio_sm_dma_free(dev, dma);
-+	pio->claimed_dmas |= dma_mask;
-+	client->claimed_dmas |= dma_mask;
++	if (!(pio->claimed_dmas & dma_mask & ~client->claimed_dmas)) {
++		dma = &pio->dma_configs[sm][dir];
++		if (client->claimed_dmas & dma_mask)
++			reconfigure = true;
++		pio->claimed_dmas |= dma_mask;
++		client->claimed_dmas |= dma_mask;
++	}
 +	spin_unlock(&pio->lock);
++	if (!dma)
++		return -EBUSY;
++
++	/* dma_release_channel() sleeps, so free the old channel outside the lock. */
++	if (reconfigure)
++		rp1_pio_sm_dma_free(dev, dma);
 +
 +	dma->buf_size = buf_size;
 +	/* Round up the allocations */
@@ -153816,13 +153689,20 @@ new file mode 100644
 +{
 +	struct rp1_pio_sm_xfer_data32_args *args = param;
 +	struct rp1_pio_device *pio = client->pio;
-+	struct dma_info *dma;
++	struct dma_info *dma = NULL;
++	uint32_t dma_mask;
 +
 +	if (args->sm >= RP1_PIO_SMS_COUNT || args->dir >= RP1_PIO_DIR_COUNT ||
 +	    !args->data_bytes || !args->data)
 +		return -EINVAL;
 +
-+	dma = &pio->dma_configs[args->sm][args->dir];
++	dma_mask = 1 << (args->sm * 2 + args->dir);
++	spin_lock(&pio->lock);
++	if (client->claimed_dmas & dma_mask)
++		dma = &pio->dma_configs[args->sm][args->dir];
++	spin_unlock(&pio->lock);
++	if (!dma)
++		return -EINVAL;
 +
 +	if (args->dir == RP1_PIO_DIR_TO_SM)
 +		return rp1_pio_sm_tx_user(pio, dma, args->data, args->data_bytes);
@@ -155042,7 +154922,7 @@ diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
  }
  
  void mmc_blk_mq_recovery(struct mmc_queue *mq)
-@@ -3263,6 +3313,8 @@ static int mmc_blk_probe(struct mmc_card *card)
+@@ -3262,6 +3312,8 @@ static int mmc_blk_probe(struct mmc_card *card)
  {
  	struct mmc_blk_data *md;
  	int ret = 0;
@@ -155051,7 +154931,7 @@ diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
  
  	/*
  	 * Check that the card supports the command class(es) we need.
-@@ -3270,7 +3322,16 @@ static int mmc_blk_probe(struct mmc_card *card)
+@@ -3269,7 +3321,16 @@ static int mmc_blk_probe(struct mmc_card *card)
  	if (!(card->csd.cmdclass & CCC_BLOCK_READ))
  		return -ENODEV;
  
@@ -155069,7 +154949,7 @@ diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
  
  	card->complete_wq = alloc_workqueue("mmc_complete",
  					WQ_MEM_RECLAIM | WQ_HIGHPRI, 0);
-@@ -3285,6 +3346,17 @@ static int mmc_blk_probe(struct mmc_card *card)
+@@ -3284,6 +3345,17 @@ static int mmc_blk_probe(struct mmc_card *card)
  		goto out_free;
  	}
  
@@ -160662,47 +160542,76 @@ diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwc
  	{
  		.compatible = "rockchip,rk3588-dwcmshc",
  		.data = &sdhci_dwcmshc_rk35xx_pdata,
-@@ -1466,13 +1500,32 @@ static int dwcmshc_probe(struct platform_device *pdev)
+@@ -1454,14 +1488,13 @@ static int dwcmshc_probe(struct platform_device *pdev)
+ 
+ 	if (dev->of_node) {
+ 		pltfm_host->clk = devm_clk_get(dev, "core");
+-		if (IS_ERR(pltfm_host->clk)) {
+-			err = PTR_ERR(pltfm_host->clk);
+-			dev_err(dev, "failed to get core clk: %d\n", err);
+-			goto free_pltfm;
+-		}
++		if (IS_ERR(pltfm_host->clk))
++			return dev_err_probe(dev, PTR_ERR(pltfm_host->clk),
++					     "failed to get core clk\n");
++
+ 		err = clk_prepare_enable(pltfm_host->clk);
+ 		if (err)
+-			goto free_pltfm;
++			return err;
+ 
  		priv->bus_clk = devm_clk_get(dev, "bus");
- 		if (!IS_ERR(priv->bus_clk))
- 			clk_prepare_enable(priv->bus_clk);
+ 		if (!IS_ERR(priv->bus_clk)) {
+@@ -1469,13 +1502,23 @@ static int dwcmshc_probe(struct platform_device *pdev)
+ 			if (err)
+ 				goto err_clk;
+ 		}
 +
 +		pltfm_host->timeout_clk = devm_clk_get(dev, "timeout");
-+		if (!IS_ERR(pltfm_host->timeout_clk))
++		if (!IS_ERR(pltfm_host->timeout_clk)) {
 +			err = clk_prepare_enable(pltfm_host->timeout_clk);
-+		if (err)
-+			goto free_pltfm;
++			if (err)
++				goto err_bus_clk;
++		}
 +
 +		priv->sdio_clk = devm_clk_get_optional(&pdev->dev, "sdio");
  	}
  
-+	pltfm_host->timeout_clk = devm_clk_get(&pdev->dev, "timeout");
-+	if (IS_ERR(pltfm_host->timeout_clk)) {
-+		err = PTR_ERR(pltfm_host->timeout_clk);
-+		dev_err(&pdev->dev, "failed to get timeout clk: %d\n", err);
-+		goto free_pltfm;
-+	}
-+	err = clk_prepare_enable(pltfm_host->timeout_clk);
-+	if (err)
-+		goto free_pltfm;
-+
  	err = mmc_of_parse(host->mmc);
  	if (err)
- 		goto err_clk;
+-		goto err_bus_clk;
++		goto err_timeout_clk;
  
  	sdhci_get_of_property(pdev);
 +	sdhci_enable_v4_mode(host);
  
  	priv->vendor_specific_area1 =
  		sdhci_readl(host, DWCMSHC_P_VENDOR_AREA1) & DWCMSHC_AREA1_MASK;
-@@ -1532,6 +1585,7 @@ static int dwcmshc_probe(struct platform_device *pdev)
+@@ -1487,7 +1530,7 @@ static int dwcmshc_probe(struct platform_device *pdev)
+ 	if (pltfm_data->init) {
+ 		err = pltfm_data->init(&pdev->dev, host, priv);
+ 		if (err)
+-			goto err_bus_clk;
++			goto err_timeout_clk;
+ 	}
+ 
+ #ifdef CONFIG_ACPI
+@@ -1533,13 +1576,13 @@ static int dwcmshc_probe(struct platform_device *pdev)
+ err_rpm:
+ 	pm_runtime_disable(dev);
  	pm_runtime_put_noidle(dev);
++err_timeout_clk:
++	clk_disable_unprepare(pltfm_host->timeout_clk);
+ err_bus_clk:
+ 	clk_disable_unprepare(priv->bus_clk);
  err_clk:
  	clk_disable_unprepare(pltfm_host->clk);
-+	clk_disable_unprepare(pltfm_host->timeout_clk);
- 	clk_disable_unprepare(priv->bus_clk);
  	clk_bulk_disable_unprepare(priv->num_other_clks, priv->other_clks);
- free_pltfm:
+-free_pltfm:
+-	sdhci_pltfm_free(pdev);
+ 	return err;
+ }
+ 
 diff --git a/drivers/mmc/host/sdhci-pltfm.c b/drivers/mmc/host/sdhci-pltfm.c
 --- a/drivers/mmc/host/sdhci-pltfm.c
 +++ b/drivers/mmc/host/sdhci-pltfm.c
@@ -160829,7 +160738,7 @@ diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
  		} else {
  			host->cmd->error = -EILSEQ;
  			if (!mmc_op_tuning(host->cmd->opcode))
-@@ -4573,6 +4594,15 @@ int sdhci_setup_host(struct sdhci_host *host)
+@@ -4589,6 +4610,15 @@ int sdhci_setup_host(struct sdhci_host *host)
  	    !(host->quirks2 & SDHCI_QUIRK2_BROKEN_DDR50))
  		mmc->caps |= MMC_CAP_UHS_DDR50;
  
@@ -160845,7 +160754,7 @@ diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
  	/* Does the host need tuning for SDR50? */
  	if (host->caps1 & SDHCI_USE_SDR50_TUNING)
  		host->flags |= SDHCI_SDR50_NEEDS_TUNING;
-@@ -4687,11 +4717,16 @@ int sdhci_setup_host(struct sdhci_host *host)
+@@ -4703,11 +4733,16 @@ int sdhci_setup_host(struct sdhci_host *host)
  	spin_lock_init(&host->lock);
  
  	/*
@@ -160895,7 +160804,7 @@ diff --git a/drivers/mmc/host/sdhci.h b/drivers/mmc/host/sdhci.h
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -65,6 +65,12 @@
+@@ -64,6 +64,12 @@
  
  /* Forward declarations */
  static void bcmgenet_set_rx_mode(struct net_device *dev);
@@ -160908,7 +160817,7 @@ diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethern
  
  static inline void bcmgenet_writel(u32 value, void __iomem *offset)
  {
-@@ -2512,6 +2518,11 @@ static void reset_umac(struct bcmgenet_priv *priv)
+@@ -2504,6 +2510,11 @@ static void reset_umac(struct bcmgenet_priv *priv)
  	bcmgenet_rbuf_ctrl_set(priv, 0);
  	udelay(10);
  
@@ -160920,7 +160829,7 @@ diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethern
  	/* issue soft reset and disable MAC while updating its registers */
  	spin_lock_bh(&priv->reg_lock);
  	bcmgenet_umac_writel(priv, CMD_SW_RESET, UMAC_CMD);
-@@ -2674,7 +2685,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
+@@ -2666,7 +2677,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
  
  	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_PROD_INDEX);
  	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_CONS_INDEX);
@@ -160929,7 +160838,7 @@ diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethern
  	/* Disable rate control for now */
  	bcmgenet_tdma_ring_writel(priv, index, flow_period_val,
  				  TDMA_FLOW_PERIOD);
-@@ -3351,6 +3362,17 @@ static int bcmgenet_open(struct net_device *dev)
+@@ -3344,6 +3355,17 @@ static int bcmgenet_open(struct net_device *dev)
  
  	bcmgenet_phy_pause_set(dev, priv->rx_pause, priv->tx_pause);
  
@@ -160947,7 +160856,7 @@ diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethern
  	bcmgenet_netif_start(dev);
  
  	netif_tx_start_all_queues(dev);
-@@ -4073,8 +4095,10 @@ static int bcmgenet_probe(struct platform_device *pdev)
+@@ -4066,8 +4088,10 @@ static int bcmgenet_probe(struct platform_device *pdev)
  	netif_set_real_num_rx_queues(priv->dev, priv->hw_params->rx_queues + 1);
  
  	/* Set default coalescing parameters */
@@ -161042,7 +160951,7 @@ diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/
  	struct napi_struct	napi_tx;
  
  	dma_addr_t		rx_ring_dma;
-@@ -1296,9 +1315,15 @@ struct macb {
+@@ -1296,9 +1315,16 @@ struct macb {
  
  	u32			caps;
  	unsigned int		dma_burst_length;
@@ -161054,6 +160963,7 @@ diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/
  
 +	struct gpio_desc	*phy_reset_gpio;
 +	int			phy_reset_ms;
++	int			phy_reset_post_ms;
 +
  	/* AT91RM9200 transmit queue (1 on wire + 1 queued) */
  	struct macb_tx_skb	rm9200_txq[2];
@@ -161080,7 +160990,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  }
  
  static int macb_mdio_read_c22(struct mii_bus *bus, int mii_id, int regnum)
-@@ -494,6 +497,19 @@ static int macb_mdio_write_c45(struct mii_bus *bus, int mii_id,
+@@ -494,6 +497,20 @@ static int macb_mdio_write_c45(struct mii_bus *bus, int mii_id,
  	return status;
  }
  
@@ -161092,6 +161002,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
 +		gpiod_set_value_cansleep(bp->phy_reset_gpio, 1);
 +		msleep(bp->phy_reset_ms);
 +		gpiod_set_value_cansleep(bp->phy_reset_gpio, 0);
++		msleep(bp->phy_reset_post_ms);
 +	}
 +
 +	return 0;
@@ -161100,7 +161011,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  static void macb_init_buffers(struct macb *bp)
  {
  	struct macb_queue *queue;
-@@ -1066,6 +1082,7 @@ static int macb_mii_init(struct macb *bp)
+@@ -1066,6 +1083,7 @@ static int macb_mii_init(struct macb *bp)
  	bp->mii_bus->write = &macb_mdio_write_c22;
  	bp->mii_bus->read_c45 = &macb_mdio_read_c45;
  	bp->mii_bus->write_c45 = &macb_mdio_write_c45;
@@ -161108,7 +161019,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	snprintf(bp->mii_bus->id, MII_BUS_ID_SIZE, "%s-%x",
  		 bp->pdev->name, bp->pdev->id);
  	bp->mii_bus->priv = bp;
-@@ -1731,6 +1748,11 @@ static int macb_rx(struct macb_queue *queue, struct napi_struct *napi,
+@@ -1731,6 +1749,11 @@ static int macb_rx(struct macb_queue *queue, struct napi_struct *napi,
  
  		macb_init_rx_ring(queue);
  		queue_writel(queue, RBQP, queue->rx_ring_dma);
@@ -161120,7 +161031,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  
  		macb_writel(bp, NCR, ctrl | MACB_BIT(RE));
  
-@@ -2033,8 +2055,9 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
+@@ -2033,8 +2056,9 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
  				queue_writel(queue, ISR, MACB_BIT(TCOMP) |
  							 MACB_BIT(TXUBR));
  
@@ -161131,7 +161042,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  				wmb(); // ensure softirq can see update
  			}
  
-@@ -2490,6 +2513,11 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+@@ -2490,6 +2514,11 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
  	skb_tx_timestamp(skb);
  
  	spin_lock(&bp->lock);
@@ -161143,7 +161054,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
  	spin_unlock(&bp->lock);
  
-@@ -2901,6 +2929,37 @@ static void macb_configure_dma(struct macb *bp)
+@@ -2919,6 +2948,37 @@ static void macb_configure_dma(struct macb *bp)
  	}
  }
  
@@ -161181,7 +161092,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  static void macb_init_hw(struct macb *bp)
  {
  	u32 config;
-@@ -2929,6 +2988,11 @@ static void macb_init_hw(struct macb *bp)
+@@ -2947,6 +3007,11 @@ static void macb_init_hw(struct macb *bp)
  	if (bp->caps & MACB_CAPS_JUMBO)
  		bp->rx_frm_len_mask = MACB_RX_JFRMLEN_MASK;
  
@@ -161193,7 +161104,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	macb_configure_dma(bp);
  
  	/* Enable RX partial store and forward and set watermark */
-@@ -3296,6 +3360,52 @@ static void gem_get_ethtool_strings(struct net_device *dev, u32 sset, u8 *p)
+@@ -3314,6 +3379,52 @@ static void gem_get_ethtool_strings(struct net_device *dev, u32 sset, u8 *p)
  	}
  }
  
@@ -161246,7 +161157,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  static struct net_device_stats *macb_get_stats(struct net_device *dev)
  {
  	struct macb *bp = netdev_priv(dev);
-@@ -3883,6 +3993,8 @@ static const struct ethtool_ops macb_ethtool_ops = {
+@@ -3901,6 +4012,8 @@ static const struct ethtool_ops macb_ethtool_ops = {
  };
  
  static const struct ethtool_ops gem_ethtool_ops = {
@@ -161255,7 +161166,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	.get_regs_len		= macb_get_regs_len,
  	.get_regs		= macb_get_regs,
  	.get_wol		= macb_get_wol,
-@@ -3892,6 +4004,8 @@ static const struct ethtool_ops gem_ethtool_ops = {
+@@ -3910,6 +4023,8 @@ static const struct ethtool_ops gem_ethtool_ops = {
  	.get_ethtool_stats	= gem_get_ethtool_stats,
  	.get_strings		= gem_get_ethtool_strings,
  	.get_sset_count		= gem_get_sset_count,
@@ -161264,7 +161175,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	.get_link_ksettings     = macb_get_link_ksettings,
  	.set_link_ksettings     = macb_set_link_ksettings,
  	.get_ringparam		= macb_get_ringparam,
-@@ -5062,6 +5176,17 @@ static const struct macb_config versal_config = {
+@@ -5080,6 +5195,17 @@ static const struct macb_config versal_config = {
  	.usrio = &macb_default_usrio,
  };
  
@@ -161282,7 +161193,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  static const struct of_device_id macb_dt_ids[] = {
  	{ .compatible = "cdns,at91sam9260-macb", .data = &at91sam9260_config },
  	{ .compatible = "cdns,macb" },
-@@ -5082,6 +5207,7 @@ static const struct of_device_id macb_dt_ids[] = {
+@@ -5100,6 +5226,7 @@ static const struct of_device_id macb_dt_ids[] = {
  	{ .compatible = "microchip,mpfs-macb", .data = &mpfs_config },
  	{ .compatible = "microchip,sama7g5-gem", .data = &sama7g5_gem_config },
  	{ .compatible = "microchip,sama7g5-emac", .data = &sama7g5_emac_config },
@@ -161290,7 +161201,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	{ .compatible = "xlnx,zynqmp-gem", .data = &zynqmp_config},
  	{ .compatible = "xlnx,zynq-gem", .data = &zynq_config },
  	{ .compatible = "xlnx,versal-gem", .data = &versal_config},
-@@ -5213,6 +5339,11 @@ static int macb_probe(struct platform_device *pdev)
+@@ -5231,6 +5358,11 @@ static int macb_probe(struct platform_device *pdev)
  			}
  		}
  	}
@@ -161302,7 +161213,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	spin_lock_init(&bp->lock);
  	spin_lock_init(&bp->stats_lock);
  
-@@ -5273,6 +5404,21 @@ static int macb_probe(struct platform_device *pdev)
+@@ -5291,6 +5423,27 @@ static int macb_probe(struct platform_device *pdev)
  	else
  		bp->phy_interface = interface;
  
@@ -161321,10 +161232,16 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
 +	if (bp->phy_reset_ms > 1000)
 +		bp->phy_reset_ms = 1000;
 +
++	bp->phy_reset_post_ms = 0;
++	of_property_read_u32(np, "phy-reset-post-delay", &bp->phy_reset_post_ms);
++	/* A sane post-reset delay should not be longer than 1s */
++	if (bp->phy_reset_post_ms > 1000)
++		bp->phy_reset_post_ms = 1000;
++
  	/* IP specific init */
  	err = init(pdev);
  	if (err)
-@@ -5344,6 +5490,19 @@ static void macb_remove(struct platform_device *pdev)
+@@ -5362,6 +5515,19 @@ static void macb_remove(struct platform_device *pdev)
  	}
  }
  
@@ -161344,7 +161261,7 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  static int __maybe_unused macb_suspend(struct device *dev)
  {
  	struct net_device *netdev = dev_get_drvdata(dev);
-@@ -5616,6 +5775,7 @@ static const struct dev_pm_ops macb_pm_ops = {
+@@ -5634,6 +5800,7 @@ static const struct dev_pm_ops macb_pm_ops = {
  static struct platform_driver macb_driver = {
  	.probe		= macb_probe,
  	.remove_new	= macb_remove,
@@ -161352,6 +161269,39 @@ diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cad
  	.driver		= {
  		.name		= "macb",
  		.of_match_table	= of_match_ptr(macb_dt_ids),
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -266,6 +266,18 @@ config MAXLINEAR_GPHY
+ 	  Support for the Maxlinear GPY115, GPY211, GPY212, GPY215,
+ 	  GPY241, GPY245 PHYs.
+ 
++config MAXLINEAR_86110_PHY
++	tristate "MaxLinear MXL86110 PHY support"
++	help
++	 Support for the MaxLinear MXL86110 Gigabit Ethernet
++	 Physical Layer transceiver.
++	 The MXL86110 is commonly used in networking equipment such as
++	 routers, switches, and embedded systems, providing the
++	 physical interface for 10/100/1000 Mbps Ethernet connections
++	 over copper media.
++	 If you are using a board with the MXL86110 PHY connected to your
++	 Ethernet MAC, you should enable this option.
++
+ config MEDIATEK_GE_PHY
+ 	tristate "MediaTek Gigabit Ethernet PHYs"
+ 	help
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -74,6 +74,7 @@ obj-$(CONFIG_MARVELL_PHY)	+= marvell.o
+ obj-$(CONFIG_MARVELL_88Q2XXX_PHY)	+= marvell-88q2xxx.o
+ obj-$(CONFIG_MARVELL_88X2222_PHY)	+= marvell-88x2222.o
+ obj-$(CONFIG_MAXLINEAR_GPHY)	+= mxl-gpy.o
++obj-$(CONFIG_MAXLINEAR_86110_PHY)	+= mxl-86110.o
+ obj-$(CONFIG_MEDIATEK_GE_PHY)	+= mediatek-ge.o
+ obj-$(CONFIG_MEDIATEK_GE_SOC_PHY)	+= mediatek-ge-soc.o
+ obj-$(CONFIG_MESON_GXL_PHY)	+= meson-gxl.o
 diff --git a/drivers/net/phy/bcm-phy-ptp.c b/drivers/net/phy/bcm-phy-ptp.c
 --- a/drivers/net/phy/bcm-phy-ptp.c
 +++ b/drivers/net/phy/bcm-phy-ptp.c
@@ -161566,6 +161516,940 @@ diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
  	/* these values can be used to identify internal PHY */
  	priv->chip_id = phy_read_mmd(phydev, 3, LAN88XX_MMD3_CHIP_ID);
  	priv->chip_rev = phy_read_mmd(phydev, 3, LAN88XX_MMD3_CHIP_REV);
+diff --git a/drivers/net/phy/mxl-86110.c b/drivers/net/phy/mxl-86110.c
+new file mode 100644
+--- /dev/null
++++ b/drivers/net/phy/mxl-86110.c
+@@ -0,0 +1,929 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * PHY driver for Maxlinear MXL86110
++ *
++ * Copyright 2023 MaxLinear Inc.
++ *
++ */
++
++#include <linux/bitfield.h>
++#include <linux/etherdevice.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/phy.h>
++
++/* PHY ID */
++#define PHY_ID_MXL86110		0xc1335580
++#define PHY_ID_MXL86111		0xc1335588
++
++/* required to access extended registers */
++#define MXL86110_EXTD_REG_ADDR_OFFSET			0x1E
++#define MXL86110_EXTD_REG_ADDR_DATA			0x1F
++#define PHY_IRQ_ENABLE_REG				0x12
++#define PHY_IRQ_ENABLE_REG_WOL				BIT(6)
++
++/* different pages for EXTD access for MXL86111 */
++/* SerDes/PHY Control Access Register - COM_EXT_SMI_SDS_PHY */
++#define MXL86111_EXT_SMI_SDS_PHY_REG			0xA000
++#define MXL86111_EXT_SMI_SDS_PHYSPACE_MASK		BIT(1)
++#define MXL86111_EXT_SMI_SDS_PHYFIBER_SPACE		(0x1 << 1)
++#define MXL86111_EXT_SMI_SDS_PHYUTP_SPACE		(0x0 << 1)
++#define MXL86111_EXT_SMI_SDS_PHY_AUTO			0xff
++
++/* SyncE Configuration Register - COM_EXT_SYNCE_CFG */
++#define MXL86110_EXT_SYNCE_CFG_REG			0xA012
++#define MXL86110_EXT_SYNCE_CFG_CLK_FRE_SEL		BIT(4)
++#define MXL86110_EXT_SYNCE_CFG_EN_SYNC_E_DURING_LNKDN	BIT(5)
++#define MXL86110_EXT_SYNCE_CFG_EN_SYNC_E		BIT(6)
++#define MXL86110_EXT_SYNCE_CFG_CLK_SRC_SEL_MASK		GENMASK(3, 1)
++#define MXL86110_EXT_SYNCE_CFG_CLK_SRC_SEL_125M_PLL	0
++#define MXL86110_EXT_SYNCE_CFG_CLK_SRC_SEL_25M		4
++
++/* MAC Address registers */
++#define MXL86110_EXT_MAC_ADDR_CFG1			0xA007
++#define MXL86110_EXT_MAC_ADDR_CFG2			0xA008
++#define MXL86110_EXT_MAC_ADDR_CFG3			0xA009
++
++#define MXL86110_EXT_WOL_CFG_REG			0xA00A
++#define MXL86110_WOL_CFG_WOL_MASK			BIT(3)
++
++/* RGMII register */
++#define MXL86110_EXT_RGMII_CFG1_REG			0xA003
++/* delay can be adjusted in steps of about 150ps */
++#define MXL86110_EXT_RGMII_CFG1_RX_NO_DELAY		(0x0 << 10)
++/* Closest value to 2000 ps */
++#define MXL86110_EXT_RGMII_CFG1_RX_DELAY_1950PS		(0xD << 10)
++#define MXL86110_EXT_RGMII_CFG1_RX_DELAY_MASK		GENMASK(13, 10)
++
++#define MXL86110_EXT_RGMII_CFG1_TX_1G_DELAY_1950PS	(0xD << 0)
++#define MXL86110_EXT_RGMII_CFG1_TX_1G_DELAY_MASK	GENMASK(3, 0)
++
++#define MXL86110_EXT_RGMII_CFG1_TX_10MB_100MB_DELAY_1950PS	(0xD << 4)
++#define MXL86110_EXT_RGMII_CFG1_TX_10MB_100MB_DELAY_MASK	GENMASK(7, 4)
++
++#define MXL86110_EXT_RGMII_CFG1_FULL_MASK \
++			((MXL86110_EXT_RGMII_CFG1_RX_DELAY_MASK) | \
++			(MXL86110_EXT_RGMII_CFG1_TX_1G_DELAY_MASK) | \
++			(MXL86110_EXT_RGMII_CFG1_TX_10MB_100MB_DELAY_MASK))
++
++/* EXT Sleep Control register */
++#define MXL86110_UTP_EXT_SLEEP_CTRL_REG			0x27
++#define MXL86110_UTP_EXT_SLEEP_CTRL_EN_SLEEP_SW_OFF	0
++#define MXL86110_UTP_EXT_SLEEP_CTRL_EN_SLEEP_SW_MASK	BIT(15)
++
++/* RGMII In-Band Status and MDIO Configuration Register */
++#define MXL86110_EXT_RGMII_MDIO_CFG			0xA005
++#define MXL86110_RGMII_MDIO_CFG_EPA0_MASK		GENMASK(6, 6)
++#define MXL86110_EXT_RGMII_MDIO_CFG_EBA_MASK		GENMASK(5, 5)
++#define MXL86110_EXT_RGMII_MDIO_CFG_BA_MASK		GENMASK(4, 0)
++
++#define MXL86110_MAX_LEDS	3
++/* LED registers and defines */
++#define MXL86110_COM_EXT_LED_GEN_CFG			0xA00B
++# define MXL86110_COM_EXT_LED_GEN_CFG_LFM(x)		((BIT(0) | BIT(1)) << (3 * (x)))
++#  define MXL86110_COM_EXT_LED_GEN_CFG_LFME(x)		(BIT(0) << (3 * (x)))
++# define MXL86110_COM_EXT_LED_GEN_CFG_LFE(x)		(BIT(2) << (3 * (x)))
++
++#define MXL86110_LED0_CFG_REG 0xA00C
++#define MXL86110_LED1_CFG_REG 0xA00D
++#define MXL86110_LED2_CFG_REG 0xA00E
++
++#define MXL86110_LEDX_CFG_BLINK				BIT(13)
++#define MXL86110_LEDX_CFG_LINK_UP_FULL_DUPLEX_ON	BIT(12)
++#define MXL86110_LEDX_CFG_LINK_UP_HALF_DUPLEX_ON	BIT(11)
++#define MXL86110_LEDX_CFG_LINK_UP_TX_ACT_ON		BIT(10)
++#define MXL86110_LEDX_CFG_LINK_UP_RX_ACT_ON		BIT(9)
++#define MXL86110_LEDX_CFG_LINK_UP_TX_ON			BIT(8)
++#define MXL86110_LEDX_CFG_LINK_UP_RX_ON			BIT(7)
++#define MXL86110_LEDX_CFG_LINK_UP_1GB_ON		BIT(6)
++#define MXL86110_LEDX_CFG_LINK_UP_100MB_ON		BIT(5)
++#define MXL86110_LEDX_CFG_LINK_UP_10MB_ON		BIT(4)
++#define MXL86110_LEDX_CFG_LINK_UP_COLLISION		BIT(3)
++#define MXL86110_LEDX_CFG_LINK_UP_1GB_BLINK		BIT(2)
++#define MXL86110_LEDX_CFG_LINK_UP_100MB_BLINK		BIT(1)
++#define MXL86110_LEDX_CFG_LINK_UP_10MB_BLINK		BIT(0)
++
++#define MXL86110_LED_BLINK_CFG_REG			0xA00F
++#define MXL86110_LED_BLINK_CFG_FREQ_MODE1_2HZ		0
++#define MXL86110_LED_BLINK_CFG_FREQ_MODE1_4HZ		BIT(0)
++#define MXL86110_LED_BLINK_CFG_FREQ_MODE1_8HZ		BIT(1)
++#define MXL86110_LED_BLINK_CFG_FREQ_MODE1_16HZ		(BIT(1) | BIT(0))
++#define MXL86110_LED_BLINK_CFG_FREQ_MODE2_2HZ		0
++#define MXL86110_LED_BLINK_CFG_FREQ_MODE2_4HZ		BIT(2)
++#define MXL86110_LED_BLINK_CFG_FREQ_MODE2_8HZ		BIT(3)
++#define MXL86110_LED_BLINK_CFG_FREQ_MODE2_16HZ		(BIT(3) | BIT(2))
++#define MXL86110_LED_BLINK_CFG_DUTY_CYCLE_50_ON		0
++#define MXL86110_LED_BLINK_CFG_DUTY_CYCLE_67_ON		(BIT(4))
++#define MXL86110_LED_BLINK_CFG_DUTY_CYCLE_75_ON		(BIT(5))
++#define MXL86110_LED_BLINK_CFG_DUTY_CYCLE_83_ON		(BIT(5) | BIT(4))
++#define MXL86110_LED_BLINK_CFG_DUTY_CYCLE_50_OFF	(BIT(6))
++#define MXL86110_LED_BLINK_CFG_DUTY_CYCLE_33_ON		(BIT(6) | BIT(4))
++#define MXL86110_LED_BLINK_CFG_DUTY_CYCLE_25_ON		(BIT(6) | BIT(5))
++#define MXL86110_LED_BLINK_CFG_DUTY_CYCLE_17_ON	(BIT(6) | BIT(5) | BIT(4))
++
++/* Chip Configuration Register - COM_EXT_CHIP_CFG */
++#define MXL86110_EXT_CHIP_CFG_REG			0xA001
++#define MXL86111_EXT_CHIP_CFG_MODE_SEL_MASK		GENMASK(2, 0)
++#define MXL86111_EXT_CHIP_CFG_MODE_UTP_TO_RGMII		0
++#define MXL86111_EXT_CHIP_CFG_MODE_FIBER_TO_RGMII	1
++#define MXL86111_EXT_CHIP_CFG_MODE_UTP_FIBER_TO_RGMII	2
++#define MXL86111_EXT_CHIP_CFG_MODE_UTP_TO_SGMII		3
++#define MXL86111_EXT_CHIP_CFG_MODE_SGPHY_TO_RGMAC	4
++#define MXL86111_EXT_CHIP_CFG_MODE_SGMAC_TO_RGPHY	5
++#define MXL86111_EXT_CHIP_CFG_MODE_UTP_TO_FIBER_AUTO	6
++#define MXL86111_EXT_CHIP_CFG_MODE_UTP_TO_FIBER_FORCE	7
++
++#define MXL86111_EXT_CHIP_CFG_CLDO_MASK			GENMASK(5, 4)
++#define MXL86111_EXT_CHIP_CFG_CLDO_3V3			0
++#define MXL86111_EXT_CHIP_CFG_CLDO_2V5			1
++#define MXL86111_EXT_CHIP_CFG_CLDO_1V8_2		2
++#define MXL86111_EXT_CHIP_CFG_CLDO_1V8_3		3
++#define MXL86111_EXT_CHIP_CFG_CLDO_SHIFT		4
++#define MXL86111_EXT_CHIP_CFG_ELDO			BIT(6)
++#define MXL86110_EXT_CHIP_CFG_RXDLY_ENABLE		BIT(8)
++#define MXL86110_EXT_CHIP_CFG_SW_RST_N_MODE		BIT(15)
++
++/* Specific Status Register - PHY_STAT */
++#define MXL86111_PHY_STAT_REG				0x11
++#define MXL86111_PHY_STAT_SPEED_MASK			GENMASK(15, 14)
++#define MXL86111_PHY_STAT_SPEED_OFFSET			14
++#define MXL86111_PHY_STAT_SPEED_10M			0x0
++#define MXL86111_PHY_STAT_SPEED_100M			0x1
++#define MXL86111_PHY_STAT_SPEED_1000M			0x2
++#define MXL86111_PHY_STAT_DPX_OFFSET			13
++#define MXL86111_PHY_STAT_DPX				BIT(13)
++#define MXL86111_PHY_STAT_LSRT				BIT(10)
++
++/* 3 phy reg page modes,auto mode combines utp and fiber mode*/
++#define MXL86111_MODE_FIBER				0x1
++#define MXL86111_MODE_UTP				0x2
++#define MXL86111_MODE_AUTO				0x3
++
++/* FIBER Auto-Negotiation link partner ability - SDS_AN_LPA */
++#define MXL86111_SDS_AN_LPA_PAUSE			(0x3 << 7)
++#define MXL86111_SDS_AN_LPA_ASYM_PAUSE			(0x2 << 7)
++
++/* Miscellaneous Control Register - COM_EXT _MISC_CFG */
++#define MXL86111_EXT_MISC_CONFIG_REG			0xa006
++#define MXL86111_EXT_MISC_CONFIG_FIB_SPEED_SEL		BIT(0)
++#define MXL86111_EXT_MISC_CONFIG_FIB_SPEED_SEL_1000BX	(0x1 << 0)
++#define MXL86111_EXT_MISC_CONFIG_FIB_SPEED_SEL_100BX	(0x0 << 0)
++
++/* Phy fiber Link timer cfg2 Register - EXT_SDS_LINK_TIMER_CFG2 */
++#define MXL86111_EXT_SDS_LINK_TIMER_CFG2_REG		0xA5
++#define MXL86111_EXT_SDS_LINK_TIMER_CFG2_EN_AUTOSEN	BIT(15)
++
++/* default values of PHY register, required for Dual Media mode */
++#define MII_BMSR_DEFAULT_VAL		0x7949
++#define MII_ESTATUS_DEFAULT_VAL		0x2000
++
++/* Timeout in ms for PHY SW reset check in STD_CTRL/SDS_CTRL */
++#define BMCR_RESET_TIMEOUT		500
++
++/* PL P1 requires optimized RGMII timing for 1.8V RGMII voltage
++ */
++#define MXL86111_PL_P1				0x500
++
++/**
++ * __mxl86110_write_extended_reg() - write to a PHY's extended register
++ * @phydev: pointer to the PHY device structure
++ * @regnum: register number to write
++ * @val: value to write to @regnum
++ *
++ * Unlocked version of mxl86110_write_extended_reg
++ *
++ * Note: This function assumes the caller already holds the MDIO bus lock
++ * or otherwise has exclusive access to the PHY.
++ *
++ * Return: 0 or negative error code
++ */
++static int __mxl86110_write_extended_reg(struct phy_device *phydev,
++					 u16 regnum, u16 val)
++{
++	int ret;
++
++	ret = __phy_write(phydev, MXL86110_EXTD_REG_ADDR_OFFSET, regnum);
++	if (ret < 0)
++		return ret;
++
++	return __phy_write(phydev, MXL86110_EXTD_REG_ADDR_DATA, val);
++}
++
++/**
++ * __mxl86110_read_extended_reg - Read a PHY's extended register
++ * @phydev: pointer to the PHY device structure
++ * @regnum: extended register number to read (address written to reg 30)
++ *
++ * Unlocked version of mxl86110_read_extended_reg
++ *
++ * Reads the content of a PHY extended register using the MaxLinear
++ * 2-step access mechanism: write the register address to reg 30 (0x1E),
++ * then read the value from reg 31 (0x1F).
++ *
++ * Note: This function assumes the caller already holds the MDIO bus lock
++ * or otherwise has exclusive access to the PHY.
++ *
++ * Return: 16-bit register value on success, or negative errno code on failure.
++ */
++static int __mxl86110_read_extended_reg(struct phy_device *phydev, u16 regnum)
++{
++	int ret;
++
++	ret = __phy_write(phydev, MXL86110_EXTD_REG_ADDR_OFFSET, regnum);
++	if (ret < 0)
++		return ret;
++	return __phy_read(phydev, MXL86110_EXTD_REG_ADDR_DATA);
++}
++
++/**
++ * __mxl86110_modify_extended_reg() - modify bits of a PHY's extended register
++ * @phydev: pointer to the PHY device structure
++ * @regnum: register number to write
++ * @mask: bit mask of bits to clear
++ * @set: bit mask of bits to set
++ *
++ * Note: register value = (old register value & ~mask) | set.
++ * This function assumes the caller already holds the MDIO bus lock
++ * or otherwise has exclusive access to the PHY.
++ *
++ * Return: 0 or negative error code
++ */
++static int __mxl86110_modify_extended_reg(struct phy_device *phydev,
++					  u16 regnum, u16 mask, u16 set)
++{
++	int ret;
++
++	ret = __phy_write(phydev, MXL86110_EXTD_REG_ADDR_OFFSET, regnum);
++	if (ret < 0)
++		return ret;
++
++	return __phy_modify(phydev, MXL86110_EXTD_REG_ADDR_DATA, mask, set);
++}
++
++/**
++ * mxl86110_write_extended_reg() - Write to a PHY's extended register
++ * @phydev: pointer to the PHY device structure
++ * @regnum: register number to write
++ * @val: value to write to @regnum
++ *
++ * This function writes to an extended register of the PHY using the
++ * MaxLinear two-step access method (reg 0x1E/0x1F). It handles acquiring
++ * and releasing the MDIO bus lock internally.
++ *
++ * Return: 0 or negative error code
++ */
++static int mxl86110_write_extended_reg(struct phy_device *phydev,
++				       u16 regnum, u16 val)
++{
++	int ret;
++
++	phy_lock_mdio_bus(phydev);
++	ret = __mxl86110_write_extended_reg(phydev, regnum, val);
++	phy_unlock_mdio_bus(phydev);
++
++	return ret;
++}
++
++/**
++ * mxl86110_read_extended_reg() - Read a PHY's extended register
++ * @phydev: pointer to the PHY device structure
++ * @regnum: extended register number to read
++ *
++ * This function reads from an extended register of the PHY using the
++ * MaxLinear two-step access method (reg 0x1E/0x1F). It handles acquiring
++ * and releasing the MDIO bus lock internally.
++ *
++ * Return: 16-bit register value on success, or negative errno code on failure
++ */
++static int mxl86110_read_extended_reg(struct phy_device *phydev, u16 regnum)
++{
++	int ret;
++
++	phy_lock_mdio_bus(phydev);
++	ret = __mxl86110_read_extended_reg(phydev, regnum);
++	phy_unlock_mdio_bus(phydev);
++
++	return ret;
++}
++
++/**
++ * mxl86110_modify_extended_reg() - modify bits of a PHY's extended register
++ * @phydev: pointer to the PHY device structure
++ * @regnum: register number to write
++ * @mask: bit mask of bits to clear
++ * @set: bit mask of bits to set
++ *
++ * Note: register value = (old register value & ~mask) | set.
++ *
++ * Return: 0 or negative error code
++ */
++static int mxl86110_modify_extended_reg(struct phy_device *phydev,
++					u16 regnum, u16 mask, u16 set)
++{
++	int ret;
++
++	phy_lock_mdio_bus(phydev);
++	ret = __mxl86110_modify_extended_reg(phydev, regnum, mask, set);
++	phy_unlock_mdio_bus(phydev);
++
++	return ret;
++}
++
++/**
++ * mxl86110_get_wol() - report if wake-on-lan is enabled
++ * @phydev: pointer to the phy_device
++ * @wol: a pointer to a &struct ethtool_wolinfo
++ */
++static void mxl86110_get_wol(struct phy_device *phydev,
++			     struct ethtool_wolinfo *wol)
++{
++	int val;
++
++	wol->supported = WAKE_MAGIC;
++	wol->wolopts = 0;
++	val = mxl86110_read_extended_reg(phydev, MXL86110_EXT_WOL_CFG_REG);
++	if (val >= 0 && (val & MXL86110_WOL_CFG_WOL_MASK))
++		wol->wolopts |= WAKE_MAGIC;
++}
++
++/**
++ * mxl86110_set_wol() - enable/disable wake-on-lan
++ * @phydev: pointer to the phy_device
++ * @wol: a pointer to a &struct ethtool_wolinfo
++ *
++ * Configures the WOL Magic Packet MAC
++ *
++ * Return: 0 or negative errno code
++ */
++static int mxl86110_set_wol(struct phy_device *phydev,
++			    struct ethtool_wolinfo *wol)
++{
++	struct net_device *netdev;
++	const unsigned char *mac;
++	int ret = 0;
++
++	phy_lock_mdio_bus(phydev);
++
++	if (wol->wolopts & WAKE_MAGIC) {
++		netdev = phydev->attached_dev;
++		if (!netdev) {
++			ret = -ENODEV;
++			goto out;
++		}
++
++		/* Configure the MAC address of the WOL magic packet */
++		mac = netdev->dev_addr;
++		ret = __mxl86110_write_extended_reg(phydev,
++						    MXL86110_EXT_MAC_ADDR_CFG1,
++						    ((mac[0] << 8) | mac[1]));
++		if (ret < 0)
++			goto out;
++
++		ret = __mxl86110_write_extended_reg(phydev,
++						    MXL86110_EXT_MAC_ADDR_CFG2,
++						    ((mac[2] << 8) | mac[3]));
++		if (ret < 0)
++			goto out;
++
++		ret = __mxl86110_write_extended_reg(phydev,
++						    MXL86110_EXT_MAC_ADDR_CFG3,
++						    ((mac[4] << 8) | mac[5]));
++		if (ret < 0)
++			goto out;
++
++		ret = __mxl86110_modify_extended_reg(phydev,
++						     MXL86110_EXT_WOL_CFG_REG,
++						     MXL86110_WOL_CFG_WOL_MASK,
++						     MXL86110_WOL_CFG_WOL_MASK);
++		if (ret < 0)
++			goto out;
++
++		/* Enables Wake-on-LAN interrupt in the PHY. */
++		ret = __phy_modify(phydev, PHY_IRQ_ENABLE_REG, 0,
++				   PHY_IRQ_ENABLE_REG_WOL);
++		if (ret < 0)
++			goto out;
++
++		phydev_dbg(phydev,
++			   "%s, MAC Addr: %02X:%02X:%02X:%02X:%02X:%02X\n",
++			   __func__,
++			   mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
++	} else {
++		ret = __mxl86110_modify_extended_reg(phydev,
++						     MXL86110_EXT_WOL_CFG_REG,
++						     MXL86110_WOL_CFG_WOL_MASK,
++						     0);
++		if (ret < 0)
++			goto out;
++
++		/* Disables Wake-on-LAN interrupt in the PHY. */
++		ret = __phy_modify(phydev, PHY_IRQ_ENABLE_REG,
++				   PHY_IRQ_ENABLE_REG_WOL, 0);
++	}
++
++out:
++	phy_unlock_mdio_bus(phydev);
++	return ret;
++}
++
++static const unsigned long supported_trgs = (BIT(TRIGGER_NETDEV_LINK_10) |
++					     BIT(TRIGGER_NETDEV_LINK_100) |
++					     BIT(TRIGGER_NETDEV_LINK_1000) |
++					     BIT(TRIGGER_NETDEV_HALF_DUPLEX) |
++					     BIT(TRIGGER_NETDEV_FULL_DUPLEX) |
++					     BIT(TRIGGER_NETDEV_TX) |
++					     BIT(TRIGGER_NETDEV_RX));
++
++static int mxl86110_led_hw_is_supported(struct phy_device *phydev, u8 index,
++					unsigned long rules)
++{
++	if (index >= MXL86110_MAX_LEDS)
++		return -EINVAL;
++
++	/* All combinations of the supported triggers are allowed */
++	if (rules & ~supported_trgs)
++		return -EOPNOTSUPP;
++
++	return 0;
++}
++
++static int mxl86110_led_hw_control_get(struct phy_device *phydev, u8 index,
++				       unsigned long *rules)
++{
++	int val;
++
++	if (index >= MXL86110_MAX_LEDS)
++		return -EINVAL;
++
++	val = mxl86110_read_extended_reg(phydev,
++					 MXL86110_LED0_CFG_REG + index);
++	if (val < 0)
++		return val;
++
++	if (val & MXL86110_LEDX_CFG_LINK_UP_TX_ACT_ON)
++		*rules |= BIT(TRIGGER_NETDEV_TX);
++
++	if (val & MXL86110_LEDX_CFG_LINK_UP_RX_ACT_ON)
++		*rules |= BIT(TRIGGER_NETDEV_RX);
++
++	if (val & MXL86110_LEDX_CFG_LINK_UP_HALF_DUPLEX_ON)
++		*rules |= BIT(TRIGGER_NETDEV_HALF_DUPLEX);
++
++	if (val & MXL86110_LEDX_CFG_LINK_UP_FULL_DUPLEX_ON)
++		*rules |= BIT(TRIGGER_NETDEV_FULL_DUPLEX);
++
++	if (val & MXL86110_LEDX_CFG_LINK_UP_10MB_ON)
++		*rules |= BIT(TRIGGER_NETDEV_LINK_10);
++
++	if (val & MXL86110_LEDX_CFG_LINK_UP_100MB_ON)
++		*rules |= BIT(TRIGGER_NETDEV_LINK_100);
++
++	if (val & MXL86110_LEDX_CFG_LINK_UP_1GB_ON)
++		*rules |= BIT(TRIGGER_NETDEV_LINK_1000);
++
++	return 0;
++}
++
++static int mxl86110_led_hw_control_set(struct phy_device *phydev, u8 index,
++				       unsigned long rules)
++{
++	u16 val = 0;
++	int ret;
++
++	if (index >= MXL86110_MAX_LEDS)
++		return -EINVAL;
++
++	if (rules & BIT(TRIGGER_NETDEV_LINK_10))
++		val |= MXL86110_LEDX_CFG_LINK_UP_10MB_ON;
++
++	if (rules & BIT(TRIGGER_NETDEV_LINK_100))
++		val |= MXL86110_LEDX_CFG_LINK_UP_100MB_ON;
++
++	if (rules & BIT(TRIGGER_NETDEV_LINK_1000))
++		val |= MXL86110_LEDX_CFG_LINK_UP_1GB_ON;
++
++	if (rules & BIT(TRIGGER_NETDEV_TX))
++		val |= MXL86110_LEDX_CFG_LINK_UP_TX_ACT_ON;
++
++	if (rules & BIT(TRIGGER_NETDEV_RX))
++		val |= MXL86110_LEDX_CFG_LINK_UP_RX_ACT_ON;
++
++	if (rules & BIT(TRIGGER_NETDEV_HALF_DUPLEX))
++		val |= MXL86110_LEDX_CFG_LINK_UP_HALF_DUPLEX_ON;
++
++	if (rules & BIT(TRIGGER_NETDEV_FULL_DUPLEX))
++		val |= MXL86110_LEDX_CFG_LINK_UP_FULL_DUPLEX_ON;
++
++	if (rules & BIT(TRIGGER_NETDEV_TX) ||
++	    rules & BIT(TRIGGER_NETDEV_RX))
++		val |= MXL86110_LEDX_CFG_BLINK;
++
++	ret = mxl86110_write_extended_reg(phydev,
++					  MXL86110_LED0_CFG_REG + index, val);
++	if (ret)
++		return ret;
++
++	/* clear manual control bit */
++	ret = mxl86110_modify_extended_reg(phydev,
++					   MXL86110_COM_EXT_LED_GEN_CFG,
++					   MXL86110_COM_EXT_LED_GEN_CFG_LFE(index),
++					   0);
++
++	return ret;
++}
++
++static int mxl86110_led_brightness_set(struct phy_device *phydev,
++				       u8 index, enum led_brightness value)
++{
++	u16 mask, set;
++	int ret;
++
++	if (index >= MXL86110_MAX_LEDS)
++		return -EINVAL;
++
++	/* force manual control */
++	set = MXL86110_COM_EXT_LED_GEN_CFG_LFE(index);
++	/* clear previous force mode */
++	mask = MXL86110_COM_EXT_LED_GEN_CFG_LFM(index);
++
++	/* force LED to be permanently on */
++	if (value != LED_OFF)
++		set |= MXL86110_COM_EXT_LED_GEN_CFG_LFME(index);
++
++	ret = mxl86110_modify_extended_reg(phydev,
++					   MXL86110_COM_EXT_LED_GEN_CFG,
++					   mask, set);
++
++	return ret;
++}
++
++/**
++ * mxl86110_synce_clk_cfg() - applies syncE/clk output configuration
++ * @phydev: pointer to the phy_device
++ *
++ * Note: This function assumes the caller already holds the MDIO bus lock
++ * or otherwise has exclusive access to the PHY.
++ *
++ * Return: 0 or negative errno code
++ */
++static int mxl86110_synce_clk_cfg(struct phy_device *phydev)
++{
++	u16 mask = 0, val = 0;
++
++	/*
++	 * Configures the clock output to its default
++	 * setting as per the datasheet.
++	 * This results in a 25MHz clock output being selected in the
++	 * COM_EXT_SYNCE_CFG register for SyncE configuration.
++	 */
++	val = MXL86110_EXT_SYNCE_CFG_EN_SYNC_E |
++			FIELD_PREP(MXL86110_EXT_SYNCE_CFG_CLK_SRC_SEL_MASK,
++				   MXL86110_EXT_SYNCE_CFG_CLK_SRC_SEL_25M);
++	mask = MXL86110_EXT_SYNCE_CFG_EN_SYNC_E |
++	       MXL86110_EXT_SYNCE_CFG_CLK_SRC_SEL_MASK |
++	       MXL86110_EXT_SYNCE_CFG_CLK_FRE_SEL;
++
++	/* Write clock output configuration */
++	return __mxl86110_modify_extended_reg(phydev,
++					      MXL86110_EXT_SYNCE_CFG_REG,
++					      mask, val);
++}
++
++/**
++ * mxl86110_broadcast_cfg - Configure MDIO broadcast setting for PHY
++ * @phydev: Pointer to the PHY device structure
++ *
++ * This function configures the MDIO broadcast behavior of the MxL86110 PHY.
++ * Currently, broadcast mode is explicitly disabled by clearing the EPA0 bit
++ * in the RGMII_MDIO_CFG extended register.
++ *
++ * Note: This function assumes the caller already holds the MDIO bus lock
++ * or otherwise has exclusive access to the PHY.
++ *
++ * Return: 0 on success or a negative errno code on failure.
++ */
++static int mxl86110_broadcast_cfg(struct phy_device *phydev)
++{
++	return __mxl86110_modify_extended_reg(phydev,
++					      MXL86110_EXT_RGMII_MDIO_CFG,
++					      MXL86110_RGMII_MDIO_CFG_EPA0_MASK,
++					      0);
++}
++
++/**
++ * mxl86110_enable_led_activity_blink - Enable LEDs activity blink on PHY
++ * @phydev: Pointer to the PHY device structure
++ *
++ * Configure all PHY LEDs to blink on traffic activity regardless of whether
++ * they are ON or OFF. This behavior allows each LED to serve as a pure activity
++ * indicator, independently of its use as a link status indicator.
++ *
++ * By default, each LED blinks only when it is also in the ON state.
++ * This function modifies the appropriate registers (LABx fields)
++ * to enable blinking even when the LEDs are OFF, to allow the LED to be used
++ * as a traffic indicator without requiring it to also serve
++ * as a link status LED.
++ *
++ * Note: Any further LED customization can be performed via the
++ * /sys/class/leds interface; the functions led_hw_is_supported,
++ * led_hw_control_get, and led_hw_control_set are used
++ * to support this mechanism.
++ *
++ * This function assumes the caller already holds the MDIO bus lock
++ * or otherwise has exclusive access to the PHY.
++ *
++ * Return: 0 on success or a negative errno code on failure.
++ */
++static int mxl86110_enable_led_activity_blink(struct phy_device *phydev)
++{
++	int i, ret = 0;
++
++	for (i = 0; i < MXL86110_MAX_LEDS; i++) {
++		ret = __mxl86110_modify_extended_reg(phydev,
++						     MXL86110_LED0_CFG_REG + i,
++						     0,
++						     MXL86110_LEDX_CFG_BLINK);
++		if (ret < 0)
++			break;
++	}
++
++	return ret;
++}
++
++/**
++ * mxl86110_config_rgmii_delay() - configure RGMII delays
++ * @phydev: pointer to the phy_device
++ *
++ * Return: 0 or negative errno code
++ */
++static int mxl86110_config_rgmii_delay(struct phy_device *phydev)
++{
++	int ret;
++	u16 val;
++
++	switch (phydev->interface) {
++	case PHY_INTERFACE_MODE_RGMII:
++		val = 0;
++		break;
++	case PHY_INTERFACE_MODE_RGMII_RXID:
++		val = MXL86110_EXT_RGMII_CFG1_RX_DELAY_1950PS;
++		break;
++	case PHY_INTERFACE_MODE_RGMII_TXID:
++		val = MXL86110_EXT_RGMII_CFG1_TX_1G_DELAY_1950PS |
++			MXL86110_EXT_RGMII_CFG1_TX_10MB_100MB_DELAY_1950PS;
++		break;
++	case PHY_INTERFACE_MODE_RGMII_ID:
++		val = MXL86110_EXT_RGMII_CFG1_TX_1G_DELAY_1950PS |
++			MXL86110_EXT_RGMII_CFG1_TX_10MB_100MB_DELAY_1950PS |
++			MXL86110_EXT_RGMII_CFG1_RX_DELAY_1950PS;
++		break;
++	default:
++		ret = -EINVAL;
++		goto out;
++	}
++
++	ret = __mxl86110_modify_extended_reg(phydev,
++					     MXL86110_EXT_RGMII_CFG1_REG,
++					     MXL86110_EXT_RGMII_CFG1_FULL_MASK,
++					     val);
++	if (ret < 0)
++		goto out;
++
++	/* Configure RXDLY (RGMII Rx Clock Delay) to disable
++	 * the default additional delay value on RX_CLK
++	 * (2 ns for 125 MHz, 8 ns for 25 MHz/2.5 MHz)
++	 * and use just the digital one selected before
++	 */
++	ret = __mxl86110_modify_extended_reg(phydev,
++					     MXL86110_EXT_CHIP_CFG_REG,
++					     MXL86110_EXT_CHIP_CFG_RXDLY_ENABLE,
++					     0);
++	if (ret < 0)
++		goto out;
++
++out:
++	return ret;
++}
++
++/**
++ * mxl86110_config_init() - initialize the MXL86110 PHY
++ * @phydev: pointer to the phy_device
++ *
++ * Return: 0 or negative errno code
++ */
++static int mxl86110_config_init(struct phy_device *phydev)
++{
++	int ret;
++
++	phy_lock_mdio_bus(phydev);
++
++	/* configure syncE / clk output */
++	ret = mxl86110_synce_clk_cfg(phydev);
++	if (ret < 0)
++		goto out;
++
++	ret = mxl86110_config_rgmii_delay(phydev);
++	if (ret < 0)
++		goto out;
++
++	ret = mxl86110_enable_led_activity_blink(phydev);
++	if (ret < 0)
++		goto out;
++
++	ret = mxl86110_broadcast_cfg(phydev);
++
++out:
++	phy_unlock_mdio_bus(phydev);
++	return ret;
++}
++
++/**
++ * mxl86111_probe() - validate bootstrap chip config and set UTP page
++ * @phydev: pointer to the phy_device
++ *
++ * Return: 0 or negative errno code
++ */
++static int mxl86111_probe(struct phy_device *phydev)
++{
++	int chip_config;
++	u16 reg_page;
++	int ret;
++
++	chip_config = mxl86110_read_extended_reg(phydev, MXL86110_EXT_CHIP_CFG_REG);
++	if (chip_config < 0)
++		return chip_config;
++
++	switch (chip_config & MXL86111_EXT_CHIP_CFG_MODE_SEL_MASK) {
++	case MXL86111_EXT_CHIP_CFG_MODE_UTP_TO_SGMII:
++	case MXL86111_EXT_CHIP_CFG_MODE_UTP_TO_RGMII:
++		phydev->port = PORT_TP;
++		reg_page = MXL86111_EXT_SMI_SDS_PHYUTP_SPACE;
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	ret = mxl86110_write_extended_reg(phydev,
++					  MXL86111_EXT_SMI_SDS_PHY_REG,
++					  reg_page);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++/**
++ * mxl86111_config_init() - initialize the MXL86111 PHY
++ * @phydev: pointer to the phy_device
++ *
++ * Return: 0 or negative errno code
++ */
++static int mxl86111_config_init(struct phy_device *phydev)
++{
++	int ret;
++
++	phy_lock_mdio_bus(phydev);
++
++	/* configure syncE / clk output */
++	ret = mxl86110_synce_clk_cfg(phydev);
++	if (ret < 0)
++		goto out;
++
++	switch (phydev->interface) {
++	case PHY_INTERFACE_MODE_100BASEX:
++		ret = __mxl86110_modify_extended_reg(phydev,
++						     MXL86111_EXT_MISC_CONFIG_REG,
++						     MXL86111_EXT_MISC_CONFIG_FIB_SPEED_SEL,
++						     MXL86111_EXT_MISC_CONFIG_FIB_SPEED_SEL_100BX);
++		if (ret < 0)
++			goto out;
++		break;
++	case PHY_INTERFACE_MODE_1000BASEX:
++	case PHY_INTERFACE_MODE_SGMII:
++		ret = __mxl86110_modify_extended_reg(phydev,
++						     MXL86111_EXT_MISC_CONFIG_REG,
++						     MXL86111_EXT_MISC_CONFIG_FIB_SPEED_SEL,
++						     MXL86111_EXT_MISC_CONFIG_FIB_SPEED_SEL_1000BX);
++		if (ret < 0)
++			goto out;
++		break;
++	default:
++		/* RGMII modes */
++		ret = mxl86110_config_rgmii_delay(phydev);
++		if (ret < 0)
++			goto out;
++		ret = __mxl86110_modify_extended_reg(phydev, MXL86110_EXT_RGMII_CFG1_REG,
++						     MXL86110_EXT_RGMII_CFG1_FULL_MASK, ret);
++
++		/* PL P1 requires optimized RGMII timing for 1.8V RGMII voltage
++		 */
++		ret = __mxl86110_read_extended_reg(phydev, 0xf);
++		if (ret < 0)
++			goto out;
++
++		if (ret == MXL86111_PL_P1) {
++			ret = __mxl86110_read_extended_reg(phydev, MXL86110_EXT_CHIP_CFG_REG);
++			if (ret < 0)
++				goto out;
++
++			/* check if LDO is in 1.8V mode */
++			switch (FIELD_GET(MXL86111_EXT_CHIP_CFG_CLDO_MASK, ret)) {
++			case MXL86111_EXT_CHIP_CFG_CLDO_1V8_3:
++			case MXL86111_EXT_CHIP_CFG_CLDO_1V8_2:
++				ret = __mxl86110_write_extended_reg(phydev, 0xa010, 0xabff);
++				if (ret < 0)
++					goto out;
++				break;
++			default:
++				break;
++			}
++		}
++		break;
++	}
++
++	ret = mxl86110_enable_led_activity_blink(phydev);
++	if (ret < 0)
++		goto out;
++
++	ret = mxl86110_broadcast_cfg(phydev);
++out:
++	phy_unlock_mdio_bus(phydev);
++
++	return ret;
++}
++
++/**
++ * mxl86111_read_page() - read reg page
++ * @phydev: pointer to the phy_device
++ *
++ * Return: current reg space of mxl86111 or negative errno code
++ */
++static int mxl86111_read_page(struct phy_device *phydev)
++{
++	int page;
++
++	page = __mxl86110_read_extended_reg(phydev, MXL86111_EXT_SMI_SDS_PHY_REG);
++	if (page < 0)
++		return page;
++
++	return page & MXL86111_EXT_SMI_SDS_PHYSPACE_MASK;
++};
++
++/**
++ * mxl86111_write_page() - Set reg page
++ * @phydev: pointer to the phy_device
++ * @page: The reg page to set
++ *
++ * Return: 0 or negative errno code
++ */
++static int mxl86111_write_page(struct phy_device *phydev, int page)
++{
++	return __mxl86110_modify_extended_reg(phydev, MXL86111_EXT_SMI_SDS_PHY_REG,
++					      MXL86111_EXT_SMI_SDS_PHYSPACE_MASK, page);
++};
++
++static struct phy_driver mxl_phy_drvs[] = {
++	{
++		PHY_ID_MATCH_EXACT(PHY_ID_MXL86110),
++		.name			= "MXL86110 Gigabit Ethernet",
++		.config_init		= mxl86110_config_init,
++		.suspend		= genphy_suspend,
++		.resume			= genphy_resume,
++		.soft_reset		= genphy_soft_reset,
++		.get_wol		= mxl86110_get_wol,
++		.set_wol		= mxl86110_set_wol,
++		.led_brightness_set	= mxl86110_led_brightness_set,
++		.led_hw_is_supported	= mxl86110_led_hw_is_supported,
++		.led_hw_control_get	= mxl86110_led_hw_control_get,
++		.led_hw_control_set	= mxl86110_led_hw_control_set,
++	},
++	{
++		PHY_ID_MATCH_EXACT(PHY_ID_MXL86111),
++		.name			= "MXL86111 Gigabit Ethernet",
++		.probe			= mxl86111_probe,
++		.config_init		= mxl86111_config_init,
++		.get_wol		= mxl86110_get_wol,
++		.set_wol		= mxl86110_set_wol,
++		.read_page		= mxl86111_read_page,
++		.write_page		= mxl86111_write_page,
++		.led_brightness_set	= mxl86110_led_brightness_set,
++		.led_hw_is_supported	= mxl86110_led_hw_is_supported,
++		.led_hw_control_get	= mxl86110_led_hw_control_get,
++		.led_hw_control_set	= mxl86110_led_hw_control_set,
++	},
++};
++
++module_phy_driver(mxl_phy_drvs);
++
++static const struct mdio_device_id __maybe_unused mxl_tbl[] = {
++	{ PHY_ID_MATCH_EXACT(PHY_ID_MXL86110) },
++	{ PHY_ID_MATCH_EXACT(PHY_ID_MXL86111) },
++	{  }
++};
++
++MODULE_DEVICE_TABLE(mdio, mxl_tbl);
++
++MODULE_DESCRIPTION("MaxLinear MXL86110/MXL86111 PHY driver");
++MODULE_AUTHOR("Stefano Radaelli");
++MODULE_LICENSE("GPL");
 diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
 --- a/drivers/net/phy/phy-c45.c
 +++ b/drivers/net/phy/phy-c45.c
@@ -161685,7 +162569,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  static int lan78xx_read_reg(struct lan78xx_net *dev, u32 index, u32 *data)
  {
  	u32 *buf;
-@@ -1421,6 +1435,9 @@ static int lan78xx_link_reset(struct lan78xx_net *dev)
+@@ -1584,6 +1598,9 @@ static int lan78xx_link_reset(struct lan78xx_net *dev)
  	if (unlikely(ret < 0))
  		return ret;
  
@@ -161695,7 +162579,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  	mutex_lock(&phydev->lock);
  	phy_read_status(phydev);
  	link = phydev->link;
-@@ -1685,14 +1702,11 @@ static int lan78xx_get_eee(struct net_device *net, struct ethtool_keee *edata)
+@@ -1848,14 +1865,11 @@ static int lan78xx_get_eee(struct net_device *net, struct ethtool_keee *edata)
  	if (ret < 0)
  		goto exit;
  
@@ -161713,7 +162597,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  
  	ret = 0;
  exit:
-@@ -1918,6 +1932,7 @@ static const struct ethtool_ops lan78xx_ethtool_ops = {
+@@ -2081,6 +2095,7 @@ static const struct ethtool_ops lan78xx_ethtool_ops = {
  	.set_link_ksettings = lan78xx_set_link_ksettings,
  	.get_regs_len	= lan78xx_get_regs_len,
  	.get_regs	= lan78xx_get_regs,
@@ -161721,7 +162605,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  };
  
  static int lan78xx_init_mac_address(struct lan78xx_net *dev)
-@@ -2420,7 +2435,26 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+@@ -2583,7 +2598,26 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
  	mii_adv_to_linkmode_adv_t(fc, mii_adv);
  	linkmode_or(phydev->advertising, fc, phydev->advertising);
  
@@ -161749,7 +162633,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  
  	if (phydev->mdio.dev.of_node) {
  		u32 reg;
-@@ -2899,6 +2933,11 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+@@ -2909,6 +2943,11 @@ static int lan78xx_reset(struct lan78xx_net *dev)
  	int ret;
  	u32 buf;
  	u8 sig;
@@ -161761,7 +162645,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  
  	ret = lan78xx_read_reg(dev, HW_CFG, &buf);
  	if (ret < 0)
-@@ -2967,6 +3006,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+@@ -2977,6 +3016,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
  	buf |= HW_CFG_CLK125_EN_;
  	buf |= HW_CFG_REFCLK25_EN_;
  
@@ -161772,7 +162656,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  	ret = lan78xx_write_reg(dev, HW_CFG, buf);
  	if (ret < 0)
  		return ret;
-@@ -3069,6 +3112,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+@@ -3079,6 +3122,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
  			buf |= MAC_CR_AUTO_DUPLEX_ | MAC_CR_AUTO_SPEED_;
  		}
  	}
@@ -161782,7 +162666,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  	ret = lan78xx_write_reg(dev, MAC_CR, buf);
  	if (ret < 0)
  		return ret;
-@@ -3466,8 +3512,14 @@ static int lan78xx_bind(struct lan78xx_net *dev, struct usb_interface *intf)
+@@ -3476,8 +3522,14 @@ static int lan78xx_bind(struct lan78xx_net *dev, struct usb_interface *intf)
  	if (DEFAULT_RX_CSUM_ENABLE)
  		dev->net->features |= NETIF_F_RXCSUM;
  
@@ -161799,7 +162683,7 @@ diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
  
  	if (DEFAULT_VLAN_RX_OFFLOAD)
  		dev->net->features |= NETIF_F_HW_VLAN_CTAG_RX;
-@@ -4437,7 +4489,13 @@ static int lan78xx_probe(struct usb_interface *intf,
+@@ -4447,7 +4499,13 @@ static int lan78xx_probe(struct usb_interface *intf,
  	if (ret < 0)
  		goto out4;
  
@@ -161891,7 +162775,7 @@ diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bus.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bus.h
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bus.h
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bus.h
-@@ -298,7 +298,7 @@ void brcmf_rx_event(struct device *dev, struct sk_buff *rxp);
+@@ -304,7 +304,7 @@ void brcmf_rx_event(struct device *dev, struct sk_buff *rxp);
  
  int brcmf_alloc(struct device *dev, struct brcmf_mp_device *settings);
  /* Indication from bus module regarding presence/insertion of dongle. */
@@ -162525,7 +163409,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-@@ -1322,7 +1322,7 @@ int brcmf_alloc(struct device *dev, struct brcmf_mp_device *settings)
+@@ -1351,7 +1351,7 @@ int brcmf_alloc(struct device *dev, struct brcmf_mp_device *settings)
  	return 0;
  }
  
@@ -162534,7 +163418,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/n
  {
  	struct brcmf_bus *bus_if = dev_get_drvdata(dev);
  	struct brcmf_pub *drvr = bus_if->drvr;
-@@ -1363,10 +1363,13 @@ int brcmf_attach(struct device *dev)
+@@ -1392,10 +1392,13 @@ int brcmf_attach(struct device *dev)
  	brcmf_fweh_register(drvr, BRCMF_E_PSM_WATCHDOG,
  			    brcmf_psm_watchdog_notify);
  
@@ -162852,7 +163736,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/ne
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -2207,7 +2207,7 @@ static void brcmf_pcie_setup(struct device *dev, int ret,
+@@ -2211,7 +2211,7 @@ static void brcmf_pcie_setup(struct device *dev, int ret,
  
  	init_waitqueue_head(&devinfo->mbdata_resp_wait);
  
@@ -162940,7 +163824,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  
  	return intstatus;
  }
-@@ -2580,6 +2596,182 @@ static int brcmf_sdio_intr_rstatus(struct brcmf_sdio *bus)
+@@ -2581,6 +2597,182 @@ static int brcmf_sdio_intr_rstatus(struct brcmf_sdio *bus)
  	return ret;
  }
  
@@ -163123,7 +164007,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
  {
  	struct brcmf_sdio_dev *sdiod = bus->sdiodev;
-@@ -2651,8 +2843,11 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
+@@ -2652,8 +2844,11 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
  
  	/* Handle host mailbox indication */
  	if (intstatus & I_HMB_HOST_INT) {
@@ -163136,7 +164020,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  	}
  
  	sdio_release_host(bus->sdiodev->func1);
-@@ -2697,7 +2892,7 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
+@@ -2698,7 +2893,7 @@ static void brcmf_sdio_dpc(struct brcmf_sdio *bus)
  	brcmf_sdio_clrintr(bus);
  
  	if (bus->ctrl_frame_stat && (bus->clkstate == CLK_AVAIL) &&
@@ -163145,7 +164029,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  		sdio_claim_host(bus->sdiodev->func1);
  		if (bus->ctrl_frame_stat) {
  			err = brcmf_sdio_tx_ctrlframe(bus,  bus->ctrl_frame_buf,
-@@ -3567,6 +3762,10 @@ static int brcmf_sdio_bus_preinit(struct device *dev)
+@@ -3568,6 +3763,10 @@ static int brcmf_sdio_bus_preinit(struct device *dev)
  	if (err < 0)
  		goto done;
  
@@ -163156,7 +164040,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  	bus->tx_hdrlen = SDPCM_HWHDR_LEN + SDPCM_SWHDR_LEN;
  	if (sdiodev->sg_support) {
  		bus->txglom = false;
-@@ -4215,7 +4414,7 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
+@@ -4216,7 +4415,7 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
  	u8 saveclk, bpreq;
  	u8 devctl;
  
@@ -163165,7 +164049,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  
  	if (err)
  		goto fail;
-@@ -4392,12 +4591,25 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
+@@ -4393,12 +4592,25 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
  	}
  
  	/* Attach to the common layer, reserve hdr space */
@@ -163192,7 +164076,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/n
  	/* ready */
  	return;
  
-@@ -4641,3 +4853,40 @@ int brcmf_sdio_sleep(struct brcmf_sdio *bus, bool sleep)
+@@ -4648,3 +4860,40 @@ int brcmf_sdio_sleep(struct brcmf_sdio *bus, bool sleep)
  
  	return ret;
  }
@@ -163281,7 +164165,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h b/drivers/n
  };
  
  /* sdio core registers */
-@@ -367,4 +398,83 @@ void brcmf_sdio_wowl_config(struct device *dev, bool enabled);
+@@ -368,4 +399,83 @@ void brcmf_sdio_wowl_config(struct device *dev, bool enabled);
  int brcmf_sdio_sleep(struct brcmf_sdio *bus, bool sleep);
  void brcmf_sdio_trigger_dpc(struct brcmf_sdio *bus);
  
@@ -163377,7 +164261,7 @@ diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/ne
  	if (ret)
  		goto error;
  
-@@ -1279,7 +1279,7 @@ static int brcmf_usb_probe_cb(struct brcmf_usbdev_info *devinfo,
+@@ -1280,7 +1280,7 @@ static int brcmf_usb_probe_cb(struct brcmf_usbdev_info *devinfo,
  		ret = brcmf_alloc(devinfo->dev, devinfo->settings);
  		if (ret)
  			goto fail;
@@ -164904,7 +165788,7 @@ diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
 diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
 --- a/drivers/pci/quirks.c
 +++ b/drivers/pci/quirks.c
-@@ -6265,6 +6265,22 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56b0, aspm_l1_acceptable_latency
+@@ -6269,6 +6269,22 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56b0, aspm_l1_acceptable_latency
  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56b1, aspm_l1_acceptable_latency);
  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56c0, aspm_l1_acceptable_latency);
  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x56c1, aspm_l1_acceptable_latency);
@@ -165946,7 +166830,7 @@ diff --git a/drivers/phy/broadcom/phy-brcm-usb.c b/drivers/phy/broadcom/phy-brcm
 diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
 --- a/drivers/pinctrl/Kconfig
 +++ b/drivers/pinctrl/Kconfig
-@@ -588,6 +588,13 @@ config PINCTRL_MLXBF3
+@@ -590,6 +590,13 @@ config PINCTRL_MLXBF3
  	  each pin. This driver can also be built as a module called
  	  pinctrl-mlxbf3.
  
@@ -185961,16 +186845,16 @@ new file mode 100644
 diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
 --- a/drivers/tty/serial/sc16is7xx.c
 +++ b/drivers/tty/serial/sc16is7xx.c
-@@ -814,6 +814,8 @@ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
+@@ -812,6 +812,8 @@ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
  
  		if (rxlen)
  			sc16is7xx_handle_rx(port, rxlen, iir);
 +		else
-+			rc = false;
++			return false;
  		break;
  		/* CTSRTS interrupt comes only when CTS goes inactive */
  	case SC16IS7XX_IIR_CTSRTS_SRC:
-@@ -1189,6 +1191,9 @@ static int sc16is7xx_startup(struct uart_port *port)
+@@ -1185,6 +1187,9 @@ static int sc16is7xx_startup(struct uart_port *port)
  	      SC16IS7XX_IER_MSI_BIT;
  	sc16is7xx_port_write(port, SC16IS7XX_IER_REG, val);
  
@@ -185980,7 +186864,7 @@ diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
  	/* Enable modem status polling */
  	uart_port_lock_irqsave(port, &flags);
  	sc16is7xx_enable_ms(port);
-@@ -1456,7 +1461,7 @@ static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s,
+@@ -1464,7 +1469,7 @@ static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s,
  }
  
  static const struct serial_rs485 sc16is7xx_rs485_supported = {
@@ -186034,7 +186918,7 @@ diff --git a/drivers/usb/core/hcd.c b/drivers/usb/core/hcd.c
 diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
 --- a/drivers/usb/core/hub.c
 +++ b/drivers/usb/core/hub.c
-@@ -5786,7 +5786,7 @@ static void port_event(struct usb_hub *hub, int port1)
+@@ -5791,7 +5791,7 @@ static void port_event(struct usb_hub *hub, int port1)
  		port_dev->over_current_count++;
  		port_over_current_notify(port_dev);
  
@@ -246441,10 +247325,10 @@ diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
  static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
  {
  	struct pci_dev                  *pdev = to_pci_dev(dev);
-@@ -454,6 +466,11 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == PCI_DEVICE_ID_VIA_VL805) {
+@@ -455,6 +467,11 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
  		xhci->quirks |= XHCI_LPM_SUPPORT;
  		xhci->quirks |= XHCI_TRB_OVERFETCH;
+ 		xhci->dma_mask_bits = 36;
 +		xhci->quirks |= XHCI_EP_CTX_BROKEN_DCS;
 +		xhci->quirks |= XHCI_AVOID_DQ_ON_LINK;
 +		xhci->quirks |= XHCI_VLI_SS_BULK_OUT_BUG;
@@ -246759,7 +247643,7 @@ diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
  		timeout_ns = xhci_calculate_intel_u2_timeout(udev, desc);
  	else
  		timeout_ns = udev->u2_params.sel;
-@@ -5395,6 +5507,7 @@ static const struct hc_driver xhci_hc_driver = {
+@@ -5400,6 +5512,7 @@ static const struct hc_driver xhci_hc_driver = {
  	.endpoint_reset =	xhci_endpoint_reset,
  	.check_bandwidth =	xhci_check_bandwidth,
  	.reset_bandwidth =	xhci_reset_bandwidth,
@@ -246788,7 +247672,7 @@ diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
  /* Poll every 60 seconds */
  #define	POLL_TIMEOUT	60
  /* Stop endpoint command timeout (secs) for URB cancellation watchdog timer */
-@@ -1631,6 +1633,11 @@ struct xhci_hcd {
+@@ -1632,6 +1634,11 @@ struct xhci_hcd {
  #define XHCI_ETRON_HOST	BIT_ULL(49)
  #define XHCI_LIMIT_ENDPOINT_INTERVAL_9 BIT_ULL(50)
  
@@ -248902,7 +249786,7 @@ diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
 @@ -595,6 +605,8 @@ static void fbcon_prepare_logo(struct vc_data *vc, struct fb_info *info,
  	if (fb_get_color_depth(&info->var, &info->fix) == 1)
  		erase &= ~0x400;
- 	logo_height = fb_prepare_logo(info, ops->rotate);
+ 	logo_height = fb_prepare_logo(info, par->rotate);
 +	if (fullscreen_logo_enabled)
 +		logo_height = info->var.yres - vc->vc_font.height;
  	logo_lines = DIV_ROUND_UP(logo_height, vc->vc_font.height);
@@ -256479,7 +257363,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  	if (err)
  		return err;
  
-@@ -1917,6 +1936,27 @@ static unsigned int interleave_nodes(struct mempolicy *policy)
+@@ -1908,6 +1927,27 @@ static unsigned int interleave_nodes(struct mempolicy *policy)
  	return nid;
  }
  
@@ -256507,7 +257391,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  /*
   * Depending on the memory policy provide a node from which to allocate the
   * next slab entry.
-@@ -1962,6 +2002,9 @@ unsigned int mempolicy_slab_node(void)
+@@ -1953,6 +1993,9 @@ unsigned int mempolicy_slab_node(void)
  	case MPOL_LOCAL:
  		return node;
  
@@ -256517,7 +257401,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  	default:
  		BUG();
  	}
-@@ -2042,6 +2085,33 @@ static unsigned int interleave_nid(struct mempolicy *pol, pgoff_t ilx)
+@@ -2033,6 +2076,33 @@ static unsigned int interleave_nid(struct mempolicy *pol, pgoff_t ilx)
  	return nid;
  }
  
@@ -256551,7 +257435,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  /*
   * Return a nodemask representing a mempolicy for filtering nodes for
   * page allocation, together with preferred node id (or the input node id).
-@@ -2085,11 +2155,20 @@ static nodemask_t *policy_nodemask(gfp_t gfp, struct mempolicy *pol,
+@@ -2076,11 +2146,20 @@ static nodemask_t *policy_nodemask(gfp_t gfp, struct mempolicy *pol,
  			weighted_interleave_nodes(pol) :
  			weighted_interleave_nid(pol, ilx);
  		break;
@@ -256572,7 +257456,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  #ifdef CONFIG_HUGETLBFS
  /*
   * huge_node(@vma, @addr, @gfp_flags, @mpol)
-@@ -2147,6 +2226,7 @@ bool init_nodemask_of_mempolicy(nodemask_t *mask)
+@@ -2138,6 +2217,7 @@ bool init_nodemask_of_mempolicy(nodemask_t *mask)
  	case MPOL_BIND:
  	case MPOL_INTERLEAVE:
  	case MPOL_WEIGHTED_INTERLEAVE:
@@ -256580,7 +257464,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  		*mask = mempolicy->nodes;
  		break;
  
-@@ -2627,6 +2707,7 @@ bool __mpol_equal(struct mempolicy *a, struct mempolicy *b)
+@@ -2618,6 +2698,7 @@ bool __mpol_equal(struct mempolicy *a, struct mempolicy *b)
  	case MPOL_PREFERRED:
  	case MPOL_PREFERRED_MANY:
  	case MPOL_WEIGHTED_INTERLEAVE:
@@ -256588,7 +257472,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  		return !!nodes_equal(a->nodes, b->nodes);
  	case MPOL_LOCAL:
  		return true;
-@@ -2818,6 +2899,10 @@ int mpol_misplaced(struct folio *folio, struct vm_fault *vmf,
+@@ -2809,6 +2890,10 @@ int mpol_misplaced(struct folio *folio, struct vm_fault *vmf,
  		polnid = zonelist_node_idx(z);
  		break;
  
@@ -256599,7 +257483,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  	default:
  		BUG();
  	}
-@@ -3146,7 +3231,9 @@ void __init numa_policy_init(void)
+@@ -3137,7 +3222,9 @@ void __init numa_policy_init(void)
  /* Reset policy of current process to default */
  void numa_default_policy(void)
  {
@@ -256610,7 +257494,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  }
  
  /*
-@@ -3161,9 +3248,9 @@ static const char * const policy_modes[] =
+@@ -3152,9 +3239,9 @@ static const char * const policy_modes[] =
  	[MPOL_WEIGHTED_INTERLEAVE] = "weighted interleave",
  	[MPOL_LOCAL]      = "local",
  	[MPOL_PREFERRED_MANY]  = "prefer (many)",
@@ -256621,7 +257505,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  /**
   * mpol_parse_str - parse string to mempolicy, for tmpfs mpol mount option.
   * @str:  string containing mempolicy to parse
-@@ -3176,13 +3263,18 @@ static const char * const policy_modes[] =
+@@ -3167,13 +3254,18 @@ static const char * const policy_modes[] =
   */
  int mpol_parse_str(char *str, struct mempolicy **mpol)
  {
@@ -256641,7 +257525,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  	if (flags)
  		*flags++ = '\0';	/* terminate mode string */
  
-@@ -3219,6 +3311,7 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
+@@ -3210,6 +3302,7 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
  		break;
  	case MPOL_INTERLEAVE:
  	case MPOL_WEIGHTED_INTERLEAVE:
@@ -256649,7 +257533,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  		/*
  		 * Default to online nodes with memory if no nodelist
  		 */
-@@ -3262,9 +3355,16 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
+@@ -3253,9 +3346,16 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
  			goto out;
  	}
  
@@ -256669,7 +257553,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  
  	/*
  	 * Save nodes for mpol_to_str() to show the tmpfs mount options
-@@ -3297,7 +3397,30 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
+@@ -3288,7 +3388,30 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
  		*mpol = new;
  	return err;
  }
@@ -256701,7 +257585,7 @@ diff --git a/mm/mempolicy.c b/mm/mempolicy.c
  
  /**
   * mpol_to_str - format a mempolicy structure for printing
-@@ -3334,6 +3457,7 @@ void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
+@@ -3325,6 +3448,7 @@ void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
  	case MPOL_BIND:
  	case MPOL_INTERLEAVE:
  	case MPOL_WEIGHTED_INTERLEAVE:
@@ -256802,7 +257686,7 @@ diff --git a/mm/vmscan.c b/mm/vmscan.c
 diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
 --- a/net/bluetooth/hci_sync.c
 +++ b/net/bluetooth/hci_sync.c
-@@ -4961,6 +4961,8 @@ static const struct {
+@@ -5057,6 +5057,8 @@ static const struct {
   */
  static int hci_dev_setup_sync(struct hci_dev *hdev)
  {
@@ -256811,7 +257695,7 @@ diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
  	int ret = 0;
  	bool invalid_bdaddr;
  	size_t i;
-@@ -4989,7 +4991,8 @@ static int hci_dev_setup_sync(struct hci_dev *hdev)
+@@ -5085,7 +5087,8 @@ static int hci_dev_setup_sync(struct hci_dev *hdev)
  			 test_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
  	if (!ret) {
  		if (test_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks) &&
@@ -285080,7 +285964,7 @@ diff --git a/sound/usb/card.c b/sound/usb/card.c
 diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
 --- a/sound/usb/quirks.c
 +++ b/sound/usb/quirks.c
-@@ -2399,6 +2399,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+@@ -2401,6 +2401,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
  		   QUIRK_FLAG_ALIGN_TRANSFER),
  	DEVICE_FLG(0x534d, 0x2109, /* MacroSilicon MS2109 */
  		   QUIRK_FLAG_ALIGN_TRANSFER),
