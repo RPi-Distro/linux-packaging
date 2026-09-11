@@ -1,3 +1,13 @@
+linux (1:6.18.50-1+rpt1) trixie; urgency=medium
+
+  * Raspberry Pi OS release
+  * rpi/update: fail early when the vanilla release tag is missing
+  * Update Raspberry Pi patch
+  * Update debian/config
+  * Linux commit: cff533aec2fa601846766b32ff57204e0a61bed7
+
+ -- Serge Schneider <serge@raspberrypi.com>  Fri, 11 Sep 2026 14:21:05 +0100
+
 linux (1:6.18.39-1+rpt1) trixie; urgency=medium
 
   * Raspberry Pi OS release
